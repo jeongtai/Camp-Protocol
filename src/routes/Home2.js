@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import Caver from 'caver-js'
-import Test_Contract from '../contract-example.json'
+import Test_Contract from '../abis/contract-example.json'
 import {Buffer} from "buffer"
 
 window.global = window;

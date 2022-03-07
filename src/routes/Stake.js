@@ -1,5 +1,9 @@
+import StakeButton from "../Components/StakeButton"
+
 const Stake =()=>{
-    return <h1>Stake</h1>
+    return (
+        <StakeButton/>
+    )
 }
 
 export default Stake

@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import Caver from 'caver-js'
-import ContJson from '../contract-example.json'
+import ContJson from '../abis/contract-example.json'
 import styled from "styled-components";
 
 const Main = styled.main`

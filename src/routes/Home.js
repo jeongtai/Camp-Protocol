@@ -23,8 +23,7 @@ function App() {
     const getKaikas = async () => {
         if (window.klaytn._kaikas.isEnabled()){
             try {
-                const account = await window.klaytn.enable()
-                
+                await window.klaytn.enable()                
                 return console.log(`wallet login success! ${window.klaytn.selectedAddress}`)
             }
             catch (error) {
@@ -34,7 +33,6 @@ function App() {
         else {
             console.log('wallet failed')
             console.log(window.klaytn._kaikas.isEnabled())
-            
             window.klaytn._kaikas.isApproved(console.log)
         }
     }

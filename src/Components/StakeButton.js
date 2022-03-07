@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import Caver from 'caver-js';
+import Input from "./INPUT"
+import Button from "./Button"
+
 window.global = window;
 // @ts-ignorez
 window.Buffer = window.Buffer || require('buffer').Buffer;
@@ -17,13 +20,13 @@ function StakeButton () {
     return (
         <div>
             <form onSubmit={Stake}>
-                <input
+                <Input
                   onChange={onChange}
                   value={amount}
                   type="text"
-                  placeholder="Staking amount">
-                </input>
-                <button>Stake!</button>
+                  text="Staking amount">
+                </Input>
+                <Button text = "Stake!"/>
             
             </form>
         </div>

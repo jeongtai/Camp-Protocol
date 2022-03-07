@@ -13,35 +13,37 @@ function Minting (props) {
     const bankcontract = new caver.klay.Contract(Bankjs.abi, "0x940388cD4d49Af572626253f488f5Ad111Ae0196")
     const [usdcamount, setUSDCamount] = useState();
     const [campamount, setCampAmount] = useState();
-    const [scampamount, setScampAmount] = useState()
+    const [scampamount, setScampAmount] = useState();
 
     function Mint () {
+
         bankcontract.methods.mint(
-            caver.utils.toPeb(usdcamount, 'KLAY'),
-            caver.utils.toPeb(campamount, 'KLAY'),
-            caver.utils.toPeb(scampamount, 'KLAY')
+            `${(usdcamount)*100000000000000}`,
+            `${(campamount)*100000000000000}`,
+            `${(scampamount)*100000000000000}`
         ).send({
             from: window.klaytn.selectedAddress,
             gas: '3000000'
         }).on("receipt", receipt => {
             console.log("Minting Success!")
         });
+        console.log({usdcamount, campamount, scampamount})
     }
     
     const collatamt = (event) => {
-        setUSDCamount(event.target.value)
-        setCampAmount(event.target.value/19)
-        setScampAmount(event.target.value*20/19)
+        setUSDCamount(Math.roundevent.target.value)
+        setCampAmount(Math.round(event.target.value*100/19)/100)
+        setScampAmount(Math.round(event.target.value*20*100/19)/100)
     }
     const cmpamt = (event) => {
-        setUSDCamount(event.target.value*19)
-        setCampAmount(event.target.value)
-        setScampAmount(event.target.value*20)
+        setUSDCamount(Math.round(event.target.value*19*100)/100)
+        setCampAmount(Math.round(event.target.value*100)/100)
+        setScampAmount(Math.round(event.target.value*20*100)/100)
     }
     const scmpamt = (event) => {
-        setUSDCamount(event.target.value*19/20)
-        setCampAmount(event.target.value/20)
-        setScampAmount(event.target.value)
+        setUSDCamount(Math.round(event.target.value*100*19/20)/100)
+        setCampAmount(Math.round(event.target.value*100/20)/100)
+        setScampAmount(Math.round(event.target.value*100)/100)
         
     }
 
@@ -55,7 +57,7 @@ function Minting (props) {
             <form onSubmit = {onSubmit}>
                 <div>
                     <Input 
-                      ononChange={collatamt}
+                      onChange={collatamt}
                       value = {usdcamount}
                       type = 'text'
                       text ="USDC amount to swap">
@@ -65,7 +67,7 @@ function Minting (props) {
                     <Input
                       onChange={cmpamt}
                       value = {campamount}
-                      type = 'text'
+                      type = 'tezt'
                       text="CAMP amount to swap">
                     </Input>
                 </div>
@@ -73,7 +75,7 @@ function Minting (props) {
                     <Input
                       onChange={scmpamt}
                       value = {scampamount}
-                      type = 'text'
+                      type = 'tezt'
                       text="SCAMP amount to swap">
                     </Input>
                 </div>

@@ -1,9 +1,9 @@
-import MT_RD_Button from '../Components/Mint_Redeem_Button'
+import Minting from '../Components/Minting'
 
 const Bond = () =>{
     return (
-    <MT_RD_Button/>
+    <Minting/>
     )
 }
 
-export default Bond
+export default Minting;

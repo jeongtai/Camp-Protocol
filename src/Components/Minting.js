@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import Caver from 'caver-js';
 import Bankjs from "../abis/Bank.json"
+import Input from "./INPUT";
+import Button from "./Button";
+
 window.global = window;
 // @ts-ignorez
 window.Buffer = window.Buffer || require('buffer').Buffer;
 
-function MT_RD_Button (props) {
+function Minting (props) {
     const caver = new Caver(window.klaytn)
     const bankcontract = new caver.klay.Contract(Bankjs.abi, "0x940388cD4d49Af572626253f488f5Ad111Ae0196")
     const [usdcamount, setUSDCamount] = useState();
@@ -51,33 +54,33 @@ function MT_RD_Button (props) {
         <div>
             <form onSubmit = {onSubmit}>
                 <div>
-                    <input 
-                      onChange={collatamt}
+                    <Input 
+                      ononChange={collatamt}
                       value = {usdcamount}
                       type = 'text'
-                      placeholder="USDC amount to swap">
-                    </input>
+                      text ="USDC amount to swap">
+                    </Input>
                 </div>
                 <div>
-                    <input
+                    <Input
                       onChange={cmpamt}
                       value = {campamount}
                       type = 'text'
-                      placeholder="CAMP amount to swap">
-                    </input>
+                      text="CAMP amount to swap">
+                    </Input>
                 </div>
                 <div>
-                    <input
+                    <Input
                       onChange={scmpamt}
                       value = {scampamount}
                       type = 'text'
-                      placeholder="SCAMP amount to swap">
-                    </input>
+                      text="SCAMP amount to swap">
+                    </Input>
                 </div>
-                <button>Mint!</button>
+                <Button text = "Mint"/>
             </form>
         </div>
     )
 }
 
-export default MT_RD_Button;
+export default Minting;

@@ -36,7 +36,8 @@ function Navbar() {
   const menus = [
     { name: "Home", path: "/" },
     { name: "Stake", path: "/Stake" },
-    { name: "Bond", path: "/Bond" }
+    { name: "Bond", path: "/Bond" },
+    { name : "Bank", path: "/Bank"} 
   ];
 
   return (

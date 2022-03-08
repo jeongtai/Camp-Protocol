@@ -5,6 +5,7 @@ import Navbar from './routes/Navbar'
 import styled from "styled-components"
 import Stake from "./routes/Stake"
 import Bond from "./routes/Bond"
+import Bank from "./routes/Bank"
 
 
 const Center = styled.div`
@@ -28,6 +29,7 @@ function App() {
             <Route path="/" element={<Home/>} />
             <Route path="/Stake" element={<Stake/>} />
             <Route path="/Bond" element={<Bond/>} />
+            <Route path="/Bank" element={<Bank/>} />
           </Routes>
         </Content>
       </Center>

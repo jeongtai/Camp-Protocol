@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import Caver from 'caver-js';
 import Bankjs from "../abis/Bank.json"
-import Campjs from "../abis/Cube.json"
-import Usdcjs from "../abis/MockUSDC.json"
+import SCAMPjs from "../abis/Tower.json"
 import Input from "./INPUT";
 import Button from "./Button";
 
@@ -10,62 +9,46 @@ window.global = window;
 // @ts-ignorez
 window.Buffer = window.Buffer || require('buffer').Buffer;
 
-function Minting (props) {
+function Redeem (props) {
     const caver = new Caver(window.klaytn)
     const bankcontract = new caver.klay.Contract(Bankjs.abi, "0x940388cD4d49Af572626253f488f5Ad111Ae0196")
-    const campcontarct = new caver.klay.Contract(Campjs.abi, "0xC66AB83418C20A65C3f8e83B3d11c8C3a6097b6F")
-    const usdccontract = new caver.klay.Contract(Usdcjs.abi, "0x0548de7dfD8d8E81AD05E2d0FC0B7b02Bd58e96F")
+    const scampcontract = new caver.klay.Contract(SCAMPjs.abi, "0x3eb98F71f96e43005645Badd3AE678c9828b3708")
     const [usdcamount, setUSDCamount] = useState();
     const [campamount, setCampAmount] = useState();
     const [scampamount, setScampAmount] = useState();
     const [isApproved, setIsApproved] = useState(false)
 
     function Approve() {
-        const [uscdapprv, setUSDCApprv] = useState(false)
-        const [campapprv, setCAMPApprv] = useState(false)
-        function ApproveUSDC() {
-            usdccontract.methods.approve(bankcontract.address, usdcamount)
+        const [scampapprv, setSCAMPapprv] = useState(false)
+        function ApproveSCAMP() {
+            scampcontract.methods.approve(bankcontract.address, scampamount)
               .send({
                   from : window.klaytn.selectedAddress,
                   gas : 3000000})
               .on('receipt', receipt => {
-                  setUSDCApprv(true)
+                  setSCAMPapprv(true)
               })
         }
-        function ApproveCAMP() {
-            campcontarct.methods.approve(campcontarct.address, campamount)
-              .send({
-                  from : window.klaytn.selectedAddress,
-                  gas : 3000000})
-              .on('receipt', receipt => {
-                 setCAMPApprv(true)
-              })
-        }
-        if (campapprv && uscdapprv === true) {
+        if (scampapprv === true) {
             setIsApproved(true)
         }
         return (
-            <div>
-                <button onClick={ApproveUSDC}> USDC approval</button> 
-                <button onClick={ApproveCAMP}> CAMP approval</button>  
-            </div>
+            <button onClick={ApproveSCAMP}>SCAMP approve</button>
         )
-        
-    }
+    }    
+    function Redeem () {
 
-    function Mint () {
-
-        bankcontract.methods.mint(
-            caver.utils.toPeb(usdcamount*1000, 'mKLAY'),
+        bankcontract.methods.redeem(
             caver.utils.toPeb(campamount*1000, 'mKLAY'),
-            caver.utils.toPeb(scampamount*1000, 'mKLAY')
+            //`${(campamount)*100000000000000}`,
+            0,
+            caver.utils.toPeb(campamount*1000, 'mKLAY'),
         ).send({
             from: window.klaytn.selectedAddress,
             gas: '3000000'
         }).on("receipt", receipt => {
-            console.log("Minting Success!")
+            console.log("Redeem Success!")
         });
-        console.log({usdcamount, campamount, scampamount})
     }
     
     const collatamt = (event) => {
@@ -87,7 +70,7 @@ function Minting (props) {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        Mint()
+        Redeem()
     }
 
     return(
@@ -117,10 +100,10 @@ function Minting (props) {
                       text="SCAMP amount to swap">
                     </Input>
                 </div>
-                {isApproved ? <Button text = "Mint"/> : <Approve/>}
+                {isApproved ?<Button text = "Redeem"/> : <Approve/>}
             </form>
         </div>
     )
 }
 
-export default Minting;
+export default Redeem;

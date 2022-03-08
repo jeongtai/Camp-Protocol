@@ -2,8 +2,8 @@ import Minting from '../Components/Minting'
 
 const Bond = () =>{
     return (
-    <Minting/>
+        <h1>Bond!!</h1>
     )
 }
 
-export default Minting;
+export default Bond;

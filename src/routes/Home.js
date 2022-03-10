@@ -14,36 +14,37 @@ window.global = window;
 window.Buffer = window.Buffer || require('buffer').Buffer;
 
 
-function App() {
+function Home() {
     const[tsbalance, setTsBalance] = useState(0)
 
     const caver = new Caver(window.klaytn)
     const myContract = new caver.klay.Contract(ContJson.abi, "0x277B77C6069c46CD800B633c5BDA7c848cEa5404")
 
     const getKaikas = async () => {
-        if (window.klaytn._kaikas.isEnabled()){
-            try {
-                await window.klaytn.enable()                
-                return console.log(`wallet login success! ${window.klaytn.selectedAddress}`)
-            }
-            catch (error) {
-                return console.log(error);
-            }
+        console.log('getKaikas')
+        if (window.klaytn.selectedAddress !==undefined){
+            await window.klaytn.enable().then((val)=> console.log("i found address : ",val))
+                console.log(`wallet login success! ${window.klaytn.selectedAddress}`)
         }
         else {
-            console.log('wallet failed')
-            console.log(window.klaytn._kaikas.isEnabled())
-            window.klaytn._kaikas.isApproved(console.log)
+            await window.klaytn.enable().then((val) => console.log("selectedAddress is undefined, but i found address : ",val))
+            console.log(window.klaytn.selectedAddress
+                        , window.klaytn.networkVersion
+                        , window.klaytn.isKaikas)
         }
     }
 
     useEffect(() => {
-        getKaikas()
+        //getKaikas()
         Walletinfo()
     }, [])
 
 
     const Walletinfo = async() => {
+        await window.klaytn.enable().then( (val) => {console.log("i found address in Walletinfo : ",val) } )
+        console.log('walletinfo')
+
+        // invalid address 오류는 balanceOf 부분에서 발생함. (넘겨주는 address가 undefined라서 발생)
         await myContract.methods.balanceOf(window.klaytn.selectedAddress).call((err, v) => setTsBalance(v))
     }
 
@@ -75,4 +76,4 @@ function App() {
         </Main>
     )
 }
-export default App;
+export default Home;

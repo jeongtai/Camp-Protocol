@@ -6,25 +6,19 @@ import Stake from "./routes/Stake"
 import Bond from "./routes/Bond"
 import Bank from "./routes/Bank"
 import Fund from "./routes/Fund"
+import Calculator from "./routes/Calculator"
 
-
-const Center = styled.div`
-  height: 92vh;
-  display: flex;
-  flex-direction: row;
-  color : black;
-`
 
 const Content = styled.div`
-  margin-left: 20%; /* Same as the width of the sidebar */
+  margin-left: ${props=>props.theme.navWidth};
   padding: 0px 10px;
+  top : 0;
 `
 
 function App() {
   
   return (
     <Router>
-      <Center>
         <Navbar/>
         <Content>
           <Routes>
@@ -32,10 +26,10 @@ function App() {
             <Route path="/Stake" element={<Stake/>} />
             <Route path="/Bond" element={<Bond/>} />
             <Route path="/Bank" element={<Bank/>} />
+            <Route path="/Calculator" element={<Calculator/>} />
             <Route path="/Fund" element={<Fund/>} />
           </Routes>
         </Content>
-      </Center>
     </Router>
   );
 }

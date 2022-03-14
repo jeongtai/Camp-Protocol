@@ -17,6 +17,7 @@ const Nav = styled.div`
   height: 100%; /* Full-height: remove this if you want "auto" height */
   top: 0; /* Stay at the top */
   left: 0;
+  background-color: teal;
 `
 const Logo = styled.img`
   width: 150px;
@@ -27,7 +28,6 @@ const Logo = styled.img`
 
 const Menu = styled.div`
   margin-top: 30px;
-  width: 200px;
   display: flex;
   flex-direction: column;
 `

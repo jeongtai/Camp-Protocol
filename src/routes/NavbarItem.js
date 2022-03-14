@@ -1,10 +1,15 @@
 import React from "react";
+import styled from "styled-components";
+
+const Item = styled.div`
+  color : white;
+`
 
 function NavbarItem({ menu }) {
   return (
-    <div className="sidebar-item">
+    <Item>
       <p>{menu.name}</p>
-    </div>
+    </Item>
   );
 }
 

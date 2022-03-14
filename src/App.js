@@ -11,8 +11,7 @@ import Calculator from "./routes/Calculator"
 
 const Content = styled.div`
   margin-left: ${props=>props.theme.navWidth};
-  padding: 0px 10px;
-  top : 0;
+  padding: 10px 10px;
 `
 
 function App() {

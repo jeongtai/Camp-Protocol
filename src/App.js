@@ -19,7 +19,9 @@ const Content = styled.div`
   margin-left: 20%; /* Same as the width of the sidebar */
   padding: 0px 10px;
 `
+
 function App() {
+  
   return (
     <Router>
       <Center>

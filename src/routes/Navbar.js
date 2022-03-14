@@ -44,8 +44,8 @@ const Items = styled.div`
     flex-direction: column;
     justify-content: space-between;
 
-    width : 80%;
-    min-width : 195px;
+    width: 80%;
+    min-width: 195px;
     height: 60%;
     max-height: 500px;
 `;
@@ -61,8 +61,7 @@ const Item = styled.div`
         position: relative;
         top: -5px;
     }
-    font-weight:${(props) =>
-        props.isActive ? 600 : 500 };
+    font-weight: ${(props) => (props.isActive ? 600 : 500)};
 
     color: ${(props) =>
         props.isActive ? props.theme.activeColor : props.theme.unActiveColor};
@@ -70,24 +69,16 @@ const Item = styled.div`
     &:hover {
         color: ${(props) => props.theme.activeColor};
         background-color: ${(props) => props.theme.hoverGray};
-        transform: scaleX( 1.05 );
-        /* font-size: 21px;
+        transform: scale(1.05);
+
         animation: ${keyframes`
-            0% { font-size:20px }
-            100% { font-size:21px }
+            0% { transform:scale(1.0) }
+            100% { transform:scale(1.05) }
             `} 0.2s linear;
-        
-        img{
-            width:46px;
-            animation: ${keyframes`
-            0% { width: 43px; }
-            100% { width:46px }
-            `} 0.2s linear;
-        } */
     }
 
     img {
-        width:43px;
+        width: 43px;
         padding-right: 20px;
     }
 `;

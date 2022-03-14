@@ -1,68 +1,111 @@
-
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import NavbarItem from "./NavbarItem";
-import logo from "../assets/logo.png";
+
+import LogoImg from "../assets/Logo.svg";
+import LogoTxt from "../assets/Logo-text.svg";
+import Dashboard from "../assets/Dashboard.svg";
+import Bank from "../assets/Bank.svg";
+import Bond from "../assets/Bond.svg";
+import Stake from "../assets/Stake.svg";
+import Calculator from "../assets/Calculator.svg";
+import Fund from "../assets/Fund.svg";
 
 const Nav = styled.div`
-  display: flex;
-  border-right: 3px solid #888888;
-  flex-direction: column;
-  align-items: center;
-  width: 20%;
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  overflow-x: hidden; /* Disable horizontal scroll */
-  z-index: 1; /* Stay on top */
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  top: 0; /* Stay at the top */
-  left: 0;
-  background-color: teal;
-`
-const Logo = styled.img`
-  width: 150px;
-  height: 150px;
-  border-radius: 100%;
-  justify-content: top;
-`
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
-const Menu = styled.div`
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-`
+    flex-direction: column;
+
+    width: ${(props) => props.theme.navWidth};
+    max-width: 360px;
+
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    z-index: 1; /* Stay on top */
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: ${(props) => props.theme.navColor};
+`;
+
+const Logo = styled.div`
+    border-radius: 100%;
+    margin-top: 10%;
+    align-items: stretch;
+`;
+
+const Items = styled.div`
+    font-family: "Lexend", sans-serif;
+    font-size: 20px;
+    margin-top: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 60%;
+    max-height:500px;
+`;
+
+const Item = styled.div`
+    padding: 15px;
+    border-radius: 15px;
+    justify-content: space-between;
+    color: ${(props) =>
+        props.isActive ? props.theme.activeColor : props.theme.unActiveColor};
+    fill: gray;
+
+    &:hover {
+        color: ${(props) => props.theme.activeColor};
+        background-color: ${(props) => props.theme.hoverGray};
+    }
+
+    img {
+        padding-right: 20px;
+    }
+`;
 
 function Navbar() {
-  const menus = [
-    { name: "Home", path: "/" },
-    { name: "Stake", path: "/Stake" },
-    { name: "Bond", path: "/Bond" },
-    { name : "Bank", path: "/Bank"},
-    { name : "Fund", path: "/Fund"},
-  ];
+    const [activeMenu, setActiveMenu] = useState(window.location.pathname);
 
-  return (
-      <Nav>
-        <Logo src={logo}/>
-        <Menu>
-            {menus.map((menu, index) => {
-                return (
-                <NavLink
-                    
-                    style = {{color: "gray", textDecoration: "none"}}    
-                    activestyle = {{color: "black"}}
-                    to={menu.path}
-                    key={index}
-                >
-                    <NavbarItem
-                        menu={menu}
-                    />
-                </NavLink>
-                )
-            })}
-        </Menu>
-    </Nav>
-  )
+    const menus = [
+        { name: "Dashboard", path: "/", imgSrc: Dashboard },
+        { name: "Bank", path: "/Bank", imgSrc: Bank },
+        { name: "Bond", path: "/Bond", imgSrc: Bond },
+        { name: "Stake", path: "/Stake", imgSrc: Stake },
+        { name: "Calculator", path: "/Calculator", imgSrc: Calculator },
+        { name: "Fund", path: "/Fund", imgSrc: Fund },
+    ];
+
+    return (
+        <Nav>
+            <Logo>
+                <img src={LogoImg} />
+                <img src={LogoTxt} />
+            </Logo>
+
+            <Items>
+                {menus.map((menu, index) => {
+                    return (
+                        <Link
+                            to={menu.path}
+                            key={index}
+                            onClick={() => setActiveMenu(menu.path)}
+                        >
+                            <Item
+                                isActive={window.location.pathname === menu.path}
+                                key={index}
+                            >
+                                <img src={menu.imgSrc} />
+                                {menu.name}
+                            </Item>
+                        </Link>
+                    );
+                })}
+            </Items>
+        </Nav>
+    );
 }
 
 export default Navbar;

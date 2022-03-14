@@ -3,9 +3,7 @@ import Caver from 'caver-js'
 import ContJson from '../abis/contract-example.json'
 import styled from "styled-components";
 
-const Main = styled.main`
-  background: #ffffff;
-  color: #0f0e17;
+const Container = styled.div`
 `;
 
 
@@ -71,10 +69,10 @@ function Home() {
     }
 
     return (
-        <Main>
+        <Container>
             <h1>WalletTSBalnce : {(tsbalance/1000000000000000000).toLocaleString()}</h1>
             <SendTS/>
-        </Main>
+        </Container>
     )
 }
 export default Home;

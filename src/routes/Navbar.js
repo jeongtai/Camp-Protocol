@@ -37,7 +37,8 @@ function Navbar() {
     { name: "Home", path: "/" },
     { name: "Stake", path: "/Stake" },
     { name: "Bond", path: "/Bond" },
-    { name : "Bank", path: "/Bank"} 
+    { name : "Bank", path: "/Bank"},
+    { name : "Fund", path: "/Fund"},
   ];
 
   return (

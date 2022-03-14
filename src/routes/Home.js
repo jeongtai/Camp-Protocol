@@ -38,7 +38,8 @@ function App() {
     }
 
     useEffect(() => {
-        getKaikas()
+        window.klaytn.enable()
+        //getKaikas()
         Walletinfo()
     }, [])
 

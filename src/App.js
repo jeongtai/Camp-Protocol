@@ -1,11 +1,11 @@
 import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom"
 import Home from "./routes/Home"
-import Home2 from "./routes/Home2"
 import Navbar from './routes/Navbar'
 import styled from "styled-components"
 import Stake from "./routes/Stake"
 import Bond from "./routes/Bond"
 import Bank from "./routes/Bank"
+import Fund from "./routes/Fund"
 
 
 const Center = styled.div`
@@ -30,6 +30,7 @@ function App() {
             <Route path="/Stake" element={<Stake/>} />
             <Route path="/Bond" element={<Bond/>} />
             <Route path="/Bank" element={<Bank/>} />
+            <Route path="/Fund" element={<Fund/>} />
           </Routes>
         </Content>
       </Center>

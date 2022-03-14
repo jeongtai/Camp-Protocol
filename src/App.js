@@ -16,6 +16,7 @@ const Content = styled.div`
 `
 
 function App() {
+  
   return (
     <Router>
         <Navbar/>

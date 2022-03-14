@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Caver from 'caver-js';
 import Bankjs from "../abis/Bank.json"
-import SCAMPjs from "../abis/Tower.json"
+import SCAMPjs from "../abis/SCAMP.json"
 import Input from "./INPUT";
 import Button from "./Button";
 

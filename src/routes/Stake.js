@@ -1,4 +1,4 @@
-import StakeButton from "../Components/StakeButton"
+import StakeButton from "../Components/Staketool"
 
 const Stake =()=>{
     return (

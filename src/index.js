@@ -1,7 +1,9 @@
-<<<<<<< HEAD
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import { reducer } from "./Contract";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { theme } from "./assets/theme";
 
@@ -64,7 +66,7 @@ const GlobalStyle = createGlobalStyle`
 
     body{
       font-family: 'Lexend', sans-serif;
-      background-color: ${props => props.theme.bgColor} ;
+      background-color: ${(props) => props.theme.bgColor} ;
     }
 
     a {
@@ -73,32 +75,17 @@ const GlobalStyle = createGlobalStyle`
     }
 
 `;
-=======
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux'
-import {createStore } from 'redux';
-import {reducer} from "./Contract"
->>>>>>> 4ff0ce7db54a0e20d556e71deda9d37c4ee8c64e
 
-let store = createStore(reducer)
+let store = createStore(reducer);
+
 ReactDOM.render(
-<<<<<<< HEAD
     <React.StrictMode>
-        <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <App />
-        </ThemeProvider>
+        <Provider store={store}>
+            <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                <App />
+            </ThemeProvider>
+        </Provider>
     </React.StrictMode>,
     document.getElementById("root")
 );
-=======
-  <React.StrictMode>
-    <Provider store = {store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
->>>>>>> 4ff0ce7db54a0e20d556e71deda9d37c4ee8c64e

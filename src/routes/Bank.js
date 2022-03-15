@@ -1,5 +1,5 @@
 import Mintingtool from '../Components/Mintingtool'
-import Redeem from '../Components/Redeem'
+import Redeemtool from '../Components/Redeemtool'
 import { useState } from 'react'
 
 const Bank = () =>{
@@ -8,7 +8,7 @@ const Bank = () =>{
     return (
         <div>
             <button onClick={onClick}>{togglemint ? "Redeem here" : "Mint here"}</button>
-            {togglemint ? <Mintingtool/>: <Redeem/>}
+            {togglemint ? <Mintingtool/>: <Redeemtool/>}
         </div>
     )
 }

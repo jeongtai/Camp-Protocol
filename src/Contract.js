@@ -14,7 +14,7 @@ const StakingContract = new caver.klay.Contract(Stakejs.abi, "0xC0C40B7bD1B9Dfec
 
 const initialstate = {BankContract, SCAMPContract, CAMPContract, USDCContract, StakingContract}
 
-export function reducer (state = initialstate, action) {
+export function Sendreducer (state = initialstate, action) {
   switch(action.type) {
     case "Minting":
       BankContract.methods.mint(
@@ -26,9 +26,19 @@ export function reducer (state = initialstate, action) {
         gas : '3000000'
       })
       return state
+    case "Redeem":
+      BankContract.methods.redeem(
+        caver.utils.toPeb(action.SCAMPamount*1000, 'mKLAY'),
+        caver.utils.toPeb(action.CAMPamount*1000*0.9, 'mKLAY'),
+        caver.utils.toPeb(action.USDCamount*1000*0.9, 'kpeb')
+      ).send({
+        from: window.klaytn.selectedAddress,
+        gas : '3000000'
+      })
+      return state
     case "ApproveSCAMP" :
       SCAMPContract.methods.approve(
-        "0x470aC5e9E098731F0911003218505151e47a6aDD",
+        action.Address,
         caver.utils.toPeb(action.SCAMPamount*1000, 'mKLAY')
       ).send({
         from : window.klaytn.selectedAddress,
@@ -37,7 +47,7 @@ export function reducer (state = initialstate, action) {
       return state;
     case "ApproveCAMP" :
       CAMPContract.methods.approve(
-        "0x470aC5e9E098731F0911003218505151e47a6aDD",
+        action.Address,
         caver.utils.toPeb(action.CAMPamount*1000, 'mKLAY')
       ).send({
         from : window.klaytn.selectedAddress,
@@ -46,7 +56,7 @@ export function reducer (state = initialstate, action) {
       return state;
     case "ApproveUSDC" :
       USDCContract.methods.approve(
-        "0x470aC5e9E098731F0911003218505151e47a6aDD",
+        action.Address,
         caver.utils.toPeb(action.USDCamount*1000, 'kpeb')
       ).send({
         from : window.klaytn.selectedAddress,
@@ -61,7 +71,23 @@ export function reducer (state = initialstate, action) {
         gas: '3000000'
       })
       return state;
+    case "Recollateralize" :
+      BankContract.methods.recollateralize(
+
+      )
     default :
       return state;
+  }
+}
+const viewinit = {SCAMPapprove : false, }
+export function Viewreducer (state = viewinit, action) {
+  switch(action.type) {
+    case "SCAMPapprove" :
+      return {
+        ...state,
+        SCAMPapprove : true
+      }
+    default : 
+      return state
   }
 }

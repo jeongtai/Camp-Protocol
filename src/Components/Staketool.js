@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 
 function StakeButton () {
     let dispatch = useDispatch();
+    let StakeAddress = "0xC0C40B7bD1B9Dfec77FECcF43451f61550c6090a"
 
     const [amount, setAmount] =useState()
     const onChange = (event) => {
@@ -13,6 +14,7 @@ function StakeButton () {
     function onClick() {
       dispatch({
         type : 'ApproveCAMP',
+        Address : StakeAddress,
         CAMPamount : amount
       })
       setTimeout(() =>

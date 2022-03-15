@@ -1,10 +1,12 @@
 import Button from "./Button"
 import Input from "./INPUT"
-import {useDispatch} from 'react-redux'
-import {useEffect, useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {useState} from 'react'
 
 function Mintingtool() {
+  let state = useSelector((state) => state )
   let dispatch = useDispatch();
+  let BankAddress = "0x470aC5e9E098731F0911003218505151e47a6aDD"
 
   const [usdcamount, setUSDCamount] = useState();
   const [campamount, setCampAmount] = useState();
@@ -32,8 +34,8 @@ function Mintingtool() {
   }
 
   function onClick2() {
-    dispatch({type : "ApproveCAMP", CAMPamount : campamount})
-    setTimeout(() => dispatch({type : "ApproveUSDC", USDCamount : usdcamount}), 3000)
+    dispatch({type : "ApproveCAMP", Address : BankAddress, CAMPamount : campamount})
+    setTimeout(() => dispatch({type : "ApproveUSDC", Address : BankAddress, USDCamount : usdcamount}), 3000)
     setTimeout(() => setIsApproved(true), 1000)
   }
   return (

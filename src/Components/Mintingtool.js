@@ -1,10 +1,10 @@
 import Button from "./Button"
 import Input from "./INPUT"
 import {useDispatch, useSelector} from 'react-redux'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 
 function Mintingtool() {
-  let state = useSelector((state) => state )
+  let state = useSelector((state) => state.Viewreducer )
   let dispatch = useDispatch();
   let BankAddress = "0x470aC5e9E098731F0911003218505151e47a6aDD"
 

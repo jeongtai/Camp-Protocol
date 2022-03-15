@@ -71,21 +71,19 @@ export function Sendreducer (state = initialstate, action) {
         gas: '3000000'
       })
       return state;
-    case "Recollateralize" :
-      BankContract.methods.recollateralize(
-
-      )
     default :
       return state;
   }
 }
-const viewinit = {SCAMPapprove : false, }
-export function Viewreducer (state = viewinit, action) {
+const viewinit = {SCAMPBalance : 0, isApproved : false}
+
+export async function Viewreducer (state = viewinit, action) {
   switch(action.type) {
-    case "SCAMPapprove" :
+    case "SCAMPBalance" :
+      let amount = await SCAMPContract.methods.balanceOf(window.klaytn.selectedAddress).call((err, v) => v)
       return {
         ...state,
-        SCAMPapprove : true
+        SCAMPBalance : amount/10^12
       }
     default : 
       return state

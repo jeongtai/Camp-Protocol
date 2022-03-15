@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import LogoImg from "../assets/Logo.svg";
 import LogoTxt from "../assets/Logo-text.svg";
@@ -44,24 +44,41 @@ const Items = styled.div`
     flex-direction: column;
     justify-content: space-between;
 
+    width: 80%;
+    min-width: 195px;
     height: 60%;
-    max-height:500px;
+    max-height: 500px;
 `;
 
 const Item = styled.div`
+    flex-direction: column;
     padding: 15px;
+
+    height: 50px;
     border-radius: 15px;
-    justify-content: space-between;
+
+    span {
+        position: relative;
+        top: -5px;
+    }
+    font-weight: ${(props) => (props.isActive ? 600 : 500)};
+
     color: ${(props) =>
         props.isActive ? props.theme.activeColor : props.theme.unActiveColor};
-    fill: gray;
 
     &:hover {
         color: ${(props) => props.theme.activeColor};
         background-color: ${(props) => props.theme.hoverGray};
+        transform: scale(1.05);
+
+        animation: ${keyframes`
+            0% { transform:scale(1.0) }
+            100% { transform:scale(1.05) }
+            `} 0.2s linear;
     }
 
     img {
+        width: 43px;
         padding-right: 20px;
     }
 `;
@@ -94,11 +111,13 @@ function Navbar() {
                             onClick={() => setActiveMenu(menu.path)}
                         >
                             <Item
-                                isActive={window.location.pathname === menu.path}
+                                isActive={
+                                    window.location.pathname === menu.path
+                                }
                                 key={index}
                             >
                                 <img src={menu.imgSrc} />
-                                {menu.name}
+                                <span>{menu.name}</span>
                             </Item>
                         </Link>
                     );

@@ -2,6 +2,7 @@ import {useState, useEffect} from "react";
 import Caver from 'caver-js'
 import ContJson from '../abis/contract-example.json'
 import styled from "styled-components";
+import { useSelector } from "react-redux";
   
 const Container = styled.div`
     margin : 0 auto;
@@ -51,16 +52,12 @@ const TVL = styled.div`
 `;
 
 
-window.global = window;
-// @ts-ignore
-window.Buffer = window.Buffer || require('buffer').Buffer;
-
 
 function Home() {
-    const[tsbalance, setTsBalance] = useState(0)
-
+    let state = useSelector((state) => state)
+    const [tcr, setTCR] = useState()
+    const [ecr, setECR] = useState()
     const caver = new Caver(window.klaytn)
-    const myContract = new caver.klay.Contract(ContJson.abi, "0x277B77C6069c46CD800B633c5BDA7c848cEa5404")
 
     const getKaikas = async () => {
         console.log('getKaikas')
@@ -78,40 +75,9 @@ function Home() {
 
     useEffect(() => {
         window.klaytn.enable()
-        //getKaikas()
-        Walletinfo()
-    }, [])
-
-
-    const Walletinfo = async() => {
-        await window.klaytn.enable().then( (val) => {console.log("i found address in Walletinfo : ",val) } )
-        console.log('walletinfo')
-
-        // invalid address 오류는 balanceOf 부분에서 발생함. (넘겨주는 address가 undefined라서 발생)
-        await myContract.methods.balanceOf(window.klaytn.selectedAddress).call((err, v) => setTsBalance(v))
-    }
-
-    const SendTS = () => {
-        const onClick = (event) => {
-            event.preventDefault();
-            myContract.methods.mint(
-                "0x25Da1B85752Fa57c14ca8a21f9e9f843665c1636", caver.utils.toPeb(10, 'KLAY')
-              ).send({
-                  from: window.klaytn.selectedAddress,
-                  gas: '3000000'})
-                .on('receipt', recepit => {
-                    Walletinfo()
-                    console.log('sending success')
-                })
-                
-        }
-        return (
-            <div>
-                <button onClick={onClick}>Send!</button>
-            </div>
-        )
-    }
-
+        state.BankContract.methods.info().call((e, v) => setTCR(caver.utils.fromPeb(v[0], 'KLAY')))
+        state.BankContract.methods.info().call((e, v) => setECR(caver.utils.fromPeb(v[1], 'Mpeb')))
+    })
     return (
         <Container>
             <PageHeader>
@@ -120,8 +86,8 @@ function Home() {
             </PageHeader>
             <Overview>
                 <span>Overview</span>
-                <h1>WalletTSBalnce : {(tsbalance/1000000000000000000).toLocaleString()}</h1>
-                <SendTS/>
+                <h3>tcr : {tcr}</h3>
+                <h3>ecr : {ecr}</h3>
             </Overview>
             <TVL>
                 <p>TVL</p>

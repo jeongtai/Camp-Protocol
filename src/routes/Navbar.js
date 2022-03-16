@@ -12,39 +12,41 @@ import Calculator from "../assets/Calculator.svg";
 import Fund from "../assets/Fund.svg";
 
 const Nav = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-
-    flex-direction: column;
-
     width: ${(props) => props.theme.navWidth};
-    max-width: 360px;
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+
+    display: flex;    
+    flex-direction: column;
 
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     overflow-x: hidden; /* Disable horizontal scroll */
     z-index: 1; /* Stay on top */
-    height: 100%; /* Full-height: remove this if you want "auto" height */
+    
     top: 0; /* Stay at the top */
     left: 0;
+
     background-color: ${(props) => props.theme.navColor};
+    border-right: 1px solid ${props=>props.theme.borderColor};
 `;
 
 const Logo = styled.div`
-    border-radius: 100%;
-    margin-top: 10%;
-    align-items: stretch;
+    margin-top: 20%;
+    width:100%;
+    text-align: center;
+    .LogoImg {
+        width : 50px;
+        margin : 0px 10px;
+    }
 `;
 
 const Items = styled.div`
-    font-family: "Lexend", sans-serif;
     font-size: 20px;
     margin-top: 20%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
-    width: 80%;
+    width: 100%;
     min-width: 195px;
     height: 60%;
     max-height: 500px;
@@ -52,14 +54,13 @@ const Items = styled.div`
 
 const Item = styled.div`
     flex-direction: column;
-    padding: 15px;
-
-    height: 50px;
-    border-radius: 15px;
+    padding: 10px 10% 10px 20%;
+    
+    height: 50px;    
 
     span {
         position: relative;
-        top: -5px;
+        top: -4px;
     }
     font-weight: ${(props) => (props.isActive ? 600 : 500)};
 
@@ -67,8 +68,8 @@ const Item = styled.div`
         props.isActive ? props.theme.activeColor : props.theme.unActiveColor};
 
     &:hover {
-        color: ${(props) => props.theme.activeColor};
-        background-color: ${(props) => props.theme.hoverGray};
+        color: ${(props) => props.theme.hoverTextColor};
+        background-color: ${(props) => props.theme.hoverColor};
         transform: scale(1.05);
 
         animation: ${keyframes`
@@ -98,8 +99,8 @@ function Navbar() {
     return (
         <Nav>
             <Logo>
-                <img src={LogoImg} />
-                <img src={LogoTxt} />
+                <img className="LogoImg" src={LogoImg} />
+                <img className="LogoTxt" src={LogoTxt} />
             </Logo>
 
             <Items>

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
-import { Sendreducer, Viewreducer } from "./Contract";
+import { reducer, Sendreducer, Viewreducer } from "./Contract";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { theme } from "./assets/theme";
 
@@ -76,7 +76,7 @@ const GlobalStyle = createGlobalStyle`
 
 `;
 
-let store = createStore(combineReducers({Sendreducer, Viewreducer}));
+let store = createStore(reducer);
 
 ReactDOM.render(
     <React.StrictMode>

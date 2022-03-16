@@ -14,78 +14,12 @@ const StakingContract = new caver.klay.Contract(Stakejs.abi, "0xC0C40B7bD1B9Dfec
 
 const initialstate = {BankContract, SCAMPContract, CAMPContract, USDCContract, StakingContract}
 
-export function Sendreducer (state = initialstate, action) {
+export function reducer (state = initialstate, action) {
   switch(action.type) {
-    case "Minting":
-      BankContract.methods.mint(
-        caver.utils.toPeb(action.USDCamount*1000, 'kpeb'),
-        caver.utils.toPeb(action.CAMPamount*1000, 'mKLAY'),
-        caver.utils.toPeb(action.SCAMPamount*1000*0.9, 'mKLAY')
-      ).send({
-        from: window.klaytn.selectedAddress,
-        gas : '3000000'
-      })
-      return state
-    case "Redeem":
-      BankContract.methods.redeem(
-        caver.utils.toPeb(action.SCAMPamount*1000, 'mKLAY'),
-        caver.utils.toPeb(action.CAMPamount*1000*0.9, 'mKLAY'),
-        caver.utils.toPeb(action.USDCamount*1000*0.9, 'kpeb')
-      ).send({
-        from: window.klaytn.selectedAddress,
-        gas : '3000000'
-      })
-      return state
-    case "ApproveSCAMP" :
-      SCAMPContract.methods.approve(
-        action.Address,
-        caver.utils.toPeb(action.SCAMPamount*1000, 'mKLAY')
-      ).send({
-        from : window.klaytn.selectedAddress,
-        gas: '3000000'
-      })
-      return state;
-    case "ApproveCAMP" :
-      CAMPContract.methods.approve(
-        action.Address,
-        caver.utils.toPeb(action.CAMPamount*1000, 'mKLAY')
-      ).send({
-        from : window.klaytn.selectedAddress,
-        gas: '3000000'
-      })
-      return state;
-    case "ApproveUSDC" :
-      USDCContract.methods.approve(
-        action.Address,
-        caver.utils.toPeb(action.USDCamount*1000, 'kpeb')
-      ).send({
-        from : window.klaytn.selectedAddress,
-        gas: '3000000'
-      })
-      return state;
-    case "CAMPStake" :
-      StakingContract.methods.stake(
-        caver.utils.toPeb(action.CAMPamount*1000, 'mKLAY')
-      ).send({
-        from : window.klaytn.selectedAddress,
-        gas: '3000000'
-      })
-      return state;
+    case "Add Contract" :
+    return state.concat(action.Contract)
+
     default :
       return state;
-  }
-}
-const viewinit = {SCAMPBalance : 0, isApproved : false}
-
-export async function Viewreducer (state = viewinit, action) {
-  switch(action.type) {
-    case "SCAMPBalance" :
-      let amount = await SCAMPContract.methods.balanceOf(window.klaytn.selectedAddress).call((err, v) => v)
-      return {
-        ...state,
-        SCAMPBalance : amount/10^12
-      }
-    default : 
-      return state
   }
 }

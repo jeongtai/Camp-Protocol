@@ -45,7 +45,7 @@ function Redeemtool () {
         <Input
           onChange={SCAMPamt}
           value ={scampamount}
-          type = 'text's
+          type = 'text'
           text = "SCAMP amount to redeem">
         </Input>
         <Input

@@ -8,27 +8,32 @@ import Bank from "./routes/Bank"
 import Fund from "./routes/Fund"
 import Calculator from "./routes/Calculator"
 
-
+const Page = styled.div`
+  
+`
 const Content = styled.div`
   margin-left: ${props=>props.theme.navWidth};
-  padding: 10px 10px;
+  justify-content: center;
+  
 `
 
 function App() {
   
   return (
     <Router>
-        <Navbar/>
-        <Content>
-          <Routes>
-            <Route path="/" element={<Home/>} />
-            <Route path="/Stake" element={<Stake/>} />
-            <Route path="/Bond" element={<Bond/>} />
-            <Route path="/Bank" element={<Bank/>} />
-            <Route path="/Calculator" element={<Calculator/>} />
-            <Route path="/Fund" element={<Fund/>} />
-          </Routes>
-        </Content>
+        <Page>
+          <Navbar/>
+          <Content>
+            <Routes>
+              <Route path="/" element={<Home/>} />
+              <Route path="/Stake" element={<Stake/>} />
+              <Route path="/Bond" element={<Bond/>} />
+              <Route path="/Bank" element={<Bank/>} />
+              <Route path="/Calculator" element={<Calculator/>} />
+              <Route path="/Fund" element={<Fund/>} />
+            </Routes>
+          </Content>
+        </Page>
     </Router>
   );
 }

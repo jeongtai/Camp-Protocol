@@ -2,8 +2,52 @@ import {useState, useEffect} from "react";
 import Caver from 'caver-js'
 import ContJson from '../abis/contract-example.json'
 import styled from "styled-components";
-
+  
 const Container = styled.div`
+    margin : 0 auto;
+    width : 75%;
+    max-width : 900px;
+    justify-content: center;
+    border: 1px;
+    height : 800px;
+`
+
+const PageHeader = styled.div`
+    font-size: 24px;
+    font-weight : 600;
+
+    p:first-child {
+        margin-top: 62px;
+    }
+
+    p:last-child {
+        margin-top: 28px;
+    }
+    
+`
+const Overview = styled.div`
+    Stroke: Solid #EDEDED 1px;
+    background-color: white;
+    border-radius: 15px;
+    margin-top: 35px;
+    padding : 24px 28px;
+    height : 240px;
+    border : 2px solid ${props=>props.theme.borderColor};
+    span {
+        padding: 28 px;
+        font-weight : 400;
+        font-size : 20px;
+    }
+`;
+
+const TVL = styled.div`
+    margin : 20px 0px;
+    height : 200px;
+    background-color: white;
+    border-radius: 15px;
+    border : 2px solid ${props=>props.theme.borderColor};
+    width : 60%;
+    padding : 20px;
 `;
 
 
@@ -70,8 +114,20 @@ function Home() {
 
     return (
         <Container>
-            <h1>WalletTSBalnce : {(tsbalance/1000000000000000000).toLocaleString()}</h1>
-            <SendTS/>
+            <PageHeader>
+                <p>Dashboard</p>
+                <p>protocol</p>
+            </PageHeader>
+            <Overview>
+                <span>Overview</span>
+                <h1>WalletTSBalnce : {(tsbalance/1000000000000000000).toLocaleString()}</h1>
+                <SendTS/>
+            </Overview>
+            <TVL>
+                <p>TVL</p>
+            </TVL>
+
+
         </Container>
     )
 }

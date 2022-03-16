@@ -5,6 +5,7 @@ export const theme = {
    borderColor : "#EDEDED",
    activeColor : "#282828",
    unActiveColor : "#B2B2B2",
+   textGray : "#B2B2B2",
    accentColor : "#ffda79",
    navWidth: "360px",
    backGray: "#F8F8F8",

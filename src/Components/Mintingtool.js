@@ -1,11 +1,12 @@
 import Button from "./Button"
 import Input from "./INPUT"
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {useEffect, useState} from 'react'
+import Caver from "caver-js"
 
+const caver = new Caver(window.klaytn)
 function Mintingtool() {
-  let state = useSelector((state) => state.Viewreducer )
-  let dispatch = useDispatch();
+  let state = useSelector((state) => state)
   let BankAddress = "0x470aC5e9E098731F0911003218505151e47a6aDD"
 
   const [usdcamount, setUSDCamount] = useState();
@@ -30,13 +31,34 @@ function Mintingtool() {
   }
   
   function onClick() {
-    dispatch({type : "Minting", USDCamount : usdcamount, CAMPamount : campamount, SCAMPamount : scampamount})
+    state.BankContract.methods.mint(
+      caver.utils.toPeb(usdcamount*1000, 'kpeb'),
+      caver.utils.toPeb(campamount*1000, 'mKLAY'),
+      caver.utils.toPeb(scampamount*1000*0.9, 'mKLAY')
+    ).send({
+      from: window.klaytn.selectedAddress,
+      gas : '3000000'
+    })
   }
 
   function onClick2() {
-    dispatch({type : "ApproveCAMP", Address : BankAddress, CAMPamount : campamount})
-    setTimeout(() => dispatch({type : "ApproveUSDC", Address : BankAddress, USDCamount : usdcamount}), 3000)
-    setTimeout(() => setIsApproved(true), 1000)
+    state.CAMPContract.methods.approve(
+      BankAddress,
+      caver.utils.toPeb(campamount*1000, 'mKLAY')
+    ).send({
+      from : window.klaytn.selectedAddress,
+      gas: '3000000'
+    }).on('receipt', function() {
+      state.USDCContract.methods.approve(
+        BankAddress,
+        caver.utils.toPeb(usdcamount*1000, 'kpeb')
+      ).send({
+        from : window.klaytn.selectedAddress,
+        gas: '3000000'
+      }).on('receipt', function() {
+        setIsApproved(true)
+      })
+    })
   }
   return (
     <div>

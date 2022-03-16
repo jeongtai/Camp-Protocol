@@ -2,10 +2,12 @@ import {useState } from "react";
 import Input from "./INPUT";
 import Button from "./Button";
 import { useSelector, useDispatch } from "react-redux";
+import Caver from "caver-js";
+
+const caver = new Caver(window.klaytn)
 
 function Redeemtool () {
-    let state = useSelector((state) => state )
-    let dispatch = useDispatch()
+    let state = useSelector((state) => state)
     let BankAddress = "0x470aC5e9E098731F0911003218505151e47a6aDD"
     const [usdcamount, setUSDCamount] = useState();
     const [campamount, setCampAmount] = useState();
@@ -30,13 +32,27 @@ function Redeemtool () {
         
     }
 
-    const onClick = () => {
-      dispatch({type : "Redeem", USDCamount : usdcamount, CAMPamount : campamount, SCAMPamount : scampamount})
+    function onClick() {
+      state.BankContract.methods.redeem(
+        caver.utils.toPeb(usdcamount*1000, 'kpeb'),
+        caver.utils.toPeb(campamount*1000, 'mKLAY'),
+        caver.utils.toPeb(scampamount*1000*0.9, 'mKLAY')
+      ).send({
+        from: window.klaytn.selectedAddress,
+        gas : '3000000'
+      })
     }
-
-    const onClick2 = () => {
-      dispatch({type : "ApproveSCAMP", Address : BankAddress, SCAMPamount : scampamount })
-      setTimeout(() => setIsApproved(true), 5000)
+  
+    function onClick2() {
+      state.SCAMPContract.methods.approve(
+        BankAddress,
+        caver.utils.toPeb(scampamount*1000, 'mKLAY')
+      ).send({
+        from : window.klaytn.selectedAddress,
+        gas: '3000000'
+      }).on('receipt', function() {
+        setIsApproved(true)
+      })
     }
 
     return(

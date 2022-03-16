@@ -154,6 +154,8 @@ function Home() {
     let state = useSelector((state) => state);
     const [tcr, setTCR] = useState();
     const [ecr, setECR] = useState();
+    const [scampsupply, setScampSupply] = useState()
+    const [campsupply, setCampSupply] = useState()
     const caver = new Caver(window.klaytn);
     const Infos = [
         { name: "Total Market Cap", amt: "$ 415252.5102" },
@@ -167,46 +169,23 @@ function Home() {
     ];
 
     const Tokens = [
-        { name: "CAMP", price: 0.4602, supply: 2150120629 },
-        { name: "SCAMP", price: 0.9812, supply: 642406337 },
+        { name: "CAMP", price: 0.4602, supply: scampsupply},
+        { name: "SCAMP", price: 0.9812, supply: campsupply},
     ];
-    console.log(Tokens[0].mcap);
-    const getKaikas = async () => {
-        console.log("getKaikas");
-        if (window.klaytn.selectedAddress !== undefined) {
-            await window.klaytn
-                .enable()
-                .then((val) => console.log("i found address : ", val));
-            console.log(
-                `wallet login success! ${window.klaytn.selectedAddress}`
-            );
-        } else {
-            await window.klaytn
-                .enable()
-                .then((val) =>
-                    console.log(
-                        "selectedAddress is undefined, but i found address : ",
-                        val
-                    )
-                );
-            console.log(
-                window.klaytn.selectedAddress,
-                window.klaytn.networkVersion,
-                window.klaytn.isKaikas
-            );
-        }
-    };
-
     useEffect(() => {
         window.klaytn.enable();
-        console.log(
-            state.BankContract.methods
-                .info()
-                .call((e, v) => setTCR(caver.utils.fromPeb(v[0], "KLAY")))
-        );
+        state.BankContract.methods
+            .info()
+            .call((e, v) => setTCR(caver.utils.fromPeb(v[0], "KLAY")))
         state.BankContract.methods
             .info()
             .call((e, v) => setECR(caver.utils.fromPeb(v[1], "Mpeb")));
+        state.SCAMPContract.methods
+            .totalSupply()
+            .call((e,v)=> setScampSupply(caver.utils.fromPeb(v, "mKLAY")))
+        state.CAMPContract.methods
+            .totalSupply()
+            .call((e,v)=> setCampSupply(caver.utils.fromPeb(v, "KLAY")))
     }, []);
 
     return (
@@ -237,7 +216,7 @@ function Home() {
                             <p>$ {token.price}</p>
                             <TokenItemInfo>
                                 <p>Supply</p>
-                                <p>{token.supply.toLocaleString()}</p>
+                                <p>{token.supply}</p>
                             </TokenItemInfo>
                             <TokenItemInfo>
                                 <p>Market Cap</p>

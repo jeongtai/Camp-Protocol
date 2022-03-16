@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
-import LogoImg from "../assets/Logo.svg";
+import LogoImg from "../assets/Logo-header.svg";
 import LogoTxt from "../assets/Logo-text.svg";
 import Dashboard from "../assets/Dashboard.svg";
 import Bank from "../assets/Bank.svg";

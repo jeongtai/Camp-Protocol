@@ -76,7 +76,7 @@ const TVL = styled.div`
 `;
 
 function Home() {
-    let state = useSelector((state) => state)
+    const state = useSelector((state) => state)
     const [tcr, setTCR] = useState()
     const [ecr, setECR] = useState()
     const caver = new Caver(window.klaytn)
@@ -85,29 +85,15 @@ function Home() {
         {name : 'CAMP Price', amt : '$ 0.4602'},
         {name : 'TVL', amt : '$ 19,240.4912'},
         {name : 'Treasury Balance', amt : '$ 7,608.0027'},
-        {name : 'Target Collateral Ratio', amt : tcr},
-        {name : 'Effective Collateral Ratio', amt : ecr},
+        {name : 'Target Collateral Ratio', amt : `${tcr*100} %`},
+        {name : 'Effective Collateral Ratio', amt : `${ecr*100} %`},
         {name : 'Owned Liquidity', amt : '$ 12,667.3552'},
         {name : 'Rented Liquidity', amt : '$ 16,891.8558'},
     ]
-    
-    const getKaikas = async () => {
-        console.log('getKaikas')
-        if (window.klaytn.selectedAddress !==undefined){
-            await window.klaytn.enable().then((val)=> console.log("i found address : ",val))
-                console.log(`wallet login success! ${window.klaytn.selectedAddress}`)
-        }
-        else {
-            await window.klaytn.enable().then((val) => console.log("selectedAddress is undefined, but i found address : ",val))
-            console.log(window.klaytn.selectedAddress
-                        , window.klaytn.networkVersion
-                        , window.klaytn.isKaikas)
-        }
-    }
-
+      
     useEffect(() => {
         window.klaytn.enable()
-        console.log(state.BankContract.methods.info().call((e, v) => setTCR(caver.utils.fromPeb(v[0], 'KLAY'))))
+        state.BankContract.methods.info().call((e, v) => setTCR(caver.utils.fromPeb(v[0], 'KLAY')))
         state.BankContract.methods.info().call((e, v) => setECR(caver.utils.fromPeb(v[1], 'Mpeb')))
     },[])
 
@@ -121,9 +107,9 @@ function Home() {
                 <span>Overview</span>
                 
                 {Infos.map((info, index) => (
-                <OverviewItem>
-                    <p key={info.name}>{info.name}</p>
-                    <p key={info.amt}>{info.amt}</p>
+                <OverviewItem key = {info.name}>
+                    <p>{info.name}</p>
+                    <p>{info.amt}</p>
                 </OverviewItem>
                 ))}
                 

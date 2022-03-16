@@ -171,31 +171,6 @@ function Home() {
         { name: "SCAMP", price: 0.9812, supply: 642406337 },
     ];
     console.log(Tokens[0].mcap);
-    const getKaikas = async () => {
-        console.log("getKaikas");
-        if (window.klaytn.selectedAddress !== undefined) {
-            await window.klaytn
-                .enable()
-                .then((val) => console.log("i found address : ", val));
-            console.log(
-                `wallet login success! ${window.klaytn.selectedAddress}`
-            );
-        } else {
-            await window.klaytn
-                .enable()
-                .then((val) =>
-                    console.log(
-                        "selectedAddress is undefined, but i found address : ",
-                        val
-                    )
-                );
-            console.log(
-                window.klaytn.selectedAddress,
-                window.klaytn.networkVersion,
-                window.klaytn.isKaikas
-            );
-        }
-    };
 
     useEffect(() => {
         window.klaytn.enable();
@@ -242,10 +217,7 @@ function Home() {
                             <TokenItemInfo>
                                 <p>Market Cap</p>
                                 <p>
-                                    ${" "}
-                                    {(
-                                        token.price * token.supply
-                                    ).toLocaleString()}
+                                    $ {(token.price * token.supply).toLocaleString()}
                                 </p>
                             </TokenItemInfo>
                             <TokenItemInfo>

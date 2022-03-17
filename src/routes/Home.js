@@ -149,9 +149,9 @@ const GetScamp = styled.button`
     border-radius: 6px;
     color: white;
 `;
-function addToken (tokenaddr, url) {
+function addToken (tokenaddr, url, name) {
   const tokenAddress = tokenaddr
-  const tokenSymbol = 'SCAMP'
+  const tokenSymbol = name
   const tokenDecimals = 18
   const tokenImage = url
 
@@ -168,13 +168,6 @@ function addToken (tokenaddr, url) {
         }
       },
       id: Math.round(Math.random() * 100000)
-    },
-    (err, added) => {
-      if (added) {
-        console.log('Thanks for your interest!')
-      } else {
-        console.log('Your loss!')
-      }
     }
   )
 }
@@ -196,10 +189,10 @@ function Home() {
         { name: "Owned Liquidity", amt: "$ 12667.3552" },
         { name: "Rented Liquidity", amt: "$ 16891.8558" },
     ];
-
+    
     const Tokens = [
-        { name: "CAMP", price: 0.4602, supply: scampsupply, Contract : "0x1628b45f4e529ad14970FcD0d3Af4f0867cb9eD9", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg"},
-        { name: "SCAMP", price: 0.9812, supply: campsupply, Contract : "0x3eb98F71f96e43005645Badd3AE678c9828b3708", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg"},
+        { name: "CAMP", price: 0.4602, supply: campsupply, Contract : "0x1628b45f4e529ad14970FcD0d3Af4f0867cb9eD9", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg"},
+        { name: "SCAMP", price: 0.9812, supply: scampsupply, Contract : "0x3eb98F71f96e43005645Badd3AE678c9828b3708", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg"},
     ];
     useEffect(() => {
         window.klaytn.enable();
@@ -211,7 +204,7 @@ function Home() {
             .call((e, v) => setECR(caver.utils.fromPeb(v[1], "Mpeb")));
         state.SCAMPContract.methods
             .totalSupply()
-            .call((e,v)=> setScampSupply(caver.utils.fromPeb(v, "mKLAY")))
+            .call((e,v)=> setScampSupply(caver.utils.fromPeb(v, "KLAY")))
         state.CAMPContract.methods
             .totalSupply()
             .call((e,v)=> setCampSupply(caver.utils.fromPeb(v, "KLAY")))
@@ -254,7 +247,7 @@ function Home() {
                                 </p>
                             </TokenItemInfo>
                             <TokenItemInfo>
-                                <AddWallet onClick={() => addToken(token.Contract, token.logo)}>Add Wallet</AddWallet>
+                                <AddWallet onClick={() => addToken(token.Contract, token.logo, token.name)}>Add Wallet</AddWallet>
                                 <GetScamp>Get {token.name}</GetScamp>
                             </TokenItemInfo>
                         </TokenItem>

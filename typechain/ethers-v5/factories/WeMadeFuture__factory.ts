@@ -180,7 +180,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "WUSDStablecoinAdd",
+    name: "SCAMPAdd",
     outputs: [
       {
         internalType: "address",

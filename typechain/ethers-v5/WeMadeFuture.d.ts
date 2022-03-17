@@ -21,7 +21,7 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface WeMadeFutureInterface extends ethers.utils.Interface {
   functions: {
-    "WUSDStablecoinAdd()": FunctionFragment;
+    "SCAMPAdd()": FunctionFragment;
     "acceptOwnership()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
@@ -48,7 +48,7 @@ interface WeMadeFutureInterface extends ethers.utils.Interface {
   };
 
   encodeFunctionData(
-    functionFragment: "WUSDStablecoinAdd",
+    functionFragment: "SCAMPAdd",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -124,7 +124,7 @@ interface WeMadeFutureInterface extends ethers.utils.Interface {
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "WUSDStablecoinAdd",
+    functionFragment: "SCAMPAdd",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -275,7 +275,7 @@ export class WeMadeFuture extends BaseContract {
   interface: WeMadeFutureInterface;
 
   functions: {
-    WUSDStablecoinAdd(overrides?: CallOverrides): Promise<[string]>;
+    SCAMPAdd(overrides?: CallOverrides): Promise<[string]>;
 
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -375,7 +375,7 @@ export class WeMadeFuture extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  WUSDStablecoinAdd(overrides?: CallOverrides): Promise<string>;
+  SCAMPAdd(overrides?: CallOverrides): Promise<string>;
 
   acceptOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -475,7 +475,7 @@ export class WeMadeFuture extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    WUSDStablecoinAdd(overrides?: CallOverrides): Promise<string>;
+    SCAMPAdd(overrides?: CallOverrides): Promise<string>;
 
     acceptOwnership(overrides?: CallOverrides): Promise<void>;
 
@@ -669,7 +669,7 @@ export class WeMadeFuture extends BaseContract {
   };
 
   estimateGas: {
-    WUSDStablecoinAdd(overrides?: CallOverrides): Promise<BigNumber>;
+    SCAMPAdd(overrides?: CallOverrides): Promise<BigNumber>;
 
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -770,7 +770,7 @@ export class WeMadeFuture extends BaseContract {
   };
 
   populateTransaction: {
-    WUSDStablecoinAdd(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    SCAMPAdd(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }

@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "WUSDStablecoin",
-  "sourceName": "contracts/bank/We_Made_Future_USD.sol",
+  "contractName": "SCAMP",
+  "sourceName": "contracts/bank/SCAMP.sol",
   "abi": [
     {
       "inputs": [

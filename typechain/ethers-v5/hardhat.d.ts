@@ -93,9 +93,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.UniswapV2ERC20__factory>;
     getContractFactory(
-      name: "WUSDStablecoin",
+      name: "SCAMP",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.WUSDStablecoin__factory>;
+    ): Promise<Contracts.SCAMP__factory>;
     getContractFactory(
       name: "WeMadeFuture",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -349,9 +349,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.UniswapV2ERC20__factory>;
     getContractFactory(
-      name: "WUSDStablecoin",
+      name: "SCAMP",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.WUSDStablecoin__factory>;
+    ): Promise<Contracts.SCAMP__factory>;
     getContractFactory(
       name: "WeMadeFuture",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -458,10 +458,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.UniswapV2ERC20>;
     getContractAt(
-      name: "WUSDStablecoin",
+      name: "SCAMP",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.WUSDStablecoin>;
+    ): Promise<Contracts.SCAMP>;
     getContractAt(
       name: "WeMadeFuture",
       address: string,
@@ -778,10 +778,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.UniswapV2ERC20>;
     getContractAt(
-      name: "WUSDStablecoin",
+      name: "SCAMP",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.WUSDStablecoin>;
+    ): Promise<Contracts.SCAMP>;
     getContractAt(
       name: "WeMadeFuture",
       address: string,

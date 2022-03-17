@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "We_Made_Future",
-  "sourceName": "contracts/bank/We_Made_Future.sol",
+  "contractName": "CAMP",
+  "sourceName": "contracts/bank/CAMP.sol",
   "abi": [
     {
       "inputs": [
@@ -176,7 +176,7 @@
     },
     {
       "inputs": [],
-      "name": "WUSDStablecoinAdd",
+      "name": "SCAMPAdd",
       "outputs": [
         {
           "internalType": "address",

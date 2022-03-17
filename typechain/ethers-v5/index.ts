@@ -21,7 +21,7 @@ export type { IUniswapV2Router01 } from "./IUniswapV2Router01";
 export type { IUniswapV2Router02 } from "./IUniswapV2Router02";
 export type { SwapToPrice } from "./SwapToPrice";
 export type { UniswapV2ERC20 } from "./UniswapV2ERC20";
-export type { WUSDStablecoin } from "./WUSDStablecoin";
+export type { SCAMP } from "./SCAMP";
 export type { WeMadeFuture } from "./WeMadeFuture";
 export type { BondDepository } from "./BondDepository";
 export type { BondTreasury } from "./BondTreasury";
@@ -80,7 +80,7 @@ export { IUniswapV2Router01__factory } from "./factories/IUniswapV2Router01__fac
 export { IUniswapV2Router02__factory } from "./factories/IUniswapV2Router02__factory";
 export { SwapToPrice__factory } from "./factories/SwapToPrice__factory";
 export { UniswapV2ERC20__factory } from "./factories/UniswapV2ERC20__factory";
-export { WUSDStablecoin__factory } from "./factories/WUSDStablecoin__factory";
+export { SCAMP__factory } from "./factories/SCAMP__factory";
 export { WeMadeFuture__factory } from "./factories/WeMadeFuture__factory";
 export { BondDepository__factory } from "./factories/BondDepository__factory";
 export { BondTreasury__factory } from "./factories/BondTreasury__factory";

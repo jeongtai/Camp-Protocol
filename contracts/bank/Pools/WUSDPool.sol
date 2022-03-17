@@ -2,8 +2,8 @@
 pragma solidity =0.7.5;
 
 import '../Uniswap/TransferHelper.sol';
-import "../We_Made_Future.sol";
-import "../We_Made_Future_USD.sol";
+import "../CAMP.sol";
+import "../SCAMP.sol";
 import "../Oracle/UniswapPairOracle.sol";
 import "./WUSDPoolLibrary.sol";
 import "../Owned.sol";
@@ -21,8 +21,8 @@ contract WUSDPool is Owned {
 
     address private WUSD_contract_address;
     address private WMF_contract_address;
-    We_Made_Future private WMF;
-    WUSDStablecoin private WUSD;
+    CAMP private WMF;
+    SCAMP private WUSD;
 
     UniswapPairOracle private collatEthOracle;
     address public collat_eth_oracle_address;
@@ -90,8 +90,8 @@ contract WUSDPool is Owned {
             && (_collateral_address != address(0))
             && (_creator_address != address(0))
         , "Zero address detected"); 
-        WUSD = WUSDStablecoin(_WUSD_contract_address);
-        WMF = We_Made_Future(_WMF_contract_address);
+        WUSD = SCAMP(_WUSD_contract_address);
+        WMF = CAMP(_WMF_contract_address);
         WUSD_contract_address = _WUSD_contract_address;
         WMF_contract_address = _WMF_contract_address;
         collateral_address = _collateral_address;
@@ -103,7 +103,7 @@ contract WUSDPool is Owned {
 
     // Returns dollar value of collateral held in this WUSD pool
     function collatDollarBalance() public view returns (uint256) {
-        uint256 eth_usd_price = WUSD.eth_usd_price();
+        uint256 eth_usd_price = WUSD.KLAY_price();
         uint256 eth_collat_price = collatEthOracle.consult(weth_address, (PRICE_PRECISION * (10 ** missing_decimals)));
 
         uint256 collat_usd_price = eth_usd_price.mul(PRICE_PRECISION).div(eth_collat_price);

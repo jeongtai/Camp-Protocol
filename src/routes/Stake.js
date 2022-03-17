@@ -29,16 +29,12 @@ function timeConversion(millisec) {
 const Stake =()=> {
     let state = useSelector((state) => state)
     const [pendingCAMP, setPendingCAMP] = useState()
-    const [unlocktime, setunlocktime] = useState()
     const [lockRemaining, setLockRemaining] = useState()
     async function getUserInfo() {
       await window.klaytn.enable()
       setTimeout(() => {
         state.StakingContract.methods.pendingxCube(window.klaytn.selectedAddress).call((e, v) => setPendingCAMP(caver.utils.fromPeb(v, 'KLAY')))
-        state.StakingContract.methods.userLockInfo(window.klaytn.selectedAddress).call((e, v) => {
-          setunlocktime(v[0])
-          setLockRemaining(v[1])
-        })
+        state.StakingContract.methods.userLockInfo(window.klaytn.selectedAddress).call((e, v) => setLockRemaining(v[1]))
       }, 300)
     }
     useEffect(() => {
@@ -47,9 +43,8 @@ const Stake =()=> {
     
     return (
       <div>
-        <h3>{pendingCAMP}</h3>
-        <h3>풀릴때 까지 남은 시간 : {timeConversion(unlocktime/10)}</h3>
-        <h3>잠긴 양 : {lockRemaining/100000}</h3>
+        <h3>Staked된 양 : {pendingCAMP}</h3>
+        <h3>풀릴때 까지 남은 시간  : {(timeConversion(lockRemaining*1000))}</h3>
         <Staketool/>
       </div>
     )

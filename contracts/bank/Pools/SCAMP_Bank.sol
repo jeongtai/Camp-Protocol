@@ -100,20 +100,13 @@ contract SCAMPPool is Owned {
     }
 
     /* ========== VIEWS ========== */
-
+    
     // Returns dollar value of collateral held in this SCAMP pool
+    
     function collatDollarBalance() public view returns (uint256) {
-        uint256 eth_usd_price = _SCAMP.KLAY_usdt_price();
-        uint256 eth_collat_price = collatKlayOracle.consult(klay_address, (PRICE_PRECISION * (10 ** missing_decimals)));
+      return (collateral_token.balanceOf(address(this)).sub(unclaimedPoolCollateral)).mul(10 ** missing_decimals).div(PRICE_PRECISION).mul(1e6);
+    } 
 
-        uint256 collat_usd_price = eth_usd_price.mul(PRICE_PRECISION).div(eth_collat_price);
-        return (collateral_token.balanceOf(address(this)).sub(unclaimedPoolCollateral)).mul(10 ** missing_decimals).mul(collat_usd_price).div(PRICE_PRECISION); //.mul(getCollateralPrice()).div(1e6);    
-        
-    }
-
-    function CollateralValue() public view returns (uint256) {
-
-    }
 
     // Returns the value of excess collateral held in this SCAMP pool, compared to what is needed to maintain the global collateral ratio
     function availableExcessCollatDV() public view returns (uint256) {
@@ -132,8 +125,8 @@ contract SCAMPPool is Owned {
     // Returns the price of the pool collateral in USD
     function getCollateralPrice() public view returns (uint256) {
         uint256 eth_usd_price = _SCAMP.KLAY_usdt_price();
-        return eth_usd_price.mul(PRICE_PRECISION).div(collatKlayOracle.consult(klay_address, PRICE_PRECISION * (10 ** missing_decimals)));
-        
+        // return eth_usd_price.mul(PRICE_PRECISION).div(collatKlayOracle.consult(klay_address, PRICE_PRECISION * (10 ** missing_decimals)));
+        return 1000000;
     }
 
     function setcollatKlayOracle(address _collateral_klay_oracle_address, address _klay_address) external onlyOwner {
@@ -204,7 +197,7 @@ contract SCAMPPool is Owned {
 
         _CAMP.Bank_burn_from(msg.sender, CAMP_needed);
         TransferHelper.safeTransferFrom(address(collateral_token), msg.sender, address(this), collateral_amount);
-        _SCAMP.pool_mint(msg.sender, mint_amount);
+        _SCAMP.Bank_mint(msg.sender, mint_amount);
     }
 
     // Redeem collateral. 100% collateral-backed
@@ -263,8 +256,8 @@ contract SCAMPPool is Owned {
         lastRedeemed[msg.sender] = block.number;
         
         // Move all external functions to the end
-        _SCAMP.pool_burn_from(msg.sender, SCAMP_amount);
-        _CAMP.pool_mint(address(this), CAMP_amount);
+        _SCAMP.Bank_burn_from(msg.sender, SCAMP_amount);
+        _CAMP.Bank_mint(address(this), CAMP_amount);
     }
 
     // Redeem SCAMP for CAMP. 0% collateral-backed
@@ -318,7 +311,7 @@ contract SCAMPPool is Owned {
         }
 
         if(sendCAMP){
-            TransferHelper.safeTransfer(address(CAMP), msg.sender, CAMPAmount);
+            TransferHelper.safeTransfer(address(_CAMP), msg.sender, CAMPAmount);
         }
         if(sendCollateral){
             TransferHelper.safeTransfer(address(collateral_token), msg.sender, CollateralAmount);
@@ -335,12 +328,12 @@ contract SCAMPPool is Owned {
         uint256 CAMP_price = _SCAMP.CAMP_price();
         uint256 SCAMP_total_supply = _SCAMP.totalSupply();
         uint256 current_collateral_ratio = _SCAMP.current_collateral_ratio();
-        uint256 global_collat_value = CollateralValue();
+        uint256 collat_value = collatDollarBalance();
 
         (uint256 collateral_units, uint256 amount_to_recollat) = SCAMPPoolLibrary.calcRecollateralizeSCAMPInner(
             collateral_amount_d18,
             getCollateralPrice(),
-            global_collat_value,
+            collat_value,
             SCAMP_total_supply,
             current_collateral_ratio
         ); 

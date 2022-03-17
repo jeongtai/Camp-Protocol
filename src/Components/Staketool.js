@@ -1,29 +1,45 @@
 import { useState } from "react";
 import Input from "./INPUT"
 import Button from "./Button"
-import { useDispatch } from "react-redux";
+import {useSelector } from "react-redux";
+import Caver from "caver-js";
 
-function StakeButton () {
-    let dispatch = useDispatch();
+const caver = new Caver(window.klaytn)
+function Staketool () {
+    let state = useSelector((state) =>  state)
     let StakeAddress = "0xC0C40B7bD1B9Dfec77FECcF43451f61550c6090a"
-
     const [amount, setAmount] =useState()
+
     const onChange = (event) => {
       setAmount(Math.round(event.target.value))
     }
-    function onClick() {
-      dispatch({
-        type : 'ApproveCAMP',
-        Address : StakeAddress,
-        CAMPamount : amount
+
+    function Stake() {
+      state.CAMPContract.methods.approve(
+        StakeAddress,
+        caver.utils.toPeb(amount, "KLAY")
+      ).send({
+        from : window.klaytn.selectedAddress,
+        gas : 3000000
+      }).on('receipt', function () {
+        state.StakingContract.methods.stake(
+          caver.utils.toPeb(amount, "KLAY")
+        ).send({
+          from: window.klaytn.selectedAddress,
+          gas : '3000000'
+        })
       })
-      setTimeout(() =>
-      dispatch({
-        type : 'CAMPStake',
-        CAMPamount : amount
-      }), 3000)
     }
 
+    function Unstake() {
+      state.StakingContract.methods.unstake(
+        caver.Utils.toPeb(amount, "KLAY")
+      ).send({
+        from : window.klaytn.selectedAddress,
+        gas : 3000000
+      })
+      
+    }
     return (
         <div>
             <Input
@@ -32,8 +48,8 @@ function StakeButton () {
               type="text"
               text="Staking amount">
             </Input>
-            <Button text = "Stake!" onClick={onClick}/>
+            <Button text = "Stake!" onClick={Stake}/>
         </div>
     )
 }
-export default StakeButton;
+export default Staketool;

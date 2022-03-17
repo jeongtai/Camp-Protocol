@@ -19,7 +19,7 @@ const Bank = () =>{
         state.SCAMPContract.methods.balanceOf(window.klaytn.selectedAddress).call((e,v) => setSCAMPBalance(caver.utils.fromPeb(v, 'KLAY')))
         state.CAMPContract.methods.balanceOf(window.klaytn.selectedAddress).call((e,v) => setCAMPBalance(caver.utils.fromPeb(v, 'KLAY')))
         state.USDCContract.methods.balanceOf(window.klaytn.selectedAddress).call((e,v) => setUSDCBalance(caver.utils.fromPeb(v, 'Mpeb')))
-      }, 1000)
+      }, 300)
     }
     useEffect(() => {
       getUserInfo()

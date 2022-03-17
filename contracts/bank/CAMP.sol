@@ -15,18 +15,18 @@ contract CAMP is ERC20Custom, Owned {
     string public symbol;
     string public name;
     uint8 public constant decimals = 18;
-    address public SCAMPAdd;
+    address public SCAMPAddress;
  
     uint256 public constant genesis_supply = 100000000e18; // 100M is printed upon genesis
  
     address public oracle_address;
-    SCAMP private WUSD;
+    SCAMP private SCAMP;
 
 
     /* ========== MODIFIERS ========== */
 
-    modifier onlyPools() {
-       require(WUSD.WUSD_pools(msg.sender) == true, "Only WUSD pools can mint new WUSD");
+    modifier onlyBank() {
+       require(msg.sender == SCAMP.SCAMP_Bank, "You are not bank");
         _;
     } 
     
@@ -56,30 +56,30 @@ contract CAMP is ERC20Custom, Owned {
         oracle_address = new_oracle;
     }
 
-    function setWUSDAddress(address WUSD_contract_address) external onlyByOwn {
-        require(WUSD_contract_address != address(0), "Zero address detected");
+    function setSCAMPAddress(address SCAMP_contract_address) external onlyByOwn {
+        require(SCAMP_contract_address != address(0), "Zero address detected");
 
-        WUSD = SCAMP(WUSD_contract_address);
-        emit WUSDAddressSet(WUSD_contract_address);
+        SCAMP = SCAMP(SCAMP_contract_address);
+        emit SCAMPAddressSet(SCAMP_contract_addresss);
     }
     
     // This function is what other WUSD pools will call to mint new WMF (similar to the WUSD mint) 
-    function pool_mint(address m_address, uint256 m_amount) external onlyPools {        
+    function Bank_mint(address m_address, uint256 m_amount) external onlyBank {        
         super._mint(m_address, m_amount);
-        emit WMFMinted(address(this), m_address, m_amount);
+        emit BankMinted(address(this), m_address, m_amount);
     }
 
     // This function is what other WUSD pools will call to burn WMF 
-    function pool_burn_from(address b_address, uint256 b_amount) external onlyPools {
+    function Bank_burn_from(address b_address, uint256 b_amount) external onlyBank {
 
         super._burnFrom(b_address, b_amount);
-        emit WMFBurned(b_address, address(this), b_amount);
+        emit BankBurned(b_address, address(this), b_amount);
     }
     /* ========== EVENTS ========== */
 
     // Track WMF burned
-    event WMFBurned(address indexed from, address indexed to, uint256 amount);
+    event BankBurned(address indexed from, address indexed to, uint256 amount);
     // Track WMF minted
-    event WMFMinted(address indexed from, address indexed to, uint256 amount);
-    event WUSDAddressSet(address addr);
+    event BankMinted(address indexed from, address indexed to, uint256 amount);
+    event SCAMPAddressSet(address addr);
 }

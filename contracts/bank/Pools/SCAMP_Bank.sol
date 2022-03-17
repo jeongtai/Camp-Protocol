@@ -100,24 +100,13 @@ contract SCAMPPool is Owned {
     }
 
     /* ========== VIEWS ========== */
-
+    
     // Returns dollar value of collateral held in this SCAMP pool
-    function collatDollarBalance() public view returns (uint256) {
-        uint256 eth_usd_price = SCAMP.KLAY_price();
-        uint256 eth_collat_price = collatKlayOracle.consult(klay_address, (PRICE_PRECISION * (10 ** missing_decimals)));
-
-        uint256 collat_usd_price = eth_usd_price.mul(PRICE_PRECISION).div(eth_collat_price);
-        return (collateral_token.balanceOf(address(this)).sub(unclaimedPoolCollateral)).mul(10 ** missing_decimals).mul(collat_usd_price).div(PRICE_PRECISION); //.mul(getCollateralPrice()).div(1e6);    
-        
-    }
     
     function collatDollarBalance() public view returns (uint256) {
-
+      return (collateral_token.balanceOf(address(this)).sub(unclaimedPoolCollateral)).mul(10 ** missing_decimals).div(PRICE_PRECISION).mul(collat_usd_price);
     } 
 
-    function CollateralValue() public view returns (uint256) {
-
-    }
 
     // Returns the value of excess collateral held in this SCAMP pool, compared to what is needed to maintain the global collateral ratio
     function availableExcessCollatDV() public view returns (uint256) {
@@ -269,8 +258,8 @@ contract SCAMPPool is Owned {
         lastRedeemed[msg.sender] = block.number;
         
         // Move all external functions to the end
-        SCAMP.pool_burn_from(msg.sender, SCAMP_amount);
-        CAMP.pool_mint(address(this), CAMP_amount);
+        SCAMP.Bank_burn_from(msg.sender, SCAMP_amount);
+        CAMP.Bank_mint(address(this), CAMP_amount);
     }
 
     // Redeem SCAMP for CAMP. 0% collateral-backed
@@ -341,12 +330,12 @@ contract SCAMPPool is Owned {
         uint256 CAMP_price = SCAMP.CAMP_price();
         uint256 SCAMP_total_supply = SCAMP.totalSupply();
         uint256 current_collateral_ratio = SCAMP.current_collateral_ratio();
-        uint256 global_collat_value = CollateralValue();
+        uint256 collat_value = collatDollarBalance();
 
         (uint256 collateral_units, uint256 amount_to_recollat) = SCAMPPoolLibrary.calcRecollateralizeSCAMPInner(
             collateral_amount_d18,
             getCollateralPrice(),
-            global_collat_value,
+            collat_value,
             SCAMP_total_supply,
             current_collateral_ratio
         ); 

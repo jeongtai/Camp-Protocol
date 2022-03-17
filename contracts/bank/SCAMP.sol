@@ -6,9 +6,8 @@ import "./module/ERC20/IERC20.sol";
 import "./module/ERC20/ERC20Custom.sol";
 import "./Owned.sol";
 import "./CAMP.sol";
-import "./Pools/WUSDPool.sol";
+import "./Pools/SCAMP_Bank.sol";
 import "./Oracle/UniswapPairOracle.sol";
-import "./Oracle/ChainlinkETHUSDPriceConsumer.sol";
 
 contract SCAMP is ERC20Custom, Owned {
   using SafeMath for uint256;

@@ -149,6 +149,35 @@ const GetScamp = styled.button`
     border-radius: 6px;
     color: white;
 `;
+function addToken (tokenaddr, url) {
+  const tokenAddress = tokenaddr
+  const tokenSymbol = 'SCAMP'
+  const tokenDecimals = 18
+  const tokenImage = url
+
+  window.klaytn.sendAsync(
+    {
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20', // Initially only supports ERC20, but eventually more!
+        options: {
+          address: tokenAddress, // The address that the token is at.
+          symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+          decimals: tokenDecimals, // The number of decimals in the token
+          image: tokenImage // A string url of the token logo
+        }
+      },
+      id: Math.round(Math.random() * 100000)
+    },
+    (err, added) => {
+      if (added) {
+        console.log('Thanks for your interest!')
+      } else {
+        console.log('Your loss!')
+      }
+    }
+  )
+}
 
 function Home() {
     let state = useSelector((state) => state);
@@ -169,8 +198,8 @@ function Home() {
     ];
 
     const Tokens = [
-        { name: "CAMP", price: 0.4602, supply: scampsupply},
-        { name: "SCAMP", price: 0.9812, supply: campsupply},
+        { name: "CAMP", price: 0.4602, supply: scampsupply, Contract : "0x1628b45f4e529ad14970FcD0d3Af4f0867cb9eD9", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg"},
+        { name: "SCAMP", price: 0.9812, supply: campsupply, Contract : "0x3eb98F71f96e43005645Badd3AE678c9828b3708", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg"},
     ];
     useEffect(() => {
         window.klaytn.enable();
@@ -225,7 +254,7 @@ function Home() {
                                 </p>
                             </TokenItemInfo>
                             <TokenItemInfo>
-                                <AddWallet>Add Wallet</AddWallet>
+                                <AddWallet onClick={() => addToken(token.Contract, token.logo)}>Add Wallet</AddWallet>
                                 <GetScamp>Get {token.name}</GetScamp>
                             </TokenItemInfo>
                         </TokenItem>

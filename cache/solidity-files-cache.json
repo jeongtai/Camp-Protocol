@@ -2612,7 +2612,7 @@
         "./module/ERC20/ERC20Custom.sol",
         "./Owned.sol",
         "./CAMP.sol",
-        "./Pools/WUSDPool.sol",
+        "./Pools/SCAMP_Bank.sol",
         "./Oracle/UniswapPairOracle.sol",
         "./Oracle/ChainlinkETHUSDPriceConsumer.sol"
       ],
@@ -2808,10 +2808,10 @@
         "CAMP"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\CAMP-Contract\\contracts\\bank\\Pools\\WUSDPool.sol": {
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\CAMP-Contract\\contracts\\bank\\Pools\\SCAMP_Bank.sol": {
       "lastModificationDate": 1647333331603,
       "contentHash": "209f7277ade7999e7dd582dbe020378c",
-      "sourceName": "contracts/bank/Pools/WUSDPool.sol",
+      "sourceName": "contracts/bank/Pools/SCAMP_Bank.sol",
       "solcConfig": {
         "version": "0.7.5",
         "settings": {
@@ -2857,7 +2857,7 @@
         "=0.7.5"
       ],
       "artifacts": [
-        "WUSDPool"
+        "SCAMP_Bank"
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\CAMP-Contract\\contracts\\bank\\Oracle\\UniswapPairOracle.sol": {

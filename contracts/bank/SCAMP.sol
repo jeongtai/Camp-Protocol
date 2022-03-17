@@ -6,7 +6,7 @@ import "./module/ERC20/IERC20.sol";
 import "./module/ERC20/ERC20Custom.sol";
 import "./Owned.sol";
 import "./CAMP.sol";
-import "./Pools/WUSDPool.sol";
+import "./Pools/SCAMP_Bank.sol";
 import "./Oracle/UniswapPairOracle.sol";
 import "./Oracle/ChainlinkETHUSDPriceConsumer.sol";
 
@@ -91,11 +91,11 @@ contract SCAMP is ERC20Custom, Owned {
     uint256 klay_price = uint256(KlayUSDTOracle.consult(usdt_address, PRICE_PRECISION));
     uint256 price_vs_klay = 0;
 
-    price_vs_klay = uint256(CCAMPKlayOracle.consult(klay_address, PRICE_PRECISION));
+    price_vs_klay = uint256(CAMPKlayOracle.consult(klay_address, PRICE_PRECISION));
     return klay_price.mul(PRICE_PRECISION).div(price_vs_klay);
   }
 
-  function KLAY_price() public view returns (uint256) {
+  function KLAY_usdt_price() public view returns (uint256) {
     uint256 klay_price = uint256(KlayUSDTOracle.consult(usdt_address, PRICE_PRECISION));
 
     return klay_price.mul(PRICE_PRECISION);

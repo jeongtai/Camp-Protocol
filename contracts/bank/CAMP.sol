@@ -20,13 +20,13 @@ contract CAMP is ERC20Custom, Owned {
     uint256 public constant genesis_supply = 100000000e18; // 100M is printed upon genesis
  
     address public oracle_address;
-    SCAMP private SCAMP;
+    SCAMP private _SCAMP;
 
 
     /* ========== MODIFIERS ========== */
 
     modifier onlyBank() {
-       require(msg.sender == SCAMP.SCAMP_Bank, "You are not bank");
+       require(msg.sender == _SCAMP.SCAMP_Bank, "You are not bank");
         _;
     } 
     
@@ -60,7 +60,7 @@ contract CAMP is ERC20Custom, Owned {
         require(SCAMP_contract_address != address(0), "Zero address detected");
 
         SCAMP = SCAMP(SCAMP_contract_address);
-        emit SCAMPAddressSet(SCAMP_contract_addresss);
+        emit SCAMPAddressSet(SCAMP_contract_address);
     }
     
     // This function is what other WUSD pools will call to mint new WMF (similar to the WUSD mint) 

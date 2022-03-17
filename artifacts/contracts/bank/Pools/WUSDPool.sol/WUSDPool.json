@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "WUSDPool",
-  "sourceName": "contracts/bank/Pools/WUSDPool.sol",
+  "contractName": "SCAMP_Bank",
+  "sourceName": "contracts/bank/Pools/SCAMP_Bank.sol",
   "abi": [
     {
       "inputs": [

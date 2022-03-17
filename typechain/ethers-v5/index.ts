@@ -11,7 +11,7 @@ export type { ChainlinkETHUSDPriceConsumer } from "./ChainlinkETHUSDPriceConsume
 export type { UniswapPairOracle } from "./UniswapPairOracle";
 export type { WUSDOracleWrapper } from "./WUSDOracleWrapper";
 export type { Owned } from "./Owned";
-export type { WUSDPool } from "./WUSDPool";
+export type { SCAMP_Bank } from "./SCAMP_Bank";
 export type { WUSDPoolLibrary } from "./WUSDPoolLibrary";
 export type { IUniswapV2Callee } from "./IUniswapV2Callee";
 export type { IUniswapV2ERC20 } from "./IUniswapV2ERC20";

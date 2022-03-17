@@ -20,9 +20,9 @@ contract SCAMPPool is Owned {
     address private collateral_address;
 
     address private SCAMP_contract_address;
-    address private cAMP_contract_address;
-    CAMP private CAMP;
-    SCAMP private SCAMP;
+    address private CAMP_contract_address;
+    CAMP private _CAMP;
+    SCAMP private _SCAMP;
 
     UniswapPairOracle private collatKlayOracle;
     address public collat_klay_oracle_address;
@@ -90,8 +90,8 @@ contract SCAMPPool is Owned {
             && (_collateral_address != address(0))
             && (_creator_address != address(0))
         , "Zero address detected"); 
-        SCAMP = SCAMP(_SCAMP_contract_address);
-        CAMP = CAMP(_CAMP_contract_address);
+        _SCAMP = SCAMP(_SCAMP_contract_address);
+        _CAMP = CAMP(_CAMP_contract_address);
         SCAMP_contract_address = _SCAMP_contract_address;
         CAMP_contract_address = _CAMP_contract_address;
         collateral_address = _collateral_address;
@@ -103,17 +103,13 @@ contract SCAMPPool is Owned {
 
     // Returns dollar value of collateral held in this SCAMP pool
     function collatDollarBalance() public view returns (uint256) {
-        uint256 eth_usd_price = SCAMP.KLAY_price();
+        uint256 eth_usd_price = _SCAMP.KLAY_usdt_price();
         uint256 eth_collat_price = collatKlayOracle.consult(klay_address, (PRICE_PRECISION * (10 ** missing_decimals)));
 
         uint256 collat_usd_price = eth_usd_price.mul(PRICE_PRECISION).div(eth_collat_price);
         return (collateral_token.balanceOf(address(this)).sub(unclaimedPoolCollateral)).mul(10 ** missing_decimals).mul(collat_usd_price).div(PRICE_PRECISION); //.mul(getCollateralPrice()).div(1e6);    
         
     }
-    
-    function collatDollarBalance() public view returns (uint256) {
-
-    } 
 
     function CollateralValue() public view returns (uint256) {
 
@@ -121,8 +117,8 @@ contract SCAMPPool is Owned {
 
     // Returns the value of excess collateral held in this SCAMP pool, compared to what is needed to maintain the global collateral ratio
     function availableExcessCollatDV() public view returns (uint256) {
-        uint256 total_supply = SCAMP.totalSupply();
-        uint256 cur_collateral_ratio = SCAMP.current_collateral_ratio();
+        uint256 total_supply = _SCAMP.totalSupply();
+        uint256 cur_collateral_ratio = _SCAMP.current_collateral_ratio();
         uint256 collat_value = collatDollarBalance();
 
         if (collat_value > COLLATERAL_RATIO_PRECISION) cur_collateral_ratio = COLLATERAL_RATIO_PRECISION; // Handles an overcollateralized contract with CR > 1
@@ -135,12 +131,10 @@ contract SCAMPPool is Owned {
     
     // Returns the price of the pool collateral in USD
     function getCollateralPrice() public view returns (uint256) {
-        uint256 eth_usd_price = SCAMP.eth_usd_price();
+        uint256 eth_usd_price = _SCAMP.KLAY_usdt_price();
         return eth_usd_price.mul(PRICE_PRECISION).div(collatKlayOracle.consult(klay_address, PRICE_PRECISION * (10 ** missing_decimals)));
         
     }
-
-    function getCollateralPrice() public view returns (uint256) {};
 
     function setcollatKlayOracle(address _collateral_klay_oracle_address, address _klay_address) external onlyOwner {
         collat_klay_oracle_address = _collateral_klay_oracle_address;
@@ -152,7 +146,7 @@ contract SCAMPPool is Owned {
     function mint1t1SCAMP(uint256 collateral_amount, uint256 SCAMP_out_min) external notMintPaused {
         uint256 collateral_amount_d18 = collateral_amount * (10 ** missing_decimals);
 
-        require(SCAMP.current_collateral_ratio() >= COLLATERAL_RATIO_MAX, "Collateral ratio must be >= 1");
+        require(_SCAMP.current_collateral_ratio() >= COLLATERAL_RATIO_MAX, "Collateral ratio must be >= 1");
         require((collateral_token.balanceOf(address(this))).sub(unclaimedPoolCollateral).add(collateral_amount) <= pool_ceiling, "[Pool's Closed]: Ceiling reached");
         
         (uint256 SCAMP_amount_d18) = SCAMPPoolLibrary.calcMint1t1SCAMP(
@@ -164,13 +158,13 @@ contract SCAMPPool is Owned {
         require(SCAMP_out_min <= SCAMP_amount_d18, "Slippage limit reached");
 
         TransferHelper.safeTransferFrom(address(collateral_token), msg.sender, address(this), collateral_amount);
-        SCAMP.Bank_mint(msg.sender, SCAMP_amount_d18);
+        _SCAMP.Bank_mint(msg.sender, SCAMP_amount_d18);
     }
 
     // 0% collateral-backed
     function mintAlgorithmicSCAMP(uint256 CAMP_amount_d18, uint256 SCAMP_out_min) external notMintPaused {
-        uint256 CAMP_price = SCAMP.CAMP_price();
-        require(SCAMP.current_collateral_ratio() == 0, "Collateral ratio must be 0");
+        uint256 CAMP_price = _SCAMP.CAMP_price();
+        require(_SCAMP.current_collateral_ratio() == 0, "Collateral ratio must be 0");
         
         (uint256 SCAMP_amount_d18) = SCAMPPoolLibrary.calcMintAlgorithmicSCAMP(
             CAMP_price, // X CAMP / 1 USD
@@ -180,15 +174,15 @@ contract SCAMPPool is Owned {
         SCAMP_amount_d18 = (SCAMP_amount_d18.mul(uint(1e6).sub(minting_fee))).div(1e6);
         require(SCAMP_out_min <= SCAMP_amount_d18, "Slippage limit reached");
 
-        CAMP.Bank_burn_from(msg.sender, CAMP_amount_d18);
-        SCAMP.Bank_mint(msg.sender, SCAMP_amount_d18);
+        _CAMP.Bank_burn_from(msg.sender, CAMP_amount_d18);
+        _SCAMP.Bank_mint(msg.sender, SCAMP_amount_d18);
     }
 
     // Will fail if fully collateralized or fully algorithmic
     // > 0% and < 100% collateral-backed
     function mintFractionalSCAMP(uint256 collateral_amount, uint256 CAMP_amount, uint256 SCAMP_out_min) external notMintPaused {
-        uint256 CAMP_price = SCAMP.CAMP_price();
-        uint256 current_collateral_ratio = SCAMP.current_collateral_ratio();
+        uint256 CAMP_price = _SCAMP.CAMP_price();
+        uint256 current_collateral_ratio = _SCAMP.current_collateral_ratio();
 
         require(current_collateral_ratio < COLLATERAL_RATIO_MAX && current_collateral_ratio > 0, "Collateral ratio needs to be between .000001 and .999999");
         require(collateral_token.balanceOf(address(this)).sub(unclaimedPoolCollateral).add(collateral_amount) <= pool_ceiling, "Pool ceiling reached, no more SCAMP can be minted with this collateral");
@@ -208,14 +202,14 @@ contract SCAMPPool is Owned {
         require(SCAMP_out_min <= mint_amount, "Slippage limit reached");
         require(CAMP_needed <= CAMP_amount, "Not enough CAMP inputted");
 
-        CAMP.pool_burn_from(msg.sender, CAMP_needed);
+        _CAMP.Bank_burn_from(msg.sender, CAMP_needed);
         TransferHelper.safeTransferFrom(address(collateral_token), msg.sender, address(this), collateral_amount);
-        SCAMP.pool_mint(msg.sender, mint_amount);
+        _SCAMP.pool_mint(msg.sender, mint_amount);
     }
 
     // Redeem collateral. 100% collateral-backed
     function redeem1t1SCAMP(uint256 SCAMP_amount, uint256 COLLATERAL_out_min) external notRedeemPaused {
-        require(SCAMP.current_collateral_ratio() == COLLATERAL_RATIO_MAX, "Collateral ratio must be == 1");
+        require(_SCAMP.current_collateral_ratio() == COLLATERAL_RATIO_MAX, "Collateral ratio must be == 1");
 
         // Need to adjust for decimals of collateral
         uint256 SCAMP_amount_precision = SCAMP_amount.div(10 ** missing_decimals);
@@ -233,14 +227,14 @@ contract SCAMPPool is Owned {
         lastRedeemed[msg.sender] = block.number;
         
         // Move all external functions to the end
-        SCAMP.Bank_burn_from(msg.sender, SCAMP_amount);
+        _SCAMP.Bank_burn_from(msg.sender, SCAMP_amount);
     }
 
     // Will fail if fully collateralized or algorithmic
     // Redeem SCAMP for collateral and CAMP. > 0% and < 100% collateral-backed
     function redeemFractionalSCAMP(uint256 SCAMP_amount, uint256 CAMP_out_min, uint256 COLLATERAL_out_min) external notRedeemPaused {
-        uint256 CAMP_price = SCAMP.CAMP_price();
-        uint256 current_collateral_ratio = SCAMP.current_collateral_ratio();
+        uint256 CAMP_price = _SCAMP.CAMP_price();
+        uint256 current_collateral_ratio = _SCAMP.current_collateral_ratio();
 
         require(current_collateral_ratio < COLLATERAL_RATIO_MAX && current_collateral_ratio > 0, "Collateral ratio needs to be between .000001 and .999999");
         uint256 col_price_usd = getCollateralPrice();
@@ -269,14 +263,14 @@ contract SCAMPPool is Owned {
         lastRedeemed[msg.sender] = block.number;
         
         // Move all external functions to the end
-        SCAMP.pool_burn_from(msg.sender, SCAMP_amount);
-        CAMP.pool_mint(address(this), CAMP_amount);
+        _SCAMP.pool_burn_from(msg.sender, SCAMP_amount);
+        _CAMP.pool_mint(address(this), CAMP_amount);
     }
 
     // Redeem SCAMP for CAMP. 0% collateral-backed
     function redeemAlgorithmicSCAMP(uint256 SCAMP_amount, uint256 CAMP_out_min) external notRedeemPaused {
-        uint256 CAMP_price = SCAMP.CAMP_price();
-        uint256 current_collateral_ratio = SCAMP.current_collateral_ratio();
+        uint256 CAMP_price = _SCAMP.CAMP_price();
+        uint256 current_collateral_ratio = _SCAMP.current_collateral_ratio();
 
         require(current_collateral_ratio == 0, "Collateral ratio must be 0"); 
         uint256 CAMP_dollar_value_d18 = SCAMP_amount;
@@ -292,8 +286,8 @@ contract SCAMPPool is Owned {
         
         require(CAMP_out_min <= CAMP_amount, "Slippage limit reached");
         // Move all external functions to the end
-        SCAMP.Bank_burn_from(msg.sender, SCAMP_amount);
-        CAMP.Bank_mint(address(this), CAMP_amount);
+        _SCAMP.Bank_burn_from(msg.sender, SCAMP_amount);
+        _CAMP.Bank_mint(address(this), CAMP_amount);
     }
 
     // After a redemption happens, transfer the newly minted CAMP and owed collateral from this pool
@@ -338,9 +332,9 @@ contract SCAMPPool is Owned {
     // Anyone can call this function to recollateralize the protocol and take the extra CAMP value from the bonus rate as an arb opportunity
     function recollateralizeSCAMP(uint256 collateral_amount, uint256 CAMP_out_min) external {
         uint256 collateral_amount_d18 = collateral_amount * (10 ** missing_decimals);
-        uint256 CAMP_price = SCAMP.CAMP_price();
-        uint256 SCAMP_total_supply = SCAMP.totalSupply();
-        uint256 current_collateral_ratio = SCAMP.current_collateral_ratio();
+        uint256 CAMP_price = _SCAMP.CAMP_price();
+        uint256 SCAMP_total_supply = _SCAMP.totalSupply();
+        uint256 current_collateral_ratio = _SCAMP.current_collateral_ratio();
         uint256 global_collat_value = CollateralValue();
 
         (uint256 collateral_units, uint256 amount_to_recollat) = SCAMPPoolLibrary.calcRecollateralizeSCAMPInner(
@@ -357,14 +351,13 @@ contract SCAMPPool is Owned {
 
         require(CAMP_out_min <= CAMP_paid_back, "Slippage limit reached");
         TransferHelper.safeTransferFrom(address(collateral_token), msg.sender, address(this), collateral_units_precision);
-        CAMP.Bank_mint(msg.sender, CAMP_paid_back);
-        
+        _CAMP.Bank_mint(msg.sender, CAMP_paid_back);
     }
 
     // Function can be called by an CAMP holder to have the protocol buy back CAMP with excess collateral value from a desired collateral pool
     // This can also happen if the collateral ratio > 1
     function buyBackCAMP(uint256 CAMP_amount, uint256 COLLATERAL_out_min) external {
-        uint256 CAMP_price = SCAMP.CAMP_price();
+        uint256 CAMP_price = _SCAMP.CAMP_price();
     
         SCAMPPoolLibrary.BuybackCAMP_Params memory input_params = SCAMPPoolLibrary.BuybackCAMP_Params(
             availableExcessCollatDV(),
@@ -378,7 +371,7 @@ contract SCAMPPool is Owned {
 
         require(COLLATERAL_out_min <= collateral_precision, "Slippage limit reached");
         // Give the sender their desired collateral and burn the CAMP
-        CAMP.Bank_burn_from(msg.sender, CAMP_amount);
+        _CAMP.Bank_burn_from(msg.sender, CAMP_amount);
         TransferHelper.safeTransfer(address(collateral_token), msg.sender, collateral_precision);
     }
 

@@ -53,7 +53,7 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Owned__factory>;
     getContractFactory(
-      name: "WUSDPool",
+      name: "SCAMP_Bank",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.WUSDPool__factory>;
     getContractFactory(
@@ -209,7 +209,7 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Owned__factory>;
     getContractFactory(
-      name: "WUSDPool",
+      name: "SCAMP_Bank",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.WUSDPool__factory>;
     getContractFactory(
@@ -408,10 +408,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Owned>;
     getContractAt(
-      name: "WUSDPool",
+      name: "SCAMP_Bank",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.WUSDPool>;
+    ): Promise<Contracts.SCAMP_Bank>;
     getContractAt(
       name: "WUSDPoolLibrary",
       address: string,
@@ -603,10 +603,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Owned>;
     getContractAt(
-      name: "WUSDPool",
+      name: "SCAMP_Bank",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.WUSDPool>;
+    ): Promise<Contracts.SCAMP_Bank>;
     getContractAt(
       name: "WUSDPoolLibrary",
       address: string,

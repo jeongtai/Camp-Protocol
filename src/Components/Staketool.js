@@ -33,7 +33,7 @@ function Staketool () {
 
     function Unstake() {
       state.StakingContract.methods.unstake(
-        caver.Utils.toPeb(amount, "KLAY")
+        caver.utils.toPeb(amount, "KLAY")
       ).send({
         from : window.klaytn.selectedAddress,
         gas : 3000000
@@ -49,6 +49,7 @@ function Staketool () {
               text="Staking amount">
             </Input>
             <Button text = "Stake!" onClick={Stake}/>
+            <Button text = "Unstake!" onClick={Unstake}/>
         </div>
     )
 }

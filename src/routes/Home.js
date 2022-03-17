@@ -211,7 +211,7 @@ function Home() {
                 </TVL>
                 <TokensList>
                     {Tokens.map((token, index) => (
-                        <TokenItem>
+                        <TokenItem key={token.name}>
                             <p><img src={token.name==="CAMP" ? CAMPColor : SCAMPColor} /> {token.name}</p>
                             <p>$ {token.price}</p>
                             <TokenItemInfo>

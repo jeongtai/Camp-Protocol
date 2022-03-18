@@ -14,7 +14,7 @@ const main = async () => {
 
     CAMPFactory = await ethers.getContractFactory("CAMP");
     let CAMP = await CAMPFactory.deploy("Camp Protocol Governance", "CAMP", owner.address);
-    console.log("CAMP address is:", await SCAMP.address);
+    console.log("CAMP address is:", await CAMP.address);
 
     mockFactory = await ethers.getContractFactory("MockUSDC");
     let mock = await mockFactory.deploy();
@@ -29,6 +29,7 @@ const main = async () => {
             SCAMPPoolLibrary: SCAMPPoolLibrary.address,
         },
     });
+    console.log("safe");
     let Bank = await BankFactory.deploy(SCAMP.address, CAMP.address, mock.address, owner.address);
     console.log("Bank address is:", Bank.address);
   };

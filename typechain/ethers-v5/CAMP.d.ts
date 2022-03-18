@@ -23,7 +23,11 @@ interface CAMPInterface extends ethers.utils.Interface {
   functions: {
     "Bank_burn_from(address,uint256)": FunctionFragment;
     "Bank_mint(address,uint256)": FunctionFragment;
+    "Bond_mint(address,uint256)": FunctionFragment;
+    "Bonding_contract_address()": FunctionFragment;
     "SCAMPAddress()": FunctionFragment;
+    "Staking_contract_address()": FunctionFragment;
+    "Staking_mint(address,uint256)": FunctionFragment;
     "acceptOwnership()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
@@ -39,8 +43,10 @@ interface CAMPInterface extends ethers.utils.Interface {
     "nominatedOwner()": FunctionFragment;
     "oracle_address()": FunctionFragment;
     "owner()": FunctionFragment;
+    "setBondAddress(address)": FunctionFragment;
     "setOracle(address)": FunctionFragment;
     "setSCAMPAddress(address)": FunctionFragment;
+    "setStakeAddress(address)": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
@@ -56,8 +62,24 @@ interface CAMPInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "Bond_mint",
+    values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Bonding_contract_address",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "SCAMPAddress",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Staking_contract_address",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Staking_mint",
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "acceptOwnership",
@@ -104,9 +126,17 @@ interface CAMPInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "setBondAddress",
+    values: [string]
+  ): string;
   encodeFunctionData(functionFragment: "setOracle", values: [string]): string;
   encodeFunctionData(
     functionFragment: "setSCAMPAddress",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setStakeAddress",
     values: [string]
   ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
@@ -128,8 +158,21 @@ interface CAMPInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "Bank_mint", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "Bond_mint", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "Bonding_contract_address",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "SCAMPAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "Staking_contract_address",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "Staking_mint",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -168,9 +211,17 @@ interface CAMPInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setBondAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "setOracle", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setSCAMPAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setStakeAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
@@ -188,18 +239,26 @@ interface CAMPInterface extends ethers.utils.Interface {
     "Approval(address,address,uint256)": EventFragment;
     "BankBurned(address,address,uint256)": EventFragment;
     "BankMinted(address,address,uint256)": EventFragment;
+    "BondAddressSet(address)": EventFragment;
+    "BondMinted(address,address,uint256)": EventFragment;
     "OwnerChanged(address,address)": EventFragment;
     "OwnerNominated(address)": EventFragment;
     "SCAMPAddressSet(address)": EventFragment;
+    "StakeAddressSet(address)": EventFragment;
+    "StakeMinted(address,address,uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BankBurned"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BankMinted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "BondAddressSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "BondMinted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnerChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnerNominated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SCAMPAddressSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "StakeAddressSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "StakeMinted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
 
@@ -219,6 +278,12 @@ export type BankMintedEvent = TypedEvent<
   [string, string, BigNumber] & { from: string; to: string; amount: BigNumber }
 >;
 
+export type BondAddressSetEvent = TypedEvent<[string] & { addr: string }>;
+
+export type BondMintedEvent = TypedEvent<
+  [string, string, BigNumber] & { from: string; to: string; amount: BigNumber }
+>;
+
 export type OwnerChangedEvent = TypedEvent<
   [string, string] & { oldOwner: string; newOwner: string }
 >;
@@ -226,6 +291,12 @@ export type OwnerChangedEvent = TypedEvent<
 export type OwnerNominatedEvent = TypedEvent<[string] & { newOwner: string }>;
 
 export type SCAMPAddressSetEvent = TypedEvent<[string] & { addr: string }>;
+
+export type StakeAddressSetEvent = TypedEvent<[string] & { addr: string }>;
+
+export type StakeMintedEvent = TypedEvent<
+  [string, string, BigNumber] & { from: string; to: string; amount: BigNumber }
+>;
 
 export type TransferEvent = TypedEvent<
   [string, string, BigNumber] & { from: string; to: string; value: BigNumber }
@@ -287,7 +358,23 @@ export class CAMP extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    Bond_mint(
+      m_address: string,
+      m_amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    Bonding_contract_address(overrides?: CallOverrides): Promise<[string]>;
+
     SCAMPAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    Staking_contract_address(overrides?: CallOverrides): Promise<[string]>;
+
+    Staking_mint(
+      m_address: string,
+      m_amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -347,6 +434,11 @@ export class CAMP extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
+    setBondAddress(
+      _Bonding_contract_address: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setOracle(
       new_oracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -354,6 +446,11 @@ export class CAMP extends BaseContract {
 
     setSCAMPAddress(
       SCAMP_contract_address: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setStakeAddress(
+      _Staking_contract_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -387,7 +484,23 @@ export class CAMP extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  Bond_mint(
+    m_address: string,
+    m_amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  Bonding_contract_address(overrides?: CallOverrides): Promise<string>;
+
   SCAMPAddress(overrides?: CallOverrides): Promise<string>;
+
+  Staking_contract_address(overrides?: CallOverrides): Promise<string>;
+
+  Staking_mint(
+    m_address: string,
+    m_amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   acceptOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -447,6 +560,11 @@ export class CAMP extends BaseContract {
 
   owner(overrides?: CallOverrides): Promise<string>;
 
+  setBondAddress(
+    _Bonding_contract_address: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setOracle(
     new_oracle: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -454,6 +572,11 @@ export class CAMP extends BaseContract {
 
   setSCAMPAddress(
     SCAMP_contract_address: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setStakeAddress(
+    _Staking_contract_address: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -487,7 +610,23 @@ export class CAMP extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    Bond_mint(
+      m_address: string,
+      m_amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    Bonding_contract_address(overrides?: CallOverrides): Promise<string>;
+
     SCAMPAddress(overrides?: CallOverrides): Promise<string>;
+
+    Staking_contract_address(overrides?: CallOverrides): Promise<string>;
+
+    Staking_mint(
+      m_address: string,
+      m_amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     acceptOwnership(overrides?: CallOverrides): Promise<void>;
 
@@ -539,10 +678,20 @@ export class CAMP extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<string>;
 
+    setBondAddress(
+      _Bonding_contract_address: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setOracle(new_oracle: string, overrides?: CallOverrides): Promise<void>;
 
     setSCAMPAddress(
       SCAMP_contract_address: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setStakeAddress(
+      _Staking_contract_address: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -619,6 +768,30 @@ export class CAMP extends BaseContract {
       { from: string; to: string; amount: BigNumber }
     >;
 
+    "BondAddressSet(address)"(
+      addr?: null
+    ): TypedEventFilter<[string], { addr: string }>;
+
+    BondAddressSet(addr?: null): TypedEventFilter<[string], { addr: string }>;
+
+    "BondMinted(address,address,uint256)"(
+      from?: string | null,
+      to?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { from: string; to: string; amount: BigNumber }
+    >;
+
+    BondMinted(
+      from?: string | null,
+      to?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { from: string; to: string; amount: BigNumber }
+    >;
+
     "OwnerChanged(address,address)"(
       oldOwner?: null,
       newOwner?: null
@@ -648,6 +821,30 @@ export class CAMP extends BaseContract {
     ): TypedEventFilter<[string], { addr: string }>;
 
     SCAMPAddressSet(addr?: null): TypedEventFilter<[string], { addr: string }>;
+
+    "StakeAddressSet(address)"(
+      addr?: null
+    ): TypedEventFilter<[string], { addr: string }>;
+
+    StakeAddressSet(addr?: null): TypedEventFilter<[string], { addr: string }>;
+
+    "StakeMinted(address,address,uint256)"(
+      from?: string | null,
+      to?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { from: string; to: string; amount: BigNumber }
+    >;
+
+    StakeMinted(
+      from?: string | null,
+      to?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { from: string; to: string; amount: BigNumber }
+    >;
 
     "Transfer(address,address,uint256)"(
       from?: string | null,
@@ -681,7 +878,23 @@ export class CAMP extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    Bond_mint(
+      m_address: string,
+      m_amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    Bonding_contract_address(overrides?: CallOverrides): Promise<BigNumber>;
+
     SCAMPAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    Staking_contract_address(overrides?: CallOverrides): Promise<BigNumber>;
+
+    Staking_mint(
+      m_address: string,
+      m_amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -741,6 +954,11 @@ export class CAMP extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
+    setBondAddress(
+      _Bonding_contract_address: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setOracle(
       new_oracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -748,6 +966,11 @@ export class CAMP extends BaseContract {
 
     setSCAMPAddress(
       SCAMP_contract_address: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setStakeAddress(
+      _Staking_contract_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -782,7 +1005,27 @@ export class CAMP extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    Bond_mint(
+      m_address: string,
+      m_amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    Bonding_contract_address(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     SCAMPAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    Staking_contract_address(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Staking_mint(
+      m_address: string,
+      m_amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -845,6 +1088,11 @@ export class CAMP extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    setBondAddress(
+      _Bonding_contract_address: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     setOracle(
       new_oracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -852,6 +1100,11 @@ export class CAMP extends BaseContract {
 
     setSCAMPAddress(
       SCAMP_contract_address: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setStakeAddress(
+      _Staking_contract_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

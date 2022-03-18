@@ -32,7 +32,7 @@ contract CAMP is ERC20Custom, Owned {
     } 
     
     modifier onlyByOwnOrcontroller() {
-    require(msg.sender == owner || msg.sender == SCAMP.controller_address, "Not the owner, controller");
+    require(msg.sender == owner || msg.sender == _SCAMP.controller_address(), "Not the owner, controller");
     _;
   }
 

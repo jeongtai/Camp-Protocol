@@ -5,6 +5,7 @@ import {useSelector } from "react-redux";
 import Caver from "caver-js";
 
 const caver = new Caver(window.klaytn)
+
 function Staketool () {
     let state = useSelector((state) =>  state)
     let StakeAddress = "0xC0C40B7bD1B9Dfec77FECcF43451f61550c6090a"
@@ -40,6 +41,7 @@ function Staketool () {
       })
       
     }
+
     return (
         <div>
             <Input

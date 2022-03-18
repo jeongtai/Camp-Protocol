@@ -37,7 +37,6 @@ interface SCAMPInterface extends ethers.utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "burn(uint256)": FunctionFragment;
     "burnFrom(address,uint256)": FunctionFragment;
     "collateral_ratio_paused()": FunctionFragment;
     "controller_address()": FunctionFragment;
@@ -60,6 +59,7 @@ interface SCAMPInterface extends ethers.utils.Interface {
     "redemption_fee()": FunctionFragment;
     "refreshCollateralRatio()": FunctionFragment;
     "refresh_cooldown()": FunctionFragment;
+    "setBankAddress(address)": FunctionFragment;
     "setCAMPAddress(address)": FunctionFragment;
     "setCAMPKlayOracle(address,address)": FunctionFragment;
     "setController(address)": FunctionFragment;
@@ -137,7 +137,6 @@ interface SCAMPInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(functionFragment: "burn", values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: "burnFrom",
     values: [string, BigNumberish]
@@ -216,6 +215,10 @@ interface SCAMPInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "refresh_cooldown",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setBankAddress",
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "setCAMPAddress",
@@ -323,7 +326,6 @@ interface SCAMPInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burnFrom", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "collateral_ratio_paused",
@@ -398,6 +400,10 @@ interface SCAMPInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setBankAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setCAMPAddress",
     data: BytesLike
   ): Result;
@@ -462,6 +468,7 @@ interface SCAMPInterface extends ethers.utils.Interface {
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
+    "BankAddressSet(address)": EventFragment;
     "CAMPAddressSet(address)": EventFragment;
     "CAMPKLAYOracleSet(address,address)": EventFragment;
     "CollateralRatioRefreshed(uint256)": EventFragment;
@@ -483,6 +490,7 @@ interface SCAMPInterface extends ethers.utils.Interface {
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "BankAddressSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CAMPAddressSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CAMPKLAYOracleSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CollateralRatioRefreshed"): EventFragment;
@@ -509,6 +517,10 @@ export type ApprovalEvent = TypedEvent<
     spender: string;
     value: BigNumber;
   }
+>;
+
+export type BankAddressSetEvent = TypedEvent<
+  [string] & { Bank_address: string }
 >;
 
 export type CAMPAddressSetEvent = TypedEvent<
@@ -677,11 +689,6 @@ export class SCAMP extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    burn(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     burnFrom(
       account: string,
       amount: BigNumberish,
@@ -742,6 +749,11 @@ export class SCAMP extends BaseContract {
     ): Promise<ContractTransaction>;
 
     refresh_cooldown(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    setBankAddress(
+      _Bank_address: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     setCAMPAddress(
       _CAMP_address: string,
@@ -877,11 +889,6 @@ export class SCAMP extends BaseContract {
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  burn(
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   burnFrom(
     account: string,
     amount: BigNumberish,
@@ -942,6 +949,11 @@ export class SCAMP extends BaseContract {
   ): Promise<ContractTransaction>;
 
   refresh_cooldown(overrides?: CallOverrides): Promise<BigNumber>;
+
+  setBankAddress(
+    _Bank_address: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   setCAMPAddress(
     _CAMP_address: string,
@@ -1075,8 +1087,6 @@ export class SCAMP extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    burn(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
     burnFrom(
       account: string,
       amount: BigNumberish,
@@ -1132,6 +1142,11 @@ export class SCAMP extends BaseContract {
     refreshCollateralRatio(overrides?: CallOverrides): Promise<void>;
 
     refresh_cooldown(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setBankAddress(
+      _Bank_address: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     setCAMPAddress(
       _CAMP_address: string,
@@ -1231,6 +1246,14 @@ export class SCAMP extends BaseContract {
       [string, string, BigNumber],
       { owner: string; spender: string; value: BigNumber }
     >;
+
+    "BankAddressSet(address)"(
+      Bank_address?: null
+    ): TypedEventFilter<[string], { Bank_address: string }>;
+
+    BankAddressSet(
+      Bank_address?: null
+    ): TypedEventFilter<[string], { Bank_address: string }>;
 
     "CAMPAddressSet(address)"(
       CAMP_address?: null
@@ -1490,11 +1513,6 @@ export class SCAMP extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    burn(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     burnFrom(
       account: string,
       amount: BigNumberish,
@@ -1555,6 +1573,11 @@ export class SCAMP extends BaseContract {
     ): Promise<BigNumber>;
 
     refresh_cooldown(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setBankAddress(
+      _Bank_address: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     setCAMPAddress(
       _CAMP_address: string,
@@ -1698,11 +1721,6 @@ export class SCAMP extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    burn(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     burnFrom(
       account: string,
       amount: BigNumberish,
@@ -1771,6 +1789,11 @@ export class SCAMP extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     refresh_cooldown(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    setBankAddress(
+      _Bank_address: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     setCAMPAddress(
       _CAMP_address: string,

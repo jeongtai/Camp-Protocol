@@ -29,10 +29,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20__factory>;
     getContractFactory(
-      name: "ERC20Custom",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC20Custom__factory>;
-    getContractFactory(
       name: "IERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
@@ -225,6 +221,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.KlaybankIncentivesController__factory>;
     getContractFactory(
+      name: "StakeCAMP",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StakeCAMP__factory>;
+    getContractFactory(
       name: "StakedKbt",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.StakedKbt__factory>;
@@ -253,11 +253,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ERC20>;
-    getContractAt(
-      name: "ERC20Custom",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ERC20Custom>;
     getContractAt(
       name: "IERC20",
       address: string,
@@ -498,6 +493,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.KlaybankIncentivesController>;
+    getContractAt(
+      name: "StakeCAMP",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.StakeCAMP>;
     getContractAt(
       name: "StakedKbt",
       address: string,

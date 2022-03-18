@@ -10,13 +10,12 @@ import "./CAMP.sol";
 import "./Pools/SCAMPBank.sol";
 import "./Oracle/UniswapPairOracle.sol";
 
-contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned {
+contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   using SafeMath for uint256;
 
   UniswapPairOracle private KlayUSDTOracle;
   UniswapPairOracle private CAMPKlayOracle;
   UniswapPairOracle private SCAMPKlayOracle;
-  uint8 public constant decimals = 18;
   address public creator_address;
   address public controller_address; 
   address public CAMP_address;
@@ -135,7 +134,7 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned {
   /* ============= Restricted Funtions ============ */
 
   function Bank_burn_from(address b_address, uint256 b_amoount) public onlyBank {
-    super._burnFrom(b_address, b_amoount);
+    _burnFrom(b_address, b_amoount);
     emit SCAMPBurned(b_address, msg.sender ,b_amoount);
   }
 
@@ -240,12 +239,10 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned {
      * - the caller must have allowance for `accounts`'s tokens of at least
      * `amount`.
      */
-  function burnFrom(address account, uint256 amount) public virtual {
-      uint256 decreasedAllowance = allowance(account, _msgSender()).sub(amount, "ERC20: burn amount exceeds allowance");
-
-      _approve(account, _msgSender(), decreasedAllowance);
-      _burn(account, amount);
-  }
+  function _burnFrom(address account, uint256 amount) internal {
+        _burn(account, amount);
+        _approve(account, _msgSender(), _allowances[account][_msgSender()].sub(amount, "ERC20: burn amount exceeds allowance"));
+    }
 
   /* ===========EVENTS ==========*/
     // Track SCAMP burned

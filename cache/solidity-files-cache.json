@@ -1441,8 +1441,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Pools\\SCAMPBank.sol": {
-      "lastModificationDate": 1647580995655,
-      "contentHash": "da77ab3874b6b6b0ad928472c5f1c799",
+      "lastModificationDate": 1647584329463,
+      "contentHash": "c3c73c2eec5f18af55a5a56efe2692e5",
       "sourceName": "contracts/bank/Pools/SCAMPBank.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1483,7 +1483,7 @@
         "./SCAMPPoolLibrary.sol",
         "../Owned.sol",
         "../module/ERC20/ERC20.sol",
-        "../module/Math/SafeMath.sol"
+        "../../bond/library/SafeMath.sol"
       ],
       "versionPragmas": [
         "0.7.5"
@@ -1536,8 +1536,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\CAMP.sol": {
-      "lastModificationDate": 1647581347486,
-      "contentHash": "776233ffa01a74862fe42af657dde8b5",
+      "lastModificationDate": 1647584798557,
+      "contentHash": "197430242a652160caf17e661dfb2c82",
       "sourceName": "contracts/bank/CAMP.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1572,7 +1572,7 @@
       },
       "imports": [
         "./module/Common/Context.sol",
-        "./module/ERC20/ERC20Custom.sol",
+        "../bond/library/kip/KIP7.sol",
         "./Owned.sol",
         "./SCAMP.sol"
       ],
@@ -1584,8 +1584,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\SCAMP.sol": {
-      "lastModificationDate": 1647580995656,
-      "contentHash": "3890911bdb6469be45889e23eec91cb8",
+      "lastModificationDate": 1647584710199,
+      "contentHash": "225aae7af8caa2db61198d1020e682b9",
       "sourceName": "contracts/bank/SCAMP.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1621,7 +1621,7 @@
       "imports": [
         "./module/Common/Context.sol",
         "./module/ERC20/IERC20.sol",
-        "./module/ERC20/ERC20Custom.sol",
+        "../bond/library/kip/KIP7.sol",
         "./Owned.sol",
         "./CAMP.sol",
         "./Pools/SCAMPBank.sol",
@@ -1635,8 +1635,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\ERC20\\ERC20.sol": {
-      "lastModificationDate": 1647580995658,
-      "contentHash": "7853d05f35ee1bbd029e2ec7a1a42f0a",
+      "lastModificationDate": 1647584294366,
+      "contentHash": "902cc10fbaff404dd6a648e9842aaeae",
       "sourceName": "contracts/bank/module/ERC20/ERC20.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1672,7 +1672,7 @@
       "imports": [
         "../Common/Context.sol",
         "./IERC20.sol",
-        "../Math/SafeMath.sol",
+        "../../../bond/library/SafeMath.sol",
         "../Utils/Address.sol"
       ],
       "versionPragmas": [
@@ -1680,49 +1680,6 @@
       ],
       "artifacts": [
         "ERC20"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\Math\\SafeMath.sol": {
-      "lastModificationDate": 1647336413490,
-      "contentHash": "4b70ee2c85f48ade43335e41f449e5b4",
-      "sourceName": "contracts/bank/module/Math/SafeMath.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "SafeMath"
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\Common\\Context.sol": {
@@ -1768,57 +1725,9 @@
         "Context"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\ERC20\\ERC20Custom.sol": {
-      "lastModificationDate": 1647335472084,
-      "contentHash": "24a136f1e3c6c05a3d45222f4a7234d8",
-      "sourceName": "contracts/bank/module/ERC20/ERC20Custom.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../Common/Context.sol",
-        "./IERC20.sol",
-        "../Math/SafeMath.sol",
-        "../Utils/Address.sol"
-      ],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "ERC20Custom"
-      ]
-    },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\ERC20\\IERC20.sol": {
-      "lastModificationDate": 1647335472077,
-      "contentHash": "3dce42c20903e8eaa0545825d4c536ae",
+      "lastModificationDate": 1647584277252,
+      "contentHash": "be1def67f7165032c7a90fdc9a4d4bdd",
       "sourceName": "contracts/bank/module/ERC20/IERC20.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1853,7 +1762,7 @@
       },
       "imports": [
         "../Common/Context.sol",
-        "../Math/SafeMath.sol"
+        "../../../bond/library/SafeMath.sol"
       ],
       "versionPragmas": [
         "=0.7.5"
@@ -3204,52 +3113,6 @@
         "IKlaybankIncentivesController"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\stake\\StakedKbt.sol": {
-      "lastModificationDate": 1647333084783,
-      "contentHash": "bb59e74b7aedca99c28d8277322cb87f",
-      "sourceName": "contracts/stake/stake/StakedKbt.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../interfaces/IKIP7.sol",
-        "./StakedToken.sol"
-      ],
-      "versionPragmas": [
-        "0.7.5"
-      ],
-      "artifacts": [
-        "StakedKbt"
-      ]
-    },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\stake\\KlaybankEcosystemReserve.sol": {
       "lastModificationDate": 1647333084784,
       "contentHash": "b339416c08d98de9803bf02c430046cb",
@@ -3700,6 +3563,52 @@
       ],
       "artifacts": [
         "IKIP7Detailed"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\stake\\StakedCAMP.sol": {
+      "lastModificationDate": 1647585720758,
+      "contentHash": "bd1dab777659d562a8949e8c1ee48b1f",
+      "sourceName": "contracts/stake/stake/StakedCAMP.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IKIP7.sol",
+        "./StakedToken.sol"
+      ],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "StakeCAMP"
       ]
     }
   }

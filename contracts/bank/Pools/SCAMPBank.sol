@@ -8,7 +8,8 @@ import "../Oracle/UniswapPairOracle.sol";
 import "./SCAMPPoolLibrary.sol";
 import "../Owned.sol";
 import "../module/ERC20/ERC20.sol";
-import "../module/Math/SafeMath.sol";
+// import "../module/Math/SafeMath.sol";
+import "../../bond/library/SafeMath.sol";
 
 
 contract SCAMPBank is Owned {

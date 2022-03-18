@@ -19,7 +19,7 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
-interface StakedKbtInterface extends ethers.utils.Interface {
+interface StakeCAMPInterface extends ethers.utils.Interface {
   functions: {
     "DELEGATE_BY_TYPE_TYPEHASH()": FunctionFragment;
     "DELEGATE_TYPEHASH()": FunctionFragment;
@@ -636,7 +636,7 @@ export type UserIndexUpdatedEvent = TypedEvent<
   }
 >;
 
-export class StakedKbt extends BaseContract {
+export class StakeCAMP extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -677,7 +677,7 @@ export class StakedKbt extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: StakedKbtInterface;
+  interface: StakeCAMPInterface;
 
   functions: {
     DELEGATE_BY_TYPE_TYPEHASH(overrides?: CallOverrides): Promise<[string]>;

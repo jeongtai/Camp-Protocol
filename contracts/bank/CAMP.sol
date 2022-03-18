@@ -7,12 +7,10 @@ import "../bond/library/kip/KIP7.sol";
 import "./Owned.sol";
 import "./SCAMP.sol";
 
-contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned {
+contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Context {
     using SafeMath for uint256;
 
-
     /* ========== STATE VARIABLES ========== */
-    uint8 public constant decimals = 18;
     address public SCAMPAddress;
     address public Bonding_contract_address;
     address public Staking_contract_address;
@@ -81,7 +79,7 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned {
     // This function is what other WUSD pools will call to burn WMF 
     function Bank_burn_from(address b_address, uint256 b_amount) external onlyBank {
 
-        super._burnFrom(b_address, b_amount);
+        _burnFrom(b_address, b_amount);
         emit BankBurned(b_address, address(this), b_amount);
     }
 
@@ -95,22 +93,9 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned {
         emit StakeMinted(address(this), m_address, m_amount);
     }
 
-        /**
-     * @dev Destroys `amount` tokens from `account`, deducting from the caller's
-     * allowance.
-     *
-     * See {ERC20-_burn} and {ERC20-allowance}.
-     *
-     * Requirements:
-     *
-     * - the caller must have allowance for `accounts`'s tokens of at least
-     * `amount`.
-     */
-    function burnFrom(address account, uint256 amount) public virtual {
-        uint256 decreasedAllowance = allowance(account, _msgSender()).sub(amount, "ERC20: burn amount exceeds allowance");
-
-        _approve(account, _msgSender(), decreasedAllowance);
+    function _burnFrom(address account, uint256 amount) internal {
         _burn(account, amount);
+        _approve(account, _msgSender(), _allowances[account][_msgSender()].sub(amount, "ERC20: burn amount exceeds allowance"));
     }
     /* ========== EVENTS ========== */
 

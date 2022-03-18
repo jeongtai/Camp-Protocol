@@ -4,7 +4,7 @@
 
 import { Signer, utils, Contract, ContractFactory, Overrides } from "ethers";
 import { Provider, TransactionRequest } from "@ethersproject/providers";
-import type { WUSDPool, WUSDPoolInterface } from "../WUSDPool";
+import type { SCAMP_Bank, WUSDPoolInterface } from "../SCAMP_Bank";
 
 const _abi = [
   {
@@ -737,14 +737,14 @@ export class WUSDPool__factory extends ContractFactory {
     _collateral_address: string,
     _creator_address: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<WUSDPool> {
+  ): Promise<SCAMP_Bank> {
     return super.deploy(
       _WUSD_contract_address,
       _WMF_contract_address,
       _collateral_address,
       _creator_address,
       overrides || {}
-    ) as Promise<WUSDPool>;
+    ) as Promise<SCAMP_Bank>;
   }
   getDeployTransaction(
     _WUSD_contract_address: string,
@@ -761,8 +761,8 @@ export class WUSDPool__factory extends ContractFactory {
       overrides || {}
     );
   }
-  attach(address: string): WUSDPool {
-    return super.attach(address) as WUSDPool;
+  attach(address: string): SCAMP_Bank {
+    return super.attach(address) as SCAMP_Bank;
   }
   connect(signer: Signer): WUSDPool__factory {
     return super.connect(signer) as WUSDPool__factory;
@@ -775,8 +775,8 @@ export class WUSDPool__factory extends ContractFactory {
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): WUSDPool {
-    return new Contract(address, _abi, signerOrProvider) as WUSDPool;
+  ): SCAMP_Bank {
+    return new Contract(address, _abi, signerOrProvider) as SCAMP_Bank;
   }
 }
 

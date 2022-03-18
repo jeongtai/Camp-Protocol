@@ -21,13 +21,13 @@ contract CAMP is ERC20Custom, Owned {
     uint256 public constant genesis_supply = 100000000e18; // 100M is printed upon genesis
  
     address public oracle_address;
-    SCAMP private SCAMP;
+    SCAMP private _SCAMP;
 
 
     /* ========== MODIFIERS ========== */
 
     modifier onlyBank() {
-       require(msg.sender == SCAMP.SCAMP_Bank, "You are not bank");
+        require(msg.sender == _SCAMP.SCAMP_Bank(), "You are not bank");
         _;
     } 
     
@@ -70,8 +70,8 @@ contract CAMP is ERC20Custom, Owned {
     function setSCAMPAddress(address SCAMP_contract_address) external onlyByOwnOrcontroller {
         require(SCAMP_contract_address != address(0), "Zero address detected");
 
-        SCAMP = SCAMP(SCAMP_contract_address);
-        emit SCAMPAddressSet(SCAMP_contract_addresss);
+        _SCAMP = SCAMP(SCAMP_contract_address);
+        emit SCAMPAddressSet(SCAMP_contract_address);
     }
     
     function setBondAddress(address _Bonding_contract_address) external onlyByOwnOrcontroller {

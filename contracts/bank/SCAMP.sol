@@ -181,6 +181,13 @@ contract SCAMP is ERC20Custom, Owned {
     emit CAMPAddressSet(_CAMP_address);
   }
 
+  function setBankAddress(address _Bank_address) public onlyByOwnOrcontroller {
+    require(_Bank_address != address(0), "Zero address detected");
+
+    SCAMPBank = _Bank_address;
+    emit BankAddressSet(_Bank_address);
+  }
+
   function setController(address _controller_address) external onlyByOwnOrcontroller {
     require(_controller_address != address(0), "Zero address detected");
  
@@ -242,9 +249,11 @@ contract SCAMP is ERC20Custom, Owned {
   event RefreshCooldownSet(uint256 new_cooldown);
   event CAMPAddressSet(address CAMP_address);
   event ControllerSet(address controller_address);
+  event BankAddressSet(address Bank_address);
   event PriceBandSet(uint256 price_band);
   event KLAYUSDTOracleSet(address Klay_oracle_addr, address klay_address);
   event SCAMPKLAYOracleSet(address SCAMP_oracle_addr, address klay_address);
   event CAMPKLAYOracleSet(address CAMP_oracle_addr, address klay_address);
   event CollateralRatioToggled(bool collateral_ratio_paused);
+
 }

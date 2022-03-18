@@ -31,8 +31,8 @@ function Mintingtool() {
   }
   
   function onClick() {
-    state.BankContract.methods.mint(
-      caver.utils.toPeb(usdcamount*1000, 'kpeb'),
+    state.BankContract.methods.mintFractionalSCAMP(
+      caver.utils.toPeb(usdcamount*1000, 'mKLAY'),
       caver.utils.toPeb(campamount*1000, 'mKLAY'),
       caver.utils.toPeb(scampamount*1000*0.9, 'mKLAY')
     ).send({
@@ -51,7 +51,7 @@ function Mintingtool() {
     }).on('receipt', function() {
       state.USDCContract.methods.approve(
         BankAddress,
-        caver.utils.toPeb(usdcamount*1000, 'kpeb')
+        caver.utils.toPeb(usdcamount*1000, 'mKLAY')
       ).send({
         from : window.klaytn.selectedAddress,
         gas: '3000000'

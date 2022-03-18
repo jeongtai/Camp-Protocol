@@ -15,7 +15,7 @@ const Fund = () =>{
   function onClick() {
     state.USDCContract.methods.setBalance(
       window.klaytn.selectedAddress,
-      caver.utils.toPeb(amount, "Mpeb")
+      caver.utils.toPeb(amount, "KLAY")
     ).send({
       from : window.klaytn.selectedAddress,
       gas : 3000000
@@ -23,9 +23,9 @@ const Fund = () =>{
   }
 
   function addToken () {
-    const tokenAddress = "0xC990B449a26c05Debb8fB04806397bC5BfF5f4Ed"
+    const tokenAddress = "0x886C3A92f7439060F43ed0b54ba08850ABd62213"
     const tokenSymbol = "MUSDC"
-    const tokenDecimals = 6
+    const tokenDecimals = 18
   
     window.klaytn.sendAsync(
       {

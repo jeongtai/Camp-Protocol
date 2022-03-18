@@ -83,7 +83,7 @@ contract SCAMPPool is Owned {
         address _CAMP_contract_address,
         address _collateral_address,
         address _creator_address
-    ) public Owned(_creator_address){
+    ) Owned(_creator_address){
         require(
             (_SCAMP_contract_address != address(0))
             && (_CAMP_contract_address != address(0))
@@ -123,8 +123,8 @@ contract SCAMPPool is Owned {
     /* ========== PUBLIC FUNCTIONS ========== */
     
     // Returns the price of the pool collateral in USD
-    function getCollateralPrice() public view returns (uint256) {
-        uint256 eth_usd_price = _SCAMP.KLAY_usdt_price();
+    function getCollateralPrice() public pure returns (uint256) {
+        // uint256 eth_usd_price = _SCAMP.KLAY_usdt_price();
         // return eth_usd_price.mul(PRICE_PRECISION).div(collatKlayOracle.consult(klay_address, PRICE_PRECISION * (10 ** missing_decimals)));
         return 1000000;
     }

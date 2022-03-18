@@ -19,8 +19,6 @@ contract CAMP is ERC20Custom, Owned {
     address public Bonding_contract_address;
     address public Staking_contract_address;
     uint256 public constant genesis_supply = 100000000e18; // 100M is printed upon genesis
- 
-    address public oracle_address;
     SCAMP private _SCAMP;
 
 
@@ -31,8 +29,8 @@ contract CAMP is ERC20Custom, Owned {
         _;
     } 
     
-    modifier onlyByOwnOrcontroller() {
-    require(msg.sender == owner || msg.sender == SCAMP.controller_address, "Not the owner, controller");
+    modifier onlyOwn() {
+    require(msg.sender == owner,  "Not the owner");
     _;
   }
 
@@ -51,37 +49,30 @@ contract CAMP is ERC20Custom, Owned {
     constructor (
         string memory _name,
         string memory _symbol, 
-        address _oracle_address,
         address _creator_address
-    ) public Owned(_creator_address){
+    ) Owned(_creator_address){
         name = _name;
         symbol = _symbol;
-        oracle_address = _oracle_address;
         _mint(_creator_address, genesis_supply);
 
     }
     /* ========== RESTRICTED FUNCTIONS ========== */
 
-    function setOracle(address new_oracle) external onlyByOwnOrcontroller {
-        require(new_oracle != address(0), "Zero address detected");
-        oracle_address = new_oracle;
-    }
-
-    function setSCAMPAddress(address SCAMP_contract_address) external onlyByOwnOrcontroller {
+    function setSCAMPAddress(address SCAMP_contract_address) external onlyOwn {
         require(SCAMP_contract_address != address(0), "Zero address detected");
 
         _SCAMP = SCAMP(SCAMP_contract_address);
         emit SCAMPAddressSet(SCAMP_contract_address);
     }
     
-    function setBondAddress(address _Bonding_contract_address) external onlyByOwnOrcontroller {
+    function setBondAddress(address _Bonding_contract_address) external onlyOwn {
       require(_Bonding_contract_address != address(0), "Zero address detected");
 
       Bonding_contract_address = _Bonding_contract_address;
       emit BondAddressSet(_Bonding_contract_address);
     }
 
-    function setStakeAddress(address _Staking_contract_address) external onlyByOwnOrcontroller {
+    function setStakeAddress(address _Staking_contract_address) external onlyOwn {
       require(_Staking_contract_address != address(0), "Zero address detected");
 
       Staking_contract_address = _Staking_contract_address;

@@ -28,7 +28,7 @@ interface SCAMPInterface extends ethers.utils.Interface {
     "CAMP_price()": FunctionFragment;
     "KLAY_usdt_price()": FunctionFragment;
     "Klay_Usdt_oracle_address()": FunctionFragment;
-    "SCAMP_Bank()": FunctionFragment;
+    "SCAMPBank()": FunctionFragment;
     "SCAMP_info()": FunctionFragment;
     "SCAMP_klay_oracle_address()": FunctionFragment;
     "SCAMP_price()": FunctionFragment;
@@ -107,10 +107,7 @@ interface SCAMPInterface extends ethers.utils.Interface {
     functionFragment: "Klay_Usdt_oracle_address",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "SCAMP_Bank",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: "SCAMPBank", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "SCAMP_info",
     values?: undefined
@@ -308,7 +305,7 @@ interface SCAMPInterface extends ethers.utils.Interface {
     functionFragment: "Klay_Usdt_oracle_address",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "SCAMP_Bank", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "SCAMPBank", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "SCAMP_info", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "SCAMP_klay_oracle_address",
@@ -650,7 +647,7 @@ export class SCAMP extends BaseContract {
 
     Klay_Usdt_oracle_address(overrides?: CallOverrides): Promise<[string]>;
 
-    SCAMP_Bank(overrides?: CallOverrides): Promise<[string]>;
+    SCAMPBank(overrides?: CallOverrides): Promise<[string]>;
 
     SCAMP_info(
       overrides?: CallOverrides
@@ -850,7 +847,7 @@ export class SCAMP extends BaseContract {
 
   Klay_Usdt_oracle_address(overrides?: CallOverrides): Promise<string>;
 
-  SCAMP_Bank(overrides?: CallOverrides): Promise<string>;
+  SCAMPBank(overrides?: CallOverrides): Promise<string>;
 
   SCAMP_info(
     overrides?: CallOverrides
@@ -1050,7 +1047,7 @@ export class SCAMP extends BaseContract {
 
     Klay_Usdt_oracle_address(overrides?: CallOverrides): Promise<string>;
 
-    SCAMP_Bank(overrides?: CallOverrides): Promise<string>;
+    SCAMPBank(overrides?: CallOverrides): Promise<string>;
 
     SCAMP_info(
       overrides?: CallOverrides
@@ -1465,7 +1462,7 @@ export class SCAMP extends BaseContract {
 
     Klay_Usdt_oracle_address(overrides?: CallOverrides): Promise<BigNumber>;
 
-    SCAMP_Bank(overrides?: CallOverrides): Promise<BigNumber>;
+    SCAMPBank(overrides?: CallOverrides): Promise<BigNumber>;
 
     SCAMP_info(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1668,7 +1665,7 @@ export class SCAMP extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    SCAMP_Bank(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    SCAMPBank(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     SCAMP_info(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

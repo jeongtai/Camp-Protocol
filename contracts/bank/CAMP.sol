@@ -25,7 +25,7 @@ contract CAMP is ERC20Custom, Owned {
     /* ========== MODIFIERS ========== */
 
     modifier onlyBank() {
-        require(msg.sender == _SCAMP.SCAMP_Bank(), "You are not bank");
+        require(msg.sender == _SCAMP.SCAMPBank(), "You are not bank");
         _;
     } 
     

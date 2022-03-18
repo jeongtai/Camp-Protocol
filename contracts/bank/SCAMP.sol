@@ -6,7 +6,7 @@ import "./module/ERC20/IERC20.sol";
 import "./module/ERC20/ERC20Custom.sol";
 import "./Owned.sol";
 import "./CAMP.sol";
-import "./Pools/SCAMP_Bank.sol";
+import "./Pools/SCAMPBank.sol";
 import "./Oracle/UniswapPairOracle.sol";
 
 contract SCAMP is ERC20Custom, Owned {
@@ -28,7 +28,7 @@ contract SCAMP is ERC20Custom, Owned {
   address public usdt_address;
   uint256 public constant genesis_supply = 2000000e18; // 2M SCMAP 선발행
 
-  address public SCAMP_Bank; //SCAMP Bank address받기
+  address public SCAMPBank; //SCAMP Bank address받기
   
   //Bank에 필요한 variables
   uint256 private constant PRICE_PRECISION = 1e6;
@@ -53,7 +53,7 @@ contract SCAMP is ERC20Custom, Owned {
   }
 
   modifier onlyBank() {
-    require(msg.sender == SCAMP_Bank, "only Bank Contract!");
+    require(msg.sender == SCAMPBank, "only Bank Contract!");
     _;
   }
 

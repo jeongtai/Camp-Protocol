@@ -51,6 +51,7 @@
     "caver-js": "1.6.4",
     "evm-bn": "^1.1.1",
     "hardhat-watcher": "^2.1.1",
+    "mocha": "^9.2.2",
     "solhint": "^3.3.6"
   },
   "description": "https://claimswap.org/",

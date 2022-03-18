@@ -392,7 +392,7 @@ export type RedeemingToggledEvent = TypedEvent<
   [boolean] & { toggled: boolean }
 >;
 
-export class SCAMPPool extends BaseContract {
+export class SCAMPBank extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;

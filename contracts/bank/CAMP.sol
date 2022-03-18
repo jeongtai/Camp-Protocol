@@ -26,7 +26,7 @@ contract CAMP is ERC20Custom, Owned {
     /* ========== MODIFIERS ========== */
 
     modifier onlyBank() {
-        require(msg.sender == _SCAMP.SCAMP_Bank(), "You are not bank");
+        require(msg.sender == _SCAMP.SCAMPBank(), "You are not bank");
         _;
     } 
     
@@ -40,12 +40,12 @@ contract CAMP is ERC20Custom, Owned {
     constructor (
         string memory _name,
         string memory _symbol, 
-        address _oracle_address,
+        // address _oracle_address,
         address _creator_address
     ) public Owned(_creator_address){
         name = _name;
         symbol = _symbol;
-        oracle_address = _oracle_address;
+        // oracle_address = _oracle_address;
         _mint(_creator_address, genesis_supply);
 
     }

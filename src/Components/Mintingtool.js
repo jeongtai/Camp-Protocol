@@ -1,7 +1,7 @@
 import Button from "./Button"
 import Input from "./INPUT"
 import {useSelector} from 'react-redux'
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import Caver from "caver-js"
 
 const caver = new Caver(window.klaytn)

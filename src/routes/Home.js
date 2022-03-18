@@ -1,6 +1,5 @@
 import react, { useState, useEffect } from "react";
 import Caver from "caver-js";
-import ContJson from "../abis/contract-example.json";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import CAMPColor from "../assets/CAMP-color.svg"
@@ -149,11 +148,31 @@ const GetScamp = styled.button`
     border-radius: 6px;
     color: white;
 `;
+function addToken (tokenaddr, url, name) {
+  const tokenAddress = tokenaddr
+  const tokenSymbol = name
+  const tokenDecimals = 18
+  const tokenImage = url
+
+  window.klaytn.sendAsync(
+    {
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20', // Initially only supports ERC20, but eventually more!
+        options: {
+          address: tokenAddress, // The address that the token is at.
+          symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+          decimals: tokenDecimals, // The number of decimals in the token
+          image: tokenImage // A string url of the token logo
+        }
+      },
+      id: Math.round(Math.random() * 100000)
+    }
+  )
+}
 
 function Home() {
     let state = useSelector((state) => state);
-    const [tcr, setTCR] = useState();
-    const [ecr, setECR] = useState();
     const [scampsupply, setScampSupply] = useState()
     const [campsupply, setCampSupply] = useState()
     const caver = new Caver(window.klaytn);
@@ -162,27 +181,21 @@ function Home() {
         { name: "CAMP Price", amt: "$ 0.4602" },
         { name: "TVL", amt: "$ 19240.4912" },
         { name: "Treasury Balance", amt: "$ 7608.0027" },
-        { name: "Target Collateral Ratio", amt: `${tcr * 100} %` },
-        { name: "Effective Collateral Ratio", amt: `${ecr * 100} %` },
+        { name: "Target Collateral Ratio", amt: '100' },
+        { name: "Effective Collateral Ratio", amt: '100' },
         { name: "Owned Liquidity", amt: "$ 12667.3552" },
         { name: "Rented Liquidity", amt: "$ 16891.8558" },
     ];
-
+    
     const Tokens = [
-        { name: "CAMP", price: 0.4602, supply: scampsupply},
-        { name: "SCAMP", price: 0.9812, supply: campsupply},
+        { name: "CAMP", price: 0.4602, supply: campsupply, Contract : "0xf95037DdD53e0B6bB870c3839E42312CBb58cd4f", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg"},
+        { name: "SCAMP", price: 0.9812, supply: scampsupply, Contract : "0x2714Ac12B99202818424d54E0C65a9fC5ac683AA", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg"},
     ];
     useEffect(() => {
         window.klaytn.enable();
-        state.BankContract.methods
-            .info()
-            .call((e, v) => setTCR(caver.utils.fromPeb(v[0], "KLAY")))
-        state.BankContract.methods
-            .info()
-            .call((e, v) => setECR(caver.utils.fromPeb(v[1], "Mpeb")));
         state.SCAMPContract.methods
             .totalSupply()
-            .call((e,v)=> setScampSupply(caver.utils.fromPeb(v, "mKLAY")))
+            .call((e,v)=> setScampSupply(caver.utils.fromPeb(v, "KLAY")))
         state.CAMPContract.methods
             .totalSupply()
             .call((e,v)=> setCampSupply(caver.utils.fromPeb(v, "KLAY")))
@@ -225,7 +238,7 @@ function Home() {
                                 </p>
                             </TokenItemInfo>
                             <TokenItemInfo>
-                                <AddWallet>Add Wallet</AddWallet>
+                                <AddWallet onClick={() => addToken(token.Contract, token.logo, token.name)}>Add Wallet</AddWallet>
                                 <GetScamp>Get {token.name}</GetScamp>
                             </TokenItemInfo>
                         </TokenItem>

@@ -5,7 +5,7 @@ pragma solidity 0.7.5;
 import "../Owned.sol";
 import "../../bond/library/kip/KIP7.sol";
 
-contract MockUSDC is KIP7("MockERC20", "Mock", 6), Owned(msg.sender) {
+contract MockUSDC is KIP7("MockERC20", "Mock", 18), Owned(msg.sender) {
     uint256 public constant TOTAL_SUPPLY = 1000000e18;
 
     // @notice Must only be called by anyone! haha!

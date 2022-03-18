@@ -41,10 +41,8 @@ interface CAMPInterface extends ethers.utils.Interface {
     "name()": FunctionFragment;
     "nominateNewOwner(address)": FunctionFragment;
     "nominatedOwner()": FunctionFragment;
-    "oracle_address()": FunctionFragment;
     "owner()": FunctionFragment;
     "setBondAddress(address)": FunctionFragment;
-    "setOracle(address)": FunctionFragment;
     "setSCAMPAddress(address)": FunctionFragment;
     "setStakeAddress(address)": FunctionFragment;
     "symbol()": FunctionFragment;
@@ -121,16 +119,11 @@ interface CAMPInterface extends ethers.utils.Interface {
     functionFragment: "nominatedOwner",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "oracle_address",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "setBondAddress",
     values: [string]
   ): string;
-  encodeFunctionData(functionFragment: "setOracle", values: [string]): string;
   encodeFunctionData(
     functionFragment: "setSCAMPAddress",
     values: [string]
@@ -206,16 +199,11 @@ interface CAMPInterface extends ethers.utils.Interface {
     functionFragment: "nominatedOwner",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "oracle_address",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setBondAddress",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setOracle", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setSCAMPAddress",
     data: BytesLike
@@ -430,17 +418,10 @@ export class CAMP extends BaseContract {
 
     nominatedOwner(overrides?: CallOverrides): Promise<[string]>;
 
-    oracle_address(overrides?: CallOverrides): Promise<[string]>;
-
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     setBondAddress(
       _Bonding_contract_address: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setOracle(
-      new_oracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -556,17 +537,10 @@ export class CAMP extends BaseContract {
 
   nominatedOwner(overrides?: CallOverrides): Promise<string>;
 
-  oracle_address(overrides?: CallOverrides): Promise<string>;
-
   owner(overrides?: CallOverrides): Promise<string>;
 
   setBondAddress(
     _Bonding_contract_address: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setOracle(
-    new_oracle: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -674,16 +648,12 @@ export class CAMP extends BaseContract {
 
     nominatedOwner(overrides?: CallOverrides): Promise<string>;
 
-    oracle_address(overrides?: CallOverrides): Promise<string>;
-
     owner(overrides?: CallOverrides): Promise<string>;
 
     setBondAddress(
       _Bonding_contract_address: string,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    setOracle(new_oracle: string, overrides?: CallOverrides): Promise<void>;
 
     setSCAMPAddress(
       SCAMP_contract_address: string,
@@ -950,17 +920,10 @@ export class CAMP extends BaseContract {
 
     nominatedOwner(overrides?: CallOverrides): Promise<BigNumber>;
 
-    oracle_address(overrides?: CallOverrides): Promise<BigNumber>;
-
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     setBondAddress(
       _Bonding_contract_address: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setOracle(
-      new_oracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1084,17 +1047,10 @@ export class CAMP extends BaseContract {
 
     nominatedOwner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    oracle_address(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setBondAddress(
       _Bonding_contract_address: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setOracle(
-      new_oracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

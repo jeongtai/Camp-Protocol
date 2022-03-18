@@ -3,20 +3,19 @@ pragma solidity =0.7.5;
 
 import "./module/Common/Context.sol";
 import "./module/ERC20/IERC20.sol";
-import "./module/ERC20/ERC20Custom.sol";
+// import "./module/ERC20/ERC20Custom.sol";
+import "../bond/library/kip/KIP7.sol";
 import "./Owned.sol";
 import "./CAMP.sol";
 import "./Pools/SCAMPBank.sol";
 import "./Oracle/UniswapPairOracle.sol";
 
-contract SCAMP is ERC20Custom, Owned {
+contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned {
   using SafeMath for uint256;
 
   UniswapPairOracle private KlayUSDTOracle;
   UniswapPairOracle private CAMPKlayOracle;
   UniswapPairOracle private SCAMPKlayOracle;
-  string public symbol;
-  string public name;
   uint8 public constant decimals = 18;
   address public creator_address;
   address public controller_address; 
@@ -61,12 +60,8 @@ contract SCAMP is ERC20Custom, Owned {
   /*=============constructor================*/
 
   constructor(
-    string memory _name,
-    string memory _symbol,
     address _creator_address
   ) Owned(_creator_address) {
-    name = _name;
-    symbol = _symbol;
     creator_address = _creator_address;
     default_admin_address = _msgSender();
     _mint(creator_address, genesis_supply);
@@ -225,6 +220,24 @@ contract SCAMP is ERC20Custom, Owned {
     collateral_ratio_paused = !collateral_ratio_paused;
 
     emit CollateralRatioToggled(collateral_ratio_paused);
+  }
+
+      /**
+     * @dev Destroys `amount` tokens from `account`, deducting from the caller's
+     * allowance.
+     *
+     * See {ERC20-_burn} and {ERC20-allowance}.
+     *
+     * Requirements:
+     *
+     * - the caller must have allowance for `accounts`'s tokens of at least
+     * `amount`.
+     */
+  function burnFrom(address account, uint256 amount) public virtual {
+      uint256 decreasedAllowance = allowance(account, _msgSender()).sub(amount, "ERC20: burn amount exceeds allowance");
+
+      _approve(account, _msgSender(), decreasedAllowance);
+      _burn(account, amount);
   }
 
   /* ===========EVENTS ==========*/

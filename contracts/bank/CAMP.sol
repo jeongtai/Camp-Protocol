@@ -2,18 +2,16 @@
 pragma solidity =0.7.5;
 
 import "./module/Common/Context.sol";
-import "./module/ERC20/ERC20Custom.sol";
+// import "./module/ERC20/ERC20Custom.sol";
+import "../bond/library/kip/KIP7.sol";
 import "./Owned.sol";
 import "./SCAMP.sol";
 
-contract CAMP is ERC20Custom, Owned {
+contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned {
     using SafeMath for uint256;
 
 
     /* ========== STATE VARIABLES ========== */
-
-    string public symbol;
-    string public name;
     uint8 public constant decimals = 18;
     address public SCAMPAddress;
     address public Bonding_contract_address;
@@ -47,32 +45,27 @@ contract CAMP is ERC20Custom, Owned {
     /* ========== CONSTRUCTOR ========== */
 
     constructor (
-        string memory _name,
-        string memory _symbol, 
         address _creator_address
     ) Owned(_creator_address){
-        name = _name;
-        symbol = _symbol;
         _mint(_creator_address, genesis_supply);
-
     }
     /* ========== RESTRICTED FUNCTIONS ========== */
 
-    function setSCAMPAddress(address SCAMP_contract_address) external onlyOwn {
+    function setSCAMPAddress(address SCAMP_contract_address) external onlyByOwnOrcontroller {
         require(SCAMP_contract_address != address(0), "Zero address detected");
 
         _SCAMP = SCAMP(SCAMP_contract_address);
         emit SCAMPAddressSet(SCAMP_contract_address);
     }
     
-    function setBondAddress(address _Bonding_contract_address) external onlyOwn {
+    function setBondAddress(address _Bonding_contract_address) external onlyByOwnOrcontroller {
       require(_Bonding_contract_address != address(0), "Zero address detected");
 
       Bonding_contract_address = _Bonding_contract_address;
       emit BondAddressSet(_Bonding_contract_address);
     }
 
-    function setStakeAddress(address _Staking_contract_address) external onlyOwn {
+    function setStakeAddress(address _Staking_contract_address) external onlyByOwnOrcontroller {
       require(_Staking_contract_address != address(0), "Zero address detected");
 
       Staking_contract_address = _Staking_contract_address;
@@ -97,9 +90,27 @@ contract CAMP is ERC20Custom, Owned {
         emit BondMinted(address(this), m_address, m_amount);
     }
   
-      function Staking_mint(address m_address, uint256 m_amount) external onlyStake {        
+    function Staking_mint(address m_address, uint256 m_amount) external onlyStake {        
         super._mint(m_address, m_amount);
         emit StakeMinted(address(this), m_address, m_amount);
+    }
+
+        /**
+     * @dev Destroys `amount` tokens from `account`, deducting from the caller's
+     * allowance.
+     *
+     * See {ERC20-_burn} and {ERC20-allowance}.
+     *
+     * Requirements:
+     *
+     * - the caller must have allowance for `accounts`'s tokens of at least
+     * `amount`.
+     */
+    function burnFrom(address account, uint256 amount) public virtual {
+        uint256 decreasedAllowance = allowance(account, _msgSender()).sub(amount, "ERC20: burn amount exceeds allowance");
+
+        _approve(account, _msgSender(), decreasedAllowance);
+        _burn(account, amount);
     }
     /* ========== EVENTS ========== */
 

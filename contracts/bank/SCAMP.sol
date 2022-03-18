@@ -64,7 +64,7 @@ contract SCAMP is ERC20Custom, Owned {
     string memory _name,
     string memory _symbol,
     address _creator_address
-  ) public Owned(_creator_address) {
+  ) Owned(_creator_address) {
     name = _name;
     symbol = _symbol;
     creator_address = _creator_address;

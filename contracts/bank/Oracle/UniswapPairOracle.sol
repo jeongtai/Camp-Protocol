@@ -8,6 +8,7 @@ import '../module/Math/FixedPoint.sol';
 import '../Uniswap/UniswapV2OracleLibrary.sol';
 import '../Uniswap/UniswapV2Library.sol';
 import "../Owned.sol";
+import "hardhat/console.sol";
 
 
 // Fixed window oracle that recomputes the average price for the entire period once every period
@@ -90,15 +91,19 @@ contract UniswapPairOracle is Owned {
     function consult(address token, uint amountIn) public view returns (uint amountOut) {
         uint32 blockTimestamp = UniswapV2OracleLibrary.currentBlockTimestamp();
         uint32 timeElapsed = blockTimestamp - blockTimestampLast; // Overflow is desired
+        console.log("hi1");
 
         // Ensure that the price is not stale
         require((timeElapsed < (PERIOD + CONSULT_LENIENCY)) || ALLOW_STALE_CONSULTS, 'UniswapPairOracle: PRICE_IS_STALE_NEED_TO_CALL_UPDATE');
 
+        console.log("hi2");
         if (token == token0) {
             amountOut = price0Average.mul(amountIn).decode144();
+            console.log("hi3");
         } else {
             require(token == token1, 'UniswapPairOracle: INVALID_TOKEN');
             amountOut = price1Average.mul(amountIn).decode144();
+            console.log("hi4");
         }
     }
 }

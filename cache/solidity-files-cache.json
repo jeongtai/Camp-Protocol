@@ -1036,8 +1036,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Oracle\\UniswapPairOracle.sol": {
-      "lastModificationDate": 1647580995653,
-      "contentHash": "28da6dfb18e9fc0b7dfd11ffd22b3bbd",
+      "lastModificationDate": 1647846058682,
+      "contentHash": "a2cdeefc04539dc1fe8c4f5cd586acc5",
       "sourceName": "contracts/bank/Oracle/UniswapPairOracle.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1076,7 +1076,8 @@
         "../module/Math/FixedPoint.sol",
         "../Uniswap/UniswapV2OracleLibrary.sol",
         "../Uniswap/UniswapV2Library.sol",
-        "../Owned.sol"
+        "../Owned.sol",
+        "hardhat/console.sol"
       ],
       "versionPragmas": [
         "=0.7.5"
@@ -1584,8 +1585,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\SCAMP.sol": {
-      "lastModificationDate": 1647584710199,
-      "contentHash": "225aae7af8caa2db61198d1020e682b9",
+      "lastModificationDate": 1647586018084,
+      "contentHash": "06c67029182cef264526328a957f722d",
       "sourceName": "contracts/bank/SCAMP.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2560,8 +2561,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\stake\\StakedToken.sol": {
-      "lastModificationDate": 1647449116951,
-      "contentHash": "03eab100034c7a640ad67f5d62152fa6",
+      "lastModificationDate": 1647588323239,
+      "contentHash": "ab6eca961cb37e09a4cfa4e470c81f2c",
       "sourceName": "contracts/stake/stake/StakedToken.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2880,8 +2881,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\stake\\KlaybankDistributionManager.sol": {
-      "lastModificationDate": 1647333084786,
-      "contentHash": "2ec74aee66d8549e9a752bd5db9fb5cc",
+      "lastModificationDate": 1647588324683,
+      "contentHash": "1d10bd1b9bca85458729c9736f5e8e15",
       "sourceName": "contracts/stake/stake/KlaybankDistributionManager.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3609,6 +3610,823 @@
       ],
       "artifacts": [
         "StakeCAMP"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\node_modules\\hardhat\\console.sol": {
+      "lastModificationDate": 1647330241071,
+      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\node_modules\\@uniswap\\v2-core\\contracts\\interfaces\\IUniswapV2Callee.sol": {
+      "lastModificationDate": 1645536082186,
+      "contentHash": "30a4aed15b3fa3ce5588118b7cecfa7f",
+      "sourceName": "@uniswap/v2-core/contracts/interfaces/IUniswapV2Callee.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IUniswapV2Callee"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2Router.sol": {
+      "lastModificationDate": 1647587244558,
+      "contentHash": "26409b848c41dcf964e2bc1db20b2f6e",
+      "sourceName": "contracts/swap/interfaces/IUniswapV2Router.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "IUniswapV2Router"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\Babylonian.sol": {
+      "lastModificationDate": 1647587244553,
+      "contentHash": "09621ecd310dfd4276f0c9f8f89206e9",
+      "sourceName": "contracts/swap/libraries/Babylonian.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "Babylonian"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\FixedPoint.sol": {
+      "lastModificationDate": 1647587244554,
+      "contentHash": "6c7e6ef782a981b4a736d42358bb13a2",
+      "sourceName": "contracts/swap/libraries/FixedPoint.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./Babylonian.sol"
+      ],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "FixedPoint"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IERC20.sol": {
+      "lastModificationDate": 1647588033523,
+      "contentHash": "acf343d764082552cce4e9abcc578f1e",
+      "sourceName": "contracts/swap/interfaces/IERC20.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.5.6"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\swap\\UniswapV2Router02.sol": {
+      "lastModificationDate": 1647844792272,
+      "contentHash": "5af036d815fc2d17118756060e9906a8",
+      "sourceName": "contracts/swap/swap/UniswapV2Router02.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IUniswapV2Factory.sol",
+        "../libraries/SafeMath.sol",
+        "../libraries/TransferHelper.sol",
+        "../libraries/UniswapV2Library.sol",
+        "../interfaces/IERC20.sol",
+        "../interfaces/IWKLAY.sol",
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "UniswapV2Router02"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IWKLAY.sol": {
+      "lastModificationDate": 1647588038970,
+      "contentHash": "664282eea6d1ee706c5102c6499a7ff3",
+      "sourceName": "contracts/swap/interfaces/IWKLAY.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "IWKLAY"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\UniswapV2Library.sol": {
+      "lastModificationDate": 1647844925431,
+      "contentHash": "3504901d25b308bfefa55bc083bbb9dc",
+      "sourceName": "contracts/swap/libraries/UniswapV2Library.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IUniswapV2Pair.sol",
+        "../libraries/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "UniswapV2Library"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\SafeMath.sol": {
+      "lastModificationDate": 1647587940074,
+      "contentHash": "efcfa4fda44251b2ab4f5cf4d3115108",
+      "sourceName": "contracts/swap/libraries/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.5.6"
+      ],
+      "artifacts": [
+        "SafeMath"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\swap\\UniswapV2ERC20.sol": {
+      "lastModificationDate": 1647587715639,
+      "contentHash": "98a0eab8e5de0f6bac6e87ff95854df3",
+      "sourceName": "contracts/swap/swap/UniswapV2ERC20.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../libraries/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "UniswapV2ERC20"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\swap\\UniswapV2Pair.sol": {
+      "lastModificationDate": 1647587720793,
+      "contentHash": "c3e2d15b4dce7e71bdebdce329d6e5b8",
+      "sourceName": "contracts/swap/swap/UniswapV2Pair.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./UniswapV2ERC20.sol",
+        "../libraries/Math.sol",
+        "../libraries/UQ112x112.sol",
+        "../interfaces/IERC20.sol",
+        "../interfaces/IUniswapV2Factory.sol",
+        "@uniswap/v2-core/contracts/interfaces/IUniswapV2Callee.sol"
+      ],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "IMigrator",
+        "UniswapV2Pair"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2Factory.sol": {
+      "lastModificationDate": 1647587745716,
+      "contentHash": "1fb8b5e602a9f05c5da9145dcf7c40a1",
+      "sourceName": "contracts/swap/interfaces/IUniswapV2Factory.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "IUniswapV2Factory"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\swap\\UniswapV2Factory.sol": {
+      "lastModificationDate": 1647587717899,
+      "contentHash": "a4ea8c175c53fb0dc27d23e097d506b4",
+      "sourceName": "contracts/swap/swap/UniswapV2Factory.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IUniswapV2Factory.sol",
+        "./UniswapV2Pair.sol"
+      ],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "UniswapV2Factory"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\UQ112x112.sol": {
+      "lastModificationDate": 1647588105758,
+      "contentHash": "ff97ab83fa05a257360ae4a56cab0e25",
+      "sourceName": "contracts/swap/libraries/UQ112x112.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "UQ112x112"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\Math.sol": {
+      "lastModificationDate": 1647588073162,
+      "contentHash": "1c65162b855170e0903898c1c866604b",
+      "sourceName": "contracts/swap/libraries/Math.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "Math"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2Pair.sol": {
+      "lastModificationDate": 1647587743579,
+      "contentHash": "3911fc566e08df608d18f26a65812165",
+      "sourceName": "contracts/swap/interfaces/IUniswapV2Pair.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "IUniswapV2Pair"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\TransferHelper.sol": {
+      "lastModificationDate": 1647587986478,
+      "contentHash": "0eba0f12aa5b8d086e3542fe185a4cc1",
+      "sourceName": "contracts/swap/libraries/TransferHelper.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "TransferHelper"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2ERC20.sol": {
+      "lastModificationDate": 1647587747900,
+      "contentHash": "3b2366004b7c717a5e112d607441e8fc",
+      "sourceName": "contracts/swap/interfaces/IUniswapV2ERC20.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "IUniswapV2ERC20"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2Router02.sol": {
+      "lastModificationDate": 1647587740524,
+      "contentHash": "5dd1cbaf1ffe4a3cc390df6e152208b7",
+      "sourceName": "contracts/swap/interfaces/IUniswapV2Router02.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "IUniswapV2Router02"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\WKLAY.sol": {
+      "lastModificationDate": 1647588720327,
+      "contentHash": "59195663bf7d7287672e66adcd30a07a",
+      "sourceName": "contracts/swap/WKLAY.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "WKLAY"
       ]
     }
   }

@@ -51,6 +51,7 @@ contract KlaybankDistributionManager is IKlaybankDistributionManager {
     EMISSION_MANAGER = emissionManager;
   }
 
+  // distribution start timestamp 설정
   function setDistributionStartTimestamp(address asset, uint256 distributionStartTimestamp) external override onlyEmissionManager {
     require(distributionStartTimestamp > block.timestamp, 'INVALID_DISTRIBUTION_START');
     assets[asset].distributionStartTimestamp = distributionStartTimestamp;
@@ -61,6 +62,7 @@ contract KlaybankDistributionManager is IKlaybankDistributionManager {
     return _getDistributionEndTimestamp(asset);
   }
 
+  // start timestamp에 seconds 단위로 추가
   function _getDistributionEndTimestamp(address asset) internal view returns (uint256) {
     AssetData storage assetData = assets[asset];
     return assetData.distributionStartTimestamp.add(
@@ -68,14 +70,17 @@ contract KlaybankDistributionManager is IKlaybankDistributionManager {
     );
   }
 
+  // distribution start timestamp 조회
   function getDistributionStartTimestamp(address asset) external view override returns (uint256) {
     return assets[asset].distributionStartTimestamp;
   }
 
+  // asset의 user 조회
   function getUserAssetData(address user, address asset) public view override returns (uint256) {
     return assets[asset].users[user];
   }
 
+  // asset의 user 제외한 정보 조회
   function getAssetData(address asset) public view override returns (uint256, uint256[] memory, uint16, uint256, uint256) {
     return (
     assets[asset].index,

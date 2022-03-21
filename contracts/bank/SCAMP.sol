@@ -88,12 +88,6 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
     return klay_price.mul(PRICE_PRECISION).div(price_vs_klay);
   }
 
-  function KLAY_usdt_price() public view returns (uint256) {
-    uint256 klay_price = uint256(KlayUSDTOracle.consult(usdt_address, PRICE_PRECISION));
-
-    return klay_price.mul(PRICE_PRECISION);
-  }
-
   function SCAMP_info() public view returns (uint256, uint256, uint256, uint256, uint256) {
     return (
       SCAMP_price(),

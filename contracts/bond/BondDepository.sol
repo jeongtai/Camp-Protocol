@@ -10,6 +10,7 @@ import "./interface/IStakedToken.sol";
 import "./interface/IOracle.sol";
 import "./library/upgradeable/VersionedInitializable.sol";
 import "./interface/IBondDepository.sol";
+import "../bank/CAMP.sol";
 
 abstract contract BondDepository is Ownable, VersionedInitializable, IBondDepository {
 
@@ -32,8 +33,9 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     /* ======== STATE VARIABLES ======== */
 
     address public DAO;
-    address public KBT; // token given as payment for bond
-    address public override principle; // token used to create bond
+    address public CAMP; // token given as payment for bond
+    SCAMP private _SCAMP;
+    address public override principle; // token used to create bond??
     address public treasury; // mints OHM when receives principle
     address public oracle;
 
@@ -64,7 +66,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
 
     // Info for bond holder
     struct Bond {
-        uint256 payout; // KBT remaining to be paid
+        uint256 payout; // CAMP remaining to be paid
         uint256 vesting; // Blocks left to vest
         uint256 lastBlock; // Last interaction
         uint256 pricePaid; // In USDT, for front end viewing
@@ -85,7 +87,8 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     /* ======== INITIALIZATION ======== */
 
     function __initialize(
-        address _KBT,
+        address _CAMP,
+        address _SCAMP,
         address _DAO,
         address _principle,
         address _staking,
@@ -93,8 +96,10 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         address _oracle
     ) external initializer {
         _setInitialOwner();
-        require(_KBT != address(0));
-        KBT = _KBT;
+        require(_CAMP != address(0));
+        CAMP = _CAMP;
+        require(_SCAMP !- address(0));
+        SCAMP = _SCAMP;
         require(_DAO != address(0));
         DAO = _DAO;
         require(_principle != address(0));
@@ -233,7 +238,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         uint256 principleValue = assetPrice().mul(_amount).div(10**6); // returns principle value, in USD, 10**18
         uint256 payout = payoutFor(principleValue); // payout to bonder is computed, bond amount
 
-        require(payout >= 10 ** 16, "BondDepository: Bond too small"); // must be > 0.01 KBT (underflow protection)
+        require(payout >= 10 ** 16, "BondDepository: Bond too small"); // must be > 0.01 CAMP (underflow protection)
         require(payout <= maxPayout(), "BondDepository: Bond too large"); // size protection because there is no slippage
 
         // profits are calculated
@@ -248,7 +253,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         IBondTreasury(treasury).deposit(_amount, principle, payout.add(fee));
 
         if (fee != 0) { // fee is transferred to dao
-            IKIP7(KBT).safeTransfer(DAO, fee);
+            IKIP7(CAMP).safeTransfer(DAO, fee);
         }
 
         // total debt is increased
@@ -315,9 +320,9 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      */
     function stakeOrSend(address _recipient, bool _stake, uint256 _amount) internal returns (uint256) {
         if (!_stake) { // if user does not want to stake
-            IKIP7(KBT).transfer(_recipient, _amount); // send payout
+            IKIP7(CAMP).transfer(_recipient, _amount); // send payout
         } else { // if user wants to stake
-            IKIP7(KBT).approve(staking, _amount);
+            IKIP7(CAMP).approve(staking, _amount);
             IStakedToken(staking).stake(_recipient, _amount);
         }
         return _amount;
@@ -366,7 +371,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      *  @return uint256
      */
     function maxPayout() public view returns (uint256) {
-        return IKIP7(KBT).totalSupply().mul(terms.maxPayout).div(1000000);
+        return IKIP7(CAMP).totalSupply().mul(terms.maxPayout).div(1000000);
     }
 
     /**
@@ -379,11 +384,11 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     }
 
     /**
-     *  @notice returns kbt price in usd
+     *  @notice returns CAMP price in usd
      *  @return uint256 in 10**6 precision
      */
-    function kbtPrice() public view returns (uint256) {
-        return IOracle(oracle).getAssetPriceInUsd(KBT);
+    function CAMPPrice() public view returns (uint256) {
+        return SCAMP.CAMP_price();
     }
 
     /**
@@ -391,9 +396,9 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      *  @return price_ uint256 in 10**6 precision in usd
      */
     function bondPrice() public view returns (uint256 price_) {
-        uint256 _kbtPrice = kbtPrice();
+        uint256 _CAMPPrice = CAMPPrice();
         uint256 _priceRate = priceRate();
-        price_ = _kbtPrice.mul(_priceRate).div(10**9);
+        price_ = _CAMPPrice.mul(_priceRate).div(10**9);
     }
 
     /**
@@ -416,11 +421,11 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     }
 
     /**
-     *  @notice calculate current ratio of debt to KBT supply
+     *  @notice calculate current ratio of debt to CAMP supply
      *  @return debtRatio_ uint256 in 10 ** 9 precision
      */
     function debtRatio() public view returns (uint256 debtRatio_) {
-        debtRatio_ = currentDebt().mul(1e9).mul(1e18).div(IKIP7(KBT).totalSupply()).div(1e18);
+        debtRatio_ = currentDebt().mul(1e9).mul(1e18).div(IKIP7(CAMP).totalSupply()).div(1e18);
     }
 
     /**
@@ -462,7 +467,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     }
 
     /**
-     *  @notice calculate amount of KBT available for claim by depositor
+     *  @notice calculate amount of CAMP available for claim by depositor
      *  @param _depositor address
      *  @return pendingPayout_ uint256
      */
@@ -483,11 +488,11 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     /* ======= AUXILLIARY ======= */
 
     /**
-     *  @notice allow anyone to send lost tokens (excluding principle or KBT) to the DAO
+     *  @notice allow anyone to send lost tokens (excluding principle or CAMP) to the DAO
      *  @return bool
      */
     function recoverLostToken(address _token) external returns (bool) {
-        require(_token != KBT, "BondTreasury: cannot withdraw KBT");
+        require(_token != CAMP, "BondTreasury: cannot withdraw CAMP");
         require(_token != principle, "BondTreasury: cannot withdraw principle");
         IKIP7(_token).safeTransfer(DAO, IKIP7(_token).balanceOf(address(this)));
         return true;

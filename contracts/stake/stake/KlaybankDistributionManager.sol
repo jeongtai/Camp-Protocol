@@ -16,8 +16,8 @@ contract KlaybankDistributionManager is IKlaybankDistributionManager {
     uint16 shareRatio;
     uint256 lastUpdateTimestamp;
     uint256 distributionStartTimestamp;
-    mapping(address => uint256) users;
-    uint256[] monthlyEmissionPerSecond;
+    mapping(address => uint256) users; //user
+    uint256[] monthlyEmissionPerSecond; // 개월 별 초당 배출되는 CAMP 양
   }
 
   struct IndexLocalVar {
@@ -40,7 +40,7 @@ contract KlaybankDistributionManager is IKlaybankDistributionManager {
 
   uint8 public constant PRECISION = 18;
 
-  mapping(address => AssetData) public assets;
+  mapping(address => AssetData) public assets; //자산 별로 각 자산 데이터 매핑
 
   modifier onlyEmissionManager() {
     require(msg.sender == EMISSION_MANAGER, 'ONLY_EMISSION_MANAGER');
@@ -55,26 +55,26 @@ contract KlaybankDistributionManager is IKlaybankDistributionManager {
     require(distributionStartTimestamp > block.timestamp, 'INVALID_DISTRIBUTION_START');
     assets[asset].distributionStartTimestamp = distributionStartTimestamp;
     emit DistributionStartUpdated(distributionStartTimestamp);
-  }
+  } //asset별 분배시작시간세팅하는거
 
   function getDistributionEndTimestamp(address asset) external view override returns (uint256) {
     return _getDistributionEndTimestamp(asset);
-  }
+  } //이 솔리디티 밖에서 보길 Distribution 끝나는거 볼때
 
   function _getDistributionEndTimestamp(address asset) internal view returns (uint256) {
     AssetData storage assetData = assets[asset];
     return assetData.distributionStartTimestamp.add(
       assetData.monthlyEmissionPerSecond.length.mul(SECONDS_OF_ONE_MONTH)
     );
-  }
+  } // INTERANAL로 이 안에서 끝나는시간 보기
 
   function getDistributionStartTimestamp(address asset) external view override returns (uint256) {
     return assets[asset].distributionStartTimestamp;
-  }
+  } //asset 별 분배시작시간 보기
 
   function getUserAssetData(address user, address asset) public view override returns (uint256) {
     return assets[asset].users[user];
-  }
+  } //Asset별 유저의 assetData보기
 
   function getAssetData(address asset) public view override returns (uint256, uint256[] memory, uint16, uint256, uint256) {
     return (
@@ -84,7 +84,7 @@ contract KlaybankDistributionManager is IKlaybankDistributionManager {
     assets[asset].lastUpdateTimestamp,
     assets[asset].distributionStartTimestamp
     );
-  }
+  } //asset별로 각 assetdata보기
 
   /**
    * @dev Configure the assets for a specific emission

@@ -22,7 +22,8 @@ function Staketool () {
       ).send({
         from : window.klaytn.selectedAddress,
         gas : 3000000
-      }).on('receipt', function () {
+      })
+      .on('receipt', function () {
         state.StakingContract.methods.stake(
           caver.utils.toPeb(amount, "KLAY")
         ).send({

@@ -8,6 +8,7 @@ import "./library/Ownable.sol";
 import "./interface/IBondTreasury.sol";
 import "./interface/IStakedToken.sol";
 import "./interface/IOracle.sol";
+import "
 import "./library/upgradeable/VersionedInitializable.sol";
 import "./interface/IBondDepository.sol";
 import "../bank/CAMP.sol";
@@ -37,7 +38,6 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     SCAMP private _SCAMP;
     address public override principle; // token used to create bond??
     address public treasury; // mints OHM when receives principle
-    address public oracle;
 
     address public staking; // to auto-stake payout
 
@@ -93,7 +93,6 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         address _principle,
         address _staking,
         address _treasury,
-        address _oracle
     ) external initializer {
         _setInitialOwner();
         require(_CAMP != address(0));
@@ -108,8 +107,6 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         staking = _staking;
         require(_treasury != address(0));
         treasury = _treasury;
-        require(_oracle != address(0));
-        oracle = _oracle;
     }
 
     /**
@@ -417,7 +414,8 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      *  @return uint256 in 10 ** 6 precision
      */
     function assetPrice() public view returns (uint256) {
-        return IOracle(oracle).getAssetPriceInUsd(principle);
+        
+        return 
     }
 
     /**

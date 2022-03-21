@@ -6,9 +6,9 @@ import "./module/ERC20/IERC20.sol";
 // import "./module/ERC20/ERC20Custom.sol";
 import "../bond/library/kip/KIP7.sol";
 import "./Owned.sol";
-import "./CAMP.sol";
-import "./Pools/SCAMPBank.sol";
-import "./oracle/UniswapPairOracle.sol";
+// import "./CAMP.sol";
+// import "./Pools/SCAMPBank.sol";
+import "./Oracle/UniswapPairOracle.sol";
 
 contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   using SafeMath for uint256;

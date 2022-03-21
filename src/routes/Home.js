@@ -194,7 +194,7 @@ function Home() {
         { name: "SCAMP", price: 0.9812, supply: scampsupply, Contract : "0xFC0e434Ff2fDdFb41b79B1d3b0342c80A8f6EFd3", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg"},
     ];
     async function getUserInfo() {
-      await window.klaytn.enable()
+      window.klaytn.enable()
       state.SCAMPContract.methods
           .totalSupply()
           .call((e,v)=> setScampSupply(caver.utils.fromPeb(v, "KLAY")))

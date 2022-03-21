@@ -183,7 +183,7 @@ function Home() {
         { name: "CAMP Price", amt: "$ 0.4602" },
         { name: "TVL", amt: "$ 19240.4912" },
         { name: "Treasury Balance", amt: "$ 7608.0027" },
-        { name: "Price Target", amt: `${pricetarget} $`},
+        { name: "Price Target", amt: ` $ ${pricetarget}`},
         { name: "Current_Ratio", amt: `${cur_ratio*100} %` },
         { name: "Owned Liquidity", amt: "$ 12667.3552" },
         { name: "Rented Liquidity", amt: "$ 16891.8558" },
@@ -193,20 +193,23 @@ function Home() {
         { name: "CAMP", price: 0.4602, supply: campsupply, Contract : "0xB9Faa17b39A576ff48EeAF179F437aC501688256", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg"},
         { name: "SCAMP", price: 0.9812, supply: scampsupply, Contract : "0xFC0e434Ff2fDdFb41b79B1d3b0342c80A8f6EFd3", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg"},
     ];
+    async function getUserInfo() {
+      await window.klaytn.enable()
+      state.SCAMPContract.methods
+          .totalSupply()
+          .call((e,v)=> setScampSupply(caver.utils.fromPeb(v, "KLAY")))
+      state.CAMPContract.methods
+          .totalSupply()
+          .call((e,v)=> setCampSupply(caver.utils.fromPeb(v, "KLAY")))
+      state.SCAMPContract.methods
+          .price_target()
+          .call((e, v) => setPriceTarget(v/1000000))
+      state.SCAMPContract.methods
+          .current_collateral_ratio()
+          .call((e, v) => setCur_Ratio(v))
+    }
     useEffect(() => {
-        window.klaytn.enable();
-        state.SCAMPContract.methods
-            .totalSupply()
-            .call((e,v)=> setScampSupply(caver.utils.fromPeb(v, "KLAY")))
-        state.CAMPContract.methods
-            .totalSupply()
-            .call((e,v)=> setCampSupply(caver.utils.fromPeb(v, "KLAY")))
-        state.SCAMPContract.methods
-            .price_target()
-            .call((e, v) => setPriceTarget(v/1000000))
-        state.SCAMPContract.methods
-            .current_collateral_ratio()
-            .call((e, v) => setCur_Ratio(v))
+      getUserInfo()
     }, []);
 
     return (

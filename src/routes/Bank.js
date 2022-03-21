@@ -32,6 +32,7 @@ const Bank = () =>{
             <button onClick={onClick}>{togglemint ? "Redeem here" : "Mint here"}</button>
             {togglemint ? <Mintingtool/>: <Redeemtool/>}
         </div>
+        
     )
 }
 

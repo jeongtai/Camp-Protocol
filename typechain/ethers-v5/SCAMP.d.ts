@@ -37,7 +37,6 @@ interface SCAMPInterface extends ethers.utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "burnFrom(address,uint256)": FunctionFragment;
     "collateral_ratio_paused()": FunctionFragment;
     "controller_address()": FunctionFragment;
     "creator_address()": FunctionFragment;
@@ -137,10 +136,6 @@ interface SCAMPInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "burnFrom",
-    values: [string, BigNumberish]
-  ): string;
   encodeFunctionData(
     functionFragment: "collateral_ratio_paused",
     values?: undefined
@@ -326,7 +321,6 @@ interface SCAMPInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "burnFrom", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "collateral_ratio_paused",
     data: BytesLike
@@ -689,12 +683,6 @@ export class SCAMP extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    burnFrom(
-      account: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     collateral_ratio_paused(overrides?: CallOverrides): Promise<[boolean]>;
 
     controller_address(overrides?: CallOverrides): Promise<[string]>;
@@ -889,12 +877,6 @@ export class SCAMP extends BaseContract {
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  burnFrom(
-    account: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   collateral_ratio_paused(overrides?: CallOverrides): Promise<boolean>;
 
   controller_address(overrides?: CallOverrides): Promise<string>;
@@ -1086,12 +1068,6 @@ export class SCAMP extends BaseContract {
     ): Promise<boolean>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    burnFrom(
-      account: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     collateral_ratio_paused(overrides?: CallOverrides): Promise<boolean>;
 
@@ -1513,12 +1489,6 @@ export class SCAMP extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    burnFrom(
-      account: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     collateral_ratio_paused(overrides?: CallOverrides): Promise<BigNumber>;
 
     controller_address(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1719,12 +1689,6 @@ export class SCAMP extends BaseContract {
     balanceOf(
       account: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    burnFrom(
-      account: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     collateral_ratio_paused(

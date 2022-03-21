@@ -9,27 +9,32 @@ describe("Token contract", function () {
     let addr1;
     let addr2;
     let addrs;
-    let SCAMP, CAMP, mock, Bank;
+    let SCAMP, CAMP, mock, Bank, factory, SCAMPPair, wKLAY, router, uniPairOracle;
 
     before(async function () {
         // Get the ContractFactory and Signers here.
         SCAMPFactory = await ethers.getContractFactory("SCAMP");
         [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
 
-        SCAMP = await SCAMPFactory.deploy("stableCAMP", "sCAMP", owner.address);
+        SCAMP = await SCAMPFactory.deploy(owner.address);
         console.log("SCAMP address is:", await SCAMP.address);
 
         CAMPFactory = await ethers.getContractFactory("CAMP");
-        CAMP = await CAMPFactory.deploy("Camp Protocol Governance", "CAMP", owner.address);
-        console.log("CAMP address is:", await SCAMP.address);
+        CAMP = await CAMPFactory.deploy(owner.address);
+        console.log("CAMP address is:", await CAMP.address);
 
         mockFactory = await ethers.getContractFactory("MockUSDC");
         mock = await mockFactory.deploy();
+        await mock.setBalance(owner.address, toBn("1e18"))
         console.log("mock address is:", await mock.address);
 
         SCAMPPoolLibraryFactory = await ethers.getContractFactory("SCAMPPoolLibrary");
         SCAMPPoolLibrary = await SCAMPPoolLibraryFactory.deploy();
         console.log("SCAMPPoolLibrary address is:", await SCAMPPoolLibrary.address);
+
+        const wKLAYFactory = await ethers.getContractFactory("WKLAY");
+        wKLAY = await wKLAYFactory.deploy();
+        console.log("wKLAY address:", wKLAY.address);
     });
 
     describe("bank deployment", async function (){
@@ -44,171 +49,47 @@ describe("Token contract", function () {
         });
     });
 
-    // describe("cube token deployment", async function (){
-    //     it("genesis case", async function() {
-    //         CubeFactory = await ethers.getContractFactory("Cube");
-    //         cube = await CubeFactory.deploy(bank.address, 0, owner.address, addr1.address);
-    //         console.log("cube address is:", cube.address);
-    //         console.log("team address is:", owner.address);
-    //         console.log("treasury address is:", addr1.address);
-    //         // console.log("current blockstamp is:", 0);
+    describe("swap deployment", async function (){
+        it("factory", async function() {
+            const uniConFactory = await ethers.getContractFactory("UniswapV2Factory");
+            factory = await uniConFactory.deploy(owner.address);
+            await factory.createPair(SCAMP.address, mock.address)
+            SCAMPPair = await factory.getPair(SCAMP.address, mock.address);
+            console.log("SCAMP pair:", SCAMPPair);
 
-    //         cubeAddress = cube.address;
-    //         await cube.balanceOf(owner.address).then(function (f) {console.log("mint small amount of cube:", f.toString())});
+            const pairCodeHash = await factory.pairCodeHash();
+            console.log("pairCodeHash:", pairCodeHash);
+        });
 
-    //         const unclaimedBalance = await cube.unclaimedTeamFund();
-    //         console.log("unclaimed team balance:", unclaimedBalance);
+        it("routerv2", async function() {
+            const RouterFactory = await ethers.getContractFactory("UniswapV2Router02");
+            router = await RouterFactory.deploy(factory.address, wKLAY.address);
+            console.log("router address:", router.address);
+        })
 
-    //         await cube.claimTeamFundRewards(addr2.address);
-    //         console.log("claimed team balance:", await cube.balanceOf(addr2.address));
-    //         // const vestingBalance = await (cube.balanceOf(addr1.address)) + (await cube.balanceOf(addr2.address));
-    //         // console.log("claimed team balance2:", vestingBalance);
+        it("approve and liquidities", async function() {
+            await SCAMP.approve(router.address, toBn("1e18"));
+            const SCAMPAllowance = await SCAMP.allowance(owner.address, router.address);
+            console.log("cubeAllowance:", SCAMPAllowance.toString());
+            await mock.approve(router.address, toBn("1e18"));
+            const mockAllowance = await mock.allowance(owner.address, router.address);
+            console.log("mockCollatAllowance:", mockAllowance.toString());
 
-    //         // expect(await unclaimedBalance).to.equal(vestingBalance);
-    //     });
-    // });
+            console.log((await SCAMP.balanceOf(owner.address)).toString(), (await mock.balanceOf(owner.address)).toString())
 
-    // describe("bank initialization", function () {
-    //     let _collat;
-    //     let _tower = towerAddress;
-    //     let _cube = cubeAddress;
-    //     let _cubePair;
-    //     let _oracle;
-    //     let _safe;
-    //     let _dustbin;
-    //     let _arbitrager;
-    //     let _profitController;
-    //     let _swapController;
-    //     let _tcr; // uint256
+            let liquidity = await router.addLiquidity(SCAMP.address, mock.address, 1e6, 1e6, 1e3, 1e3, owner.address, Math.floor(Date.now()) + 100);
+            console.log("Liquidity:", liquidity);
+        })
+    });
 
-    //     let mockCollat, mockCollatAddress;
-    //     let factory;
-    //     let pairCodeHash;
-    //     let profitController;
-    //     let twap, bankSafe, arbitrager, cubeStake;
-    
-    //     it("create mockUSDC", async function () {
-    //         const mockFactory = await ethers.getContractFactory("MockUSDC");
-    //         mockCollat = await mockFactory.deploy();
-    
-    //         // const owner = await ethers.getSigners();
-    //         // await mockCollat.mint(owner.address, BigNumber("100e18").toFixed(0));
-    //         await mockCollat.mint(owner.address, 1e15);
-    //         const balance = await mockCollat.balanceOf(owner.address).then(function (f) {console.log("mint small amount of collateral:", f.toString())});
-    
-    //         _collat = await mockCollat.address;
-    //         mockCollatAddress = mockCollat.address;
-    //     });
+    describe("oracle deployment", async function (){
+        it("uniswap pair oracle", async function() {
+            const uniPairOracleFactory = await ethers.getContractFactory("UniswapPairOracle");
+            uniPairOracle = await uniPairOracleFactory.deploy(factory.address, SCAMP.address, mock.address, owner.address);
+            console.log("uniPairOracle pair:", uniPairOracle.address);
 
-    //     it("create cubePair based on uniswapV2Pair/Factory", async function () {
-    //         let _feeToSetter = owner.address;
-    //         const uniConFactory = await ethers.getContractFactory("UniswapV2Factory");
-    //         const uniFactory = await uniConFactory.deploy(_feeToSetter);
-    //         // console.log("uniFactory address is:", await uniFactory.feeToSetter());
-
-    //         await uniFactory.setFeeTo(_feeToSetter);
-    //         // console.log("uniFactory address is:", await uniFactory.feeToSetter());
-    //         console.log(cubeAddress, mockCollatAddress);
-
-    //         await uniFactory.createPair(cubeAddress, mockCollatAddress).then(function (f){console.log("cube pair:", f.address)});
-    //         await uniFactory.allPairsLength().then(function (f) {console.log("the number of pairs:", f.toString())});
-    //         _cubePair = await uniFactory.getPair(cubeAddress, mockCollatAddress);
-    //         console.log("cube pair:", _cubePair);
-    //         factory = uniFactory;
-
-    //         // get pairCodeHash()
-    //         pairCodeHash = await uniFactory.pairCodeHash();
-    //         console.log("pairCodeHash:", pairCodeHash);
-    //     });
-
-    //     it("deploy router and add liquidities", async function () {
-    //         const wKLAYFactory = await ethers.getContractFactory("WKLAY");
-    //         const wKLAY = await wKLAYFactory.deploy();
-
-    //         const RouterFactory = await ethers.getContractFactory("UniswapV2Router02");
-    //         const router = await RouterFactory.deploy(factory.address, wKLAY.address);
-    //         console.log("router address:", router.address);
-
-    //         // add liquidites
-    //         // console.log(Date.now(), Math.floor(Date.now() / 1000) + 60 * 10);
-    //         await cube.approve(router.address, 1e6);
-    //         await mockCollat.approve(router.address, 1e6);
-    //         let amountA, amountB, liquidity = await router.addLiquidity(cubeAddress, mockCollatAddress, 1e6, 1e6, 1e3, 1e3, owner.address, Math.floor(Date.now()) + 10);
-    //         console.log("Liquidity:", liquidity);
-    //     });
-
-    //     it("deploy twap oracle", async function () {
-    //         const TwapFactory = await ethers.getContractFactory("TwapOracle");
-    //         twap = await TwapFactory.deploy(_cubePair, cubeAddress);
-    //         console.log("twap address:", twap.address);
-    //     });
-
-    //     it("deploy banksafe", async function () {
-    //         const ProfitControllerFactory = await ethers.getContractFactory("ProfitController");
-    //         profitController = await ProfitControllerFactory.deploy();
-    //         console.log("profitController address:", profitController.address);
-
-    //         const BankSafeFactory = await ethers.getContractFactory("BankSafe");
-    //         console.log(bank.address, mockCollatAddress, cubeAddress, profitController.address);
-    //         bankSafe = await BankSafeFactory.deploy(bank.address, mockCollatAddress, cubeAddress, profitController.address);
-    //         console.log("bankSafe address:", bankSafe.address);
-    //     });
-
-    //     it("deploy arbitrager", async function () {
-    //         await factory.createPair(tower.address, mockCollatAddress);
-    //         _towerPair = await factory.getPair(tower.address, mockCollatAddress);
-    //         console.log("_towerPair pair:", _towerPair);
-    //         const ArbitragerFactory = await ethers.getContractFactory("Arbitrager");
-    //         // console.log(_profitController.address);
-    //         arbitrager = await ArbitragerFactory.deploy(bank.address, mockCollat.address, tower.address, cubeAddress, profitController.address, _towerPair);
-    //         console.log("arbitrager address:", arbitrager.address);
-    //     });
-
-    //     it("finally initialize bank", async function () {
-    //         await bank.init(
-    //             mockCollatAddress, 
-    //             tower.address,
-    //             cube.address,
-    //             _cubePair,
-    //             twap.address,
-    //             bankSafe.address, 
-    //             owner.address,
-    //             arbitrager.address,
-    //             profitController.address,
-    //             toBn("0.8")
-    //             );
-    //     });
-
-    //     it("deploy CubeStake", async function () {
-    //         const cubeStakeFactory = await ethers.getContractFactory("CubeStake");
-    //         cubeStake = await cubeStakeFactory.deploy(cube.address);
-    //         console.log("cubeStake address:", cubeStake.address);
-    //         await cubeStake.init(profitController.address);
-    //         const Amt = await cubeStake.calcAccAmt();
-    //         console.log("Amt:", Amt.toString());
-
-    //         // Sttake
-    //         const currentCubeBalance = await cube.balanceOf(owner.address);
-    //         console.log(currentCubeBalance.toString());
-    //         // await cube.approve(owner.address, 1e6);
-    //         await cube.approve(cubeStake.address, 1e6);
-    //         const cubeAllowByOwner = await cube.allowance(owner.address, owner.address);
-    //         const cubeAllowByStake = await cube.allowance(owner.address, cubeStake.address);
-    //         console.log("cube allowance:", cubeAllowByOwner.toString(), cubeAllowByStake.toString());
-    //         console.log("cubeStake owner:", await cubeStake.owner());
-    //         await cubeStake.stake(1e6);
-
-    //         // Check how many xCube are
-    //         let userInfo = (await cubeStake.pendingxCube(owner.address)).toString();
-    //         console.log("userInfo:", userInfo);
-
-    //         // await cubeStake.unstake(1e6);
-    //         // console.log("userInfo:", userInfo);
-    //         const lockInfo = await cubeStake.userLockInfo(owner.address);
-    //         console.log(lockInfo[0].toString(), lockInfo[1].toString());
-
-    //         const cubeAmt = await cubeStake.cubePerShare();
-    //         console.log(cubeAmt.toString());
-    //     });
-    // });
+            const amountOut = await uniPairOracle.consult(SCAMP.address, 1e6);
+            console.log("amountOut of oracle:", amountOut.toString());
+        });
+    });
 });

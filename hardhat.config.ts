@@ -24,6 +24,168 @@ const config: HardhatUserConfig = {
         },
       },
     ],
+    overrides: {
+      "contracts/swap/swap/UniswapV2Factory.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/swap/UniswapV2Pair.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/swap/UniswapV2ERC20.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/swap/UniswapV2Router02.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/interfaces/IUniswapV2Pair.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/interfaces/IUniswapV2ERC20.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/interfaces/IUniswapV2Factory.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/interfaces/IUniswapV2Router02.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/interfaces/IERC20.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/interfaces/IWKLAY.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/libraries/SafeMath.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/libraries/Math.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/libraries/TransferHelper.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/libraries/UniswapV2Library.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/libraries/UQ112x112.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      "contracts/swap/WKLAY.sol": {
+        version: "0.5.6",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+    },
   },
   networks: {
     baobab: {

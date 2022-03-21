@@ -60,7 +60,7 @@ contract StakedToken is
   mapping(address => uint256) internal _propositionPowerSnapshotsCounts;
   mapping(address => address) internal _propositionPowerDelegates;
 
-  // Used for allowance
+  // allow를 위해 쓰이는데 gas-less contract를 위해 다른 사람이 대신 서명하게 함
   bytes32 public DOMAIN_SEPARATOR;
   bytes public constant EIP712_REVISION = bytes('1');
   bytes32 internal constant EIP712_DOMAIN =
@@ -82,6 +82,7 @@ contract StakedToken is
 
   event SetKlaybankGovernance(address klaybankGovernance);
 
+  // heat up 요청 이후 일정 시간 지나고부터 unstakeWindow 이내에 unstaking 가능
   constructor(
     IKIP7 governanceToken,
     uint256 heatUpSeconds,
@@ -145,7 +146,8 @@ contract StakedToken is
     assetsConfigure[0] = stakedTokenConfigure;
     _configureAssets(assetsConfigure);
   }
-
+  
+  // stake를 한다. optionally onBehalfOf를 선택해 다른사람에게 sKBT를 전송할 수 있다. 본인에게 가려면 msg.sender를 넣어줘야 함.
   function stake(address onBehalfOf, uint256 amount) external override {
     _stake(msg.sender, onBehalfOf, amount);
   }
@@ -161,6 +163,7 @@ contract StakedToken is
       stakerRewardsToClaim[onBehalfOf] = stakerRewardsToClaim[onBehalfOf].add(accruedRewards);
     }
 
+    // staking 시에는 0을 넣어줌
     stakersHeatups[onBehalfOf] = getNextHeatupTimestamp(0, amount, onBehalfOf, balanceOfUser);
 
     _mint(onBehalfOf, amount);
@@ -168,6 +171,7 @@ contract StakedToken is
     emit Staked(from, onBehalfOf, amount);
   }
 
+  // staking 동시에 heatup 시작
   function stakeAndActivateHeatup(uint256 amount) external override {
     _stake(msg.sender, msg.sender, amount);
     _heatup(msg.sender);
@@ -216,6 +220,7 @@ contract StakedToken is
     _heatup(msg.sender);
   }
 
+  // heaup 시작
   function _heatup(address account) internal {
     //solium-disable-next-lin
     stakersHeatups[account] = block.timestamp;
@@ -290,6 +295,7 @@ contract StakedToken is
     super._transfer(from, to, amount);
   }
 
+  // unclaimedReward state 변경
   /**
    * @dev Updates the user state related with his accrued rewards
    * @param user Address of the user

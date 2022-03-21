@@ -8,21 +8,16 @@ import "../bond/library/kip/KIP7.sol";
 import "./Owned.sol";
 import "./CAMP.sol";
 import "./Pools/SCAMPBank.sol";
-import "./Oracle/UniswapPairOracle.sol";
+import "./oracle/UniswapPairOracle.sol";
 
 contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   using SafeMath for uint256;
 
-  UniswapPairOracle private KlayUSDTOracle;
-  UniswapPairOracle private CAMPKlayOracle;
-  UniswapPairOracle private SCAMPKlayOracle;
+  UniswapPairOracle private CAMPUSDTOracle;
+  UniswapPairOracle private SCAMPUSDTOracle;
   address public creator_address;
   address public controller_address; 
   address public CAMP_address;
-  address public Klay_Usdt_oracle_address;
-  address public CAMP_klay_oracle_address;
-  address public SCAMP_klay_oracle_address;
-  address public klay_address;
   address public usdt_address;
   uint256 public constant genesis_supply = 2000000e18; // 2M SCMAP 선발행
 
@@ -87,7 +82,6 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
       SCAMP_price(),
       totalSupply(),
       current_collateral_ratio,
-      // collateralValue(), //Bank에서 declare
       minting_fee,
       redemption_fee
     );
@@ -131,39 +125,39 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
     emit SCAMPMinted(msg.sender, m_address, m_amount);
   }
 
-  function setRedemptionFee(uint256 red_fee) public onlyByOwnOrcontroller {
+  function setRedemptionFee(uint256 red_fee) external onlyByOwnOrcontroller {
     redemption_fee = red_fee;
     emit RedemptionFeeSet(red_fee);
   }
 
-  function setMintingFee(uint256 mint_fee) public onlyByOwnOrcontroller {
+  function setMintingFee(uint256 mint_fee) external onlyByOwnOrcontroller {
     minting_fee = mint_fee;
     emit MintingFeeSet(mint_fee);
   }
 
-  function setPriceTarget(uint256 _new_price_target) public onlyByOwnOrcontroller {
+  function setPriceTarget(uint256 _new_price_target) external onlyByOwnOrcontroller {
     price_target = _new_price_target;
     emit PriceTargetSet(_new_price_target);
   }
 
-  function setSCAMPStep(uint256 _new_step) public onlyByOwnOrcontroller {
+  function setSCAMPStep(uint256 _new_step) external onlyByOwnOrcontroller {
     SCAMP_step = _new_step;
     emit SCAMPStepSet(_new_step);
   }
 
-  function setRefreshCooldown(uint256 _new_cooldown) public onlyByOwnOrcontroller {
+  function setRefreshCooldown(uint256 _new_cooldown) external onlyByOwnOrcontroller {
     refresh_cooldown = _new_cooldown;
     emit RefreshCooldownSet(_new_cooldown);
   }
 
-  function setCAMPAddress(address _CAMP_address) public onlyByOwnOrcontroller {
+  function setCAMPAddress(address _CAMP_address) external onlyByOwnOrcontroller {
     require(_CAMP_address != address(0), "Zero address detected");
 
     CAMP_address = _CAMP_address;
     emit CAMPAddressSet(_CAMP_address);
   }
 
-  function setBankAddress(address _Bank_address) public onlyByOwnOrcontroller {
+  function setBankAddress(address _Bank_address) external onlyByOwnOrcontroller {
     require(_Bank_address != address(0), "Zero address detected");
 
     SCAMPBank = _Bank_address;
@@ -178,39 +172,26 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
     emit ControllerSet(_controller_address);
   }
 
-  function setPriceBand(uint256 _price_band) public onlyByOwnOrcontroller {
+  function setPriceBand(uint256 _price_band) external onlyByOwnOrcontroller {
     price_band = _price_band;
     emit PriceBandSet(_price_band);
   }
 
-  function setKlayUSDTOracle(address _Klay_oracle_addr, address _USDT_address) public onlyByOwnOrcontroller {
-    require((_Klay_oracle_addr != address(0)) && (_USDT_address != address(0)), "Zero address detected");
-    Klay_Usdt_oracle_address = _Klay_oracle_addr;
-    KlayUSDTOracle = UniswapPairOracle(_Klay_oracle_addr);
-    usdt_address = _USDT_address;
+  function setSCAMPUSDTOracle(address _SCAMPUSDTOracle) external onlyByOwnOrcontroller {
+    require(_SCAMPUSDTOracle != address(0), "Zero address detected");
+    SCAMPUSDTOracle = UniswapPairOracle(_SCAMPUSDTOracle);
 
-    emit KLAYUSDTOracleSet(_Klay_oracle_addr, _USDT_address);
-  } 
-
-  function setSCAMPKlayOracle(address _SCAMP_oracle_addr, address _klay_address) public onlyByOwnOrcontroller {
-    require((_SCAMP_oracle_addr != address(0)) && (_klay_address != address(0)), "Zero address detected");
-    SCAMP_klay_oracle_address = _SCAMP_oracle_addr;
-    SCAMPKlayOracle = UniswapPairOracle(_SCAMP_oracle_addr);
-    klay_address = _klay_address;
-
-    emit SCAMPKLAYOracleSet(_SCAMP_oracle_addr, _klay_address);
+    emit SCAMPUSDTOracleSet(_SCAMPUSDTOracle);
   }
 
-  function setCAMPKlayOracle(address _CAMP_oracle_addr, address _klay_address) public onlyByOwnOrcontroller {
-    require((_CAMP_oracle_addr != address(0)) && (_klay_address != address(0)), "Zero address detected");
-    CAMP_klay_oracle_address = _CAMP_oracle_addr;
-    CAMPKlayOracle = UniswapPairOracle(_CAMP_oracle_addr);
-    klay_address = _klay_address;
+  function setCAMPUSDTOracle(address _CAMPUSDTOracle) external onlyByOwnOrcontroller {
+    require(_CAMPUSDTOracle != address(0), "Zero address detected");
+    CAMPUSDTOracle = UniswapPairOracle(_CAMPUSDTOracle);
 
-    emit CAMPKLAYOracleSet(_CAMP_oracle_addr, _klay_address);
+    emit CAMPUSDTOracleSet(_CAMPUSDTOracle);
   }
 
-  function toggleCollateralRatio() public onlyByOwnOrcontroller {
+  function toggleCollateralRatio() external onlyByOwnOrcontroller {
     collateral_ratio_paused = !collateral_ratio_paused;
 
     emit CollateralRatioToggled(collateral_ratio_paused);
@@ -250,8 +231,8 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   event BankAddressSet(address Bank_address);
   event PriceBandSet(uint256 price_band);
   event KLAYUSDTOracleSet(address Klay_oracle_addr, address klay_address);
-  event SCAMPKLAYOracleSet(address SCAMP_oracle_addr, address klay_address);
-  event CAMPKLAYOracleSet(address CAMP_oracle_addr, address klay_address);
+  event SCAMPUSDTOracleSet(address SCAMP_oracle_addr, address klay_address);
+  event CAMPUSDTOracleSet(address CAMP_oracle_addr, address klay_address);
   event CollateralRatioToggled(bool collateral_ratio_paused);
 
 }

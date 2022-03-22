@@ -105,6 +105,8 @@ const GlobalStyle = createGlobalStyle`
 
 let store = createStore(reducer);
 
+
+
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>

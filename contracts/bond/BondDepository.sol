@@ -7,15 +7,11 @@ import "./library/SafeMath.sol";
 import "./library/Ownable.sol";
 import "./interface/IBondTreasury.sol";
 import "./interface/IStakedToken.sol";
-import "../bank/Oracle/UniswapPairOracle.sol";
-import "../bank/SCAMP.sol";
 import "./library/upgradeable/VersionedInitializable.sol";
 import "./interface/IBondDepository.sol";
-import "../swap/interfaces/IUniswapV2Pair.sol";
+import "../bank/Oracle/AssetOracle.sol";
 
-
-
-abstract contract BondDepository is Ownable, VersionedInitializable, IBondDepository {
+abstract contract BondDepository is Ownable, VersionedInitializable, IBondDepository  {
     using SafeKIP7 for IKIP7;
     using SafeMath for uint;
 
@@ -30,12 +26,15 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
 
     address public DAO;
     address public CAMP; // token given as payment for bond
-    SCAMP private _SCAMP;
 
-
-    UniswapPairOracle private Token0USDTOracle;
-    UniswapPairOracle private Token1USDTOracle;   
-    IUniswapV2Pair private principle; // token used to create bond(아마도 lp)
+    AssetOracle private _assetOracle;
+    address public oracle;
+    // address private Token0address;
+    // address private Token1address;  
+    // UniswapPairOracle private Token0USDTOracle;
+    // UniswapPairOracle private Token1USDTOracle;   
+    // IUniswapV2Pair private principle; // token used to create bond(아마도 lp)
+    address public override principle; // token used to create bond??
     address public treasury; // mints OHM when receives principle
     address public usdt_address;
 
@@ -90,8 +89,8 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         address _CAMP,
         address _DAO,
         address _principle,
-        address _Token0Oracle,
-        address _Token1Oracle,
+        // address _Token0address,
+        // address _Token1address,
         address _staking,
         address _treasury,
         address _usdt_address
@@ -99,12 +98,12 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         _setInitialOwner();
         require(_CAMP != address(0));
         CAMP = _CAMP;
-        require(_SCAMP != address(0));
-        SCAMP = _SCAMP;
-        require(_Token0Oracle !- address(0));
-        Token0USDTOracle = _Token0Oracle;
-        require(_Token1Oracle !- address(0));
-        Token1USDTOracle = _Token1Oracle;
+        // require(_SCAMP != address(0));
+        // SCAMP = _SCAMP;
+        // require(_Token0address != address(0));
+        // Token0address = _Token0address;
+        // require(_Token1address != address(0));
+        // Token1address = _Token1address;
         require(_DAO != address(0));
         DAO = _DAO;
         require(_principle != address(0));
@@ -115,6 +114,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         treasury = _treasury;
         require(_usdt_address != address(0));
         usdt_address = _usdt_address;
+        _assetOracle = AssetOracle(oracle);
     }
 
     /**
@@ -240,7 +240,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
 
         require(_maxPrice >= priceInUSD, "BondDepository: Slippage limit: more than max price"); // slippage protection
 
-        uint256 principleValue = assetPrice().mul(_amount).div(10**6); // returns principle value, in USD, 10**18
+        uint256 principleValue = _assetOracle.assetPrice(principle).mul(_amount).div(10**6); // returns principle value, in USD, 10**18
         uint256 payout = payoutFor(principleValue); // payout to bonder is computed, bond amount
 
         require(payout >= 10 ** 16, "BondDepository: Bond too small"); // must be > 0.01 CAMP (underflow protection)
@@ -392,16 +392,16 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      *  @notice returns CAMP price in usd
      *  @return uint256 in 10**6 precision
      */
-    function CAMPPrice() public view returns (uint256) {
-        return SCAMP.CAMP_price();
-    }
+    // function CAMPPrice() public view returns (uint256) {
+    //     return SCAMP.CAMP_price();
+    // }
 
     /**
      *  @notice calculate current bond premium
      *  @return price_ uint256 in 10**6 precision in usd
      */
     function bondPrice() public view returns (uint256 price_) {
-        uint256 _CAMPPrice = CAMPPrice();
+        uint256 _CAMPPrice = _assetOracle.Token0_price();
         uint256 _priceRate = priceRate();
         price_ = _CAMPPrice.mul(_priceRate).div(10**9);
     }
@@ -422,32 +422,32 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      *  @return uint256 in 10 ** 6 precision
      */
 
-    function token0price() public view returns(uint256) {
-      Token0addr = Token0USDTOracle.token0()
-      if (Token0addr == usdt_address) {
-        return 1000000;
-      } else {
-        price0_ = uint256(Token0USDTOracle.consult(Token0addr, PRICE_PRECISION));
-        return price0_;
-      }
-    }
+    // function token0price() public view returns(uint256) {
+    //   Token0addr = Token0USDTOracle.token0()
+    //   if (Token0addr == usdt_address) {
+    //     return 1000000;
+    //   } else {
+    //     price0_ = uint256(Token0USDTOracle.consult(Token0addr, PRICE_PRECISION));
+    //     return price0_;
+    //   }
+    // }
 
-    function token1price() public view returns(uint256) {
-      Token1addr = Token1USDTOracle.token0()
-      if (Token1addr = usdt_address) {
-        return 1000000;
-      } else {
-        price1_ = uint256(Token1USDTOracle.consult(Token1addr, PRICE_PRECISION));
-        return price1_;
-      }
-    }
+    // function token1price() public view returns(uint256) {
+    //   Token1addr = Token1USDTOracle.token0()
+    //   if (Token1addr = usdt_address) {
+    //     return 1000000;
+    //   } else {
+    //     price1_ = uint256(Token1USDTOracle.consult(Token1addr, PRICE_PRECISION));
+    //     return price1_;
+    //   }
+    // }
 
-    function assetPrice() public view returns (uint256) {
-        totalSup = IUniswapV2Pair(_principle).totalSupply();
-        token0value = IUniswapV2Pair(_principle).price0CumulativeLast().mul(token0price());
-        token1value = IUniswapV2Pair(_principle).price0CumulativeLast().mul(token1price());
-        return (token0value.add(token1value)).div(totalSup).mul(1e18) //자릿수 맞추기..?!
-    }
+    // function assetPrice() public view returns (uint256) {
+    //     totalSup = IUniswapV2Pair(_principle).totalSupply();
+    //     token0value = IUniswapV2Pair(_principle).price0CumulativeLast().mul(token0price());
+    //     token1value = IUniswapV2Pair(_principle).price0CumulativeLast().mul(token1price());
+    //     return (token0value.add(token1value)).div(totalSup).mul(1e18) //자릿수 맞추기..?!
+    // }
 
     /**
      *  @notice calculate current ratio of debt to CAMP supply

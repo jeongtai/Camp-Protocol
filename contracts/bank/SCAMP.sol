@@ -3,18 +3,16 @@ pragma solidity =0.7.5;
 
 import "./module/Common/Context.sol";
 import "./module/ERC20/IERC20.sol";
-// import "./module/ERC20/ERC20Custom.sol";
 import "../bond/library/kip/KIP7.sol";
 import "./Owned.sol";
 // import "./CAMP.sol";
 // import "./Pools/SCAMPBank.sol";
-import "./Oracle/UniswapPairOracle.sol";
+import "./Oracle/AssetOracle.sol";
 
 contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   using SafeMath for uint256;
 
-  UniswapPairOracle private CAMPUSDTOracle;
-  UniswapPairOracle private SCAMPUSDTOracle;
+  AssetOracle public _assetOracle;
   address public creator_address;
   address public controller_address; 
   address public CAMP_address;
@@ -67,19 +65,10 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
 
   /* ========= views =============*/
 
-  function SCAMP_price() public view returns (uint256) {
-    uint256 price = uint256(SCAMPUSDTOracle.consult(SCAMP_address, PRICE_PRECISION));
-    return price;
-  }
-  
-  function CAMP_price() public view returns (uint256) {
-    uint256 price = uint256(CAMPUSDTOracle.consult(CAMP_address, PRICE_PRECISION));
-    return price;
-  }
 
   function SCAMP_info() public view returns (uint256, uint256, uint256, uint256, uint256) {
     return (
-      SCAMP_price(),
+      _assetOracle.Token1_price(),
       totalSupply(),
       current_collateral_ratio,
       minting_fee,
@@ -91,7 +80,7 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   uint256 public last_call_time;
 
   function refreshCollateralRatio() public {
-    uint256 SCAMP_cur_price = SCAMP_price();
+    uint256 SCAMP_cur_price = _assetOracle.Token1_price();
     require(block.timestamp - last_call_time >= refresh_cooldown, "Please wait refresh_cooldown");
 
     if (SCAMP_cur_price > price_target.add(price_band)) { //SCAMP가격이 만약 목표가보다 높다면
@@ -177,18 +166,10 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
     emit PriceBandSet(_price_band);
   }
 
-  function setSCAMPUSDTOracle(address _SCAMPUSDTOracle) external onlyByOwnOrcontroller {
-    require(_SCAMPUSDTOracle != address(0), "Zero address detected");
-    SCAMPUSDTOracle = UniswapPairOracle(_SCAMPUSDTOracle);
+  function setOracleAddress(address _oracleAddress) external onlyByOwnOrcontroller {
+    require(_oracleAddress != address(0), "Zero address detected");
 
-    emit SCAMPUSDTOracleSet(_SCAMPUSDTOracle);
-  }
-
-  function setCAMPUSDTOracle(address _CAMPUSDTOracle) external onlyByOwnOrcontroller {
-    require(_CAMPUSDTOracle != address(0), "Zero address detected");
-    CAMPUSDTOracle = UniswapPairOracle(_CAMPUSDTOracle);
-
-    emit CAMPUSDTOracleSet(_CAMPUSDTOracle);
+    _assetOracle = AssetOracle(_oracleAddress);
   }
 
   function toggleCollateralRatio() external onlyByOwnOrcontroller {
@@ -231,8 +212,6 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   event BankAddressSet(address Bank_address);
   event PriceBandSet(uint256 price_band);
   event KLAYUSDTOracleSet(address Klay_oracle_addr, address klay_address);
-  event SCAMPUSDTOracleSet(address SCAMP_oracle_addr, address klay_address);
-  event CAMPUSDTOracleSet(address CAMP_oracle_addr, address klay_address);
   event CollateralRatioToggled(bool collateral_ratio_paused);
 
 }

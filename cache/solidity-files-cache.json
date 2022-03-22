@@ -851,8 +851,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\BondDepository.sol": {
-      "lastModificationDate": 1647333503090,
-      "contentHash": "0907daf70ef35737888943490c9252a1",
+      "lastModificationDate": 1647969514355,
+      "contentHash": "5b94fb8178f6112ba62a84c531bf84a3",
       "sourceName": "contracts/bond/BondDepository.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -891,9 +891,9 @@
         "./library/Ownable.sol",
         "./interface/IBondTreasury.sol",
         "./interface/IStakedToken.sol",
-        "./interface/IOracle.sol",
         "./library/upgradeable/VersionedInitializable.sol",
-        "./interface/IBondDepository.sol"
+        "./interface/IBondDepository.sol",
+        "../bank/Oracle/AssetOracle.sol"
       ],
       "versionPragmas": [
         "0.7.5"
@@ -1036,8 +1036,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Oracle\\UniswapPairOracle.sol": {
-      "lastModificationDate": 1647846058682,
-      "contentHash": "a2cdeefc04539dc1fe8c4f5cd586acc5",
+      "lastModificationDate": 1647963513207,
+      "contentHash": "c4a4356509d88da547209097044520c6",
       "sourceName": "contracts/bank/Oracle/UniswapPairOracle.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1442,8 +1442,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Pools\\SCAMPBank.sol": {
-      "lastModificationDate": 1647584329463,
-      "contentHash": "c3c73c2eec5f18af55a5a56efe2692e5",
+      "lastModificationDate": 1647970048083,
+      "contentHash": "0261a5d24a0001aa8e694639bb3a5506",
       "sourceName": "contracts/bank/Pools/SCAMPBank.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1484,7 +1484,8 @@
         "./SCAMPPoolLibrary.sol",
         "../Owned.sol",
         "../module/ERC20/ERC20.sol",
-        "../../bond/library/SafeMath.sol"
+        "../../bond/library/SafeMath.sol",
+        "../Oracle/AssetOracle.sol"
       ],
       "versionPragmas": [
         "0.7.5"
@@ -1585,8 +1586,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\SCAMP.sol": {
-      "lastModificationDate": 1647586018084,
-      "contentHash": "06c67029182cef264526328a957f722d",
+      "lastModificationDate": 1647969547014,
+      "contentHash": "378c6f8cd667cf543f47653d17ad1514",
       "sourceName": "contracts/bank/SCAMP.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1624,9 +1625,7 @@
         "./module/ERC20/IERC20.sol",
         "../bond/library/kip/KIP7.sol",
         "./Owned.sol",
-        "./CAMP.sol",
-        "./Pools/SCAMPBank.sol",
-        "./Oracle/UniswapPairOracle.sol"
+        "./Oracle/AssetOracle.sol"
       ],
       "versionPragmas": [
         "=0.7.5"
@@ -2881,8 +2880,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\stake\\KlaybankDistributionManager.sol": {
-      "lastModificationDate": 1647588324683,
-      "contentHash": "1d10bd1b9bca85458729c9736f5e8e15",
+      "lastModificationDate": 1647850577676,
+      "contentHash": "4ed4166215832ec6439cea2d4d93d740",
       "sourceName": "contracts/stake/stake/KlaybankDistributionManager.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -4427,6 +4426,55 @@
       ],
       "artifacts": [
         "WKLAY"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Oracle\\AssetOracle.sol": {
+      "lastModificationDate": 1647969719180,
+      "contentHash": "d54f6b9be2e93192f359abe29a11d0e3",
+      "sourceName": "contracts/bank/Oracle/AssetOracle.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../../bond/library/SafeMath.sol",
+        "./UniswapPairOracle.sol",
+        "../Owned.sol",
+        "../SCAMP.sol",
+        "../Uniswap/interfaces/IUniswapV2Pair.sol"
+      ],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "AssetOracle"
       ]
     }
   }

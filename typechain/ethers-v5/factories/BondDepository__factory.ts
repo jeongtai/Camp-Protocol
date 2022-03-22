@@ -162,7 +162,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "DAO",
+    name: "CAMP",
     outputs: [
       {
         internalType: "address",
@@ -175,7 +175,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "KBT",
+    name: "DAO",
     outputs: [
       {
         internalType: "address",
@@ -203,7 +203,7 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "_KBT",
+        name: "_CAMP",
         type: "address",
       },
       {
@@ -228,7 +228,7 @@ const _abi = [
       },
       {
         internalType: "address",
-        name: "_oracle",
+        name: "_usdt_address",
         type: "address",
       },
     ],
@@ -264,19 +264,6 @@ const _abi = [
       {
         internalType: "uint256",
         name: "lastBlock",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "assetPrice",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
         type: "uint256",
       },
     ],
@@ -439,19 +426,6 @@ const _abi = [
     name: "initializeBondTerms",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "kbtPrice",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -785,6 +759,19 @@ const _abi = [
   {
     inputs: [],
     name: "treasury",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "usdt_address",
     outputs: [
       {
         internalType: "address",

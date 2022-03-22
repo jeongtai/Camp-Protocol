@@ -52,7 +52,6 @@ interface SCAMPBankInterface extends ethers.utils.Interface {
     "redemption_delay()": FunctionFragment;
     "redemption_fee()": FunctionFragment;
     "setPoolParameters(uint256,uint256,uint256,uint256,uint256,uint256,uint256)": FunctionFragment;
-    "setcollatKlayOracle(address,address)": FunctionFragment;
     "toggleMinting()": FunctionFragment;
     "toggleRedeeming()": FunctionFragment;
     "unclaimedPoolCAMP()": FunctionFragment;
@@ -189,10 +188,6 @@ interface SCAMPBankInterface extends ethers.utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "setcollatKlayOracle",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "toggleMinting",
     values?: undefined
   ): string;
@@ -322,10 +317,6 @@ interface SCAMPBankInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "setPoolParameters",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setcollatKlayOracle",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -554,12 +545,6 @@ export class SCAMPBank extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    setcollatKlayOracle(
-      _collateral_klay_oracle_address: string,
-      _klay_address: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     toggleMinting(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -691,12 +676,6 @@ export class SCAMPBank extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  setcollatKlayOracle(
-    _collateral_klay_oracle_address: string,
-    _klay_address: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   toggleMinting(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -818,12 +797,6 @@ export class SCAMPBank extends BaseContract {
       new_redeem_fee: BigNumberish,
       new_buyback_fee: BigNumberish,
       new_recollat_fee: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setcollatKlayOracle(
-      _collateral_klay_oracle_address: string,
-      _klay_address: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1055,12 +1028,6 @@ export class SCAMPBank extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    setcollatKlayOracle(
-      _collateral_klay_oracle_address: string,
-      _klay_address: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     toggleMinting(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1201,12 +1168,6 @@ export class SCAMPBank extends BaseContract {
       new_redeem_fee: BigNumberish,
       new_buyback_fee: BigNumberish,
       new_recollat_fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setcollatKlayOracle(
-      _collateral_klay_oracle_address: string,
-      _klay_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

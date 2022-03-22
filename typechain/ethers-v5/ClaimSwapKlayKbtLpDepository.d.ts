@@ -21,13 +21,12 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
   functions: {
+    "CAMP()": FunctionFragment;
     "DAO()": FunctionFragment;
-    "KBT()": FunctionFragment;
     "NAME()": FunctionFragment;
     "REVISION()": FunctionFragment;
     "__initialize(address,address,address,address,address,address)": FunctionFragment;
     "adjustment()": FunctionFragment;
-    "assetPrice()": FunctionFragment;
     "bondInfo(address)": FunctionFragment;
     "bondPrice()": FunctionFragment;
     "currentDebt()": FunctionFragment;
@@ -35,7 +34,6 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
     "debtRatio()": FunctionFragment;
     "deposit(uint256,uint256,address)": FunctionFragment;
     "initializeBondTerms(uint256,uint256,uint256,uint256,uint256,uint256,uint256)": FunctionFragment;
-    "kbtPrice()": FunctionFragment;
     "lastDecay()": FunctionFragment;
     "maxPayout()": FunctionFragment;
     "oracle()": FunctionFragment;
@@ -57,10 +55,11 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
     "terms()": FunctionFragment;
     "totalDebt()": FunctionFragment;
     "treasury()": FunctionFragment;
+    "usdt_address()": FunctionFragment;
   };
 
+  encodeFunctionData(functionFragment: "CAMP", values?: undefined): string;
   encodeFunctionData(functionFragment: "DAO", values?: undefined): string;
-  encodeFunctionData(functionFragment: "KBT", values?: undefined): string;
   encodeFunctionData(functionFragment: "NAME", values?: undefined): string;
   encodeFunctionData(functionFragment: "REVISION", values?: undefined): string;
   encodeFunctionData(
@@ -69,10 +68,6 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "adjustment",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "assetPrice",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "bondInfo", values: [string]): string;
@@ -99,7 +94,6 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
       BigNumberish
     ]
   ): string;
-  encodeFunctionData(functionFragment: "kbtPrice", values?: undefined): string;
   encodeFunctionData(functionFragment: "lastDecay", values?: undefined): string;
   encodeFunctionData(functionFragment: "maxPayout", values?: undefined): string;
   encodeFunctionData(functionFragment: "oracle", values?: undefined): string;
@@ -151,9 +145,13 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "terms", values?: undefined): string;
   encodeFunctionData(functionFragment: "totalDebt", values?: undefined): string;
   encodeFunctionData(functionFragment: "treasury", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "usdt_address",
+    values?: undefined
+  ): string;
 
+  decodeFunctionResult(functionFragment: "CAMP", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "DAO", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "KBT", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "NAME", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "REVISION", data: BytesLike): Result;
   decodeFunctionResult(
@@ -161,7 +159,6 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "adjustment", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "assetPrice", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "bondInfo", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "bondPrice", data: BytesLike): Result;
   decodeFunctionResult(
@@ -175,7 +172,6 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
     functionFragment: "initializeBondTerms",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "kbtPrice", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "lastDecay", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "maxPayout", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "oracle", data: BytesLike): Result;
@@ -221,6 +217,10 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "terms", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "totalDebt", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "treasury", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "usdt_address",
+    data: BytesLike
+  ): Result;
 
   events: {
     "BondCreated(address,uint256,uint256,uint256,uint256)": EventFragment;
@@ -322,21 +322,21 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
   interface: ClaimSwapKlayKbtLpDepositoryInterface;
 
   functions: {
-    DAO(overrides?: CallOverrides): Promise<[string]>;
+    CAMP(overrides?: CallOverrides): Promise<[string]>;
 
-    KBT(overrides?: CallOverrides): Promise<[string]>;
+    DAO(overrides?: CallOverrides): Promise<[string]>;
 
     NAME(overrides?: CallOverrides): Promise<[string]>;
 
     REVISION(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     __initialize(
-      _KBT: string,
+      _CAMP: string,
       _DAO: string,
       _principle: string,
       _staking: string,
       _treasury: string,
-      _oracle: string,
+      _usdt_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -351,8 +351,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
         lastBlock: BigNumber;
       }
     >;
-
-    assetPrice(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     bondInfo(
       arg0: string,
@@ -397,8 +395,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _initialDebt: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    kbtPrice(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     lastDecay(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -490,23 +486,25 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     totalDebt(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     treasury(overrides?: CallOverrides): Promise<[string]>;
+
+    usdt_address(overrides?: CallOverrides): Promise<[string]>;
   };
 
-  DAO(overrides?: CallOverrides): Promise<string>;
+  CAMP(overrides?: CallOverrides): Promise<string>;
 
-  KBT(overrides?: CallOverrides): Promise<string>;
+  DAO(overrides?: CallOverrides): Promise<string>;
 
   NAME(overrides?: CallOverrides): Promise<string>;
 
   REVISION(overrides?: CallOverrides): Promise<BigNumber>;
 
   __initialize(
-    _KBT: string,
+    _CAMP: string,
     _DAO: string,
     _principle: string,
     _staking: string,
     _treasury: string,
-    _oracle: string,
+    _usdt_address: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -521,8 +519,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       lastBlock: BigNumber;
     }
   >;
-
-  assetPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
   bondInfo(
     arg0: string,
@@ -561,8 +557,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     _initialDebt: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
-
-  kbtPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
   lastDecay(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -653,22 +647,24 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
 
   treasury(overrides?: CallOverrides): Promise<string>;
 
-  callStatic: {
-    DAO(overrides?: CallOverrides): Promise<string>;
+  usdt_address(overrides?: CallOverrides): Promise<string>;
 
-    KBT(overrides?: CallOverrides): Promise<string>;
+  callStatic: {
+    CAMP(overrides?: CallOverrides): Promise<string>;
+
+    DAO(overrides?: CallOverrides): Promise<string>;
 
     NAME(overrides?: CallOverrides): Promise<string>;
 
     REVISION(overrides?: CallOverrides): Promise<BigNumber>;
 
     __initialize(
-      _KBT: string,
+      _CAMP: string,
       _DAO: string,
       _principle: string,
       _staking: string,
       _treasury: string,
-      _oracle: string,
+      _usdt_address: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -683,8 +679,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
         lastBlock: BigNumber;
       }
     >;
-
-    assetPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
     bondInfo(
       arg0: string,
@@ -723,8 +717,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _initialDebt: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    kbtPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
     lastDecay(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -804,6 +796,8 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     totalDebt(overrides?: CallOverrides): Promise<BigNumber>;
 
     treasury(overrides?: CallOverrides): Promise<string>;
+
+    usdt_address(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -939,27 +933,25 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
   };
 
   estimateGas: {
-    DAO(overrides?: CallOverrides): Promise<BigNumber>;
+    CAMP(overrides?: CallOverrides): Promise<BigNumber>;
 
-    KBT(overrides?: CallOverrides): Promise<BigNumber>;
+    DAO(overrides?: CallOverrides): Promise<BigNumber>;
 
     NAME(overrides?: CallOverrides): Promise<BigNumber>;
 
     REVISION(overrides?: CallOverrides): Promise<BigNumber>;
 
     __initialize(
-      _KBT: string,
+      _CAMP: string,
       _DAO: string,
       _principle: string,
       _staking: string,
       _treasury: string,
-      _oracle: string,
+      _usdt_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     adjustment(overrides?: CallOverrides): Promise<BigNumber>;
-
-    assetPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
     bondInfo(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -988,8 +980,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _initialDebt: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
-
-    kbtPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
     lastDecay(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1068,30 +1058,30 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     totalDebt(overrides?: CallOverrides): Promise<BigNumber>;
 
     treasury(overrides?: CallOverrides): Promise<BigNumber>;
+
+    usdt_address(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    DAO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    CAMP(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    KBT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    DAO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     NAME(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     REVISION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     __initialize(
-      _KBT: string,
+      _CAMP: string,
       _DAO: string,
       _principle: string,
       _staking: string,
       _treasury: string,
-      _oracle: string,
+      _usdt_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     adjustment(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    assetPrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     bondInfo(
       arg0: string,
@@ -1123,8 +1113,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _initialDebt: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
-
-    kbtPrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     lastDecay(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1203,5 +1191,7 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     totalDebt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     treasury(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    usdt_address(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

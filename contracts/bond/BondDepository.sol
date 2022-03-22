@@ -44,6 +44,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     UniswapPairOracle private Token1USDTOracle;   
     IUniswapV2Pair private  principle; // token used to create bond(아마도 lp)
     address public treasury; // mints OHM when receives principle
+    address public usdt_address;
 
     address public staking; // to auto-stake payout
 
@@ -100,6 +101,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         address _Token1Oracle,
         address _staking,
         address _treasury,
+        address _usdt_address
     ) external initializer {
         _setInitialOwner();
         require(_CAMP != address(0));
@@ -118,6 +120,8 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         staking = _staking;
         require(_treasury != address(0));
         treasury = _treasury;
+        require(_usdt_address != address(0));
+        usdt_address = _usdt_address;
     }
 
     /**
@@ -425,21 +429,31 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      *  @return uint256 in 10 ** 6 precision
      */
 
-    function token0price() public view returns(uint256 price0_) {
+    function token0price() public view returns(uint256) {
       Token0addr = Token0USDTOracle.token0()
-      price0_ = uint256(Token0USDTOracle.consult(Token0addr, PRICE_PRECISION));
+      if (Token0addr == usdt_address) {
+        return 1000000;
+      } else {
+        price0_ = uint256(Token0USDTOracle.consult(Token0addr, PRICE_PRECISION));
+        return price0_;
+      }
     }
 
-    function token1price() public view returns(uint256 price1_) {
+    function token1price() public view returns(uint256) {
       Token1addr = Token1USDTOracle.token0()
-      price1_ = uint256(Token1USDTOracle.consult(Token1addr, PRICE_PRECISION));
+      if (Token1addr = usdt_address) {
+        return 1000000;
+      } else {
+        price1_ = uint256(Token1USDTOracle.consult(Token1addr, PRICE_PRECISION));
+        return price1_;
+      }
     }
 
     function assetPrice() public view returns (uint256) {
         totalSup = IUniswapV2Pair(_principle).totalSupply();
         token0value = IUniswapV2Pair(_principle).price0CumulativeLast().mul(token0price());
         token1value = IUniswapV2Pair(_principle).price0CumulativeLast().mul(token1price());
-        return (token0value.add(token1value)).div(totalSup)
+        return (token0value.add(token1value)).div(totalSup).mul(1e18) //자릿수 맞추기..?!
     }
 
     /**

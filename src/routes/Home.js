@@ -7,7 +7,7 @@ import SCAMPColor from "../assets/SCAMP-color.svg"
 
 const Container = styled.div`
     margin: 0 auto;
-    width: 75%;
+    width: 884px;
     max-width: 900 px;
     justify-content: center;
     border: 1px;
@@ -15,15 +15,17 @@ const Container = styled.div`
 `;
 
 const PageHeader = styled.div`
+    display : flex;
+    align-items: center;
+    justify-content: space-between;
     font-size: 24px;
     font-weight: 600;
-
-    p:first-child {
-        margin-top: 62px;
-    }
+    
+    margin-top: 70px;
 
     p:last-child {
-        margin-top: 28px;
+        font-size : 14px;
+        text-decoration: underline;
     }
 `;
 
@@ -33,7 +35,7 @@ const Content = styled.div`
     grid-template-columns: 508px 376px;
 
     div:nth-child(1) {
-	    grid-column: 1 / 3;
+	    grid-column: 1/3;
 `;
 
 const Overview = styled.div`
@@ -216,7 +218,7 @@ function Home() {
         <Container>
             <PageHeader>
                 <p>Dashboard</p>
-                <p>protocol</p>
+                <p>Get CAMP</p>
             </PageHeader>
             <Content>
                 <Overview>

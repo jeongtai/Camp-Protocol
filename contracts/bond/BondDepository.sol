@@ -8,20 +8,16 @@ import "./library/Ownable.sol";
 import "./interface/IBondTreasury.sol";
 import "./interface/IStakedToken.sol";
 import "../bank/Oracle/UniswapPairOracle.sol";
-import "../bank/SCAMP.sol"
+import "../bank/SCAMP.sol";
 import "./library/upgradeable/VersionedInitializable.sol";
 import "./interface/IBondDepository.sol";
-import "../swap/interfaces/IUniswapV2Pair";
+import "../swap/interfaces/IUniswapV2Pair.sol";
 
 
 
 abstract contract BondDepository is Ownable, VersionedInitializable, IBondDepository {
-
     using SafeKIP7 for IKIP7;
     using SafeMath for uint;
-
-
-
 
     /* ======== EVENTS ======== */
 
@@ -29,9 +25,6 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     event BondRedeemed(address indexed recipient, uint256 payout, uint256 remaining);
     event BondPriceChanged(uint256 indexed priceInUSD, uint256 indexed debtRatio);
     event ControlVariableAdjustment(uint256 initialBCV, uint256 newBCV, uint256 adjustment, bool addition);
-
-
-
 
     /* ======== STATE VARIABLES ======== */
 
@@ -42,7 +35,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
 
     UniswapPairOracle private Token0USDTOracle;
     UniswapPairOracle private Token1USDTOracle;   
-    IUniswapV2Pair private  principle; // token used to create bond(아마도 lp)
+    IUniswapV2Pair private principle; // token used to create bond(아마도 lp)
     address public treasury; // mints OHM when receives principle
 
     address public staking; // to auto-stake payout

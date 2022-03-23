@@ -2,6 +2,7 @@ import react, { useState, useEffect } from "react";
 import Caver from "caver-js";
 import styled from "styled-components";
 import Navbar from "./Navbar";
+import { useLocation } from "react-router-dom";
 
 const Content = styled.div`
     display: flex;
@@ -39,60 +40,53 @@ const ConnectWallet = styled.button`
 
 function PageHeader() {
     const [isWalletConnected, setIsWalletConnected] = useState(false);
-    const [title, setTitle] = useState(window.location.pathname);
+    const [currentAddress, setCurrentAddress] = useState(
+        window.klaytn.selectedAddress
+    );
+    const { pathname } = useLocation();
 
-    // const getUserInfo = async () => {
-    //     try {
-    //         if (window.klaytn.isKaikas) {
-    //             const response = await window.klaytn.enable();
-    //             console.log(window.klaytn.selectedAddress);
-    //             setIsWalletConnected(true);
-    //         }
-    //     } catch (error) {
-    //         console.log(error);`
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     const onLoad = async() => {
-    //         await getUserInfo();
-    //     };
-    //     window.addEventListener("load", onLoad);
-    //     return () => window.removeEventListener("load", onLoad);
-    // }, []);
-
+    // initialize hook----------------------------
     useEffect(() => {
         const onLoad = async () => {
-            if (window.klaytn.selectedAddress){
-                setIsWalletConnected(true)
+            console.log("1 onLoad cur : ", currentAddress);
+            if (currentAddress) {
+                setIsWalletConnected(true);
+                setCurrentAddress(currentAddress);
             }
-        }
-
+        };
         // load eventlistner 추가해서
         // 문서내 모든 컨텐츠가 되어야만 isWalletConnected를 True로 바꿔줌
         window.addEventListener("load", onLoad);
+
+        // accountChange EventListner
+        //   -> 지갑주소 undefined 됐을때 대비 갱신
+        window.klaytn.on("accountsChanged", async function (accounts) {
+            console.log(
+                "2 account change : ",
+                currentAddress,
+                " -> ",
+                accounts[0]
+            );
+
+            await setCurrentAddress(accounts[0]);
+            await setIsWalletConnected(true);
+        });
+
+        // clean-up 으로 event-listner 삭제
         return () => window.removeEventListener("load", onLoad);
     }, []);
 
 
-    useEffect(() => {
-        setTitle(window.location.pathname);
-    },[window.location.pathname]);
-
-
     async function connectKaikas() {
-        await window.klaytn.enable();
+        const response = await window.klaytn.enable();
+        console.log("connect Btn Click : ", response);
         setIsWalletConnected(true);
         return window.klaytn.selectedAddress;
     }
 
     return (
         <Content>
-            {title === "/" ? (
-                <p>Dashboard</p>
-            ) : (
-                <p>{title.slice(0)}</p>
-            )}
+            {pathname === "/" ? <p>Dashboard</p> : <p>{pathname.slice(1)}</p>}
             <p>
                 {/* 나중에 tokenB 부분 tokenAddress로 바꾸기 */}
                 <a
@@ -103,9 +97,9 @@ function PageHeader() {
                 </a>
                 <ConnectWallet onClick={() => connectKaikas()}>
                     {isWalletConnected
-                        ? window.klaytn.selectedAddress.slice(0, 10) +
+                        ? currentAddress.slice(0, 10) +
                           "..." +
-                          window.klaytn.selectedAddress.slice(-3)
+                          currentAddress.slice(-3)
                         : "Connect Wallet"}
                 </ConnectWallet>
             </p>

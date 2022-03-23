@@ -13,10 +13,11 @@ export const theme = {
    connectBtnColor : "#3E97FF",
 
    // text
+   textBlack : "#282828",
    textGray : "#B2B2B2",
 
    // navbar
-   navWidth: 360,
+   navWidth: 260,
    hoverColor: "#D7E9FF",
    hoverTextColor : "#0E7DFF",
 

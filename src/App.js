@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 
 import Navbar from "./routes/Navbar";
 import PageHeader from "./routes/PageHeader";
@@ -24,17 +25,17 @@ function App() {
             <Navbar />
             <Section>
                 <PageHeader />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/Stake" element={<Stake />} />
-                    <Route path="/Bond" element={<Bond />} />
-                    <Route path="/Bank" element={<Bank />} />
-                    <Route path="/Calculator" element={<Calculator />} />
-                    <Route path="/Fund" element={<Fund />} />
-                </Routes>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/Stake" element={<Stake />} />
+                        <Route path="/Bond" element={<Bond />} />
+                        <Route path="/Bank" element={<Bank />} />
+                        <Route path="/Calculator" element={<Calculator />} />
+                        <Route path="/Fund" element={<Fund />} />
+                    </Routes>
             </Section>
         </Router>
-    );
+    )
 }
 
 export default App;

@@ -15,6 +15,7 @@ const Dashboard = styled.div`
     div:nth-child(1) {
 	    grid-column: 1/3;
     }
+    
 `;
 
 const Overview = styled.div`
@@ -23,7 +24,7 @@ const Overview = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
 
-    padding: 24px 28px;
+    padding: 24px;
 
     stroke: Solid #ededed 1px;
     background-color: white;
@@ -32,18 +33,22 @@ const Overview = styled.div`
     border: 2px solid ${(props) => props.theme.borderColor};
 
     span {
+        margin : 0 20px;
         font-weight: 400;
         font-size: 20px;
         width: 100%;
+        margin-bottom: 20px;
     }
 `;
 
 const OverviewItem = styled.div`
     flex: 1 1 20%;
-    margin: 10px 10px;
-    width: 20%;
-    min-width: 120px;
 
+    margin: 15px 10px;
+    padding : 0px 10px;
+
+    width: 23%;
+    min-width: 120px;
     p:first-child {
         font-size: 14px;
         color: ${(props) => props.theme.textGray};

@@ -39,7 +39,7 @@ const ConnectWallet = styled.button`
 
 function PageHeader() {
     const [isWalletConnected, setIsWalletConnected] = useState(false);
-    const [title, setTitle] = useState(" ");
+    const [title, setTitle] = useState(window.location.pathname);
 
     // const getUserInfo = async () => {
     //     try {
@@ -49,7 +49,7 @@ function PageHeader() {
     //             setIsWalletConnected(true);
     //         }
     //     } catch (error) {
-    //         console.log(error);
+    //         console.log(error);`
     //     }
     // };
 
@@ -62,7 +62,11 @@ function PageHeader() {
     // }, []);
 
     useEffect(() => {
-        const onLoad = async () => setIsWalletConnected(true)
+        const onLoad = async () => {
+            if (window.klaytn.selectedAddress){
+                setIsWalletConnected(true)
+            }
+        }
 
         // load eventlistner 추가해서
         // 문서내 모든 컨텐츠가 되어야만 isWalletConnected를 True로 바꿔줌
@@ -72,13 +76,12 @@ function PageHeader() {
 
 
     useEffect(() => {
-        console.log(window.location.pathname);
         setTitle(window.location.pathname);
-    }, [window.location.pathname]);
+    },[window.location.pathname]);
 
 
     async function connectKaikas() {
-        window.klaytn.enable();
+        await window.klaytn.enable();
         setIsWalletConnected(true);
         return window.klaytn.selectedAddress;
     }
@@ -100,7 +103,8 @@ function PageHeader() {
                 </a>
                 <ConnectWallet onClick={() => connectKaikas()}>
                     {isWalletConnected
-                        ? window.klaytn.selectedAddress.slice(0, 10) +
+                        ? window.klaytn.selectedAddress
+                        .slice(0, 10) +
                           "..." +
                           window.klaytn.selectedAddress.slice(-3)
                         : "Connect Wallet"}

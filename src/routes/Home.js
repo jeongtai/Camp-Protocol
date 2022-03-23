@@ -2,38 +2,19 @@ import react, { useState, useEffect } from "react";
 import Caver from "caver-js";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import CAMPColor from "../assets/CAMP-color.svg"
-import SCAMPColor from "../assets/SCAMP-color.svg"
+import CAMPColor from "../assets/CAMP-color.svg";
+import SCAMPColor from "../assets/SCAMP-color.svg";
+import Loading from  "../assets/Loading.svg";
 
-const Container = styled.div`
-    margin: 0 auto;
-    width: 75%;
-    max-width: 900 px;
+const Dashboard = styled.div`
+
     justify-content: center;
-    border: 1px;
-    height: 700px;
-`;
-
-const PageHeader = styled.div`
-    font-size: 24px;
-    font-weight: 600;
-
-    p:first-child {
-        margin-top: 62px;
-    }
-
-    p:last-child {
-        margin-top: 28px;
-    }
-`;
-
-const Content = styled.div`
     // grid
     display: grid;
-    grid-template-columns: 508px 376px;
+    grid-template-columns: 60% 40%;
 
     div:nth-child(1) {
-	    grid-column: 1 / 3;
+	    grid-column: 1/3;
 `;
 
 const Overview = styled.div`
@@ -42,7 +23,6 @@ const Overview = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
 
-    margin-top: 35px;
     padding: 24px 28px;
 
     stroke: Solid #ededed 1px;
@@ -59,8 +39,8 @@ const Overview = styled.div`
 `;
 
 const OverviewItem = styled.div`
-    flex: 1 1 25%;
-    margin: 10px 0px;
+    flex: 1 1 20%;
+    margin: 10px 10px;
     width: 20%;
     min-width: 120px;
 
@@ -138,6 +118,7 @@ const AddWallet = styled.button`
     background-color: ${(props) => props.theme.addBtnColor};
     border: 0;
     border-radius: 6px;
+    margin-right: 8px;
 `;
 
 const GetScamp = styled.button`
@@ -148,115 +129,155 @@ const GetScamp = styled.button`
     border-radius: 6px;
     color: white;
 `;
-function addToken (tokenaddr, url, name) {
-  const tokenAddress = tokenaddr
-  const tokenSymbol = name
-  const tokenDecimals = 18
-  const tokenImage = url
 
-  window.klaytn.sendAsync(
-    {
-      method: 'wallet_watchAsset',
-      params: {
-        type: 'ERC20', // Initially only supports ERC20, but eventually more!
-        options: {
-          address: tokenAddress, // The address that the token is at.
-          symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
-          decimals: tokenDecimals, // The number of decimals in the token
-          image: tokenImage // A string url of the token logo
-        }
-      },
-      id: Math.round(Math.random() * 100000)
-    }
-  )
+function addToken(tokenaddr, url, name) {
+    const tokenAddress = tokenaddr;
+    const tokenSymbol = name;
+    const tokenDecimals = 18;
+    const tokenImage = url;
+
+    window.klaytn.sendAsync({
+        method: "wallet_watchAsset",
+        params: {
+            type: "ERC20", // Initially only supports ERC20, but eventually more!
+            options: {
+                address: tokenAddress, // The address that the token is at.
+                symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+                decimals: tokenDecimals, // The number of decimals in the token
+                image: tokenImage, // A string url of the token logo
+            },
+        },
+        id: Math.round(Math.random() * 100000),
+    });
 }
 
 function Home() {
     let state = useSelector((state) => state);
-    const [scampsupply, setScampSupply] = useState()
-    const [campsupply, setCampSupply] = useState()
-    const [pricetarget, setPriceTarget] = useState()
-    const [cur_ratio, setCur_Ratio] = useState()
+    const [scampsupply, setScampSupply] = useState();
+    const [campsupply, setCampSupply] = useState();
+    const [pricetarget, setPriceTarget] = useState();
+    const [cur_ratio, setCur_Ratio] = useState();
+    const [isLoading, setIsLoading] = useState(true);
+
     const caver = new Caver(window.klaytn);
     const Infos = [
         { name: "Total Market Cap", amt: "$ 415252.5102" },
         { name: "CAMP Price", amt: "$ 0.4602" },
         { name: "TVL", amt: "$ 19240.4912" },
         { name: "Treasury Balance", amt: "$ 7608.0027" },
-        { name: "Price Target", amt: ` $ ${pricetarget}`},
-        { name: "Current_Ratio", amt: `${cur_ratio*100} %` },
+        { name: "Price Target", amt: ` $ ${pricetarget}` },
+        { name: "Current_Ratio", amt: `${cur_ratio * 100} %` },
         { name: "Owned Liquidity", amt: "$ 12667.3552" },
         { name: "Rented Liquidity", amt: "$ 16891.8558" },
     ];
-    
+
     const Tokens = [
-        { name: "CAMP", price: 0.4602, supply: campsupply, Contract : "0xB9Faa17b39A576ff48EeAF179F437aC501688256", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg"},
-        { name: "SCAMP", price: 0.9812, supply: scampsupply, Contract : "0xFC0e434Ff2fDdFb41b79B1d3b0342c80A8f6EFd3", logo : "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg"},
+        {
+            name: "CAMP",
+            price: 0.4602,
+            supply: campsupply,
+            Contract: "0xB9Faa17b39A576ff48EeAF179F437aC501688256",
+            logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg",
+        },
+        {
+            name: "SCAMP",
+            price: 0.9812,
+            supply: scampsupply,
+            Contract: "0xFC0e434Ff2fDdFb41b79B1d3b0342c80A8f6EFd3",
+            logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg",
+        },
     ];
-    async function getUserInfo() {
-      await window.klaytn.enable()
-      state.SCAMPContract.methods
-          .totalSupply()
-          .call((e,v)=> setScampSupply(caver.utils.fromPeb(v, "KLAY")))
-      state.CAMPContract.methods
-          .totalSupply()
-          .call((e,v)=> setCampSupply(caver.utils.fromPeb(v, "KLAY")))
-      state.SCAMPContract.methods
-          .price_target()
-          .call((e, v) => setPriceTarget(v/1000000))
-      state.SCAMPContract.methods
-          .current_collateral_ratio()
-          .call((e, v) => setCur_Ratio(v))
+
+    async function getTokenInfo() {
+        await state.SCAMPContract.methods
+            .totalSupply()
+            .call((e, v) => setScampSupply(caver.utils.fromPeb(v, "KLAY")));
+        await state.CAMPContract.methods
+            .totalSupply()
+            .call((e, v) => setCampSupply(caver.utils.fromPeb(v, "KLAY")));
+        await state.SCAMPContract.methods
+            .price_target()
+            .call((e, v) => setPriceTarget(v / 1000000));
+        await state.SCAMPContract.methods
+            .current_collateral_ratio()
+            .call((e, v) => setCur_Ratio(v));
+        setIsLoading(false);
     }
     useEffect(() => {
-      getUserInfo()
+        getTokenInfo();
     }, []);
 
     return (
-        <Container>
-            <PageHeader>
-                <p>Dashboard</p>
-                <p>protocol</p>
-            </PageHeader>
-            <Content>
-                <Overview>
-                    <span>Overview</span>
+        <>
+            {isLoading ? (
+                <p align-items="center"><img width="80px" src={Loading}/></p>
+            ) : (
+                <Dashboard>
+                    <Overview>
+                        <span>Overview</span>
 
-                    {Infos.map((info, index) => (
-                        <OverviewItem key={info.name}>
-                            <p>{info.name}</p>
-                            <p>{info.amt}</p>
-                        </OverviewItem>
-                    ))}
-                </Overview>
-                <TVL>
-                    <span>TVL</span>
-                    <p>{Infos[2].amt}</p>
-                </TVL>
-                <TokensList>
-                    {Tokens.map((token, index) => (
-                        <TokenItem key={token.name}>
-                            <p><img src={token.name==="CAMP" ? CAMPColor : SCAMPColor} /> {token.name}</p>
-                            <p>$ {token.price}</p>
-                            <TokenItemInfo>
-                                <p>Supply</p>
-                                <p>{parseInt(token.supply).toLocaleString()}</p>
-                            </TokenItemInfo>
-                            <TokenItemInfo>
-                                <p>Market Cap</p>
+                        {Infos.map((info, index) => (
+                            <OverviewItem key={info.name}>
+                                <p>{info.name}</p>
+                                <p>{info.amt}</p>
+                            </OverviewItem>
+                        ))}
+                    </Overview>
+                    <TVL>
+                        <span>TVL</span>
+                        <p>{Infos[2].amt}</p>
+                    </TVL>
+                    <TokensList>
+                        {Tokens.map((token, index) => (
+                            <TokenItem key={token.name}>
                                 <p>
-                                    $ {(token.price * token.supply).toLocaleString()}
+                                    <img
+                                        src={
+                                            token.name === "CAMP"
+                                                ? CAMPColor
+                                                : SCAMPColor
+                                        }
+                                    />{" "}
+                                    {token.name}
                                 </p>
-                            </TokenItemInfo>
-                            <TokenItemInfo>
-                                <AddWallet onClick={() => addToken(token.Contract, token.logo, token.name)}>Add Wallet</AddWallet>
-                                <GetScamp>Get {token.name}</GetScamp>
-                            </TokenItemInfo>
-                        </TokenItem>
-                    ))}
-                </TokensList>
-            </Content>
-        </Container>
+                                <p>$ {token.price}</p>
+                                <TokenItemInfo>
+                                    <p>Supply</p>
+                                    <p>
+                                        {parseInt(
+                                            token.supply
+                                        ).toLocaleString()}
+                                    </p>
+                                </TokenItemInfo>
+                                <TokenItemInfo>
+                                    <p>Market Cap</p>
+                                    <p>
+                                        ${" "}
+                                        {parseInt(
+                                            token.price * token.supply
+                                        ).toLocaleString()}
+                                    </p>
+                                </TokenItemInfo>
+                                <TokenItemInfo>
+                                    <AddWallet
+                                        onClick={() =>
+                                            addToken(
+                                                token.Contract,
+                                                token.logo,
+                                                token.name
+                                            )
+                                        }
+                                    >
+                                        Add Wallet
+                                    </AddWallet>
+                                    <GetScamp>Get {token.name}</GetScamp>
+                                </TokenItemInfo>
+                            </TokenItem>
+                        ))}
+                    </TokensList>
+                </Dashboard>
+            )}
+        </>
     );
 }
 export default react.memo(Home);

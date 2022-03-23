@@ -16,9 +16,9 @@ const Bank = () =>{
     async function getUserInfo () {
       await window.klaytn.enable()
       setTimeout(() => {
-        state.SCAMPContract.methods.balanceOf(window.klaytn.selectedAddress).call((e,v) => setSCAMPBalance(caver.utils.fromPeb(v, 'KLAY')))
-        state.CAMPContract.methods.balanceOf(window.klaytn.selectedAddress).call((e,v) => setCAMPBalance(caver.utils.fromPeb(v, 'KLAY')))
-        state.USDCContract.methods.balanceOf(window.klaytn.selectedAddress).call((e,v) => setUSDCBalance(caver.utils.fromPeb(v, 'Mpeb')))
+        state.SCAMPContract.methods.balanceOf(window.klaytn.selectedAddress).call((e,v) => setSCAMPBalance(caver.utils.fromPeb(v.toString(), 'KLAY')))
+        state.CAMPContract.methods.balanceOf(window.klaytn.selectedAddress).call((e,v) => setCAMPBalance(caver.utils.fromPeb(v.toString(), 'KLAY')))
+        state.USDCContract.methods.balanceOf(window.klaytn.selectedAddress).call((e,v) => setUSDCBalance(caver.utils.fromPeb(v.toString(), 'Mpeb')))
       }, 300)
     }
     useEffect(() => {

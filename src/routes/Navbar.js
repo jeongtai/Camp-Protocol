@@ -12,7 +12,7 @@ import Calculator from "../assets/Calculator.svg";
 import Fund from "../assets/Fund.svg";
 
 const Nav = styled.div`
-    width: ${(props) => props.theme.navWidth};
+    width: ${(props) => props.theme.navWidth}px;
     height: 100%; /* Full-height: remove this if you want "auto" height */
 
     display: flex;    

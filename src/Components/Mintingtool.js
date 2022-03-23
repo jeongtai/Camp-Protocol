@@ -13,6 +13,7 @@ function Mintingtool() {
   const [campamount, setCampAmount] = useState();
   const [scampamount, setScampAmount] = useState();
   const [isapproved, setIsApproved] = useState(false);
+  const [slippage, setSlippage] = useState();
 
   const USDCamt = (event) => {
     setUSDCamount(Math.round(event.target.value*100)/100)
@@ -29,12 +30,15 @@ function Mintingtool() {
       setCampAmount(Math.round(event.target.value*100/5)/100)
       setScampAmount(Math.round(event.target.value*100)/100)
   }
+  const Slipamt = (event) => {
+    setSlippage(event.target.value)
+  }
   
   function onClick() {
     state.BankContract.methods.mintFractionalSCAMP(
       caver.utils.toPeb(usdcamount*1000, 'mKLAY'),
       caver.utils.toPeb(campamount*1000, 'mKLAY'),
-      caver.utils.toPeb(scampamount*1000*0.9, 'mKLAY')
+      caver.utils.toPeb(scampamount*1000*(100 - {slippage})/100, 'mKLAY')
     ).send({
       from: window.klaytn.selectedAddress,
       gas : '3000000'
@@ -60,8 +64,19 @@ function Mintingtool() {
       })
     })
   }
+
+  function Zapmint() {
+    
+  }
   return (
     <div>
+      <div>
+        <Input
+          onChange={Slipamt}
+          value ={slippage}
+          type = 'text'
+          text = "Slippage Tolerance" />
+      </div>
       <div>
         <Input
            onChange={USDCamt}

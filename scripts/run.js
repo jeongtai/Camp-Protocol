@@ -10,13 +10,18 @@ const main = async () => {
     // Get the ContractFactory and Signers here.
     SCAMPFactory = await ethers.getContractFactory("SCAMP");
     // let SCAMP = await SCAMPFactory.deploy(owner.address);
-    const SCAMP = await SCAMPFactory.attach("0xFC0e434Ff2fDdFb41b79B1d3b0342c80A8f6EFd3");
+    const SCAMP = await SCAMPFactory.attach("0xA4B41eE35fa3D15F83C34FAc529b4bc528053fE3");
     console.log("SCAMP address is:", await SCAMP.address);
 
     CAMPFactory = await ethers.getContractFactory("CAMP");
     // let CAMP = await CAMPFactory.deploy(owner.address);
-    const CAMP = await CAMPFactory.attach("0xB9Faa17b39A576ff48EeAF179F437aC501688256");
+    const CAMP = await CAMPFactory.attach("0x5EBdcFD436eA6cB25D0C26a3e702DEC8bFC5Da86");
     console.log("CAMP address is:", await CAMP.address);
+
+    const oracleFactory = await ethers.getContractFactory("AssetOracle");
+    // const oracle = await oracleFactory.deploy(CAMP.address, SCAMP.address);
+    const oracle = await oracleFactory.attach("0xBbD467bC76f4dcDD50917C2064028078164E8932");
+    console.log("oracle address:", oracle.address);
 
     mockFactory = await ethers.getContractFactory("MockUSDC");
     // let mock = await mockFactory.deploy();
@@ -35,8 +40,8 @@ const main = async () => {
             SCAMPPoolLibrary: SCAMPPoolLibrary.address,
         },
     });
-    // let Bank = await BankFactory.deploy(SCAMP.address, CAMP.address, mock.address, owner.address);
-    const Bank = await BankFactory.attach("0x1697E7a9934662c227199927FbcbfB2A6257F4D0");
+    // let Bank = await BankFactory.deploy(SCAMP.address, CAMP.address, mock.address, owner.address, oracle.address);
+    const Bank = await BankFactory.attach("0x732D85d461f2056dB7905d6680b5143F63860403");
     console.log("Bank address is:", Bank.address);
 
     // Set controller
@@ -54,9 +59,17 @@ const main = async () => {
     console.log("Factory address is:", factory.address);
     const pairCodeHash = await factory.pairCodeHash();
     console.log("pairCodeHash:", pairCodeHash);
+
+    // create SCAMP, mock pair
     // await factory.createPair(SCAMP.address, mock.address)
     const SCAMPPair = await factory.getPair(SCAMP.address, mock.address);
     console.log("SCAMP pair:", SCAMPPair);
+
+    // create CAMP, mock pair
+    // await factory.createPair(CAMP.address, mock.address)
+    const CAMPPair = await factory.getPair(CAMP.address, mock.address);
+    console.log("CAMP pair:", CAMPPair);
+
 
     const wKLAYFactory = await ethers.getContractFactory("WKLAY");
     // const wKLAY = await wKLAYFactory.deploy();
@@ -73,29 +86,42 @@ const main = async () => {
     // Approve and addLiquidity
     // await SCAMP.approve(router.address, toBn("1e18"));
     const SCAMPAllowance = await SCAMP.allowance(owner.address, router.address);
-    console.log("cubeAllowance:", SCAMPAllowance.toString());
+    console.log("SCAMPAllowance:", SCAMPAllowance.toString());
     // await mock.approve(router.address, toBn("1e18"));
     const mockAllowance = await mock.allowance(owner.address, router.address);
     console.log("mockCollatAllowance:", mockAllowance.toString());
 
-    console.log((await SCAMP.balanceOf(owner.address)).toString(), (await mock.balanceOf(owner.address)).toString())
+    // console.log((await SCAMP.balanceOf(owner.address)).toString(), (await mock.balanceOf(owner.address)).toString())
 
     // let liquidity = await router.addLiquidity(SCAMP.address, mock.address, 1e6, 1e6, 1e3, 1e3, owner.address, Math.floor(Date.now()) + 100);
+
+    // await CAMP.approve(router.address, toBn("1e18"));
+    // let liquidity_camp = await router.addLiquidity(CAMP.address, mock.address, 1e7, 1e6, 1e3, 1e3, owner.address, Math.floor(Date.now()) + 100);
     // console.log("Liquidity:", liquidity);
+
+    // swap
+    // const swapamounts = await router.getAmountsOut(1e6, [CAMP.address, mock.address]);
+    // console.log("swap ratio:", await swapamounts[0].toString(), await swapamounts[1].toString());
+    // await router.swapExactTokensForTokens(swapamounts[0].toString(), swapamounts[1].toString(), [CAMP.address, mock.address], owner.address, Math.floor(Date.now()) + 10);
 
     const PairFactory = await ethers.getContractFactory("UniswapV2Pair");
     const pairContract = PairFactory.attach(SCAMPPair);
     const reserve = await pairContract.getReserves();
     console.log(reserve[0].toString(), reserve[1].toString(), reserve[2])
 
+    const pairContract_CAMP = PairFactory.attach(CAMPPair);
+    const reserve_CAMP = await pairContract_CAMP.getReserves();
+    console.log(reserve_CAMP[0].toString(), reserve_CAMP[1].toString(), reserve_CAMP[2])
+
     const uniPairOracleFactory = await ethers.getContractFactory("UniswapPairOracle");
     // const uniPairOracle = await uniPairOracleFactory.deploy(factory.address, SCAMP.address, mock.address, owner.address);
     const uniPairOracle = uniPairOracleFactory.attach("0xe466293937f46db8F06B6989A99a2D6257036205");
     console.log("uniPairOracle pair:", uniPairOracle.address);
 
-    await uniPairOracle.update();
+    // await uniPairOracle.update();
     console.log("is here?");
-    await uniPairOracle.setPeriod(300);
+    console.log((await uniPairOracle.PERIOD()).toString());
+    // await uniPairOracle.setPeriod(3600);
 
     const amountOut = await uniPairOracle.consult(SCAMP.address, 1e6);
     console.log("amountOut of oracle:", amountOut.toString());

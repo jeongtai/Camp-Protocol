@@ -9,7 +9,7 @@ describe("Token contract", function () {
     let addr1;
     let addr2;
     let addrs;
-    let SCAMP, CAMP, mock, Bank, factory, SCAMPPair, wKLAY, router, uniPairOracle;
+    let SCAMP, CAMP, oracle, mock, Bank, factory, SCAMPPair, wKLAY, router, uniPairOracle;
 
     before(async function () {
         // Get the ContractFactory and Signers here.
@@ -35,6 +35,10 @@ describe("Token contract", function () {
         const wKLAYFactory = await ethers.getContractFactory("WKLAY");
         wKLAY = await wKLAYFactory.deploy();
         console.log("wKLAY address:", wKLAY.address);
+
+        const oracleFactory = await ethers.getContractFactory("AssetOracle");
+        oracle = await oracleFactory.deploy(CAMP.address, SCAMP.address);
+        console.log("oracle address:", oracle.address);
     });
 
     describe("bank deployment", async function (){
@@ -44,7 +48,7 @@ describe("Token contract", function () {
                     SCAMPPoolLibrary: SCAMPPoolLibrary.address,
                 },
             });
-            Bank = await BankFactory.deploy(SCAMP.address, CAMP.address, mock.address, owner.address);
+            Bank = await BankFactory.deploy(SCAMP.address, CAMP.address, mock.address, owner.address, oracle.address);
             console.log("Bank address is:", Bank.address);
         });
     });

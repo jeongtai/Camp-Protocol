@@ -22,9 +22,9 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 interface AssetOracleInterface extends ethers.utils.Interface {
   functions: {
     "Token0Oracle()": FunctionFragment;
-    "Token0_price()": FunctionFragment;
+    "Token0_price(address)": FunctionFragment;
     "Token1Oracle()": FunctionFragment;
-    "Token1_price()": FunctionFragment;
+    "Token1_price(address)": FunctionFragment;
     "acceptOwnership()": FunctionFragment;
     "assetPrice(address)": FunctionFragment;
     "nominateNewOwner(address)": FunctionFragment;
@@ -40,7 +40,7 @@ interface AssetOracleInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "Token0_price",
-    values?: undefined
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "Token1Oracle",
@@ -48,7 +48,7 @@ interface AssetOracleInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "Token1_price",
-    values?: undefined
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "acceptOwnership",
@@ -185,11 +185,17 @@ export class AssetOracle extends BaseContract {
   functions: {
     Token0Oracle(overrides?: CallOverrides): Promise<[string]>;
 
-    Token0_price(overrides?: CallOverrides): Promise<[BigNumber]>;
+    Token0_price(
+      Token0_address: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     Token1Oracle(overrides?: CallOverrides): Promise<[string]>;
 
-    Token1_price(overrides?: CallOverrides): Promise<[BigNumber]>;
+    Token1_price(
+      Token1_address: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -222,11 +228,17 @@ export class AssetOracle extends BaseContract {
 
   Token0Oracle(overrides?: CallOverrides): Promise<string>;
 
-  Token0_price(overrides?: CallOverrides): Promise<BigNumber>;
+  Token0_price(
+    Token0_address: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   Token1Oracle(overrides?: CallOverrides): Promise<string>;
 
-  Token1_price(overrides?: CallOverrides): Promise<BigNumber>;
+  Token1_price(
+    Token1_address: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   acceptOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -256,11 +268,17 @@ export class AssetOracle extends BaseContract {
   callStatic: {
     Token0Oracle(overrides?: CallOverrides): Promise<string>;
 
-    Token0_price(overrides?: CallOverrides): Promise<BigNumber>;
+    Token0_price(
+      Token0_address: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     Token1Oracle(overrides?: CallOverrides): Promise<string>;
 
-    Token1_price(overrides?: CallOverrides): Promise<BigNumber>;
+    Token1_price(
+      Token1_address: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     acceptOwnership(overrides?: CallOverrides): Promise<void>;
 
@@ -325,11 +343,17 @@ export class AssetOracle extends BaseContract {
   estimateGas: {
     Token0Oracle(overrides?: CallOverrides): Promise<BigNumber>;
 
-    Token0_price(overrides?: CallOverrides): Promise<BigNumber>;
+    Token0_price(
+      Token0_address: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     Token1Oracle(overrides?: CallOverrides): Promise<BigNumber>;
 
-    Token1_price(overrides?: CallOverrides): Promise<BigNumber>;
+    Token1_price(
+      Token1_address: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -363,11 +387,17 @@ export class AssetOracle extends BaseContract {
   populateTransaction: {
     Token0Oracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    Token0_price(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    Token0_price(
+      Token0_address: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     Token1Oracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    Token1_price(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    Token1_price(
+      Token1_address: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }

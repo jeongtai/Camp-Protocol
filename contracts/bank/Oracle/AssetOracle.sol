@@ -4,7 +4,6 @@ pragma solidity 0.7.5;
 import "../../bond/library/SafeMath.sol";
 import "./UniswapPairOracle.sol";
 import "../Owned.sol";
-import "../SCAMP.sol";
 import "../Uniswap/interfaces/IUniswapV2Pair.sol";
 
 contract AssetOracle is Owned {
@@ -20,19 +19,14 @@ contract AssetOracle is Owned {
     event Token0OracleUpdated(address indexed newOracle);
     event Token1OracleUpdated(address indexed newOracle);
 
-constructor(address _token0Address, address _token1Address) Owned(msg.sender) {
-        setToken0Oracle(_token0Address);
-        setToken1Oracle(_token1Address);
-        Token0_address = _token0Address;
-        Token1_address = _token1Address;
-    }
+    constructor() Owned(msg.sender) {}
 
-    function Token0_price() external view returns (uint256) {
+    function Token0_price(address Token0_address) external view returns (uint256) {
         uint256 price = uint256(Token0Oracle.consult(Token0_address, PRICE_PRECISION));
         return price;
     }
 
-    function Token1_price() external view returns (uint256) {
+    function Token1_price(address Token1_address) external view returns (uint256) {
         uint256 price = uint256(Token1Oracle.consult(Token1_address, PRICE_PRECISION));
         return price;
     }

@@ -5,7 +5,7 @@ import "./module/Common/Context.sol";
 import "./module/ERC20/IERC20.sol";
 import "../bond/library/kip/KIP7.sol";
 import "./Owned.sol";
-// import "./CAMP.sol";
+import "./CAMP.sol";
 // import "./Pools/SCAMPBank.sol";
 import "./Oracle/AssetOracle.sol";
 
@@ -20,6 +20,7 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   uint256 public constant genesis_supply = 2000000e18; // 2M SCMAP 선발행
 
   address public SCAMPBank; //SCAMP Bank address받기
+  CAMP private _CAMP;
   
   //Bank에 필요한 variables
   uint256 private constant PRICE_PRECISION = 1e6;
@@ -68,7 +69,7 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
 
   function SCAMP_info() public view returns (uint256, uint256, uint256, uint256, uint256) {
     return (
-      _assetOracle.Token1_price(),
+      _assetOracle.Token1_price(_CAMP.SCAMPAddress()),
       totalSupply(),
       current_collateral_ratio,
       minting_fee,
@@ -80,7 +81,7 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   uint256 public last_call_time;
 
   function refreshCollateralRatio() public {
-    uint256 SCAMP_cur_price = _assetOracle.Token1_price();
+    uint256 SCAMP_cur_price = _assetOracle.Token1_price(_CAMP.SCAMPAddress());
     require(block.timestamp - last_call_time >= refresh_cooldown, "Please wait refresh_cooldown");
 
     if (SCAMP_cur_price > price_target.add(price_band)) { //SCAMP가격이 만약 목표가보다 높다면

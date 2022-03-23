@@ -851,8 +851,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\BondDepository.sol": {
-      "lastModificationDate": 1647969514355,
-      "contentHash": "5b94fb8178f6112ba62a84c531bf84a3",
+      "lastModificationDate": 1648057122051,
+      "contentHash": "76b4097d997b0a5067d328a179c6ff6f",
       "sourceName": "contracts/bond/BondDepository.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1442,8 +1442,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Pools\\SCAMPBank.sol": {
-      "lastModificationDate": 1647970048083,
-      "contentHash": "0261a5d24a0001aa8e694639bb3a5506",
+      "lastModificationDate": 1648057041003,
+      "contentHash": "0d3fa577713bf28e70ab45724f212f57",
       "sourceName": "contracts/bank/Pools/SCAMPBank.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1538,8 +1538,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\CAMP.sol": {
-      "lastModificationDate": 1647584798557,
-      "contentHash": "197430242a652160caf17e661dfb2c82",
+      "lastModificationDate": 1648056651633,
+      "contentHash": "28bcd3e191444a6e9dd1db26d055cba9",
       "sourceName": "contracts/bank/CAMP.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1586,8 +1586,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\SCAMP.sol": {
-      "lastModificationDate": 1647969547014,
-      "contentHash": "378c6f8cd667cf543f47653d17ad1514",
+      "lastModificationDate": 1648056936319,
+      "contentHash": "ff377d3ecdcf19bffa8cf96d5ca7b046",
       "sourceName": "contracts/bank/SCAMP.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1625,6 +1625,7 @@
         "./module/ERC20/IERC20.sol",
         "../bond/library/kip/KIP7.sol",
         "./Owned.sol",
+        "./CAMP.sol",
         "./Oracle/AssetOracle.sol"
       ],
       "versionPragmas": [
@@ -4138,8 +4139,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\swap\\UniswapV2Factory.sol": {
-      "lastModificationDate": 1647587717899,
-      "contentHash": "a4ea8c175c53fb0dc27d23e097d506b4",
+      "lastModificationDate": 1648055815338,
+      "contentHash": "903c39b6857d8501f34baaf84b244bee",
       "sourceName": "contracts/swap/swap/UniswapV2Factory.sol",
       "solcConfig": {
         "version": "0.5.6",
@@ -4429,8 +4430,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Oracle\\AssetOracle.sol": {
-      "lastModificationDate": 1647969719180,
-      "contentHash": "d54f6b9be2e93192f359abe29a11d0e3",
+      "lastModificationDate": 1648056129565,
+      "contentHash": "771c6cf005f507bc78f537b10fd01a88",
       "sourceName": "contracts/bank/Oracle/AssetOracle.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -4467,7 +4468,6 @@
         "../../bond/library/SafeMath.sol",
         "./UniswapPairOracle.sol",
         "../Owned.sol",
-        "../SCAMP.sol",
         "../Uniswap/interfaces/IUniswapV2Pair.sol"
       ],
       "versionPragmas": [

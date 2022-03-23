@@ -52,7 +52,7 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Cont
     function setSCAMPAddress(address SCAMP_contract_address) external onlyByOwnOrcontroller {
         require(SCAMP_contract_address != address(0), "Zero address detected");
 
-        _SCAMP = SCAMP(SCAMP_contract_address);
+        SCAMPAddress = SCAMP_contract_address;
         emit SCAMPAddressSet(SCAMP_contract_address);
     }
     

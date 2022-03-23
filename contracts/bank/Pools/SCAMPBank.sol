@@ -91,7 +91,7 @@ contract SCAMPBank is Owned {
             && (_collateral_address != address(0))
             && (_creator_address != address(0))
         , "Zero address detected"); 
-        _SCAMP = SCAMP(_SCAMP_contract_address);
+        _SCAMP = ISCAMP(_SCAMP_contract_address);
         _CAMP = CAMP(_CAMP_contract_address);
         SCAMP_contract_address = _SCAMP_contract_address;
         CAMP_contract_address = _CAMP_contract_address;

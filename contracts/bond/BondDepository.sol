@@ -8,10 +8,10 @@ import "./library/Ownable.sol";
 import "./interface/IBondTreasury.sol";
 import "./interface/IStakedToken.sol";
 import "../bank/Oracle/UniswapPairOracle.sol";
-import "../bank/SCAMP.sol"
+//import "../bank/SCAMP.sol";
 import "./library/upgradeable/VersionedInitializable.sol";
 import "./interface/IBondDepository.sol";
-import "../swap/interfaces/IUniswapV2Pair";
+import "../swap/interfaces/IUniswapV2Pair.sol";
 
 
 
@@ -44,7 +44,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     UniswapPairOracle private Token1USDTOracle;   
     IUniswapV2Pair private  principle; // token used to create bond(아마도 lp)
     address public treasury; // mints OHM when receives principle
-
+    address public oracle;
     address public staking; // to auto-stake payout
 
     Terms public terms; // stores terms for new bonds
@@ -100,15 +100,16 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         address _Token1Oracle,
         address _staking,
         address _treasury,
+        address _oracle
     ) external initializer {
         _setInitialOwner();
         require(_CAMP != address(0));
         CAMP = _CAMP;
         require(_SCAMP != address(0));
         SCAMP = _SCAMP;
-        require(_Token0Oracle !- address(0));
+        require(_Token0Oracle != address(0));
         Token0USDTOracle = _Token0Oracle;
-        require(_Token1Oracle !- address(0));
+        require(_Token1Oracle != address(0));
         Token1USDTOracle = _Token1Oracle;
         require(_DAO != address(0));
         DAO = _DAO;
@@ -118,6 +119,8 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         staking = _staking;
         require(_treasury != address(0));
         treasury = _treasury;
+        require(_oracle != address(0));
+        oracle = _oracle;
     }
 
     /**
@@ -426,12 +429,12 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      */
 
     function token0price() public view returns(uint256 price0_) {
-      Token0addr = Token0USDTOracle.token0()
+      Token0addr = Token0USDTOracle.token0();
       price0_ = uint256(Token0USDTOracle.consult(Token0addr, PRICE_PRECISION));
     }
 
     function token1price() public view returns(uint256 price1_) {
-      Token1addr = Token1USDTOracle.token0()
+      Token1addr = Token1USDTOracle.token0();
       price1_ = uint256(Token1USDTOracle.consult(Token1addr, PRICE_PRECISION));
     }
 
@@ -439,7 +442,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         totalSup = IUniswapV2Pair(_principle).totalSupply();
         token0value = IUniswapV2Pair(_principle).price0CumulativeLast().mul(token0price());
         token1value = IUniswapV2Pair(_principle).price0CumulativeLast().mul(token1price());
-        return (token0value.add(token1value)).div(totalSup)
+        return (token0value.add(token1value)).div(totalSup);
     }
 
     /**

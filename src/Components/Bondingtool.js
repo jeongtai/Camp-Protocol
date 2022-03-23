@@ -10,15 +10,16 @@ function Bondingtool() {
   const Bondaddress = ""
   const [amount, setAmount] = useState()
   const [toggleBond, settoggleBond] = useState(true)
+  const [toggleZap, settoggleZap] = useState(false)
   const bool_stake = true
   const maxPrice = 1000
   const onChange = (event) => setAmount(event.target.value)
   const toggle = () => settoggleBond((prev) => !prev)
 
-  function onClick1() {
+  function Bond() {
 
-    //LP Contract로 바꿔야해
-  
+    if (toggleZap === false) {
+      //LP Contract로 바꿔야해
     state.CAMPContract.methods.approve(
       Bondaddress,
       caver.utils.toPeb(amount, "KLAY")
@@ -35,10 +36,28 @@ function Bondingtool() {
         from: window.klaytn.selectedAddress,
         gas : '3000000'
       })
-    })
+    })} else {
+      state.USDCContract.methods.approve(
+        Bondaddress,
+        caver.utils.toPeb(amount, "KLAY")
+      ).send({
+        from : window.klaytn.selectedAddress,
+        gas : 3000000
+      })
+      .on('receipt', function () {
+        state.StakingContract.methods.ZaptoBond(
+          caver.utils.toPeb(amount, "KLAY"),
+          maxPrice, //이거 정보 불러와야해
+          Bondaddress
+        ).send({
+          from: window.klaytn.selectedAddress,
+          gas : '3000000'
+        })
+      })
+    }
   }
   
-  function onClick2() {
+  function Redeem() {
     state.BondContract.methods.redeem(
       window.klaytn.selectedAddress,
       bool_stake, //이거 정보 불러와야해
@@ -58,7 +77,7 @@ function Bondingtool() {
         type = 'text'
         text = "amount to Bond"
       />
-      {toggleBond ? <Button text = "Bond!" onClick={onClick1}/> : <Button text = "Redeem!" onClick={onClick2}/> }
+      {toggleBond ? <Button text = "Bond!" onClick={Bond}/> : <Button text = "Redeem!" onClick={Redeem}/> }
 
     </div>
   )

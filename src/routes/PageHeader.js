@@ -103,8 +103,7 @@ function PageHeader() {
                 </a>
                 <ConnectWallet onClick={() => connectKaikas()}>
                     {isWalletConnected
-                        ? window.klaytn.selectedAddress
-                        .slice(0, 10) +
+                        ? window.klaytn.selectedAddress.slice(0, 10) +
                           "..." +
                           window.klaytn.selectedAddress.slice(-3)
                         : "Connect Wallet"}

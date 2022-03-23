@@ -39,6 +39,7 @@ const ConnectWallet = styled.button`
 
 function PageHeader() {
     const [isWalletConnected, setIsWalletConnected] = useState(false);
+    const [title, setTitle] = useState(" ");
 
     // const getUserInfo = async () => {
     //     try {
@@ -69,6 +70,13 @@ function PageHeader() {
         return () => window.removeEventListener("load", onLoad);
     }, []);
 
+
+    useEffect(() => {
+        console.log(window.location.pathname);
+        setTitle(window.location.pathname);
+    }, [window.location.pathname]);
+
+
     async function connectKaikas() {
         window.klaytn.enable();
         setIsWalletConnected(true);
@@ -77,10 +85,10 @@ function PageHeader() {
 
     return (
         <Content>
-            {window.location.pathname === "/" ? (
+            {title === "/" ? (
                 <p>Dashboard</p>
             ) : (
-                <p>{window.location.pathname.slice(1)}</p>
+                <p>{title.slice(0)}</p>
             )}
             <p>
                 {/* 나중에 tokenB 부분 tokenAddress로 바꾸기 */}

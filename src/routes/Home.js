@@ -7,7 +7,6 @@ import SCAMPColor from "../assets/SCAMP-color.svg";
 import Loading from  "../assets/Loading.svg";
 
 const Dashboard = styled.div`
-
     justify-content: center;
     // grid
     display: grid;
@@ -15,6 +14,7 @@ const Dashboard = styled.div`
 
     div:nth-child(1) {
 	    grid-column: 1/3;
+    }
 `;
 
 const Overview = styled.div`

@@ -174,11 +174,12 @@ function Mintingtool() {
 
     const CAMPamt = (event) => {
         const camp = event.target.value;
+        const campPrice = 0.1
         setUSDCInputAmount(
-            Math.round((camp * 1000) / (1 - ECR) - camp * 1000) / 1000
+            Math.round((camp*campPrice * 1000) / (1 - ECR) - (camp*campPrice * 1000) ) / 1000
         );
         setCampInputAmount(Math.round(camp * 1000) / 1000);
-        setScampInputAmount(Math.round((camp * 1000) / (1 - ECR)) / 1000);
+        setScampInputAmount(Math.round((camp*campPrice * 1000) / (1 - ECR)) / 1000);
     };
 
     const SCAMPamt = (event) => {

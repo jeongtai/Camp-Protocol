@@ -15,10 +15,14 @@ const Section = styled.div`
     border-radius: 8px;
 
     color: gray;
+    display : ${props=>props.isVisible ? "block" : "none"};
+
     p {
         font-size: 12px;
         font-weight: 400;
     }
+
+    
 `;
 
 const Top = styled.div`
@@ -60,12 +64,12 @@ const MaxBtn = styled.button`
     color: red;
     font-weight: 400;
     font-size: 9px;
-    visibility: ${(props) => (props.haveMax ? "visible" : "hidden")};
+    visibility: ${(props) => (props.haveMax && props.visible ? "visible" : "hidden")};
 `;
 
-function InputForm({ token, balance, onChange, value, type, haveMax }) {
+function InputForm({ token, balance, onChange, value, type, haveMax, isVisible }) {
     return (
-        <Section>
+        <Section isVisible={isVisible}>
             <Top>
                 <p>Balance : {balance}</p>
                 <MaxBtn

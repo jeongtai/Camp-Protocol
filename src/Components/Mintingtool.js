@@ -6,16 +6,14 @@ import Caver from "caver-js";
 import styled from "styled-components";
 
 import Loading from "../assets/Loading.svg";
-import Setting from "../assets/Setting.svg";
+import SetIcon from "../assets/SetIcon.svg";
 
 const Content = styled.div`
-    background-color: tomato;
-
     font-size: 14px;
     div:first-child {
-      display:flex;
-      align-items: center;
-      justify-items: space-between;
+        display: flex;
+        align-items: center;
+        justify-items: space-between;
     }
 `;
 
@@ -67,6 +65,15 @@ const Btn = styled.button`
     width: 100%;
 `;
 
+const Setting = styled.div`
+    height: 174px;
+    padding: 10px;
+    background-color: ${(props) => props.theme.backBlue};
+    border-radius: 15px;
+    z-index : 10000;
+    position: relative
+`
+
 const caver = new Caver(window.klaytn);
 
 function Mintingtool() {
@@ -79,6 +86,7 @@ function Mintingtool() {
     const [slippage, setSlippage] = useState(0);
 
     const [isapproved, setIsApproved] = useState(false);
+    const [isMint, setIsMint] = useState(true);
 
     const [SCAMPBalance, setSCAMPBalance] = useState();
     const [CAMPBalance, setCAMPBalance] = useState();
@@ -195,9 +203,11 @@ function Mintingtool() {
                 <span>Input</span>
                 <span>
                     <img
-                        onClick={() => console.log("imgclick")}
-                        src={Setting}
+                        align="right"
+                        onClick={isMint}
+                        src={SetIcon}
                     />
+                    
                 </span>
             </div>
             <InputForm
@@ -207,14 +217,17 @@ function Mintingtool() {
                 value={usdcInputAmount}
                 type="number"
                 haveMax={true}
-            ></InputForm>
+                isVisible={true}
+            />
+
             <InputForm
                 token="CAMP"
                 balance={CAMPBalance}
                 onChange={CAMPamt}
                 value={campInputAmount}
                 type="number"
-            ></InputForm>
+                isVisible={true}
+            />
 
             <span>Output (estimated)</span>
             <InputForm
@@ -223,12 +236,13 @@ function Mintingtool() {
                 onChange={SCAMPamt}
                 value={scampInputAmount || 0}
                 type="number"
-            ></InputForm>
+                isVisible={true}
+            />
 
             <MintInfos>
                 <Info>
-                    <span>ECR (USDC)</span>
-                    <span>{ECR}</span>
+                    <span>Current Collateral Ratio</span>
+                    <span>{ECR*100} %</span>
                 </Info>
                 <Info>
                     <span>Redemption fee</span>

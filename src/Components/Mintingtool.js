@@ -1,14 +1,70 @@
 import Button from "./Button";
-import Input from "./INPUT";
+import InputForm from "./InputForm";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Caver from "caver-js";
 import styled from "styled-components";
 
 import Loading from "../assets/Loading.svg";
+import Setting from "../assets/Setting.svg";
 
 const Content = styled.div`
-    background-color: white;
+    background-color: tomato;
+
+    font-size: 14px;
+    div:first-child {
+      display:flex;
+      align-items: center;
+      justify-items: space-between;
+    }
+`;
+
+const MintInfos = styled.div`
+    height: 174px;
+    padding: 10px;
+
+    background-color: ${(props) => props.theme.backBlue};
+    border-radius: 15px;
+`;
+
+const Info = styled.div`
+    margin: 3px;
+    padding: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    span {
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        text-align: right;
+        color: ${(props) => props.theme.textBlack};
+    }
+
+    span:first-child {
+        text-align: left;
+        color: ${(props) => props.theme.textGray};
+    }
+`;
+
+const Approve = styled.div`
+    text-align: center;
+    color: ${(props) => props.theme.textGray};
+
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+`;
+
+const Btn = styled.button`
+    margin-top: 20px;
+    background-color: ${(props) => props.theme.getBtnColor};
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    width: 100%;
 `;
 
 const caver = new Caver(window.klaytn);
@@ -17,28 +73,73 @@ function Mintingtool() {
     let state = useSelector((state) => state);
     let BankAddress = "0x470aC5e9E098731F0911003218505151e47a6aDD";
 
-    const [usdcamount, setUSDCamount] = useState(0);
-    const [campamount, setCampAmount] = useState(0);
-    const [scampamount, setScampAmount] = useState(0);
+    const [usdcInputAmount, setUSDCInputAmount] = useState(0);
+    const [campInputAmount, setCampInputAmount] = useState(0);
+    const [scampInputAmount, setScampInputAmount] = useState(0);
     const [slippage, setSlippage] = useState(0);
 
     const [isapproved, setIsApproved] = useState(false);
 
+    const [SCAMPBalance, setSCAMPBalance] = useState();
+    const [CAMPBalance, setCAMPBalance] = useState();
+    const [USDCBalance, setUSDCBalance] = useState();
+
+    const [ECR, setECR] = useState(0.85);
+
+    // initialize hook----------------------------
+    useEffect(() => {
+        if (window.klaytn) {
+            getUserInfo();
+            window.klaytn.on("accountsChanged", async function (accounts) {
+                getUserInfo();
+                console.log("account change listen in bank");
+            });
+        }
+    }, []);
+
+    async function getUserInfo() {
+        state.SCAMPContract.methods
+            .balanceOf(window.klaytn.selectedAddress)
+            .call((e, v) =>
+                setSCAMPBalance(caver.utils.fromPeb(v.toString(), "KLAY"))
+            );
+        state.CAMPContract.methods
+            .balanceOf(window.klaytn.selectedAddress)
+            .call((e, v) =>
+                setCAMPBalance(caver.utils.fromPeb(v.toString(), "KLAY"))
+            );
+        state.USDCContract.methods
+            .balanceOf(window.klaytn.selectedAddress)
+            .call((e, v) =>
+                setUSDCBalance(caver.utils.fromPeb(v.toString(), "Mpeb"))
+            );
+    }
+
     const USDCamt = (event) => {
-        setUSDCamount(Math.round(event.target.value * 100) / 100);
-        setCampAmount(Math.round((event.target.value * 100) / 5) / 100);
-        setScampAmount(Math.round((event.target.value * 5 * 100) / 4) / 100);
+        const usdc = event.target.value;
+        setUSDCInputAmount(Math.round(usdc * 1000) / 1000);
+        setCampInputAmount(
+            ((Math.round(usdc * 1000) / ECR) * (1 - ECR)) / 1000
+        );
+        setScampInputAmount(Math.round((usdc * 1000) / ECR) / 1000);
     };
+
     const CAMPamt = (event) => {
-        setUSDCamount(Math.round(event.target.value * 4 * 100) / 100);
-        setCampAmount(Math.round(event.target.value * 100) / 100);
-        setScampAmount(Math.round(event.target.value * 5 * 100) / 100);
+        const camp = event.target.value;
+        setUSDCInputAmount(
+            Math.round((camp * 1000) / (1 - ECR) - camp * 1000) / 1000
+        );
+        setCampInputAmount(Math.round(camp * 1000) / 1000);
+        setScampInputAmount(Math.round((camp * 1000) / (1 - ECR)) / 1000);
     };
+
     const SCAMPamt = (event) => {
-        setUSDCamount(Math.round((event.target.value * 100 * 4) / 5) / 100);
-        setCampAmount(Math.round((event.target.value * 100) / 5) / 100);
-        setScampAmount(Math.round(event.target.value * 100) / 100);
+        const scamp = event.target.value;
+        setUSDCInputAmount(Math.round(scamp * 1000 * ECR) / 1000);
+        setCampInputAmount(Math.round(scamp * 1000 * (1 - ECR)) / 1000);
+        setScampInputAmount(Math.round(scamp * 1000) / 1000);
     };
+
     const Slipamt = (event) => {
         setSlippage(event.target.value);
     };
@@ -46,10 +147,10 @@ function Mintingtool() {
     function onClick() {
         state.BankContract.methods
             .mintFractionalSCAMP(
-                caver.utils.toPeb(usdcamount * 1000, "mKLAY"),
-                caver.utils.toPeb(campamount * 1000, "mKLAY"),
+                caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"),
+                caver.utils.toPeb(campInputAmount * 1000, "mKLAY"),
                 caver.utils.toPeb(
-                    (scampamount * 1000 * (100 - { slippage })) / 100,
+                    (scampInputAmount * 1000 * (100 - { slippage })) / 100,
                     "mKLAY"
                 )
             )
@@ -61,7 +162,10 @@ function Mintingtool() {
 
     function onClick2() {
         state.CAMPContract.methods
-            .approve(BankAddress, caver.utils.toPeb(campamount * 1000, "mKLAY"))
+            .approve(
+                BankAddress,
+                caver.utils.toPeb(campInputAmount * 1000, "mKLAY")
+            )
             .send({
                 from: window.klaytn.selectedAddress,
                 gas: "3000000",
@@ -70,7 +174,7 @@ function Mintingtool() {
                 state.USDCContract.methods
                     .approve(
                         BankAddress,
-                        caver.utils.toPeb(usdcamount * 1000, "mKLAY")
+                        caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY")
                     )
                     .send({
                         from: window.klaytn.selectedAddress,
@@ -83,46 +187,89 @@ function Mintingtool() {
     }
 
     function Zapmint() {}
+
     return (
         <Content>
-            <Input
-                onChange={Slipamt}
-                value={slippage}
-                type="number"
-            />
-            <p>Input</p>
-            <Input
+            {/* <InputForm onChange={Slipamt} value={slippage} type="number" /> */}
+            <div>
+                <span>Input</span>
+                <span>
+                    <img
+                        onClick={() => console.log("imgclick")}
+                        src={Setting}
+                    />
+                </span>
+            </div>
+            <InputForm
                 token="USDC"
-                balance="100"
+                balance={USDCBalance}
                 onChange={USDCamt}
-                value={usdcamount}
+                value={usdcInputAmount}
                 type="number"
                 haveMax={true}
-            ></Input>
-            <Input
+            ></InputForm>
+            <InputForm
                 token="CAMP"
-                balance="200"
+                balance={CAMPBalance}
                 onChange={CAMPamt}
-                value={campamount}
+                value={campInputAmount}
                 type="number"
-            ></Input>
+            ></InputForm>
 
-            <p>Output (estimated)</p>
-            <Input
+            <span>Output (estimated)</span>
+            <InputForm
                 token="SCAMP"
-                balance="300"
+                balance={SCAMPBalance}
                 onChange={SCAMPamt}
-                value={scampamount||0}
+                value={scampInputAmount || 0}
                 type="number"
-            ></Input>
+            ></InputForm>
 
-            {isapproved ? (
-                <Button text="Mint" onClick={onClick}></Button>
-            ) : (
-                <Button text="Approve" onClick={onClick2}>
-                    Approve
-                </Button>
-            )}
+            <MintInfos>
+                <Info>
+                    <span>ECR (USDC)</span>
+                    <span>{ECR}</span>
+                </Info>
+                <Info>
+                    <span>Redemption fee</span>
+                    <span>0.3% = 0.000000 CAMP</span>
+                </Info>
+                <Info>
+                    <span>Collateral balance</span>
+                    <span>0.000000 USDT</span>
+                </Info>
+                <Info>
+                    <span>Slippage</span>
+                    <span>0.5 %</span>
+                </Info>
+                <Info>
+                    <span>Rates</span>
+                    <span>
+                        1 USDT = 0.999764 USD
+                        <br />1 CAMP = 0.000199 USD
+                    </span>
+                </Info>
+            </MintInfos>
+
+            <Approve>
+                <p>
+                    First time Mint SCAMP?
+                    <br />
+                    Please approve USDC,CAMP to use your
+                    <br />
+                    SCAMP for Minting.
+                </p>
+
+                {isapproved ? (
+                    <Btn text="Mint" onClick={onClick}>
+                        Mint
+                    </Btn>
+                ) : (
+                    <Btn text="Approve" onClick={onClick2}>
+                        Approve
+                    </Btn>
+                )}
+            </Approve>
         </Content>
     );
 }

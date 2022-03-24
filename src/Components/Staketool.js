@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Input from "./INPUT"
+import InputForm from "./InputForm"
 import Button from "./Button"
 import {useSelector } from "react-redux";
 import Caver from "caver-js";
@@ -45,12 +45,12 @@ function Staketool () {
 
     return (
         <div>
-            <Input
+            <InputForm
               onChange={onChange}
               value={amount}
               type="text"
               text="Staking amount">
-            </Input>
+            </InputForm>
             <Button text = "Stake!" onClick={Stake}/>
             <Button text = "Unstake!" onClick={Unstake}/>
         </div>

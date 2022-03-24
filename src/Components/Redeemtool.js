@@ -1,5 +1,5 @@
 import Button from "./Button";
-import Input from "./INPUT";
+import InputForm from "./InputForm";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import Caver from "caver-js";
@@ -8,7 +8,57 @@ import styled from "styled-components";
 import Loading from "../assets/Loading.svg";
 
 const Content = styled.div`
-    background-color: white;
+    background-color: teal;
+    font-size : 14px;
+`;
+
+const MintInfos = styled.div`
+    height: 174px;
+    padding: 10px;
+
+    background-color: ${(props) => props.theme.backBlue};
+    border-radius: 15px;
+`;
+
+const Info = styled.div`
+    margin: 3px;
+    padding: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    span {
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        text-align: right;
+        color: ${(props) => props.theme.textBlack};
+    }
+
+    span:first-child {
+        text-align: left;
+        color: ${(props) => props.theme.textGray};
+    }
+`;
+
+
+const Approve = styled.div`
+    text-align: center;
+    color: ${(props) => props.theme.textGray};
+
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+`;
+
+const Btn = styled.button`
+    margin-top: 20px;
+    background-color: ${(props) => props.theme.getBtnColor};
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    width: 100%;
 `;
 
 const caver = new Caver(window.klaytn)
@@ -71,31 +121,31 @@ function Redeemtool () {
     return(
       <div>
         <div>
-          <Input
+          <InputForm
             onChange={Slipamt}
             value ={slippage}
             type = 'text'
             text = "Slippage Tolerance" />
         </div>
         <div>        
-          <Input
+          <InputForm
             onChange={SCAMPamt}
             value ={scampamount}
             type = 'text'
             text = "SCAMP amount to redeem">
-          </Input>
-          <Input
+          </InputForm>
+          <InputForm
             onChange={USDCamt}
             value ={usdcamount}
             type = 'text'
             text = "USDC amount to redeem">
-          </Input>
-          <Input
+          </InputForm>
+          <InputForm
             onChange={CAMPamt}
             value ={campamount}
             type = 'text'
             text = "CAMP amount to redeem">
-          </Input>
+          </InputForm>
 
           {isapproved ? <Button text = "Redeem" onClick={onClick}></Button> : <Button text="Approve" onClick={onClick2}>Approve</Button>}
         </div>

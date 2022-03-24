@@ -18,7 +18,7 @@ const Section = styled.div`
     padding: 24px;
 
     width: 50%;
-    min-width:360px;
+    min-width: 360px;
     margin: 0 auto;
     stroke: Solid #ededed 1px;
     background-color: white;
@@ -34,7 +34,7 @@ const Section = styled.div`
 
 const Content = styled.div`
     flex-direction: column;
-display:flex;
+    display: flex;
     justify-content: center;
     align-content: center;
 `;
@@ -64,77 +64,25 @@ const Tab = styled.div`
         props.isActive ? "2px solid" + props.theme.connectBtnColor : null};
 `;
 
-const MintInfo = styled.div`
-    background-color: gray;
-    height: 174px;
-`;
-
+const caver = new Caver(window.klaytn);
 
 const Bank = () => {
-    const caver = new Caver(window.klaytn);
-    const [SCAMPBalance, setSCAMPBalance] = useState();
-    const [CAMPBalance, setCAMPBalance] = useState();
-    const [USDCBalance, setUSDCBalance] = useState();
-    let state = useSelector((state) => state);
     // toggle true=mint false=redeem
     const [isNowMint, setIsNowMint] = useState(true);
-
-    async function getUserInfo() {
-        state.SCAMPContract.methods
-            .balanceOf(window.klaytn.selectedAddress)
-            .call((e, v) =>
-                setSCAMPBalance(caver.utils.fromPeb(v.toString(), "KLAY"))
-            );
-        state.CAMPContract.methods
-            .balanceOf(window.klaytn.selectedAddress)
-            .call((e, v) =>
-                setCAMPBalance(caver.utils.fromPeb(v.toString(), "KLAY"))
-            );
-        state.USDCContract.methods
-            .balanceOf(window.klaytn.selectedAddress)
-            .call((e, v) =>
-                setUSDCBalance(caver.utils.fromPeb(v.toString(), "Mpeb"))
-            );
-    }
-
-    // initialize hook----------------------------
-    useEffect(() => {
-        if (window.klaytn) {
-            getUserInfo();
-            window.klaytn.on("accountsChanged", async function (accounts) {
-                getUserInfo();
-                console.log("account change listen in bank");
-            });
-        }
-    }, []);
 
     return (
         <Section>
             <Tabs>
-                <Tab
-                    onClick={() => setIsNowMint(true)}
-                    isActive={isNowMint}
-                >
+                <Tab onClick={() => setIsNowMint(true)} isActive={isNowMint}>
                     Mint
                 </Tab>
-                <Tab
-                    onClick={() => setIsNowMint(false)}
-                    isActive={!isNowMint}
-                >
+                <Tab onClick={() => setIsNowMint(false)} isActive={!isNowMint}>
                     Redeem
                 </Tab>
             </Tabs>
-            <Content>
-                {isNowMint ? <Mint /> : <Redeem />}
-                
-            <MintInfo>
+            <Content>{isNowMint ? <Mint /> : <Redeem />}</Content>
 
-</MintInfo>
 
-                <p>SCAMP : {SCAMPBalance}</p>
-                <h3>CAMP : {CAMPBalance}</h3>
-                <h3>USDC : {USDCBalance}</h3>
-            </Content>
         </Section>
     );
 };

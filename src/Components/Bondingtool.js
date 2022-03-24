@@ -1,5 +1,5 @@
 import Button from "./Button";
-import Input from "./INPUT";
+import InputForm from "./InputForm";
 import Caver from "caver-js";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -71,7 +71,7 @@ function Bondingtool() {
   return (
     <div>
       <Button text = "toggleBond" onClick={toggle}/>
-      <Input
+      <InputForm
         onChange={onChange}
         value ={amount}
         type = 'text'

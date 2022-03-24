@@ -3,9 +3,7 @@ import styles from "./css/Input.module.css";
 import styled from "styled-components";
 import TokenLogo from "./TokenLogo";
 
-import { ReactSVG } from "react-svg";
-
-const InputForm = styled.div`
+const Section = styled.div`
     margin: 14px 0px;
     padding: 14px 20px;
 
@@ -37,7 +35,7 @@ const Bottom = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+
     div {
         display: flex;
         flex-direction: row;
@@ -47,6 +45,7 @@ const Bottom = styled.div`
         font-size: 16px;
         font-weight: 400;
         color: black;
+        text-align: right;
     }
 `;
 
@@ -64,9 +63,9 @@ const MaxBtn = styled.button`
     visibility: ${(props) => (props.haveMax ? "visible" : "hidden")};
 `;
 
-function Input({ token, balance, onChange, value, type, haveMax }) {
+function InputForm({ token, balance, onChange, value, type, haveMax }) {
     return (
-        <InputForm>
+        <Section>
             <Top>
                 <p>Balance : {balance}</p>
                 <MaxBtn
@@ -96,7 +95,7 @@ function Input({ token, balance, onChange, value, type, haveMax }) {
                     <p>{token}</p>
                 </div>
             </Bottom>
-        </InputForm>
+        </Section>
     );
 }
-export default Input;
+export default InputForm;

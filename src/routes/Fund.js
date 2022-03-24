@@ -1,7 +1,7 @@
 import Caver from "caver-js";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import INPUT from "../Components/INPUT"
+import InputForm from "../Components/InputForm"
 import Button from "../Components/Button" 
 import Fundtool from "../Components/Fundtool"
 const caver = new Caver(window.klaytn)
@@ -45,7 +45,7 @@ const Fund = () =>{
   }
     return (
       <div>
-        <INPUT
+        <InputForm
           onChange={onChange}
           value={amount}
           type="text"

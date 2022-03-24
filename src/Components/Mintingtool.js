@@ -3,7 +3,7 @@ import InputForm from "./InputForm";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Caver from "caver-js";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import Loading from "../assets/Loading.svg";
 import SetIcon from "../assets/SetIcon.svg";
@@ -66,13 +66,49 @@ const Btn = styled.button`
 `;
 
 const Setting = styled.div`
-    height: 174px;
-    padding: 10px;
-    background-color: ${(props) => props.theme.backBlue};
+    position: absolute;
+    margin-top: 20px;
+    padding: 20px;
+
+    width: 200px;
+    height: 150px;
+
+    left: auto;
+    right: auto;
+    background-color: white;
     border-radius: 15px;
-    z-index : 10000;
-    position: relative
-`
+    border: 2px solid ${(props) => props.theme.borderColor};
+    z-index: 2;
+    box-shadow: 0px 4px 20px 0px #00000033;
+
+    font-size: 14px;
+
+    transform-origin: 80% 0;
+    animation: ${keyframes`
+                  0% { transform:scale(0) }
+                  100% { transform:scale(1) }
+                  `} 0.2s linear;
+`;
+
+const InputSlippage = styled.input.attrs({ required: true })`
+    margin: 14px 0px;
+    border-radius: 8px;
+    width: 80%;
+    height: 40px;
+    border: 1px solid ${(props) => props.theme.connectBtnColor};
+    font-size: 18px;
+    font-family: "Lexend", sans-serif;
+    opacity: 1;
+`;
+
+const SlippageButton = styled.button`
+    padding: 4px 10px;
+    margin: 4px;
+    border-radius: 5px;
+    background-color: ${(props) =>
+        props.isMatch ? props.theme.connectBtnColor : props.theme.addBtnColor};
+    color: ${(props) => (props.isMatch ? "white" : "black")};
+`;
 
 const caver = new Caver(window.klaytn);
 
@@ -83,16 +119,19 @@ function Mintingtool() {
     const [usdcInputAmount, setUSDCInputAmount] = useState(0);
     const [campInputAmount, setCampInputAmount] = useState(0);
     const [scampInputAmount, setScampInputAmount] = useState(0);
-    const [slippage, setSlippage] = useState(0);
+
+    const [slippage, setSlippage] = useState(0.1);
 
     const [isapproved, setIsApproved] = useState(false);
-    const [isMint, setIsMint] = useState(true);
+    const [isSetOpen, setIsSetOpen] = useState(false);
 
     const [SCAMPBalance, setSCAMPBalance] = useState();
     const [CAMPBalance, setCAMPBalance] = useState();
     const [USDCBalance, setUSDCBalance] = useState();
 
     const [ECR, setECR] = useState(0.85);
+
+    const [isLoading, setIsLoading] = useState(true);
 
     // initialize hook----------------------------
     useEffect(() => {
@@ -106,21 +145,22 @@ function Mintingtool() {
     }, []);
 
     async function getUserInfo() {
-        state.SCAMPContract.methods
+        await state.SCAMPContract.methods
             .balanceOf(window.klaytn.selectedAddress)
             .call((e, v) =>
                 setSCAMPBalance(caver.utils.fromPeb(v.toString(), "KLAY"))
             );
-        state.CAMPContract.methods
+        await state.CAMPContract.methods
             .balanceOf(window.klaytn.selectedAddress)
             .call((e, v) =>
                 setCAMPBalance(caver.utils.fromPeb(v.toString(), "KLAY"))
             );
-        state.USDCContract.methods
+        await state.USDCContract.methods
             .balanceOf(window.klaytn.selectedAddress)
             .call((e, v) =>
                 setUSDCBalance(caver.utils.fromPeb(v.toString(), "Mpeb"))
             );
+        setIsLoading(false);
     }
 
     const USDCamt = (event) => {
@@ -149,7 +189,11 @@ function Mintingtool() {
     };
 
     const Slipamt = (event) => {
-        setSlippage(event.target.value);
+        const value = event.target.value;
+        if (value <= 100 && value >= 0) {
+            setSlippage(value);
+        } else if (value >= 100) setSlippage(100);
+        else if (value <= 0) setSlippage(0);
     };
 
     function onClick() {
@@ -197,94 +241,135 @@ function Mintingtool() {
     function Zapmint() {}
 
     return (
-        <Content>
-            {/* <InputForm onChange={Slipamt} value={slippage} type="number" /> */}
-            <div>
-                <span>Input</span>
-                <span>
-                    <img
-                        align="right"
-                        onClick={isMint}
-                        src={SetIcon}
-                    />
-                    
-                </span>
-            </div>
-            <InputForm
-                token="USDC"
-                balance={USDCBalance}
-                onChange={USDCamt}
-                value={usdcInputAmount}
-                type="number"
-                haveMax={true}
-                isVisible={true}
-            />
-
-            <InputForm
-                token="CAMP"
-                balance={CAMPBalance}
-                onChange={CAMPamt}
-                value={campInputAmount}
-                type="number"
-                isVisible={true}
-            />
-
-            <span>Output (estimated)</span>
-            <InputForm
-                token="SCAMP"
-                balance={SCAMPBalance}
-                onChange={SCAMPamt}
-                value={scampInputAmount || 0}
-                type="number"
-                isVisible={true}
-            />
-
-            <MintInfos>
-                <Info>
-                    <span>Current Collateral Ratio</span>
-                    <span>{ECR*100} %</span>
-                </Info>
-                <Info>
-                    <span>Redemption fee</span>
-                    <span>0.3% = 0.000000 CAMP</span>
-                </Info>
-                <Info>
-                    <span>Collateral balance</span>
-                    <span>0.000000 USDT</span>
-                </Info>
-                <Info>
-                    <span>Slippage</span>
-                    <span>0.5 %</span>
-                </Info>
-                <Info>
-                    <span>Rates</span>
-                    <span>
-                        1 USDT = 0.999764 USD
-                        <br />1 CAMP = 0.000199 USD
-                    </span>
-                </Info>
-            </MintInfos>
-
-            <Approve>
-                <p>
-                    First time Mint SCAMP?
-                    <br />
-                    Please approve USDC,CAMP to use your
-                    <br />
-                    SCAMP for Minting.
+        <>
+            {isLoading ? (
+                <p align-items="center">
+                    <img width="80px" src={Loading} />
                 </p>
+            ) : (
+                <Content>
+                    <div>
+                        <span>Input</span>
+                        <span>
+                            <img
+                                align="right"
+                                onClick={() => setIsSetOpen((prev) => !prev)}
+                                src={SetIcon}
+                            />
+                            {isSetOpen ? (
+                                <Setting>
+                                    <p>Slippage Tolerance</p>
+                                    <InputSlippage
+                                        max="100"
+                                        type="number"
+                                        onChange={Slipamt}
+                                        value={slippage <= 100 ? slippage : 100}
+                                    />
+                                    <span>%</span>
+                                    <div>
+                                        <SlippageButton
+                                            onClick={() => setSlippage(0.1)}
+                                            isMatch={0.1 === slippage}
+                                        >
+                                            0.1
+                                        </SlippageButton>
 
-                {isapproved ? (
-                    <Btn text="Mint" onClick={onClick}>
-                        Mint
-                    </Btn>
-                ) : (
-                    <Btn text="Approve" onClick={onClick2}>
-                        Approve
-                    </Btn>
-                )}
-            </Approve>
-        </Content>
+                                        <SlippageButton
+                                            onClick={() => setSlippage(0.5)}
+                                            isMatch={0.5 === slippage}
+                                        >
+                                            0.5
+                                        </SlippageButton>
+
+                                        <SlippageButton
+                                            onClick={() => setSlippage(1.0)}
+                                            isMatch={1.0 === slippage}
+                                        >
+                                            1.0
+                                        </SlippageButton>
+                                    </div>
+                                </Setting>
+                            ) : null}
+                        </span>
+                    </div>
+
+                    <InputForm
+                        token="USDC"
+                        balance={USDCBalance}
+                        onChange={USDCamt}
+                        value={usdcInputAmount}
+                        type="number"
+                        haveMax={true}
+                        isVisible={true}
+                    />
+
+                    <InputForm
+                        token="CAMP"
+                        balance={CAMPBalance}
+                        onChange={CAMPamt}
+                        value={campInputAmount}
+                        type="number"
+                        isVisible={true}
+                    />
+
+                    <span>Output (estimated)</span>
+                    <InputForm
+                        token="SCAMP"
+                        balance={SCAMPBalance}
+                        onChange={SCAMPamt}
+                        value={scampInputAmount || 0}
+                        type="number"
+                        isVisible={true}
+                    />
+
+                    <MintInfos>
+                        <Info>
+                            <span>Current Collateral Ratio</span>
+                            <span>{ECR * 100} %</span>
+                        </Info>
+                        <Info>
+                            <span>Redemption fee</span>
+                            <span>0.3%</span>
+                        </Info>
+                        <Info>
+                            <span>Collateral balance</span>
+                            <span>0.000000 USDT</span>
+                        </Info>
+                        <Info>
+                            <span>Slippage</span>
+                            <span>{slippage} %</span>
+                        </Info>
+                        <Info>
+                            <span>Rates</span>
+                            <span>
+                                1 USDT = 0.999764 USD
+                                <br />1 CAMP = 0.000199 USD
+                            </span>
+                        </Info>
+                    </MintInfos>
+
+                    <Approve>
+                        <p>
+                            First time Mint SCAMP?
+                            <br />
+                            Please approve USDC,CAMP to use your
+                            <br />
+                            SCAMP for Minting.
+                        </p>
+
+                        {isapproved ? (
+                            <Btn text="Mint" onClick={onClick}>
+                                Mint
+                            </Btn>
+                        ) : (
+                            <Btn text="Approve" onClick={onClick2}>
+                                Approve
+                            </Btn>
+                        )}
+                    </Approve>
+                </Content>
+            )}
+        </>
     );
 }
 export default Mintingtool;

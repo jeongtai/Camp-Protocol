@@ -21,40 +21,25 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface AssetOracleInterface extends ethers.utils.Interface {
   functions: {
-    "Token0Oracle()": FunctionFragment;
-    "Token0_price(address)": FunctionFragment;
-    "Token1Oracle()": FunctionFragment;
-    "Token1_price(address)": FunctionFragment;
     "acceptOwnership()": FunctionFragment;
     "assetPrice(address)": FunctionFragment;
+    "getAssetPrice(address)": FunctionFragment;
     "nominateNewOwner(address)": FunctionFragment;
     "nominatedOwner()": FunctionFragment;
     "owner()": FunctionFragment;
-    "setToken0Oracle(address)": FunctionFragment;
-    "setToken1Oracle(address)": FunctionFragment;
+    "priceOracle(uint256)": FunctionFragment;
+    "setAssetOracle(address[])": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "Token0Oracle",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "Token0_price",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "Token1Oracle",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "Token1_price",
-    values: [string]
-  ): string;
   encodeFunctionData(
     functionFragment: "acceptOwnership",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "assetPrice", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "getAssetPrice",
+    values: [string]
+  ): string;
   encodeFunctionData(
     functionFragment: "nominateNewOwner",
     values: [string]
@@ -65,35 +50,23 @@ interface AssetOracleInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "setToken0Oracle",
-    values: [string]
+    functionFragment: "priceOracle",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "setToken1Oracle",
-    values: [string]
+    functionFragment: "setAssetOracle",
+    values: [string[]]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "Token0Oracle",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "Token0_price",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "Token1Oracle",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "Token1_price",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "acceptOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "assetPrice", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getAssetPrice",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "nominateNewOwner",
     data: BytesLike
@@ -104,40 +77,34 @@ interface AssetOracleInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setToken0Oracle",
+    functionFragment: "priceOracle",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setToken1Oracle",
+    functionFragment: "setAssetOracle",
     data: BytesLike
   ): Result;
 
   events: {
+    "AssetOracleUpdated(uint256,address)": EventFragment;
     "OwnerChanged(address,address)": EventFragment;
     "OwnerNominated(address)": EventFragment;
-    "Token0OracleUpdated(address)": EventFragment;
-    "Token1OracleUpdated(address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "AssetOracleUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnerChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnerNominated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Token0OracleUpdated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Token1OracleUpdated"): EventFragment;
 }
+
+export type AssetOracleUpdatedEvent = TypedEvent<
+  [BigNumber, string] & { idx: BigNumber; newOracle: string }
+>;
 
 export type OwnerChangedEvent = TypedEvent<
   [string, string] & { oldOwner: string; newOwner: string }
 >;
 
 export type OwnerNominatedEvent = TypedEvent<[string] & { newOwner: string }>;
-
-export type Token0OracleUpdatedEvent = TypedEvent<
-  [string] & { newOracle: string }
->;
-
-export type Token1OracleUpdatedEvent = TypedEvent<
-  [string] & { newOracle: string }
->;
 
 export class AssetOracle extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -183,26 +150,17 @@ export class AssetOracle extends BaseContract {
   interface: AssetOracleInterface;
 
   functions: {
-    Token0Oracle(overrides?: CallOverrides): Promise<[string]>;
-
-    Token0_price(
-      Token0_address: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    Token1Oracle(overrides?: CallOverrides): Promise<[string]>;
-
-    Token1_price(
-      Token1_address: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     assetPrice(
       _principle: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getAssetPrice(
+      asset: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -215,36 +173,24 @@ export class AssetOracle extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
-    setToken0Oracle(
-      _oracle: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    priceOracle(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
-    setToken1Oracle(
-      _oracle: string,
+    setAssetOracle(
+      _oracle: string[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
-
-  Token0Oracle(overrides?: CallOverrides): Promise<string>;
-
-  Token0_price(
-    Token0_address: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  Token1Oracle(overrides?: CallOverrides): Promise<string>;
-
-  Token1_price(
-    Token1_address: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
 
   acceptOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   assetPrice(_principle: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+  getAssetPrice(asset: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   nominateNewOwner(
     _owner: string,
@@ -255,31 +201,14 @@ export class AssetOracle extends BaseContract {
 
   owner(overrides?: CallOverrides): Promise<string>;
 
-  setToken0Oracle(
-    _oracle: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  priceOracle(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  setToken1Oracle(
-    _oracle: string,
+  setAssetOracle(
+    _oracle: string[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    Token0Oracle(overrides?: CallOverrides): Promise<string>;
-
-    Token0_price(
-      Token0_address: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    Token1Oracle(overrides?: CallOverrides): Promise<string>;
-
-    Token1_price(
-      Token1_address: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     acceptOwnership(overrides?: CallOverrides): Promise<void>;
 
     assetPrice(
@@ -287,18 +216,36 @@ export class AssetOracle extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getAssetPrice(asset: string, overrides?: CallOverrides): Promise<BigNumber>;
+
     nominateNewOwner(_owner: string, overrides?: CallOverrides): Promise<void>;
 
     nominatedOwner(overrides?: CallOverrides): Promise<string>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
-    setToken0Oracle(_oracle: string, overrides?: CallOverrides): Promise<void>;
+    priceOracle(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-    setToken1Oracle(_oracle: string, overrides?: CallOverrides): Promise<void>;
+    setAssetOracle(_oracle: string[], overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
+    "AssetOracleUpdated(uint256,address)"(
+      idx?: BigNumberish | null,
+      newOracle?: string | null
+    ): TypedEventFilter<
+      [BigNumber, string],
+      { idx: BigNumber; newOracle: string }
+    >;
+
+    AssetOracleUpdated(
+      idx?: BigNumberish | null,
+      newOracle?: string | null
+    ): TypedEventFilter<
+      [BigNumber, string],
+      { idx: BigNumber; newOracle: string }
+    >;
+
     "OwnerChanged(address,address)"(
       oldOwner?: null,
       newOwner?: null
@@ -322,39 +269,9 @@ export class AssetOracle extends BaseContract {
     OwnerNominated(
       newOwner?: null
     ): TypedEventFilter<[string], { newOwner: string }>;
-
-    "Token0OracleUpdated(address)"(
-      newOracle?: string | null
-    ): TypedEventFilter<[string], { newOracle: string }>;
-
-    Token0OracleUpdated(
-      newOracle?: string | null
-    ): TypedEventFilter<[string], { newOracle: string }>;
-
-    "Token1OracleUpdated(address)"(
-      newOracle?: string | null
-    ): TypedEventFilter<[string], { newOracle: string }>;
-
-    Token1OracleUpdated(
-      newOracle?: string | null
-    ): TypedEventFilter<[string], { newOracle: string }>;
   };
 
   estimateGas: {
-    Token0Oracle(overrides?: CallOverrides): Promise<BigNumber>;
-
-    Token0_price(
-      Token0_address: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    Token1Oracle(overrides?: CallOverrides): Promise<BigNumber>;
-
-    Token1_price(
-      Token1_address: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -363,6 +280,8 @@ export class AssetOracle extends BaseContract {
       _principle: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getAssetPrice(asset: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     nominateNewOwner(
       _owner: string,
@@ -373,38 +292,29 @@ export class AssetOracle extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
-    setToken0Oracle(
-      _oracle: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    priceOracle(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    setToken1Oracle(
-      _oracle: string,
+    setAssetOracle(
+      _oracle: string[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    Token0Oracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    Token0_price(
-      Token0_address: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    Token1Oracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    Token1_price(
-      Token1_address: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     assetPrice(
       _principle: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getAssetPrice(
+      asset: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -417,13 +327,13 @@ export class AssetOracle extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    setToken0Oracle(
-      _oracle: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    priceOracle(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    setToken1Oracle(
-      _oracle: string,
+    setAssetOracle(
+      _oracle: string[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

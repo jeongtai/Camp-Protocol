@@ -69,7 +69,7 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
 
   function SCAMP_info() public view returns (uint256, uint256, uint256, uint256, uint256) {
     return (
-      _assetOracle.Token1_price(_CAMP.SCAMPAddress()),
+      _assetOracle.getAssetPrice(_CAMP.SCAMPAddress()),
       totalSupply(),
       current_collateral_ratio,
       minting_fee,
@@ -81,7 +81,7 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   uint256 public last_call_time;
 
   function refreshCollateralRatio() public {
-    uint256 SCAMP_cur_price = _assetOracle.Token1_price(_CAMP.SCAMPAddress());
+    uint256 SCAMP_cur_price = _assetOracle.getAssetPrice(_CAMP.SCAMPAddress());
     require(block.timestamp - last_call_time >= refresh_cooldown, "Please wait refresh_cooldown");
 
     if (SCAMP_cur_price > price_target.add(price_band)) { //SCAMP가격이 만약 목표가보다 높다면

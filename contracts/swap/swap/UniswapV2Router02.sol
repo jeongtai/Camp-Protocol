@@ -104,7 +104,7 @@ contract UniswapV2Router02 {
             amountBMin
         );
         address pair = UniswapV2Library.pairFor(factory, tokenA, tokenB);
-        console.log("in router, token A:", tokenA, pair, amountA);
+        // console.log("in router, token A:", tokenA, pair, amountA);
         TransferHelper.safeTransferFrom(tokenA, msg.sender, pair, amountA);
         TransferHelper.safeTransferFrom(tokenB, msg.sender, pair, amountB);
         liquidity = IUniswapV2Pair(pair).mint(to);

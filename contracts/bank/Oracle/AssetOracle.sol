@@ -9,36 +9,34 @@ import "../Uniswap/interfaces/IUniswapV2Pair.sol";
 contract AssetOracle is Owned {
     using SafeMath for uint;
 
-    UniswapPairOracle public Token0Oracle;
-    UniswapPairOracle public Token1Oracle;
+    address[] public priceOracle;
     uint256 private constant PRICE_PRECISION = 1e6;
 
     address Token0_address;
-    address Token1_address;
 
-    event Token0OracleUpdated(address indexed newOracle);
-    event Token1OracleUpdated(address indexed newOracle);
+    event AssetOracleUpdated(uint indexed idx, address indexed newOracle);
 
     constructor() Owned(msg.sender) {}
 
-    function Token0_price(address Token0_address) external view returns (uint256) {
-        uint256 price = uint256(Token0Oracle.consult(Token0_address, PRICE_PRECISION));
-        return price;
+    function getAssetPrice(address asset) public view returns (uint256) {
+    // if (asset == WKLAY) {
+    //     return 1 ether;
+    // }
+        for (uint i = 0; i < priceOracle.length; i++) {
+            UniswapPairOracle source = UniswapPairOracle(priceOracle[i]);
+            uint256 price = uint256(source.consult(asset, PRICE_PRECISION));
+            if (price > 0) {
+                return price;
+            }
+        }
+        revert("CANNOT GET ASSET PRICE");
     }
 
-    function Token1_price(address Token1_address) external view returns (uint256) {
-        uint256 price = uint256(Token1Oracle.consult(Token1_address, PRICE_PRECISION));
-        return price;
-    }
-
-    function setToken0Oracle(address _oracle) public onlyOwner {
-        Token0Oracle = UniswapPairOracle(_oracle);
-        emit Token0OracleUpdated(_oracle);
-    }
-
-    function setToken1Oracle(address _oracle) public onlyOwner {
-        Token1Oracle = UniswapPairOracle(_oracle);
-        emit Token1OracleUpdated(_oracle);
+    function setAssetOracle(address[] memory _oracle) public onlyOwner {
+        for (uint256 i = 0; i < _oracle.length; i++) {
+            priceOracle.push(_oracle[i]);
+            emit AssetOracleUpdated(i, _oracle[i]);
+        }
     }
 
     // pair의 단위 가격을 구한다 in USD

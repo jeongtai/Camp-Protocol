@@ -37,7 +37,7 @@ describe("Token contract", function () {
         console.log("wKLAY address:", wKLAY.address);
 
         const oracleFactory = await ethers.getContractFactory("AssetOracle");
-        oracle = await oracleFactory.deploy(CAMP.address, SCAMP.address);
+        oracle = await oracleFactory.deploy();
         console.log("oracle address:", oracle.address);
     });
 

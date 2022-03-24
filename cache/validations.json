@@ -2,6 +2,132 @@
   "version": "3.2",
   "log": [
     {
+      "IERC20": {
+        "src": "contracts\\swap\\interfaces\\IERC20.sol:8",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "symbol()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV2Factory": {
+        "src": "contracts\\swap\\interfaces\\IUniswapV2Factory.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "migrator()",
+          "feeTo()",
+          "feeToSetter()",
+          "feeDistributor()",
+          "klayBuybackFund()",
+          "getPair(address,address)",
+          "allPairs(uint256)",
+          "allPairsLength()",
+          "createPair(address,address)",
+          "setFeeTo(address)",
+          "setFeeToSetter(address)",
+          "setFeeDistributor(address)",
+          "setKlayBuybackFund(address)",
+          "setMigrator(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV2Pair": {
+        "src": "contracts\\swap\\interfaces\\IUniswapV2Pair.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "name()",
+          "symbol()",
+          "decimals()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transfer(address,uint256)",
+          "transferFrom(address,address,uint256)",
+          "MINIMUM_LIQUIDITY()",
+          "factory()",
+          "token0()",
+          "token1()",
+          "getReserves()",
+          "price0CumulativeLast()",
+          "price1CumulativeLast()",
+          "kLast()",
+          "mint(address)",
+          "burn(address)",
+          "swap(uint256,uint256,address,bytes)",
+          "skim(address)",
+          "sync()",
+          "initialize(address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IWKLAY": {
+        "src": "contracts\\swap\\interfaces\\IWKLAY.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "deposit()",
+          "transfer(address,uint256)",
+          "withdraw(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "SafeMath": {
+        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
+        "version": {
+          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
       "TransferHelper": {
         "src": "contracts\\swap\\libraries\\TransferHelper.sol:6",
         "version": {
@@ -11,6 +137,195 @@
         },
         "inherit": [],
         "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2Library": {
+        "src": "contracts\\swap\\libraries\\UniswapV2Library.sol:7",
+        "version": {
+          "withMetadata": "bd6ac47d1202cfe3d737f1a380eab9fcc64ab79c427ff8167923f76084d2d87e",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2Router02": {
+        "src": "contracts\\swap\\swap\\UniswapV2Router02.sol:12",
+        "version": {
+          "withMetadata": "26d5a43f0766b6019d6ed8cbbc138f5da2d3e9970ce9a75229eddb47eec50076",
+          "withoutMetadata": "ce6d0f9ad8e35613c5c30b254e41e1003c263f258210e33f9e9e234ff2eb2abd",
+          "linkedWithoutMetadata": "ce6d0f9ad8e35613c5c30b254e41e1003c263f258210e33f9e9e234ff2eb2abd"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMath",
+          "UniswapV2Library",
+          "console",
+          "TransferHelper"
+        ],
+        "methods": [
+          "(address,address)",
+          "()",
+          "addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256)",
+          "addLiquidityKLAY(address,uint256,uint256,uint256,address,uint256)",
+          "removeLiquidity(address,address,uint256,uint256,uint256,address,uint256)",
+          "removeLiquidityKLAY(address,uint256,uint256,uint256,address,uint256)",
+          "removeLiquidityKLAYSupportingFeeOnTransferTokens(address,uint256,uint256,uint256,address,uint256)",
+          "swapExactTokensForTokens(uint256,uint256,address[],address,uint256)",
+          "swapTokensForExactTokens(uint256,uint256,address[],address,uint256)",
+          "swapExactKLAYForTokens(uint256,address[],address,uint256)",
+          "swapTokensForExactKLAY(uint256,uint256,address[],address,uint256)",
+          "swapExactTokensForKLAY(uint256,uint256,address[],address,uint256)",
+          "swapKLAYForExactTokens(uint256,address[],address,uint256)",
+          "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)",
+          "swapExactKLAYForTokensSupportingFeeOnTransferTokens(uint256,address[],address,uint256)",
+          "swapExactTokensForKLAYSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)",
+          "quote(uint256,uint256,uint256)",
+          "getAmountOut(uint256,uint256,uint256)",
+          "getAmountIn(uint256,uint256,uint256)",
+          "getAmountsOut(uint256,address[])",
+          "getAmountsIn(uint256,address[])"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "UniswapV2Router02",
+            "src": "contracts\\swap\\swap\\UniswapV2Router02.sol:23"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "UniswapV2Router02",
+              "label": "factory",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Router02.sol:15"
+            },
+            {
+              "contract": "UniswapV2Router02",
+              "label": "WKLAY",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Router02.sol:16"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "console": {
+        "src": "hardhat\\console.sol:4",
+        "version": {
+          "withMetadata": "feb8458c269a2c1ac6f66a4aa5b1ba7894b35dcfb00aeb1f6150af1d6b3a1e8a",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV2Pair": {
+        "src": "contracts\\swap\\interfaces\\IUniswapV2Pair.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "name()",
+          "symbol()",
+          "decimals()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transfer(address,uint256)",
+          "transferFrom(address,address,uint256)",
+          "MINIMUM_LIQUIDITY()",
+          "factory()",
+          "token0()",
+          "token1()",
+          "getReserves()",
+          "price0CumulativeLast()",
+          "price1CumulativeLast()",
+          "kLast()",
+          "mint(address)",
+          "burn(address)",
+          "swap(uint256,uint256,address,bytes)",
+          "skim(address)",
+          "sync()",
+          "initialize(address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "SafeMath": {
+        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
+        "version": {
+          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2Library": {
+        "src": "contracts\\swap\\libraries\\UniswapV2Library.sol:7",
+        "version": {
+          "withMetadata": "bd6ac47d1202cfe3d737f1a380eab9fcc64ab79c427ff8167923f76084d2d87e",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMath"
+        ],
         "methods": [],
         "linkReferences": [],
         "errors": [],
@@ -171,6 +486,1288 @@
           "transfer(address,uint256)",
           "transferFrom(address,address,uint256)"
         ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "TransferHelper": {
+        "src": "contracts\\swap\\libraries\\TransferHelper.sol:6",
+        "version": {
+          "withMetadata": "d8d560f7c941545ef46a1c17435308353b8cb37b47bce48011b658e3e19c477f",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV2Pair": {
+        "src": "contracts\\swap\\interfaces\\IUniswapV2Pair.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "name()",
+          "symbol()",
+          "decimals()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transfer(address,uint256)",
+          "transferFrom(address,address,uint256)",
+          "MINIMUM_LIQUIDITY()",
+          "factory()",
+          "token0()",
+          "token1()",
+          "getReserves()",
+          "price0CumulativeLast()",
+          "price1CumulativeLast()",
+          "kLast()",
+          "mint(address)",
+          "burn(address)",
+          "swap(uint256,uint256,address,bytes)",
+          "skim(address)",
+          "sync()",
+          "initialize(address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV2Pair": {
+        "src": "contracts\\swap\\interfaces\\IUniswapV2Pair.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "name()",
+          "symbol()",
+          "decimals()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transfer(address,uint256)",
+          "transferFrom(address,address,uint256)",
+          "MINIMUM_LIQUIDITY()",
+          "factory()",
+          "token0()",
+          "token1()",
+          "getReserves()",
+          "price0CumulativeLast()",
+          "price1CumulativeLast()",
+          "kLast()",
+          "mint(address)",
+          "burn(address)",
+          "swap(uint256,uint256,address,bytes)",
+          "skim(address)",
+          "sync()",
+          "initialize(address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "SafeMath": {
+        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
+        "version": {
+          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2Library": {
+        "src": "contracts\\swap\\libraries\\UniswapV2Library.sol:7",
+        "version": {
+          "withMetadata": "1ea2c605f5932c57289b5fe4799c52215d34d642d16125fa4dbf2b00700d423e",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "SafeMath": {
+        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
+        "version": {
+          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV2Callee": {
+        "src": "@uniswap\\v2-core\\contracts\\interfaces\\IUniswapV2Callee.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "uniswapV2Call(address,uint256,uint256,bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IERC20": {
+        "src": "contracts\\swap\\interfaces\\IERC20.sol:8",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "symbol()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV2Factory": {
+        "src": "contracts\\swap\\interfaces\\IUniswapV2Factory.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "migrator()",
+          "feeTo()",
+          "feeToSetter()",
+          "feeDistributor()",
+          "klayBuybackFund()",
+          "getPair(address,address)",
+          "allPairs(uint256)",
+          "allPairsLength()",
+          "createPair(address,address)",
+          "setFeeTo(address)",
+          "setFeeToSetter(address)",
+          "setFeeDistributor(address)",
+          "setKlayBuybackFund(address)",
+          "setMigrator(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Math": {
+        "src": "contracts\\swap\\libraries\\Math.sol:5",
+        "version": {
+          "withMetadata": "edbca5dba42a078f60c84c2c627d0bc0d11f46b6f3cd0076d25dfdeafa48f1bf",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "SafeMath": {
+        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
+        "version": {
+          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UQ112x112": {
+        "src": "contracts\\swap\\libraries\\UQ112x112.sol:10",
+        "version": {
+          "withMetadata": "b2b7f5b4823a60559b5a80fccf2486a879a00aaca5f4e11028386379df2fbb60",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2ERC20": {
+        "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:8",
+        "version": {
+          "withMetadata": "c9d98eb2fad91830ccc8b7537f32e9a619ac29e159fd1f83ef320290c1696a71",
+          "withoutMetadata": "0caec23e0853e59e9e0783f7391e6c4fcd668f09a22779174a1cfb5b78bcf59d",
+          "linkedWithoutMetadata": "0caec23e0853e59e9e0783f7391e6c4fcd668f09a22779174a1cfb5b78bcf59d"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [
+          "()",
+          "approve(address,uint256)",
+          "transfer(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "name",
+              "type": "t_string_storage",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:11"
+            },
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "decimals",
+              "type": "t_uint8",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:13"
+            },
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "totalSupply",
+              "type": "t_uint256",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:14"
+            },
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "balanceOf",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:15"
+            },
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "allowance",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:16"
+            }
+          ],
+          "types": {
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_uint8": {
+              "label": "uint8"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IMigrator": {
+        "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:12",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "desiredLiquidity()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2Pair": {
+        "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:17",
+        "version": {
+          "withMetadata": "d71edf953945430074e6b2db235a40dc76f0aa2a57aa34b3e8178f915f0d7c0d",
+          "withoutMetadata": "754d8a3eb9044f76ace1192dde66a3caa15de589d7be7ad2136714a75e656b3e",
+          "linkedWithoutMetadata": "754d8a3eb9044f76ace1192dde66a3caa15de589d7be7ad2136714a75e656b3e"
+        },
+        "inherit": [
+          "UniswapV2ERC20"
+        ],
+        "libraries": [
+          "SafeMath",
+          "UQ112x112",
+          "Math"
+        ],
+        "methods": [
+          "getReserves()",
+          "()",
+          "initialize(address,address,uint8)",
+          "mint(address)",
+          "burn(address)",
+          "swap(uint256,uint256,address,bytes)",
+          "skim(address)",
+          "sync()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "UniswapV2Pair",
+            "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:90"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "unlocked",
+            "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:37"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "UniswapV2Pair",
+              "label": "factory",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:25"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "token0",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:26"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "token1",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:27"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "reserve0",
+              "type": "t_uint112",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:29"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "reserve1",
+              "type": "t_uint112",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:30"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "blockTimestampLast",
+              "type": "t_uint32",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:31"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "price0CumulativeLast",
+              "type": "t_uint256",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:33"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "price1CumulativeLast",
+              "type": "t_uint256",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:34"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "kLast",
+              "type": "t_uint256",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:35"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "unlocked",
+              "type": "t_uint256",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:37"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint112": {
+              "label": "uint112"
+            },
+            "t_uint32": {
+              "label": "uint32"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV2Callee": {
+        "src": "@uniswap\\v2-core\\contracts\\interfaces\\IUniswapV2Callee.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "uniswapV2Call(address,uint256,uint256,bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IERC20": {
+        "src": "contracts\\swap\\interfaces\\IERC20.sol:8",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "symbol()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV2Factory": {
+        "src": "contracts\\swap\\interfaces\\IUniswapV2Factory.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "migrator()",
+          "feeTo()",
+          "feeToSetter()",
+          "feeDistributor()",
+          "klayBuybackFund()",
+          "getPair(address,address)",
+          "allPairs(uint256)",
+          "allPairsLength()",
+          "createPair(address,address)",
+          "setFeeTo(address)",
+          "setFeeToSetter(address)",
+          "setFeeDistributor(address)",
+          "setKlayBuybackFund(address)",
+          "setMigrator(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Math": {
+        "src": "contracts\\swap\\libraries\\Math.sol:5",
+        "version": {
+          "withMetadata": "edbca5dba42a078f60c84c2c627d0bc0d11f46b6f3cd0076d25dfdeafa48f1bf",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "SafeMath": {
+        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
+        "version": {
+          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UQ112x112": {
+        "src": "contracts\\swap\\libraries\\UQ112x112.sol:10",
+        "version": {
+          "withMetadata": "b2b7f5b4823a60559b5a80fccf2486a879a00aaca5f4e11028386379df2fbb60",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2ERC20": {
+        "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:8",
+        "version": {
+          "withMetadata": "c9d98eb2fad91830ccc8b7537f32e9a619ac29e159fd1f83ef320290c1696a71",
+          "withoutMetadata": "0caec23e0853e59e9e0783f7391e6c4fcd668f09a22779174a1cfb5b78bcf59d",
+          "linkedWithoutMetadata": "0caec23e0853e59e9e0783f7391e6c4fcd668f09a22779174a1cfb5b78bcf59d"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [
+          "()",
+          "approve(address,uint256)",
+          "transfer(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "name",
+              "type": "t_string_storage",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:11"
+            },
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "decimals",
+              "type": "t_uint8",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:13"
+            },
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "totalSupply",
+              "type": "t_uint256",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:14"
+            },
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "balanceOf",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:15"
+            },
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "allowance",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:16"
+            }
+          ],
+          "types": {
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_uint8": {
+              "label": "uint8"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2Factory": {
+        "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:9",
+        "version": {
+          "withMetadata": "e8a467396711e175fdd5ae94dc1f8de84c8532e04793c8f81cb2d7dde3fe8846",
+          "withoutMetadata": "04b9138e73ea3aa45f8ce3ad41deaf4eefcd39b1990a8f935b6664cca9c225b5",
+          "linkedWithoutMetadata": "04b9138e73ea3aa45f8ce3ad41deaf4eefcd39b1990a8f935b6664cca9c225b5"
+        },
+        "inherit": [
+          "IUniswapV2Factory"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address)",
+          "allPairsLength()",
+          "pairCodeHash()",
+          "createPair(address,address)",
+          "setFeeTo(address)",
+          "setFeeToSetter(address)",
+          "setFeeDistributor(address)",
+          "setKlayBuybackFund(address)",
+          "setMigrator(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "UniswapV2Factory",
+            "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:26"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "UniswapV2Factory",
+              "label": "feeToSetter",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:10"
+            },
+            {
+              "contract": "UniswapV2Factory",
+              "label": "feeTo",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:11"
+            },
+            {
+              "contract": "UniswapV2Factory",
+              "label": "feeDistributor",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:12"
+            },
+            {
+              "contract": "UniswapV2Factory",
+              "label": "klayBuybackFund",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:13"
+            },
+            {
+              "contract": "UniswapV2Factory",
+              "label": "migrator",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:14"
+            },
+            {
+              "contract": "UniswapV2Factory",
+              "label": "getPair",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_address))",
+              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:16"
+            },
+            {
+              "contract": "UniswapV2Factory",
+              "label": "allPairs",
+              "type": "t_array(t_address)dyn_storage",
+              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:17"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_address))": {
+              "label": "mapping(address => mapping(address => address))"
+            },
+            "t_mapping(t_address,t_address)": {
+              "label": "mapping(address => address)"
+            },
+            "t_array(t_address)dyn_storage": {
+              "label": "address[]"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IMigrator": {
+        "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:12",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "desiredLiquidity()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2Pair": {
+        "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:17",
+        "version": {
+          "withMetadata": "d71edf953945430074e6b2db235a40dc76f0aa2a57aa34b3e8178f915f0d7c0d",
+          "withoutMetadata": "754d8a3eb9044f76ace1192dde66a3caa15de589d7be7ad2136714a75e656b3e",
+          "linkedWithoutMetadata": "754d8a3eb9044f76ace1192dde66a3caa15de589d7be7ad2136714a75e656b3e"
+        },
+        "inherit": [
+          "UniswapV2ERC20"
+        ],
+        "libraries": [
+          "SafeMath",
+          "UQ112x112",
+          "Math"
+        ],
+        "methods": [
+          "getReserves()",
+          "()",
+          "initialize(address,address,uint8)",
+          "mint(address)",
+          "burn(address)",
+          "swap(uint256,uint256,address,bytes)",
+          "skim(address)",
+          "sync()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "UniswapV2Pair",
+            "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:90"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "unlocked",
+            "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:37"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "UniswapV2Pair",
+              "label": "factory",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:25"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "token0",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:26"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "token1",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:27"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "reserve0",
+              "type": "t_uint112",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:29"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "reserve1",
+              "type": "t_uint112",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:30"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "blockTimestampLast",
+              "type": "t_uint32",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:31"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "price0CumulativeLast",
+              "type": "t_uint256",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:33"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "price1CumulativeLast",
+              "type": "t_uint256",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:34"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "kLast",
+              "type": "t_uint256",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:35"
+            },
+            {
+              "contract": "UniswapV2Pair",
+              "label": "unlocked",
+              "type": "t_uint256",
+              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:37"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint112": {
+              "label": "uint112"
+            },
+            "t_uint32": {
+              "label": "uint32"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "SafeMath": {
+        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
+        "version": {
+          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2ERC20": {
+        "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:8",
+        "version": {
+          "withMetadata": "c9d98eb2fad91830ccc8b7537f32e9a619ac29e159fd1f83ef320290c1696a71",
+          "withoutMetadata": "0caec23e0853e59e9e0783f7391e6c4fcd668f09a22779174a1cfb5b78bcf59d",
+          "linkedWithoutMetadata": "0caec23e0853e59e9e0783f7391e6c4fcd668f09a22779174a1cfb5b78bcf59d"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [
+          "()",
+          "approve(address,uint256)",
+          "transfer(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "name",
+              "type": "t_string_storage",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:11"
+            },
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "decimals",
+              "type": "t_uint8",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:13"
+            },
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "totalSupply",
+              "type": "t_uint256",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:14"
+            },
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "balanceOf",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:15"
+            },
+            {
+              "contract": "UniswapV2ERC20",
+              "label": "allowance",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:16"
+            }
+          ],
+          "types": {
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_uint8": {
+              "label": "uint8"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IERC20": {
+        "src": "contracts\\swap\\interfaces\\IERC20.sol:8",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "symbol()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV2Factory": {
+        "src": "contracts\\swap\\interfaces\\IUniswapV2Factory.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "migrator()",
+          "feeTo()",
+          "feeToSetter()",
+          "feeDistributor()",
+          "klayBuybackFund()",
+          "getPair(address,address)",
+          "allPairs(uint256)",
+          "allPairsLength()",
+          "createPair(address,address)",
+          "setFeeTo(address)",
+          "setFeeToSetter(address)",
+          "setFeeDistributor(address)",
+          "setKlayBuybackFund(address)",
+          "setMigrator(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV2Pair": {
+        "src": "contracts\\swap\\interfaces\\IUniswapV2Pair.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "name()",
+          "symbol()",
+          "decimals()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transfer(address,uint256)",
+          "transferFrom(address,address,uint256)",
+          "MINIMUM_LIQUIDITY()",
+          "factory()",
+          "token0()",
+          "token1()",
+          "getReserves()",
+          "price0CumulativeLast()",
+          "price1CumulativeLast()",
+          "kLast()",
+          "mint(address)",
+          "burn(address)",
+          "swap(uint256,uint256,address,bytes)",
+          "skim(address)",
+          "sync()",
+          "initialize(address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IWKLAY": {
+        "src": "contracts\\swap\\interfaces\\IWKLAY.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "deposit()",
+          "transfer(address,uint256)",
+          "withdraw(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "SafeMath": {
+        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
+        "version": {
+          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "TransferHelper": {
+        "src": "contracts\\swap\\libraries\\TransferHelper.sol:6",
+        "version": {
+          "withMetadata": "d8d560f7c941545ef46a1c17435308353b8cb37b47bce48011b658e3e19c477f",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2Library": {
+        "src": "contracts\\swap\\libraries\\UniswapV2Library.sol:7",
+        "version": {
+          "withMetadata": "1ea2c605f5932c57289b5fe4799c52215d34d642d16125fa4dbf2b00700d423e",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2Router02": {
+        "src": "contracts\\swap\\swap\\UniswapV2Router02.sol:12",
+        "version": {
+          "withMetadata": "c3992e8f3ebf08eaca86a56e6407fc1d92cd94d0a4d02935420718f85d600d32",
+          "withoutMetadata": "ce6d0f9ad8e35613c5c30b254e41e1003c263f258210e33f9e9e234ff2eb2abd",
+          "linkedWithoutMetadata": "ce6d0f9ad8e35613c5c30b254e41e1003c263f258210e33f9e9e234ff2eb2abd"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMath",
+          "UniswapV2Library",
+          "console",
+          "TransferHelper"
+        ],
+        "methods": [
+          "(address,address)",
+          "()",
+          "addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256)",
+          "addLiquidityKLAY(address,uint256,uint256,uint256,address,uint256)",
+          "removeLiquidity(address,address,uint256,uint256,uint256,address,uint256)",
+          "removeLiquidityKLAY(address,uint256,uint256,uint256,address,uint256)",
+          "removeLiquidityKLAYSupportingFeeOnTransferTokens(address,uint256,uint256,uint256,address,uint256)",
+          "swapExactTokensForTokens(uint256,uint256,address[],address,uint256)",
+          "swapTokensForExactTokens(uint256,uint256,address[],address,uint256)",
+          "swapExactKLAYForTokens(uint256,address[],address,uint256)",
+          "swapTokensForExactKLAY(uint256,uint256,address[],address,uint256)",
+          "swapExactTokensForKLAY(uint256,uint256,address[],address,uint256)",
+          "swapKLAYForExactTokens(uint256,address[],address,uint256)",
+          "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)",
+          "swapExactKLAYForTokensSupportingFeeOnTransferTokens(uint256,address[],address,uint256)",
+          "swapExactTokensForKLAYSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)",
+          "quote(uint256,uint256,uint256)",
+          "getAmountOut(uint256,uint256,uint256)",
+          "getAmountIn(uint256,uint256,uint256)",
+          "getAmountsOut(uint256,address[])",
+          "getAmountsIn(uint256,address[])"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "UniswapV2Router02",
+            "src": "contracts\\swap\\swap\\UniswapV2Router02.sol:23"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "UniswapV2Router02",
+              "label": "factory",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Router02.sol:15"
+            },
+            {
+              "contract": "UniswapV2Router02",
+              "label": "WKLAY",
+              "type": "t_address",
+              "src": "contracts\\swap\\swap\\UniswapV2Router02.sol:16"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "console": {
+        "src": "hardhat\\console.sol:4",
+        "version": {
+          "withMetadata": "feb8458c269a2c1ac6f66a4aa5b1ba7894b35dcfb00aeb1f6150af1d6b3a1e8a",
+          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
+          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
         "linkReferences": [],
         "errors": [],
         "layout": {
@@ -2189,147 +3786,6 @@
           },
           "layoutVersion": "1.1",
           "flat": true
-        }
-      }
-    },
-    {
-      "IUniswapV2Pair": {
-        "src": "contracts\\swap\\interfaces\\IUniswapV2Pair.sol:3",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "decimals()",
-          "totalSupply()",
-          "balanceOf(address)",
-          "allowance(address,address)",
-          "approve(address,uint256)",
-          "transfer(address,uint256)",
-          "transferFrom(address,address,uint256)",
-          "MINIMUM_LIQUIDITY()",
-          "factory()",
-          "token0()",
-          "token1()",
-          "getReserves()",
-          "price0CumulativeLast()",
-          "price1CumulativeLast()",
-          "kLast()",
-          "mint(address)",
-          "burn(address)",
-          "swap(uint256,uint256,address,bytes)",
-          "skim(address)",
-          "sync()",
-          "initialize(address,address)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      }
-    },
-    {
-      "IUniswapV2Pair": {
-        "src": "contracts\\swap\\interfaces\\IUniswapV2Pair.sol:3",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "decimals()",
-          "totalSupply()",
-          "balanceOf(address)",
-          "allowance(address,address)",
-          "approve(address,uint256)",
-          "transfer(address,uint256)",
-          "transferFrom(address,address,uint256)",
-          "MINIMUM_LIQUIDITY()",
-          "factory()",
-          "token0()",
-          "token1()",
-          "getReserves()",
-          "price0CumulativeLast()",
-          "price1CumulativeLast()",
-          "kLast()",
-          "mint(address)",
-          "burn(address)",
-          "swap(uint256,uint256,address,bytes)",
-          "skim(address)",
-          "sync()",
-          "initialize(address,address)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "SafeMath": {
-        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
-        "version": {
-          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "UniswapV2Library": {
-        "src": "contracts\\swap\\libraries\\UniswapV2Library.sol:7",
-        "version": {
-          "withMetadata": "1ea2c605f5932c57289b5fe4799c52215d34d642d16125fa4dbf2b00700d423e",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [
-          "SafeMath"
-        ],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      }
-    },
-    {
-      "SafeMath": {
-        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
-        "version": {
-          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
         }
       }
     },
@@ -5307,73 +6763,6 @@
       }
     },
     {
-      "IUniswapV2Callee": {
-        "src": "@uniswap\\v2-core\\contracts\\interfaces\\IUniswapV2Callee.sol:3",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "uniswapV2Call(address,uint256,uint256,bytes)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "IERC20": {
-        "src": "contracts\\swap\\interfaces\\IERC20.sol:8",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "symbol()",
-          "totalSupply()",
-          "balanceOf(address)",
-          "transfer(address,uint256)",
-          "allowance(address,address)",
-          "approve(address,uint256)",
-          "transferFrom(address,address,uint256)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "IUniswapV2Factory": {
-        "src": "contracts\\swap\\interfaces\\IUniswapV2Factory.sol:3",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "migrator()",
-          "feeTo()",
-          "feeToSetter()",
-          "feeDistributor()",
-          "klayBuybackFund()",
-          "getPair(address,address)",
-          "allPairs(uint256)",
-          "allPairsLength()",
-          "createPair(address,address)",
-          "setFeeTo(address)",
-          "setFeeToSetter(address)",
-          "setFeeDistributor(address)",
-          "setKlayBuybackFund(address)",
-          "setMigrator(address)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
       "Math": {
         "src": "contracts\\swap\\libraries\\Math.sol:5",
         "version": {
@@ -5389,1059 +6778,6 @@
         "layout": {
           "storage": [],
           "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "SafeMath": {
-        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
-        "version": {
-          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "UQ112x112": {
-        "src": "contracts\\swap\\libraries\\UQ112x112.sol:10",
-        "version": {
-          "withMetadata": "b2b7f5b4823a60559b5a80fccf2486a879a00aaca5f4e11028386379df2fbb60",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "UniswapV2ERC20": {
-        "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:8",
-        "version": {
-          "withMetadata": "c9d98eb2fad91830ccc8b7537f32e9a619ac29e159fd1f83ef320290c1696a71",
-          "withoutMetadata": "0caec23e0853e59e9e0783f7391e6c4fcd668f09a22779174a1cfb5b78bcf59d",
-          "linkedWithoutMetadata": "0caec23e0853e59e9e0783f7391e6c4fcd668f09a22779174a1cfb5b78bcf59d"
-        },
-        "inherit": [],
-        "libraries": [
-          "SafeMath"
-        ],
-        "methods": [
-          "()",
-          "approve(address,uint256)",
-          "transfer(address,uint256)",
-          "transferFrom(address,address,uint256)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "name",
-              "type": "t_string_storage",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:11"
-            },
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "decimals",
-              "type": "t_uint8",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:13"
-            },
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "totalSupply",
-              "type": "t_uint256",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:14"
-            },
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "balanceOf",
-              "type": "t_mapping(t_address,t_uint256)",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:15"
-            },
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "allowance",
-              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:16"
-            }
-          ],
-          "types": {
-            "t_string_storage": {
-              "label": "string"
-            },
-            "t_uint8": {
-              "label": "uint8"
-            },
-            "t_uint256": {
-              "label": "uint256"
-            },
-            "t_mapping(t_address,t_uint256)": {
-              "label": "mapping(address => uint256)"
-            },
-            "t_address": {
-              "label": "address"
-            },
-            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
-              "label": "mapping(address => mapping(address => uint256))"
-            }
-          },
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "UniswapV2Factory": {
-        "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:9",
-        "version": {
-          "withMetadata": "e8a467396711e175fdd5ae94dc1f8de84c8532e04793c8f81cb2d7dde3fe8846",
-          "withoutMetadata": "04b9138e73ea3aa45f8ce3ad41deaf4eefcd39b1990a8f935b6664cca9c225b5",
-          "linkedWithoutMetadata": "04b9138e73ea3aa45f8ce3ad41deaf4eefcd39b1990a8f935b6664cca9c225b5"
-        },
-        "inherit": [
-          "IUniswapV2Factory"
-        ],
-        "libraries": [],
-        "methods": [
-          "(address)",
-          "allPairsLength()",
-          "pairCodeHash()",
-          "createPair(address,address)",
-          "setFeeTo(address)",
-          "setFeeToSetter(address)",
-          "setFeeDistributor(address)",
-          "setKlayBuybackFund(address)",
-          "setMigrator(address)"
-        ],
-        "linkReferences": [],
-        "errors": [
-          {
-            "kind": "constructor",
-            "contract": "UniswapV2Factory",
-            "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:26"
-          }
-        ],
-        "layout": {
-          "storage": [
-            {
-              "contract": "UniswapV2Factory",
-              "label": "feeToSetter",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:10"
-            },
-            {
-              "contract": "UniswapV2Factory",
-              "label": "feeTo",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:11"
-            },
-            {
-              "contract": "UniswapV2Factory",
-              "label": "feeDistributor",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:12"
-            },
-            {
-              "contract": "UniswapV2Factory",
-              "label": "klayBuybackFund",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:13"
-            },
-            {
-              "contract": "UniswapV2Factory",
-              "label": "migrator",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:14"
-            },
-            {
-              "contract": "UniswapV2Factory",
-              "label": "getPair",
-              "type": "t_mapping(t_address,t_mapping(t_address,t_address))",
-              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:16"
-            },
-            {
-              "contract": "UniswapV2Factory",
-              "label": "allPairs",
-              "type": "t_array(t_address)dyn_storage",
-              "src": "contracts\\swap\\swap\\UniswapV2Factory.sol:17"
-            }
-          ],
-          "types": {
-            "t_address": {
-              "label": "address"
-            },
-            "t_mapping(t_address,t_mapping(t_address,t_address))": {
-              "label": "mapping(address => mapping(address => address))"
-            },
-            "t_mapping(t_address,t_address)": {
-              "label": "mapping(address => address)"
-            },
-            "t_array(t_address)dyn_storage": {
-              "label": "address[]"
-            }
-          },
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "IMigrator": {
-        "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:12",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "desiredLiquidity()"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "UniswapV2Pair": {
-        "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:17",
-        "version": {
-          "withMetadata": "d71edf953945430074e6b2db235a40dc76f0aa2a57aa34b3e8178f915f0d7c0d",
-          "withoutMetadata": "754d8a3eb9044f76ace1192dde66a3caa15de589d7be7ad2136714a75e656b3e",
-          "linkedWithoutMetadata": "754d8a3eb9044f76ace1192dde66a3caa15de589d7be7ad2136714a75e656b3e"
-        },
-        "inherit": [
-          "UniswapV2ERC20"
-        ],
-        "libraries": [
-          "SafeMath",
-          "UQ112x112",
-          "Math"
-        ],
-        "methods": [
-          "getReserves()",
-          "()",
-          "initialize(address,address,uint8)",
-          "mint(address)",
-          "burn(address)",
-          "swap(uint256,uint256,address,bytes)",
-          "skim(address)",
-          "sync()"
-        ],
-        "linkReferences": [],
-        "errors": [
-          {
-            "kind": "constructor",
-            "contract": "UniswapV2Pair",
-            "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:90"
-          },
-          {
-            "kind": "state-variable-assignment",
-            "name": "unlocked",
-            "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:37"
-          }
-        ],
-        "layout": {
-          "storage": [
-            {
-              "contract": "UniswapV2Pair",
-              "label": "factory",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:25"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "token0",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:26"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "token1",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:27"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "reserve0",
-              "type": "t_uint112",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:29"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "reserve1",
-              "type": "t_uint112",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:30"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "blockTimestampLast",
-              "type": "t_uint32",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:31"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "price0CumulativeLast",
-              "type": "t_uint256",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:33"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "price1CumulativeLast",
-              "type": "t_uint256",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:34"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "kLast",
-              "type": "t_uint256",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:35"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "unlocked",
-              "type": "t_uint256",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:37"
-            }
-          ],
-          "types": {
-            "t_address": {
-              "label": "address"
-            },
-            "t_uint112": {
-              "label": "uint112"
-            },
-            "t_uint32": {
-              "label": "uint32"
-            },
-            "t_uint256": {
-              "label": "uint256"
-            }
-          },
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      }
-    },
-    {
-      "SafeMath": {
-        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
-        "version": {
-          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "UniswapV2ERC20": {
-        "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:8",
-        "version": {
-          "withMetadata": "c9d98eb2fad91830ccc8b7537f32e9a619ac29e159fd1f83ef320290c1696a71",
-          "withoutMetadata": "0caec23e0853e59e9e0783f7391e6c4fcd668f09a22779174a1cfb5b78bcf59d",
-          "linkedWithoutMetadata": "0caec23e0853e59e9e0783f7391e6c4fcd668f09a22779174a1cfb5b78bcf59d"
-        },
-        "inherit": [],
-        "libraries": [
-          "SafeMath"
-        ],
-        "methods": [
-          "()",
-          "approve(address,uint256)",
-          "transfer(address,uint256)",
-          "transferFrom(address,address,uint256)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "name",
-              "type": "t_string_storage",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:11"
-            },
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "decimals",
-              "type": "t_uint8",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:13"
-            },
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "totalSupply",
-              "type": "t_uint256",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:14"
-            },
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "balanceOf",
-              "type": "t_mapping(t_address,t_uint256)",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:15"
-            },
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "allowance",
-              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:16"
-            }
-          ],
-          "types": {
-            "t_string_storage": {
-              "label": "string"
-            },
-            "t_uint8": {
-              "label": "uint8"
-            },
-            "t_uint256": {
-              "label": "uint256"
-            },
-            "t_mapping(t_address,t_uint256)": {
-              "label": "mapping(address => uint256)"
-            },
-            "t_address": {
-              "label": "address"
-            },
-            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
-              "label": "mapping(address => mapping(address => uint256))"
-            }
-          },
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      }
-    },
-    {
-      "Math": {
-        "src": "contracts\\swap\\libraries\\Math.sol:5",
-        "version": {
-          "withMetadata": "edbca5dba42a078f60c84c2c627d0bc0d11f46b6f3cd0076d25dfdeafa48f1bf",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      }
-    },
-    {
-      "IERC20": {
-        "src": "contracts\\swap\\interfaces\\IERC20.sol:8",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "symbol()",
-          "totalSupply()",
-          "balanceOf(address)",
-          "transfer(address,uint256)",
-          "allowance(address,address)",
-          "approve(address,uint256)",
-          "transferFrom(address,address,uint256)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "IUniswapV2Factory": {
-        "src": "contracts\\swap\\interfaces\\IUniswapV2Factory.sol:3",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "migrator()",
-          "feeTo()",
-          "feeToSetter()",
-          "feeDistributor()",
-          "klayBuybackFund()",
-          "getPair(address,address)",
-          "allPairs(uint256)",
-          "allPairsLength()",
-          "createPair(address,address)",
-          "setFeeTo(address)",
-          "setFeeToSetter(address)",
-          "setFeeDistributor(address)",
-          "setKlayBuybackFund(address)",
-          "setMigrator(address)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "IUniswapV2Pair": {
-        "src": "contracts\\swap\\interfaces\\IUniswapV2Pair.sol:3",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "name()",
-          "symbol()",
-          "decimals()",
-          "totalSupply()",
-          "balanceOf(address)",
-          "allowance(address,address)",
-          "approve(address,uint256)",
-          "transfer(address,uint256)",
-          "transferFrom(address,address,uint256)",
-          "MINIMUM_LIQUIDITY()",
-          "factory()",
-          "token0()",
-          "token1()",
-          "getReserves()",
-          "price0CumulativeLast()",
-          "price1CumulativeLast()",
-          "kLast()",
-          "mint(address)",
-          "burn(address)",
-          "swap(uint256,uint256,address,bytes)",
-          "skim(address)",
-          "sync()",
-          "initialize(address,address)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "IWKLAY": {
-        "src": "contracts\\swap\\interfaces\\IWKLAY.sol:3",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "deposit()",
-          "transfer(address,uint256)",
-          "withdraw(uint256)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "SafeMath": {
-        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
-        "version": {
-          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "TransferHelper": {
-        "src": "contracts\\swap\\libraries\\TransferHelper.sol:6",
-        "version": {
-          "withMetadata": "d8d560f7c941545ef46a1c17435308353b8cb37b47bce48011b658e3e19c477f",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "UniswapV2Library": {
-        "src": "contracts\\swap\\libraries\\UniswapV2Library.sol:7",
-        "version": {
-          "withMetadata": "1ea2c605f5932c57289b5fe4799c52215d34d642d16125fa4dbf2b00700d423e",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [
-          "SafeMath"
-        ],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "UniswapV2Router02": {
-        "src": "contracts\\swap\\swap\\UniswapV2Router02.sol:12",
-        "version": {
-          "withMetadata": "c3992e8f3ebf08eaca86a56e6407fc1d92cd94d0a4d02935420718f85d600d32",
-          "withoutMetadata": "ce6d0f9ad8e35613c5c30b254e41e1003c263f258210e33f9e9e234ff2eb2abd",
-          "linkedWithoutMetadata": "ce6d0f9ad8e35613c5c30b254e41e1003c263f258210e33f9e9e234ff2eb2abd"
-        },
-        "inherit": [],
-        "libraries": [
-          "SafeMath",
-          "UniswapV2Library",
-          "console",
-          "TransferHelper"
-        ],
-        "methods": [
-          "(address,address)",
-          "()",
-          "addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256)",
-          "addLiquidityKLAY(address,uint256,uint256,uint256,address,uint256)",
-          "removeLiquidity(address,address,uint256,uint256,uint256,address,uint256)",
-          "removeLiquidityKLAY(address,uint256,uint256,uint256,address,uint256)",
-          "removeLiquidityKLAYSupportingFeeOnTransferTokens(address,uint256,uint256,uint256,address,uint256)",
-          "swapExactTokensForTokens(uint256,uint256,address[],address,uint256)",
-          "swapTokensForExactTokens(uint256,uint256,address[],address,uint256)",
-          "swapExactKLAYForTokens(uint256,address[],address,uint256)",
-          "swapTokensForExactKLAY(uint256,uint256,address[],address,uint256)",
-          "swapExactTokensForKLAY(uint256,uint256,address[],address,uint256)",
-          "swapKLAYForExactTokens(uint256,address[],address,uint256)",
-          "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)",
-          "swapExactKLAYForTokensSupportingFeeOnTransferTokens(uint256,address[],address,uint256)",
-          "swapExactTokensForKLAYSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)",
-          "quote(uint256,uint256,uint256)",
-          "getAmountOut(uint256,uint256,uint256)",
-          "getAmountIn(uint256,uint256,uint256)",
-          "getAmountsOut(uint256,address[])",
-          "getAmountsIn(uint256,address[])"
-        ],
-        "linkReferences": [],
-        "errors": [
-          {
-            "kind": "constructor",
-            "contract": "UniswapV2Router02",
-            "src": "contracts\\swap\\swap\\UniswapV2Router02.sol:23"
-          }
-        ],
-        "layout": {
-          "storage": [
-            {
-              "contract": "UniswapV2Router02",
-              "label": "factory",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Router02.sol:15"
-            },
-            {
-              "contract": "UniswapV2Router02",
-              "label": "WKLAY",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Router02.sol:16"
-            }
-          ],
-          "types": {
-            "t_address": {
-              "label": "address"
-            }
-          },
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "console": {
-        "src": "hardhat\\console.sol:4",
-        "version": {
-          "withMetadata": "feb8458c269a2c1ac6f66a4aa5b1ba7894b35dcfb00aeb1f6150af1d6b3a1e8a",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      }
-    },
-    {
-      "IUniswapV2Callee": {
-        "src": "@uniswap\\v2-core\\contracts\\interfaces\\IUniswapV2Callee.sol:3",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "uniswapV2Call(address,uint256,uint256,bytes)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "IERC20": {
-        "src": "contracts\\swap\\interfaces\\IERC20.sol:8",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "symbol()",
-          "totalSupply()",
-          "balanceOf(address)",
-          "transfer(address,uint256)",
-          "allowance(address,address)",
-          "approve(address,uint256)",
-          "transferFrom(address,address,uint256)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "IUniswapV2Factory": {
-        "src": "contracts\\swap\\interfaces\\IUniswapV2Factory.sol:3",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "migrator()",
-          "feeTo()",
-          "feeToSetter()",
-          "feeDistributor()",
-          "klayBuybackFund()",
-          "getPair(address,address)",
-          "allPairs(uint256)",
-          "allPairsLength()",
-          "createPair(address,address)",
-          "setFeeTo(address)",
-          "setFeeToSetter(address)",
-          "setFeeDistributor(address)",
-          "setKlayBuybackFund(address)",
-          "setMigrator(address)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "Math": {
-        "src": "contracts\\swap\\libraries\\Math.sol:5",
-        "version": {
-          "withMetadata": "edbca5dba42a078f60c84c2c627d0bc0d11f46b6f3cd0076d25dfdeafa48f1bf",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "SafeMath": {
-        "src": "contracts\\swap\\libraries\\SafeMath.sol:18",
-        "version": {
-          "withMetadata": "c0394993d3d1a7cd67388f7d053c0695ab6d91b69d5bf17abd247a8d9138f87a",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "UQ112x112": {
-        "src": "contracts\\swap\\libraries\\UQ112x112.sol:10",
-        "version": {
-          "withMetadata": "b2b7f5b4823a60559b5a80fccf2486a879a00aaca5f4e11028386379df2fbb60",
-          "withoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15",
-          "linkedWithoutMetadata": "ecdc41c5a487c44961de774e1457e0e0132bd664ce29e49f0b05014d630fce15"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "UniswapV2ERC20": {
-        "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:8",
-        "version": {
-          "withMetadata": "c9d98eb2fad91830ccc8b7537f32e9a619ac29e159fd1f83ef320290c1696a71",
-          "withoutMetadata": "0caec23e0853e59e9e0783f7391e6c4fcd668f09a22779174a1cfb5b78bcf59d",
-          "linkedWithoutMetadata": "0caec23e0853e59e9e0783f7391e6c4fcd668f09a22779174a1cfb5b78bcf59d"
-        },
-        "inherit": [],
-        "libraries": [
-          "SafeMath"
-        ],
-        "methods": [
-          "()",
-          "approve(address,uint256)",
-          "transfer(address,uint256)",
-          "transferFrom(address,address,uint256)"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "name",
-              "type": "t_string_storage",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:11"
-            },
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "decimals",
-              "type": "t_uint8",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:13"
-            },
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "totalSupply",
-              "type": "t_uint256",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:14"
-            },
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "balanceOf",
-              "type": "t_mapping(t_address,t_uint256)",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:15"
-            },
-            {
-              "contract": "UniswapV2ERC20",
-              "label": "allowance",
-              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
-              "src": "contracts\\swap\\swap\\UniswapV2ERC20.sol:16"
-            }
-          ],
-          "types": {
-            "t_string_storage": {
-              "label": "string"
-            },
-            "t_uint8": {
-              "label": "uint8"
-            },
-            "t_uint256": {
-              "label": "uint256"
-            },
-            "t_mapping(t_address,t_uint256)": {
-              "label": "mapping(address => uint256)"
-            },
-            "t_address": {
-              "label": "address"
-            },
-            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
-              "label": "mapping(address => mapping(address => uint256))"
-            }
-          },
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "IMigrator": {
-        "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:12",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "desiredLiquidity()"
-        ],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      },
-      "UniswapV2Pair": {
-        "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:17",
-        "version": {
-          "withMetadata": "d71edf953945430074e6b2db235a40dc76f0aa2a57aa34b3e8178f915f0d7c0d",
-          "withoutMetadata": "754d8a3eb9044f76ace1192dde66a3caa15de589d7be7ad2136714a75e656b3e",
-          "linkedWithoutMetadata": "754d8a3eb9044f76ace1192dde66a3caa15de589d7be7ad2136714a75e656b3e"
-        },
-        "inherit": [
-          "UniswapV2ERC20"
-        ],
-        "libraries": [
-          "SafeMath",
-          "UQ112x112",
-          "Math"
-        ],
-        "methods": [
-          "getReserves()",
-          "()",
-          "initialize(address,address,uint8)",
-          "mint(address)",
-          "burn(address)",
-          "swap(uint256,uint256,address,bytes)",
-          "skim(address)",
-          "sync()"
-        ],
-        "linkReferences": [],
-        "errors": [
-          {
-            "kind": "constructor",
-            "contract": "UniswapV2Pair",
-            "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:90"
-          },
-          {
-            "kind": "state-variable-assignment",
-            "name": "unlocked",
-            "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:37"
-          }
-        ],
-        "layout": {
-          "storage": [
-            {
-              "contract": "UniswapV2Pair",
-              "label": "factory",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:25"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "token0",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:26"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "token1",
-              "type": "t_address",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:27"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "reserve0",
-              "type": "t_uint112",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:29"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "reserve1",
-              "type": "t_uint112",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:30"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "blockTimestampLast",
-              "type": "t_uint32",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:31"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "price0CumulativeLast",
-              "type": "t_uint256",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:33"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "price1CumulativeLast",
-              "type": "t_uint256",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:34"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "kLast",
-              "type": "t_uint256",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:35"
-            },
-            {
-              "contract": "UniswapV2Pair",
-              "label": "unlocked",
-              "type": "t_uint256",
-              "src": "contracts\\swap\\swap\\UniswapV2Pair.sol:37"
-            }
-          ],
-          "types": {
-            "t_address": {
-              "label": "address"
-            },
-            "t_uint112": {
-              "label": "uint112"
-            },
-            "t_uint32": {
-              "label": "uint32"
-            },
-            "t_uint256": {
-              "label": "uint256"
-            }
-          },
           "layoutVersion": "1.1",
           "flat": false
         }
@@ -6586,13 +6922,14 @@
       }
     },
     {
-      "IERC2612Permit": {
-        "src": "contracts\\bond\\library\\kip\\IERC2612Permit.sol:5",
+      "IUniswapV2Router": {
+        "src": "contracts\\swap\\interfaces\\IUniswapV2Router.sol:4",
         "inherit": [],
         "libraries": [],
         "methods": [
-          "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)",
-          "nonces(address)"
+          "swapExactTokensForTokens(uint256,uint256,address[],address,uint256)",
+          "getAmountsOut(uint256,address[])",
+          "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)"
         ],
         "linkReferences": [],
         "errors": [],
@@ -6605,14 +6942,13 @@
       }
     },
     {
-      "IUniswapV2Router": {
-        "src": "contracts\\swap\\interfaces\\IUniswapV2Router.sol:4",
+      "IERC2612Permit": {
+        "src": "contracts\\bond\\library\\kip\\IERC2612Permit.sol:5",
         "inherit": [],
         "libraries": [],
         "methods": [
-          "swapExactTokensForTokens(uint256,uint256,address[],address,uint256)",
-          "getAmountsOut(uint256,address[])",
-          "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)"
+          "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)",
+          "nonces(address)"
         ],
         "linkReferences": [],
         "errors": [],
@@ -6662,65 +6998,38 @@
       }
     },
     {
-      "EnumerableSet": {
-        "src": "contracts\\bank\\module\\Utils\\EnumerableSet.sol:29",
-        "version": {
-          "withMetadata": "9ffb5bddb19d110f6c17a6d83a16d58aa2aa961ca1ac5193ef4a504a84b04113",
-          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
-          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
-        },
+      "ReentrancyGuard": {
+        "src": "contracts\\bank\\module\\Utils\\ReentrancyGuard.sol:20",
         "inherit": [],
         "libraries": [],
         "methods": [],
         "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      }
-    },
-    {
-      "StringHelpers": {
-        "src": "contracts\\bank\\module\\Utils\\StringHelpers.sol:5",
-        "version": {
-          "withMetadata": "bca210accdce11843772446c3d9f04bf20b597f3e60cb07b6eced5112b3b11f8",
-          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
-          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
-        },
-        "inherit": [],
-        "libraries": [],
-        "methods": [],
-        "linkReferences": [],
-        "errors": [],
-        "layout": {
-          "storage": [],
-          "types": {},
-          "layoutVersion": "1.1",
-          "flat": false
-        }
-      }
-    },
-    {
-      "ICAMP": {
-        "src": "contracts\\bank\\ICAMP.sol:3",
-        "inherit": [],
-        "libraries": [],
-        "methods": [
-          "Bank_mint(address,uint256)",
-          "Bank_burn_from(address,uint256)",
-          "Bond_mint(address,uint256)",
-          "Staking_mint(address,uint256)"
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ReentrancyGuard",
+            "src": "contracts\\bank\\module\\Utils\\ReentrancyGuard.sol:37"
+          }
         ],
-        "linkReferences": [],
-        "errors": [],
         "layout": {
-          "storage": [],
-          "types": {},
+          "storage": [
+            {
+              "label": "_status",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "ReentrancyGuard",
+              "src": "contracts\\bank\\module\\Utils\\ReentrancyGuard.sol:35"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
           "layoutVersion": "1.1",
-          "flat": false
+          "flat": true
         }
       }
     },
@@ -6780,6 +7089,27 @@
       }
     },
     {
+      "StringHelpers": {
+        "src": "contracts\\bank\\module\\Utils\\StringHelpers.sol:5",
+        "version": {
+          "withMetadata": "bca210accdce11843772446c3d9f04bf20b597f3e60cb07b6eced5112b3b11f8",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
       "Math": {
         "src": "contracts\\bank\\module\\Math\\Math.sol:7",
         "version": {
@@ -6801,38 +7131,44 @@
       }
     },
     {
-      "ReentrancyGuard": {
-        "src": "contracts\\bank\\module\\Utils\\ReentrancyGuard.sol:20",
+      "ICAMP": {
+        "src": "contracts\\bank\\ICAMP.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "Bank_mint(address,uint256)",
+          "Bank_burn_from(address,uint256)",
+          "Bond_mint(address,uint256)",
+          "Staking_mint(address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "EnumerableSet": {
+        "src": "contracts\\bank\\module\\Utils\\EnumerableSet.sol:29",
+        "version": {
+          "withMetadata": "9ffb5bddb19d110f6c17a6d83a16d58aa2aa961ca1ac5193ef4a504a84b04113",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
         "inherit": [],
         "libraries": [],
         "methods": [],
         "linkReferences": [],
-        "errors": [
-          {
-            "kind": "constructor",
-            "contract": "ReentrancyGuard",
-            "src": "contracts\\bank\\module\\Utils\\ReentrancyGuard.sol:37"
-          }
-        ],
+        "errors": [],
         "layout": {
-          "storage": [
-            {
-              "label": "_status",
-              "offset": 0,
-              "slot": "0",
-              "type": "t_uint256",
-              "contract": "ReentrancyGuard",
-              "src": "contracts\\bank\\module\\Utils\\ReentrancyGuard.sol:35"
-            }
-          ],
-          "types": {
-            "t_uint256": {
-              "label": "uint256",
-              "numberOfBytes": "32"
-            }
-          },
+          "storage": [],
+          "types": {},
           "layoutVersion": "1.1",
-          "flat": true
+          "flat": false
         }
       }
     },

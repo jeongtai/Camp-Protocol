@@ -12,7 +12,7 @@ const main = async () => {
   //console.log("current ratio is : ", (await SCAMP.current_collateral_ratio()).toString())
   await SCAMP.setMintingFee(4000)
   console.log(await SCAMP.SCAMP_info())
-//   console.log("current ratio is : ", (await SCAMP.current_collateral_ratio()).toString())
+//console.log("current ratio is : ", (await SCAMP.current_collateral_ratio()).toString())
   
 
   CAMPFactory = await ethers.getContractFactory("CAMP");

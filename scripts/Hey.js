@@ -10,7 +10,7 @@ const main = async () => {
   const SCAMP = await SCAMPFactory.attach("0xBc7404E4D6E570a92D13D65e79Fc08bd546E68c6");
 
   //console.log("current ratio is : ", (await SCAMP.current_collateral_ratio()).toString())
-  //await SCAMP.setMintingFee(4000)
+  await SCAMP.setMintingFee(4000)
   console.log(await SCAMP.SCAMP_info())
 //   console.log("current ratio is : ", (await SCAMP.current_collateral_ratio()).toString())
   
@@ -72,15 +72,15 @@ const main = async () => {
   //console.log(reserve[0].toString(), reserve[1].toString(), reserve[2])
 
 
-  const uniPairOracleFactory = await ethers.getContractFactory("UniswapPairOracle");
-  const uniPairOracle = await uniPairOracleFactory.deploy("0xbe8c5b5cCf3178678022D1a2021A36Ee92e84883", CAMP.address, mock.address, owner.address);
-  //const uniPairOracle = await uniPairOracleFactory.attach("0xD825C6f76d0aF4f11578c62e5F1a66C68D89FF94");
-  console.log("uniPairOracle pair:", uniPairOracle.address);
+  // const uniPairOracleFactory = await ethers.getContractFactory("UniswapPairOracle");
+  // const uniPairOracle = await uniPairOracleFactory.deploy("0xbe8c5b5cCf3178678022D1a2021A36Ee92e84883", CAMP.address, mock.address, owner.address);
+  // //const uniPairOracle = await uniPairOracleFactory.attach("0xD825C6f76d0aF4f11578c62e5F1a66C68D89FF94");
+  // console.log("uniPairOracle pair:", uniPairOracle.address);
 
-  await uniPairOracle.update();
-  console.log("is here?");
-  //await uniPairOracle.setPeriod(3000);
-  console.log((await uniPairOracle.canUpdate()).toString())
+  // //await uniPairOracle.update();
+  // console.log("is here?");
+  // //await uniPairOracle.setPeriod(3000);
+  // console.log((await uniPairOracle.canUpdate()).toString())
   //const amountOut = await uniPairOracle.consult(mock.address, 1e6);
   //console.log("amountOut of oracle:", amountOut.toString());
 

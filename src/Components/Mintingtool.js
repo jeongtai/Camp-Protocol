@@ -129,22 +129,24 @@ function Mintingtool() {
     const [CAMPBalance, setCAMPBalance] = useState();
     const [USDCBalance, setUSDCBalance] = useState();
 
-    const [ECR, setECR] = useState(0.85);
+    const [ECR, setECR] = useState();
+    const [CAMPprice, setCampprice] = useState();
+    const [SCAMPprice, setSCampprice] = useState();
 
     const [isLoading, setIsLoading] = useState(true);
 
     // initialize hook----------------------------
     useEffect(() => {
         if (window.klaytn) {
-            getUserInfo();
+            getInfo();
             window.klaytn.on("accountsChanged", async function (accounts) {
-                getUserInfo();
+                getInfo();
                 console.log("account change listen in bank");
             });
         }
     }, []);
 
-    async function getUserInfo() {
+    async function getInfo() {
         await state.SCAMPContract.methods
             .balanceOf(window.klaytn.selectedAddress)
             .call((e, v) =>
@@ -160,6 +162,11 @@ function Mintingtool() {
             .call((e, v) =>
                 setUSDCBalance(caver.utils.fromPeb(v.toString(), "Mpeb"))
             );
+        await state.SCAMPContract.methods
+            .current_collateral_ratio()
+            .call((e, v) => setECR(v))
+        await state.SCAMPContract.methods.SCAMP_Price().call((e, v) => setSCampprice(v/1e6))
+        await state.SCAMPContract.methods.CAMP_Price().call((e, v) => setCampprice(v/1e6))
         setIsLoading(false);
     }
 
@@ -175,10 +182,10 @@ function Mintingtool() {
     const CAMPamt = (event) => {
         const camp = event.target.value;
         setUSDCInputAmount(
-            Math.round((camp * 1000) / (1 - ECR) - camp * 1000) / 1000
+            Math.round((camp*CAMPprice * 1000) / (1 - ECR) - camp*CAMPprice * 1000) / 1000
         );
         setCampInputAmount(Math.round(camp * 1000) / 1000);
-        setScampInputAmount(Math.round((camp * 1000) / (1 - ECR)) / 1000);
+        setScampInputAmount(Math.round((camp*CAMPprice * 1000) / (1 - ECR)) / 1000);
     };
 
     const SCAMPamt = (event) => {
@@ -195,14 +202,13 @@ function Mintingtool() {
         } else if (value >= 100) setSlippage(100);
         else if (value <= 0) setSlippage(0);
     };
-
+    
     function onClick() {
         state.BankContract.methods
-            .mintFractionalSCAMP(
-                caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"),
+            .mintAlgorithmicSCAMP(
                 caver.utils.toPeb(campInputAmount * 1000, "mKLAY"),
                 caver.utils.toPeb(
-                    (scampInputAmount * 1000 * (100 - { slippage })) / 100,
+                    (scampInputAmount * 1000 * (100 -  slippage)/100) ,
                     "mKLAY"
                 )
             )
@@ -250,6 +256,7 @@ function Mintingtool() {
                 <Content>
                     <div>
                         <span>Input</span>
+                        <p>scamp : {SCAMPprice}, camp: {CAMPprice}</p>
                         <span>
                             <img
                                 align="right"

@@ -132,6 +132,9 @@ function Mintingtool() {
     const [ECR, setECR] = useState();
     const [CAMPprice, setCampprice] = useState();
     const [SCAMPprice, setSCampprice] = useState();
+    const [redemptionfee, setRedemptionFee] = useState();
+    const [mintingfee, setMintingFee] = useState();
+    const [collatbal, setCollatbal] = useState();
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -167,6 +170,9 @@ function Mintingtool() {
             .call((e, v) => setECR(v))
         await state.SCAMPContract.methods.SCAMP_Price().call((e, v) => setSCampprice(v/1e6))
         await state.SCAMPContract.methods.CAMP_Price().call((e, v) => setCampprice(v/1e6))
+        await state.SCAMPContract.methods.minting_fee().call((e, v) => setMintingFee(v/1e6))
+        await state.SCAMPContract.methods.redemption_fee().call((e, v) => setRedemptionFee(v/1e6))
+        await state.BankContract.methods.collatDollarBalance().call((e, v) => setCollatbal(v/1e6))
         setIsLoading(false);
     }
 
@@ -204,6 +210,7 @@ function Mintingtool() {
     };
     
     function onClick() {
+      if()
         state.BankContract.methods
             .mintAlgorithmicSCAMP(
                 caver.utils.toPeb(campInputAmount * 1000, "mKLAY"),
@@ -244,8 +251,6 @@ function Mintingtool() {
             });
     }
 
-    function Zapmint() {}
-
     return (
         <>
             {isLoading ? (
@@ -256,7 +261,6 @@ function Mintingtool() {
                 <Content>
                     <div>
                         <span>Input</span>
-                        <p>scamp : {SCAMPprice}, camp: {CAMPprice}</p>
                         <span>
                             <img
                                 align="right"
@@ -332,15 +336,15 @@ function Mintingtool() {
                     <MintInfos>
                         <Info>
                             <span>Current Collateral Ratio</span>
-                            <span>{ECR * 100} %</span>
+                            <span>{ECR} %</span>
                         </Info>
                         <Info>
-                            <span>Redemption fee</span>
-                            <span>0.3%</span>
+                            <span>Minting fee</span>
+                            <span>{mintingfee*100}%</span>
                         </Info>
                         <Info>
                             <span>Collateral balance</span>
-                            <span>0.000000 USDT</span>
+                            <span>{collatbal} USDT</span>
                         </Info>
                         <Info>
                             <span>Slippage</span>
@@ -349,8 +353,9 @@ function Mintingtool() {
                         <Info>
                             <span>Rates</span>
                             <span>
-                                1 USDT = 0.999764 USD
-                                <br />1 CAMP = 0.000199 USD
+                             Scamp : {SCAMPprice}
+                             <br/>
+                             camp: {CAMPprice}
                             </span>
                         </Info>
                     </MintInfos>

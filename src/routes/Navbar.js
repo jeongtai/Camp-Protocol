@@ -88,12 +88,12 @@ function Navbar() {
     const [activeMenu, setActiveMenu] = useState(window.location.pathname);
 
     const menus = [
-        { name: "Dashboard", path: "/", imgSrc: Dashboard },
-        { name: "Bank", path: "/Bank", imgSrc: Bank },
-        { name: "Bond", path: "/Bond", imgSrc: Bond },
-        { name: "Stake", path: "/Stake", imgSrc: Stake },
-        { name: "Calculator", path: "/Calculator", imgSrc: Calculator },
-        { name: "Fund", path: "/Fund", imgSrc: Fund },
+        { name: "Dashboard", path: "/", logo : Dashboard },
+        { name: "Bank", path: "/Bank", logo : Bank },
+        { name: "Bond", path: "/Bond", logo : Bond },
+        { name: "Stake", path: "/Stake", logo : Stake },
+        { name: "Calculator", path: "/Calculator", logo : Calculator },
+        { name: "Fund", path: "/Fund", logo : Fund },
     ];
 
     return (
@@ -117,7 +117,7 @@ function Navbar() {
                                 }
                                 key={index}
                             >
-                                <img src={menu.imgSrc} />
+                                <img src={menu.logo } />
                                 <span>{menu.name}</span>
                             </Item>
                         </Link>

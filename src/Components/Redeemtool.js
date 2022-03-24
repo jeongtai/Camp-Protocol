@@ -1,22 +1,30 @@
-import {useState } from "react";
-import Input from "./INPUT";
 import Button from "./Button";
-import { useSelector} from "react-redux";
+import Input from "./INPUT";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 import Caver from "caver-js";
+import styled from "styled-components";
+
+import Loading from "../assets/Loading.svg";
+
+const Content = styled.div`
+    background-color: white;
+`;
 
 const caver = new Caver(window.klaytn)
 
 function Redeemtool () {
     let state = useSelector((state) => state)
     let BankAddress = "0x470aC5e9E098731F0911003218505151e47a6aDD"
-    const [usdcamount, setUSDCamount] = useState();
-    const [campamount, setCampAmount] = useState();
-    const [scampamount, setScampAmount] = useState();
+
+    const [usdcamount, setUSDCamount] = useState(0);
+    const [campamount, setCampAmount] = useState(0);
+    const [scampamount, setScampAmount] = useState(0);
+    const [slippage, setSlippage] = useState(0);
+
     const [isapproved, setIsApproved] = useState(false)
-    const [slippage, setSlippage] = useState();
 
     // state.BankContract.mtehods.SCAMP_info().call((e, v) => console.log(v))
-
     
     const USDCamt = (event) => {
         setUSDCamount(Math.round(event.target.value*100)/100)

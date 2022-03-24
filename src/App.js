@@ -12,7 +12,7 @@ import Bank from "./routes/Bank";
 import Fund from "./routes/Fund";
 import Calculator from "./routes/Calculator";
 
-const Section = styled.div`
+const Main = styled.div`
     margin: 0px 10px 0px ${(props) => props.theme.navWidth + 100}px;
     max-width: 900px;
     display: flex;
@@ -23,17 +23,17 @@ function App() {
     return (
         <Router>
             <Navbar />
-            <Section>
+            <Main>
                 <PageHeader />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/Stake" element={<Stake />} />
-                        <Route path="/Bond" element={<Bond />} />
-                        <Route path="/Bank" element={<Bank />} />
-                        <Route path="/Calculator" element={<Calculator />} />
-                        <Route path="/Fund" element={<Fund />} />
-                    </Routes>
-            </Section>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/Stake" element={<Stake />} />
+                    <Route path="/Bond" element={<Bond />} />
+                    <Route path="/Bank" element={<Bank />} />
+                    <Route path="/Calculator" element={<Calculator />} />
+                    <Route path="/Fund" element={<Fund />} />
+                </Routes>
+            </Main>
         </Router>
     )
 }

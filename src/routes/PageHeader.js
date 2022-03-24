@@ -41,10 +41,10 @@ const ConnectWallet = styled.button`
 function PageHeader() {
     const [isWalletConnected, setIsWalletConnected] = useState(false);
     const [currentAddress, setCurrentAddress] = useState(
-        window.klaytn.selectedAddress
+        window.klaytn ? window.klaytn.selectedAddress : undefined
     );
     const { pathname } = useLocation();
-
+    
     // initialize hook----------------------------
     useEffect(() => {
         const onLoad = async () => {
@@ -60,22 +60,23 @@ function PageHeader() {
 
         // accountChange EventListner
         //   -> 지갑주소 undefined 됐을때 대비 갱신
-        window.klaytn.on("accountsChanged", async function (accounts) {
-            console.log(
-                "2 account change : ",
-                currentAddress,
-                " -> ",
-                accounts[0]
-            );
+        if (window.klaytn) {
+            window.klaytn.on("accountsChanged", async function (accounts) {
+                console.log(
+                    "2 account change : ",
+                    currentAddress,
+                    " -> ",
+                    accounts[0]
+                );
 
-            await setCurrentAddress(accounts[0]);
-            await setIsWalletConnected(true);
-        });
+                await setCurrentAddress(accounts[0]);
+                await setIsWalletConnected(true);
+            });
+        }
 
         // clean-up 으로 event-listner 삭제
         return () => window.removeEventListener("load", onLoad);
     }, []);
-
 
     async function connectKaikas() {
         const response = await window.klaytn.enable();

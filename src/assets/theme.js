@@ -6,6 +6,7 @@ export const theme = {
    activeColor : "#282828",
    unActiveColor : "#B2B2B2",
    backGray: "#F8F8F8",
+   backBlue : "#F0F7FF",
 
    // Btn
    addBtnColor : "#EDEDED",

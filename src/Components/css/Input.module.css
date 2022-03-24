@@ -1,5 +1,8 @@
 .input {
     display: block;
-    margin: 20px 0px;
-    border: 10px solid lightblue;
+    margin : 5px 0px;
+    border: 0px;
+    font-size : 18px;    
+    font-family: 'Lexend', sans-serif;
+    width : 200px;
 }

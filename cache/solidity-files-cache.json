@@ -1,8 +1,8 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\_mock\\MockUSDC.sol": {
-      "lastModificationDate": 1647582364378,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\_mock\\MockUSDC.sol": {
+      "lastModificationDate": 1648051494454,
       "contentHash": "2e1b64281268b4e0a82ba1342002d606",
       "sourceName": "contracts/bank/_mock/MockUSDC.sol",
       "solcConfig": {
@@ -47,8 +47,8 @@
         "MockUSDC"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Owned.sol": {
-      "lastModificationDate": 1647580995654,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\Owned.sol": {
+      "lastModificationDate": 1648030546361,
       "contentHash": "60610324a75dc3909ae272331e530909",
       "sourceName": "contracts/bank/Owned.sol",
       "solcConfig": {
@@ -90,9 +90,9 @@
         "Owned"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\library\\kip\\KIP7.sol": {
-      "lastModificationDate": 1647333503076,
-      "contentHash": "a8fed2c1d2a42d2910af1c0b179f06fa",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\library\\kip\\KIP7.sol": {
+      "lastModificationDate": 1648030546531,
+      "contentHash": "f58e6358844f048669cca653ca8451e4",
       "sourceName": "contracts/bond/library/kip/KIP7.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -136,9 +136,9 @@
         "KIP7"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\library\\kip\\IKIP7Detailed.sol": {
-      "lastModificationDate": 1647333503076,
-      "contentHash": "ae4376d4eb09fd741e9742f9932fcd79",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\library\\kip\\IKIP7Detailed.sol": {
+      "lastModificationDate": 1648030546528,
+      "contentHash": "c603213e89d69d9d04415325f6ae903a",
       "sourceName": "contracts/bond/library/kip/IKIP7Detailed.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -181,9 +181,9 @@
         "IKIP7Detailed"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\library\\SafeMath.sol": {
-      "lastModificationDate": 1647333503063,
-      "contentHash": "b34540cfda41da1210f2b9bae08030d5",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\library\\SafeMath.sol": {
+      "lastModificationDate": 1648030546519,
+      "contentHash": "e9ddf73750bdcceb3dce848607183a82",
       "sourceName": "contracts/bond/library/SafeMath.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -224,9 +224,9 @@
         "SafeMath"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\library\\kip\\IKIP7.sol": {
-      "lastModificationDate": 1647333503076,
-      "contentHash": "d2f15779de52ec209002c6db53b311cc",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\library\\kip\\IKIP7.sol": {
+      "lastModificationDate": 1648030546525,
+      "contentHash": "7d21a80b406e3f302a9756471dfdab79",
       "sourceName": "contracts/bond/library/kip/IKIP7.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -267,9 +267,880 @@
         "IKIP7"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\library\\Counters.sol": {
-      "lastModificationDate": 1647333503067,
-      "contentHash": "8536976e5b3b0f5a10a90cc12f1be2fb",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\SCAMP.sol": {
+      "lastModificationDate": 1648049670792,
+      "contentHash": "c312615cec988154c8925c27a17af782",
+      "sourceName": "contracts/bank/SCAMP.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./module/Common/Context.sol",
+        "./module/ERC20/IERC20.sol",
+        "../bond/library/kip/KIP7.sol",
+        "./Owned.sol",
+        "./Oracle/AssetOracle.sol",
+        "./Oracle/UniswapPairOracle.sol"
+      ],
+      "versionPragmas": [
+        "=0.7.5"
+      ],
+      "artifacts": [
+        "SCAMP"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\module\\Common\\Context.sol": {
+      "lastModificationDate": 1648030546413,
+      "contentHash": "b2df4bc49349fb24e701c81b8449e510",
+      "sourceName": "contracts/bank/module/Common/Context.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.7.5"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\module\\ERC20\\IERC20.sol": {
+      "lastModificationDate": 1648030546421,
+      "contentHash": "be1def67f7165032c7a90fdc9a4d4bdd",
+      "sourceName": "contracts/bank/module/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../Common/Context.sol",
+        "../../../bond/library/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "=0.7.5"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\Oracle\\AssetOracle.sol": {
+      "lastModificationDate": 1648055875741,
+      "contentHash": "d54f6b9be2e93192f359abe29a11d0e3",
+      "sourceName": "contracts/bank/Oracle/AssetOracle.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../../bond/library/SafeMath.sol",
+        "./UniswapPairOracle.sol",
+        "../Owned.sol",
+        "../SCAMP.sol",
+        "../Uniswap/interfaces/IUniswapV2Pair.sol"
+      ],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "AssetOracle"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\Oracle\\UniswapPairOracle.sol": {
+      "lastModificationDate": 1648030546356,
+      "contentHash": "c4a4356509d88da547209097044520c6",
+      "sourceName": "contracts/bank/Oracle/UniswapPairOracle.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../Uniswap/interfaces/IUniswapV2Factory.sol",
+        "../Uniswap/interfaces/IUniswapV2Pair.sol",
+        "../module/Math/FixedPoint.sol",
+        "../Uniswap/UniswapV2OracleLibrary.sol",
+        "../Uniswap/UniswapV2Library.sol",
+        "../Owned.sol",
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        "=0.7.5"
+      ],
+      "artifacts": [
+        "UniswapPairOracle"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\Uniswap\\interfaces\\IUniswapV2Pair.sol": {
+      "lastModificationDate": 1648030546401,
+      "contentHash": "fdb929459d3d8a15bd4d42473241a1e4",
+      "sourceName": "contracts/bank/Uniswap/interfaces/IUniswapV2Pair.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.7.5"
+      ],
+      "artifacts": [
+        "IUniswapV2Pair"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\Uniswap\\interfaces\\IUniswapV2Factory.sol": {
+      "lastModificationDate": 1648030546397,
+      "contentHash": "94dc85d3c7ab27abbff95a1ef00f3e2b",
+      "sourceName": "contracts/bank/Uniswap/interfaces/IUniswapV2Factory.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.7.5"
+      ],
+      "artifacts": [
+        "IUniswapV2Factory"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\module\\Math\\FixedPoint.sol": {
+      "lastModificationDate": 1648030546431,
+      "contentHash": "7bb85716ca4c03a25264e9c0b3775f9e",
+      "sourceName": "contracts/bank/module/Math/FixedPoint.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./Babylonian.sol"
+      ],
+      "versionPragmas": [
+        "=0.7.5"
+      ],
+      "artifacts": [
+        "FixedPoint"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\Uniswap\\UniswapV2OracleLibrary.sol": {
+      "lastModificationDate": 1648030546392,
+      "contentHash": "16b11215811d1dc1147b0fa353c8f7fd",
+      "sourceName": "contracts/bank/Uniswap/UniswapV2OracleLibrary.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../Uniswap/interfaces/IUniswapV2Pair.sol",
+        "../module/Math/FixedPoint.sol"
+      ],
+      "versionPragmas": [
+        "=0.7.5"
+      ],
+      "artifacts": [
+        "UniswapV2OracleLibrary"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\Uniswap\\UniswapV2Library.sol": {
+      "lastModificationDate": 1648030546387,
+      "contentHash": "d097a5b528b8e533131559384128da06",
+      "sourceName": "contracts/bank/Uniswap/UniswapV2Library.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IUniswapV2Pair.sol",
+        "./interfaces/IUniswapV2Factory.sol",
+        "../module/Math/SafeMathupgradeable.sol"
+      ],
+      "versionPragmas": [
+        ">=0.7.5"
+      ],
+      "artifacts": [
+        "UniswapV2Library"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\node_modules\\hardhat\\console.sol": {
+      "lastModificationDate": 1648030827746,
+      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\module\\Math\\Babylonian.sol": {
+      "lastModificationDate": 1648030546427,
+      "contentHash": "629c292077b6e11433ca425d2358510e",
+      "sourceName": "contracts/bank/module/Math/Babylonian.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.7.5"
+      ],
+      "artifacts": [
+        "Babylonian"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\module\\Math\\SafeMathupgradeable.sol": {
+      "lastModificationDate": 1648030546440,
+      "contentHash": "fcb8deda2551489d695cdb4b58365f81",
+      "sourceName": "contracts/bank/module/Math/SafeMathupgradeable.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.7.5"
+      ],
+      "artifacts": [
+        "SafeMathUpgradeSafe"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\Pools\\SCAMPBank.sol": {
+      "lastModificationDate": 1648049660454,
+      "contentHash": "f205f2b84b75daef6861f5dbe0ab75c5",
+      "sourceName": "contracts/bank/Pools/SCAMPBank.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../Uniswap/TransferHelper.sol",
+        "../CAMP.sol",
+        "../SCAMP.sol",
+        "../Oracle/UniswapPairOracle.sol",
+        "./SCAMPPoolLibrary.sol",
+        "../Owned.sol",
+        "../module/ERC20/ERC20.sol",
+        "../../bond/library/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "SCAMPBank"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\Uniswap\\TransferHelper.sol": {
+      "lastModificationDate": 1648030546383,
+      "contentHash": "f94e25bff835bfe24322f228bc9115c2",
+      "sourceName": "contracts/bank/Uniswap/TransferHelper.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.7.5"
+      ],
+      "artifacts": [
+        "TransferHelper"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\CAMP.sol": {
+      "lastModificationDate": 1648041102789,
+      "contentHash": "ef591b9242bfe3aded7c8c7d9a9984d0",
+      "sourceName": "contracts/bank/CAMP.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./module/Common/Context.sol",
+        "../bond/library/kip/KIP7.sol",
+        "./Owned.sol",
+        "./SCAMP.sol"
+      ],
+      "versionPragmas": [
+        "=0.7.5"
+      ],
+      "artifacts": [
+        "CAMP"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\Pools\\SCAMPPoolLibrary.sol": {
+      "lastModificationDate": 1648030546371,
+      "contentHash": "8af55a7477dfbaa34cb3c30752997130",
+      "sourceName": "contracts/bank/Pools/SCAMPPoolLibrary.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../module/Math/SafeMathupgradeable.sol"
+      ],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "SCAMPPoolLibrary"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\module\\ERC20\\ERC20.sol": {
+      "lastModificationDate": 1648030546418,
+      "contentHash": "902cc10fbaff404dd6a648e9842aaeae",
+      "sourceName": "contracts/bank/module/ERC20/ERC20.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../Common/Context.sol",
+        "./IERC20.sol",
+        "../../../bond/library/SafeMath.sol",
+        "../Utils/Address.sol"
+      ],
+      "versionPragmas": [
+        "=0.7.5"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\module\\Utils\\Address.sol": {
+      "lastModificationDate": 1648030546445,
+      "contentHash": "a5b6a9f2c7b6b1fbce2c0df69347bf55",
+      "sourceName": "contracts/bank/module/Utils/Address.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.7.5 <0.9.0"
+      ],
+      "artifacts": [
+        "Address"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\library\\Counters.sol": {
+      "lastModificationDate": 1648030546506,
+      "contentHash": "d81517013c891eb086c9885f80be8f1f",
       "sourceName": "contracts/bond/library/Counters.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -312,9 +1183,9 @@
         "Counters"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\ClaimSwapBondZap.sol": {
-      "lastModificationDate": 1647333503063,
-      "contentHash": "c35c0d1697f47d49786b5cea8b065f40",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\ClaimSwapBondZap.sol": {
+      "lastModificationDate": 1648030546469,
+      "contentHash": "a41c58e65eee8cd8dd8d8c872bcc56cc",
       "sourceName": "contracts/bond/ClaimSwapBondZap.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -363,9 +1234,9 @@
         "ClaimSwapBondZap"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol": {
-      "lastModificationDate": 1647333503066,
-      "contentHash": "a9026d1f3ffd623c1a41cbbcb737c490",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol": {
+      "lastModificationDate": 1648030546540,
+      "contentHash": "d973aebc5e4acbb9effc6c6722b4fe31",
       "sourceName": "contracts/bond/library/upgradeable/VersionedInitializable.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -406,9 +1277,9 @@
         "VersionedInitializable"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\interface\\IClaimSwapZap.sol": {
-      "lastModificationDate": 1647333503066,
-      "contentHash": "9e6e6bf20e04ede07a2c0a514bceeca5",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\interface\\IClaimSwapZap.sol": {
+      "lastModificationDate": 1648030546492,
+      "contentHash": "7c1d592f62575e94342d38ad1f968f1c",
       "sourceName": "contracts/bond/interface/IClaimSwapZap.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -449,9 +1320,9 @@
         "IClaimSwapZap"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\interface\\IBondDepository.sol": {
-      "lastModificationDate": 1647333504208,
-      "contentHash": "225c89e7a7dc9fb232cda545ac1d4d88",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\interface\\IBondDepository.sol": {
+      "lastModificationDate": 1648030546479,
+      "contentHash": "1b093e46f714448c629dbcbf29df41f5",
       "sourceName": "contracts/bond/interface/IBondDepository.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -492,9 +1363,9 @@
         "IBondDepository"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\interface\\IClaimSwapPair.sol": {
-      "lastModificationDate": 1647333503066,
-      "contentHash": "6ecc7e87c5931d1e6af2b7a1a74f1d16",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\interface\\IClaimSwapPair.sol": {
+      "lastModificationDate": 1648030546489,
+      "contentHash": "c1ad7c020d5822d3fe06d11daf4541c1",
       "sourceName": "contracts/bond/interface/IClaimSwapPair.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -537,9 +1408,9 @@
         "IClaimSwapPair"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\library\\ReentrancyGuard.sol": {
-      "lastModificationDate": 1647333503064,
-      "contentHash": "c728ad45c37611655708a631cc43ea8e",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\library\\ReentrancyGuard.sol": {
+      "lastModificationDate": 1648030546515,
+      "contentHash": "b665d71e20cffd5538297c27db3aa087",
       "sourceName": "contracts/bond/library/ReentrancyGuard.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -580,9 +1451,9 @@
         "ReentrancyGuard"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\library\\Ownable.sol": {
-      "lastModificationDate": 1647333503066,
-      "contentHash": "53879166c4f4bdc819794c6ccb706ff0",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\library\\Ownable.sol": {
+      "lastModificationDate": 1648030546513,
+      "contentHash": "b3dbeaac9f51d333e85beb70a7cfe57f",
       "sourceName": "contracts/bond/library/Ownable.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -625,9 +1496,9 @@
         "Ownable"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\library\\IOwnable.sol": {
-      "lastModificationDate": 1647333503067,
-      "contentHash": "07a75b8d57a0b949c09e3c25a4844377",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\library\\IOwnable.sol": {
+      "lastModificationDate": 1648030546509,
+      "contentHash": "73d2a723681e7ff95b11cd85f7961ca2",
       "sourceName": "contracts/bond/library/IOwnable.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -668,9 +1539,9 @@
         "IOwnable"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\BondTreasury.sol": {
-      "lastModificationDate": 1647333503058,
-      "contentHash": "f1c95e4559f75ef1348cb642ebab8a3d",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\BondTreasury.sol": {
+      "lastModificationDate": 1648030546465,
+      "contentHash": "93ea33b5bdaf4189e9dec2ced71370ff",
       "sourceName": "contracts/bond/BondTreasury.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -717,9 +1588,9 @@
         "BondTreasury"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\library\\kip\\SafeKIP7.sol": {
-      "lastModificationDate": 1647333503088,
-      "contentHash": "a6fed5bf060c0c4715933f7a5c800516",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\library\\kip\\SafeKIP7.sol": {
+      "lastModificationDate": 1648030546535,
+      "contentHash": "429e68381587bed6dd96341d9201c1c8",
       "sourceName": "contracts/bond/library/kip/SafeKIP7.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -764,9 +1635,9 @@
         "SafeKIP7"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\interface\\IBondTreasury.sol": {
-      "lastModificationDate": 1647333503078,
-      "contentHash": "0f96069a67d5ece718643cbce4af23e6",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\interface\\IBondTreasury.sol": {
+      "lastModificationDate": 1648030546482,
+      "contentHash": "e4b1d7645e6e35f78d00404241c0d079",
       "sourceName": "contracts/bond/interface/IBondTreasury.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -807,9 +1678,9 @@
         "IBondTreasury"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\library\\Address.sol": {
-      "lastModificationDate": 1647333503076,
-      "contentHash": "45243900b525b5ba029ce8ea2a99e8c8",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\library\\Address.sol": {
+      "lastModificationDate": 1648030546503,
+      "contentHash": "9c77d105c5777b68031a60a623c6f0bc",
       "sourceName": "contracts/bond/library/Address.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -850,8 +1721,8 @@
         "Address"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\BondDepository.sol": {
-      "lastModificationDate": 1647969514355,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\BondDepository.sol": {
+      "lastModificationDate": 1648030546461,
       "contentHash": "5b94fb8178f6112ba62a84c531bf84a3",
       "sourceName": "contracts/bond/BondDepository.sol",
       "solcConfig": {
@@ -902,9 +1773,9 @@
         "BondDepository"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\interface\\IStakedToken.sol": {
-      "lastModificationDate": 1647333503063,
-      "contentHash": "9b02c49dae056c046d073ff37f097ef0",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\interface\\IStakedToken.sol": {
+      "lastModificationDate": 1648030546498,
+      "contentHash": "7aeb9de94651bcb8ecfc271cb1461524",
       "sourceName": "contracts/bond/interface/IStakedToken.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -945,52 +1816,9 @@
         "IStakedToken"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\interface\\IOracle.sol": {
-      "lastModificationDate": 1647333503066,
-      "contentHash": "c180f3dc2e2b8d3c857734d062e70407",
-      "sourceName": "contracts/bond/interface/IOracle.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.7.5"
-      ],
-      "artifacts": [
-        "IOracle"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\ClaimSwapKlayKbtLpDepository.sol": {
-      "lastModificationDate": 1647333503088,
-      "contentHash": "212881c46937a1276da5dde18bd06d8b",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\ClaimSwapKlayKbtLpDepository.sol": {
+      "lastModificationDate": 1648030546474,
+      "contentHash": "3085fcbe60278bb1b942d56ba2649e52",
       "sourceName": "contracts/bond/ClaimSwapKlayKbtLpDepository.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1035,61 +1863,10 @@
         "ClaimSwapKlayKbtLpDepository"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Oracle\\UniswapPairOracle.sol": {
-      "lastModificationDate": 1647963513207,
-      "contentHash": "c4a4356509d88da547209097044520c6",
-      "sourceName": "contracts/bank/Oracle/UniswapPairOracle.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../Uniswap/interfaces/IUniswapV2Factory.sol",
-        "../Uniswap/interfaces/IUniswapV2Pair.sol",
-        "../module/Math/FixedPoint.sol",
-        "../Uniswap/UniswapV2OracleLibrary.sol",
-        "../Uniswap/UniswapV2Library.sol",
-        "../Owned.sol",
-        "hardhat/console.sol"
-      ],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "UniswapPairOracle"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Uniswap\\interfaces\\IUniswapV2Factory.sol": {
-      "lastModificationDate": 1647333331609,
-      "contentHash": "94dc85d3c7ab27abbff95a1ef00f3e2b",
-      "sourceName": "contracts/bank/Uniswap/interfaces/IUniswapV2Factory.sol",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\node_modules\\@uniswap\\v2-core\\contracts\\interfaces\\IUniswapV2Callee.sol": {
+      "lastModificationDate": 1648030789845,
+      "contentHash": "30a4aed15b3fa3ce5588118b7cecfa7f",
+      "sourceName": "@uniswap/v2-core/contracts/interfaces/IUniswapV2Callee.sol",
       "solcConfig": {
         "version": "0.7.5",
         "settings": {
@@ -1123,16 +1900,16 @@
       },
       "imports": [],
       "versionPragmas": [
-        "=0.7.5"
+        ">=0.5.0"
       ],
       "artifacts": [
-        "IUniswapV2Factory"
+        "IUniswapV2Callee"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Uniswap\\interfaces\\IUniswapV2Pair.sol": {
-      "lastModificationDate": 1647335639267,
-      "contentHash": "fdb929459d3d8a15bd4d42473241a1e4",
-      "sourceName": "contracts/bank/Uniswap/interfaces/IUniswapV2Pair.sol",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\ICAMP.sol": {
+      "lastModificationDate": 1648034742817,
+      "contentHash": "93a26bc6f3066b787eb190bedd9c8f74",
+      "sourceName": "contracts/bank/ICAMP.sol",
       "solcConfig": {
         "version": "0.7.5",
         "settings": {
@@ -1165,657 +1942,15 @@
         }
       },
       "imports": [],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "IUniswapV2Pair"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\Math\\FixedPoint.sol": {
-      "lastModificationDate": 1647335472085,
-      "contentHash": "7bb85716ca4c03a25264e9c0b3775f9e",
-      "sourceName": "contracts/bank/module/Math/FixedPoint.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "./Babylonian.sol"
-      ],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "FixedPoint"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Uniswap\\UniswapV2OracleLibrary.sol": {
-      "lastModificationDate": 1647335472082,
-      "contentHash": "16b11215811d1dc1147b0fa353c8f7fd",
-      "sourceName": "contracts/bank/Uniswap/UniswapV2OracleLibrary.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../Uniswap/interfaces/IUniswapV2Pair.sol",
-        "../module/Math/FixedPoint.sol"
-      ],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "UniswapV2OracleLibrary"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Uniswap\\UniswapV2Library.sol": {
-      "lastModificationDate": 1647335472071,
-      "contentHash": "d097a5b528b8e533131559384128da06",
-      "sourceName": "contracts/bank/Uniswap/UniswapV2Library.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "./interfaces/IUniswapV2Pair.sol",
-        "./interfaces/IUniswapV2Factory.sol",
-        "../module/Math/SafeMathupgradeable.sol"
-      ],
-      "versionPragmas": [
-        ">=0.7.5"
-      ],
-      "artifacts": [
-        "UniswapV2Library"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\Math\\Babylonian.sol": {
-      "lastModificationDate": 1647333331645,
-      "contentHash": "629c292077b6e11433ca425d2358510e",
-      "sourceName": "contracts/bank/module/Math/Babylonian.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "Babylonian"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\Math\\SafeMathupgradeable.sol": {
-      "lastModificationDate": 1647333693798,
-      "contentHash": "fcb8deda2551489d695cdb4b58365f81",
-      "sourceName": "contracts/bank/module/Math/SafeMathupgradeable.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.7.5"
-      ],
-      "artifacts": [
-        "SafeMathUpgradeSafe"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Pools\\SCAMPPoolLibrary.sol": {
-      "lastModificationDate": 1647578630864,
-      "contentHash": "8af55a7477dfbaa34cb3c30752997130",
-      "sourceName": "contracts/bank/Pools/SCAMPPoolLibrary.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../module/Math/SafeMathupgradeable.sol"
-      ],
       "versionPragmas": [
         "0.7.5"
       ],
       "artifacts": [
-        "SCAMPPoolLibrary"
+        "ICAMP"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Pools\\SCAMPBank.sol": {
-      "lastModificationDate": 1647970048083,
-      "contentHash": "0261a5d24a0001aa8e694639bb3a5506",
-      "sourceName": "contracts/bank/Pools/SCAMPBank.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../Uniswap/TransferHelper.sol",
-        "../CAMP.sol",
-        "../SCAMP.sol",
-        "../Oracle/UniswapPairOracle.sol",
-        "./SCAMPPoolLibrary.sol",
-        "../Owned.sol",
-        "../module/ERC20/ERC20.sol",
-        "../../bond/library/SafeMath.sol",
-        "../Oracle/AssetOracle.sol"
-      ],
-      "versionPragmas": [
-        "0.7.5"
-      ],
-      "artifacts": [
-        "SCAMPBank"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Uniswap\\TransferHelper.sol": {
-      "lastModificationDate": 1647333331608,
-      "contentHash": "f94e25bff835bfe24322f228bc9115c2",
-      "sourceName": "contracts/bank/Uniswap/TransferHelper.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "TransferHelper"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\CAMP.sol": {
-      "lastModificationDate": 1647584798557,
-      "contentHash": "197430242a652160caf17e661dfb2c82",
-      "sourceName": "contracts/bank/CAMP.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "./module/Common/Context.sol",
-        "../bond/library/kip/KIP7.sol",
-        "./Owned.sol",
-        "./SCAMP.sol"
-      ],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "CAMP"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\SCAMP.sol": {
-      "lastModificationDate": 1647969547014,
-      "contentHash": "378c6f8cd667cf543f47653d17ad1514",
-      "sourceName": "contracts/bank/SCAMP.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "./module/Common/Context.sol",
-        "./module/ERC20/IERC20.sol",
-        "../bond/library/kip/KIP7.sol",
-        "./Owned.sol",
-        "./Oracle/AssetOracle.sol"
-      ],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "SCAMP"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\ERC20\\ERC20.sol": {
-      "lastModificationDate": 1647584294366,
-      "contentHash": "902cc10fbaff404dd6a648e9842aaeae",
-      "sourceName": "contracts/bank/module/ERC20/ERC20.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../Common/Context.sol",
-        "./IERC20.sol",
-        "../../../bond/library/SafeMath.sol",
-        "../Utils/Address.sol"
-      ],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "ERC20"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\Common\\Context.sol": {
-      "lastModificationDate": 1647333331645,
-      "contentHash": "b2df4bc49349fb24e701c81b8449e510",
-      "sourceName": "contracts/bank/module/Common/Context.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "Context"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\ERC20\\IERC20.sol": {
-      "lastModificationDate": 1647584277252,
-      "contentHash": "be1def67f7165032c7a90fdc9a4d4bdd",
-      "sourceName": "contracts/bank/module/ERC20/IERC20.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../Common/Context.sol",
-        "../../../bond/library/SafeMath.sol"
-      ],
-      "versionPragmas": [
-        "=0.7.5"
-      ],
-      "artifacts": [
-        "IERC20"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\Utils\\Address.sol": {
-      "lastModificationDate": 1647333331629,
-      "contentHash": "a5b6a9f2c7b6b1fbce2c0df69347bf55",
-      "sourceName": "contracts/bank/module/Utils/Address.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.7.5 <0.9.0"
-      ],
-      "artifacts": [
-        "Address"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Migrations.sol": {
-      "lastModificationDate": 1647403175491,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\Migrations.sol": {
+      "lastModificationDate": 1648030546346,
       "contentHash": "8a4ccaf61f5b3c6125f58c2560600756",
       "sourceName": "contracts/bank/Migrations.sol",
       "solcConfig": {
@@ -1857,8 +1992,8 @@
         "Migrations"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\Math\\Math.sol": {
-      "lastModificationDate": 1647333331630,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\module\\Math\\Math.sol": {
+      "lastModificationDate": 1648030546433,
       "contentHash": "c211a8903f09601d8fb3f92a412fd19c",
       "sourceName": "contracts/bank/module/Math/Math.sol",
       "solcConfig": {
@@ -1900,8 +2035,8 @@
         "Math"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\Math\\UQ112x112.sol": {
-      "lastModificationDate": 1647333331629,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\module\\Math\\UQ112x112.sol": {
+      "lastModificationDate": 1648030546443,
       "contentHash": "7780237cb83a2092083530be4a499f80",
       "sourceName": "contracts/bank/module/Math/UQ112x112.sol",
       "solcConfig": {
@@ -1943,8 +2078,8 @@
         "UQ112x112"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\Utils\\EnumerableSet.sol": {
-      "lastModificationDate": 1647333331629,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\module\\Utils\\EnumerableSet.sol": {
+      "lastModificationDate": 1648030546450,
       "contentHash": "f1dd941703527882eb29a0bf6a54dc84",
       "sourceName": "contracts/bank/module/Utils/EnumerableSet.sol",
       "solcConfig": {
@@ -1986,8 +2121,8 @@
         "EnumerableSet"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\Utils\\ReentrancyGuard.sol": {
-      "lastModificationDate": 1647580995659,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\module\\Utils\\ReentrancyGuard.sol": {
+      "lastModificationDate": 1648030546453,
       "contentHash": "c13b6545fbf04d93ebc211ceb1cabaca",
       "sourceName": "contracts/bank/module/Utils/ReentrancyGuard.sol",
       "solcConfig": {
@@ -2029,8 +2164,8 @@
         "ReentrancyGuard"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\module\\Utils\\StringHelpers.sol": {
-      "lastModificationDate": 1647333331615,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bank\\module\\Utils\\StringHelpers.sol": {
+      "lastModificationDate": 1648030546456,
       "contentHash": "b81f326510491454afab6b44eea9ad8b",
       "sourceName": "contracts/bank/module/Utils/StringHelpers.sol",
       "solcConfig": {
@@ -2072,9 +2207,9 @@
         "StringHelpers"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\interface\\IClaimSwapFactory.sol": {
-      "lastModificationDate": 1647333503066,
-      "contentHash": "d2ca994a6055182ffc3bfcc75d2550d0",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\interface\\IClaimSwapFactory.sol": {
+      "lastModificationDate": 1648030546485,
+      "contentHash": "85e6c965dff0a6237f9aa673e7b43ec5",
       "sourceName": "contracts/bond/interface/IClaimSwapFactory.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2115,9 +2250,52 @@
         "IClaimSwapFactory"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\library\\kip\\IERC2612Permit.sol": {
-      "lastModificationDate": 1647333503073,
-      "contentHash": "e52a3b1e929e23341f7b0dc2704e16ee",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\interface\\IOracle.sol": {
+      "lastModificationDate": 1648030546496,
+      "contentHash": "5f96723eda7488d509a05285fa1a7f19",
+      "sourceName": "contracts/bond/interface/IOracle.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "IOracle"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\bond\\library\\kip\\IERC2612Permit.sol": {
+      "lastModificationDate": 1648030546523,
+      "contentHash": "724dd9da3d0d363bd2ba83ad41fb8147",
       "sourceName": "contracts/bond/library/kip/IERC2612Permit.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2158,9 +2336,9 @@
         "IERC2612Permit"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\interfaces\\IGovernancePowerDelegationToken.sol": {
-      "lastModificationDate": 1647331741042,
-      "contentHash": "c2477d7691a1cd7d1f5f3dd181ce9c08",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\interfaces\\IGovernancePowerDelegationToken.sol": {
+      "lastModificationDate": 1648030546545,
+      "contentHash": "d0b3d7eeffb6a4abb1777b98a674d789",
       "sourceName": "contracts/stake/interfaces/IGovernancePowerDelegationToken.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2201,9 +2379,9 @@
         "IGovernancePowerDelegationToken"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\GovernancePowerDelegationKIP7.sol": {
-      "lastModificationDate": 1647333084786,
-      "contentHash": "33e779d77410159fbde0d14702b3230f",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\GovernancePowerDelegationKIP7.sol": {
+      "lastModificationDate": 1648030546597,
+      "contentHash": "b90560a8d993ad63f3472aa9c58dd426",
       "sourceName": "contracts/stake/lib/GovernancePowerDelegationKIP7.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2248,9 +2426,9 @@
         "GovernancePowerDelegationKIP7"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\SafeMath.sol": {
-      "lastModificationDate": 1647331741585,
-      "contentHash": "ceabdccacd786d165c44989f73dfc8ec",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\SafeMath.sol": {
+      "lastModificationDate": 1648030546620,
+      "contentHash": "4cd9783cb875e6483dee109805f283d1",
       "sourceName": "contracts/stake/lib/SafeMath.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2291,9 +2469,9 @@
         "SafeMath"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\KIP7.sol": {
-      "lastModificationDate": 1647333084786,
-      "contentHash": "63d620a063b2defad12e3dcfd7297739",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\KIP7.sol": {
+      "lastModificationDate": 1648030546607,
+      "contentHash": "d68850a361b639dcbb122562cc6a3648",
       "sourceName": "contracts/stake/lib/KIP7.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2339,9 +2517,9 @@
         "KIP7"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\Context.sol": {
-      "lastModificationDate": 1647331741335,
-      "contentHash": "bbf3b640ff3eac6258fc4932afc4d1f3",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\Context.sol": {
+      "lastModificationDate": 1648030546590,
+      "contentHash": "800fe013601c4cb57fb05660fc26fb47",
       "sourceName": "contracts/stake/lib/Context.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2382,9 +2560,9 @@
         "Context"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\interfaces\\IKIP7.sol": {
-      "lastModificationDate": 1647331741063,
-      "contentHash": "b914134b11afe36b62f76fa9339b2309",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\interfaces\\IKIP7.sol": {
+      "lastModificationDate": 1648030546547,
+      "contentHash": "34af888c5a1b9c62079f75a3af9817bb",
       "sourceName": "contracts/stake/interfaces/IKIP7.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2425,9 +2603,9 @@
         "IKIP7"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\Address.sol": {
-      "lastModificationDate": 1647331741264,
-      "contentHash": "ab5dd4613f98ebeffb9f76d59120625c",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\Address.sol": {
+      "lastModificationDate": 1648030546582,
+      "contentHash": "7dec93e96ab1b73c2c3b18f1ea7da44f",
       "sourceName": "contracts/stake/lib/Address.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2468,9 +2646,9 @@
         "Address"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\GovernancePowerWithSnapshot.sol": {
-      "lastModificationDate": 1647333084787,
-      "contentHash": "4864c0b86a3a7560dc1de0d8a2bc6112",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\GovernancePowerWithSnapshot.sol": {
+      "lastModificationDate": 1648030546599,
+      "contentHash": "7c0fb91e2cb002eb6d61306744e6352b",
       "sourceName": "contracts/stake/lib/GovernancePowerWithSnapshot.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2516,9 +2694,9 @@
         "GovernancePowerWithSnapshot"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\interfaces\\ITransferHook.sol": {
-      "lastModificationDate": 1647331741226,
-      "contentHash": "91abe2c17300a6c983ef9a82cdbfebcc",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\interfaces\\ITransferHook.sol": {
+      "lastModificationDate": 1648030546575,
+      "contentHash": "5f43446d6c1f1a7ed139423dc881970a",
       "sourceName": "contracts/stake/interfaces/ITransferHook.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2559,9 +2737,9 @@
         "ITransferHook"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\stake\\StakedToken.sol": {
-      "lastModificationDate": 1647588323239,
-      "contentHash": "ab6eca961cb37e09a4cfa4e470c81f2c",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\stake\\StakedToken.sol": {
+      "lastModificationDate": 1648030546638,
+      "contentHash": "49306c70bbc0b2acb96c2f104e4e7a26",
       "sourceName": "contracts/stake/stake/StakedToken.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2615,9 +2793,9 @@
         "StakedToken"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\interfaces\\IStakedToken.sol": {
-      "lastModificationDate": 1647331741187,
-      "contentHash": "e7e562202eb61cd6e42314004498b9e5",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\interfaces\\IStakedToken.sol": {
+      "lastModificationDate": 1648030546569,
+      "contentHash": "bc5cd3a59a2d0d65c077fa4f4de1ed66",
       "sourceName": "contracts/stake/interfaces/IStakedToken.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2658,9 +2836,9 @@
         "IStakedToken"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\interfaces\\IStakedTokenWithConfig.sol": {
-      "lastModificationDate": 1647333084786,
-      "contentHash": "51e1d9b39926f2d6a04d56f61eef3c2c",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\interfaces\\IStakedTokenWithConfig.sol": {
+      "lastModificationDate": 1648030546573,
+      "contentHash": "b0f73ed6ad33002c169287e20f3791ad",
       "sourceName": "contracts/stake/interfaces/IStakedTokenWithConfig.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2703,9 +2881,9 @@
         "IStakedTokenWithConfig"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\PercentageMath.sol": {
-      "lastModificationDate": 1647331741514,
-      "contentHash": "d971e34d3bcd8bcec8de94d1ab31984e",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\PercentageMath.sol": {
+      "lastModificationDate": 1648030546613,
+      "contentHash": "6df224260a40837c329fb3d48c194da2",
       "sourceName": "contracts/stake/lib/PercentageMath.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2746,9 +2924,9 @@
         "PercentageMath"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\SafeKIP7.sol": {
-      "lastModificationDate": 1647333084786,
-      "contentHash": "89e73aef953f7cecbf1663d96fd0e7d8",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\SafeKIP7.sol": {
+      "lastModificationDate": 1648030546619,
+      "contentHash": "c38d588d63406438b9548423e63a5544",
       "sourceName": "contracts/stake/lib/SafeKIP7.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2793,9 +2971,9 @@
         "SafeKIP7"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\DistributionTypes.sol": {
-      "lastModificationDate": 1647331741353,
-      "contentHash": "411df956ddc5b855d7bf28e653d6e1b7",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\DistributionTypes.sol": {
+      "lastModificationDate": 1648030546594,
+      "contentHash": "2718d84e119dc33c164a025bc814bcca",
       "sourceName": "contracts/stake/lib/DistributionTypes.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2836,9 +3014,9 @@
         "DistributionTypes"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\utils\\VersionedInitializable.sol": {
-      "lastModificationDate": 1647331741761,
-      "contentHash": "a9026d1f3ffd623c1a41cbbcb737c490",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\utils\\VersionedInitializable.sol": {
+      "lastModificationDate": 1648030546641,
+      "contentHash": "d973aebc5e4acbb9effc6c6722b4fe31",
       "sourceName": "contracts/stake/utils/VersionedInitializable.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2879,8 +3057,8 @@
         "VersionedInitializable"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\stake\\KlaybankDistributionManager.sol": {
-      "lastModificationDate": 1647850577676,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\stake\\KlaybankDistributionManager.sol": {
+      "lastModificationDate": 1648030546627,
       "contentHash": "4ed4166215832ec6439cea2d4d93d740",
       "sourceName": "contracts/stake/stake/KlaybankDistributionManager.sol",
       "solcConfig": {
@@ -2927,9 +3105,9 @@
         "KlaybankDistributionManager"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\interfaces\\IKlaybankDistributionManager.sol": {
-      "lastModificationDate": 1647331741123,
-      "contentHash": "4ab7db2abba77e341a16ecff18d1f1a4",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\interfaces\\IKlaybankDistributionManager.sol": {
+      "lastModificationDate": 1648030546559,
+      "contentHash": "40e350cf10e6e172dda2a0e4223454fe",
       "sourceName": "contracts/stake/interfaces/IKlaybankDistributionManager.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -2972,9 +3150,9 @@
         "IKlaybankDistributionManager"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\stake\\KlaybankIncentivesController.sol": {
-      "lastModificationDate": 1647333084783,
-      "contentHash": "c24f36e04e8be23dc44f6d1782b2cd83",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\stake\\KlaybankIncentivesController.sol": {
+      "lastModificationDate": 1648030546632,
+      "contentHash": "40bf94ee4dee46783b42651ba41378b1",
       "sourceName": "contracts/stake/stake/KlaybankIncentivesController.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3025,9 +3203,9 @@
         "KlaybankIncentivesController"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\interfaces\\IScaledBalanceToken.sol": {
-      "lastModificationDate": 1647331741167,
-      "contentHash": "81fc5fa6d90b63de8d1419b0d098de61",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\interfaces\\IScaledBalanceToken.sol": {
+      "lastModificationDate": 1648030546566,
+      "contentHash": "8d0f988b8e4d978c0f5bd7e3de03ae98",
       "sourceName": "contracts/stake/interfaces/IScaledBalanceToken.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3068,9 +3246,9 @@
         "IScaledBalanceToken"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\interfaces\\IKlaybankIncentivesController.sol": {
-      "lastModificationDate": 1647333084792,
-      "contentHash": "b1ee657f56bceaf01cd53d4146e2776b",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\interfaces\\IKlaybankIncentivesController.sol": {
+      "lastModificationDate": 1648030546564,
+      "contentHash": "aae48cf48ab3f187232ce94c3e9a137b",
       "sourceName": "contracts/stake/interfaces/IKlaybankIncentivesController.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3113,9 +3291,55 @@
         "IKlaybankIncentivesController"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\stake\\KlaybankEcosystemReserve.sol": {
-      "lastModificationDate": 1647333084784,
-      "contentHash": "b339416c08d98de9803bf02c430046cb",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\stake\\StakedCAMP.sol": {
+      "lastModificationDate": 1648030546635,
+      "contentHash": "884ffe4324fbfddf131d7f127588d0d6",
+      "sourceName": "contracts/stake/stake/StakedCAMP.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IKIP7.sol",
+        "./StakedToken.sol"
+      ],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "StakeCAMP"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\stake\\KlaybankEcosystemReserve.sol": {
+      "lastModificationDate": 1648030546629,
+      "contentHash": "ff2f61a6744efd8611302f94c43031fd",
       "sourceName": "contracts/stake/stake/KlaybankEcosystemReserve.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3160,9 +3384,9 @@
         "KlaybankEcosystemReserve"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\Ownable.sol": {
-      "lastModificationDate": 1647331741492,
-      "contentHash": "6924f2381f938550fa93c18a43b61657",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\Ownable.sol": {
+      "lastModificationDate": 1648030546611,
+      "contentHash": "63f4b6345ad4c006ffe446161400a340",
       "sourceName": "contracts/stake/lib/Ownable.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3205,9 +3429,9 @@
         "Ownable"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\BaseUpgradeabilityProxy.sol": {
-      "lastModificationDate": 1647331741313,
-      "contentHash": "2087345b390eebfcb4522908661f2e90",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\BaseUpgradeabilityProxy.sol": {
+      "lastModificationDate": 1648030546587,
+      "contentHash": "c302cc0c5a8485b1a965cd81570224d6",
       "sourceName": "contracts/stake/lib/BaseUpgradeabilityProxy.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3251,9 +3475,9 @@
         "BaseUpgradeabilityProxy"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\Proxy.sol": {
-      "lastModificationDate": 1647331741539,
-      "contentHash": "7883c4bd399622bd2c9fa64ce3e4f5d2",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\Proxy.sol": {
+      "lastModificationDate": 1648030546615,
+      "contentHash": "9ed2833d2e41e3c5e69c4ba92ca60e16",
       "sourceName": "contracts/stake/lib/Proxy.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3294,9 +3518,9 @@
         "Proxy"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\InitializableUpgradeabilityProxy.sol": {
-      "lastModificationDate": 1647331741444,
-      "contentHash": "ab7fd5614d70b5a976d2e4f35125c218",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\InitializableUpgradeabilityProxy.sol": {
+      "lastModificationDate": 1648030546604,
+      "contentHash": "0f21e1c36c8d14b2be217a000be64040",
       "sourceName": "contracts/stake/lib/InitializableUpgradeabilityProxy.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3339,9 +3563,9 @@
         "InitializableUpgradeabilityProxy"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\InitializableAdminUpgradeabilityProxy.sol": {
-      "lastModificationDate": 1647331741422,
-      "contentHash": "458f3294972c79fa20ef2a01e9b9ce9d",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\InitializableAdminUpgradeabilityProxy.sol": {
+      "lastModificationDate": 1648030546601,
+      "contentHash": "b9aea024a06bf44864aba7cf02811d91",
       "sourceName": "contracts/stake/lib/InitializableAdminUpgradeabilityProxy.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3385,9 +3609,9 @@
         "InitializableAdminUpgradeabilityProxy"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\BaseAdminUpgradeabilityProxy.sol": {
-      "lastModificationDate": 1647331741289,
-      "contentHash": "18813929b48610a11e65846f8578442f",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\BaseAdminUpgradeabilityProxy.sol": {
+      "lastModificationDate": 1648030546585,
+      "contentHash": "c730aedd951513bae32735782b8a4544",
       "sourceName": "contracts/stake/lib/BaseAdminUpgradeabilityProxy.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3430,9 +3654,9 @@
         "BaseAdminUpgradeabilityProxy"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\lib\\UpgradeabilityProxy.sol": {
-      "lastModificationDate": 1647331741604,
-      "contentHash": "f4d66ea0ebd5fe65eecc0dfd70e5a395",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\lib\\UpgradeabilityProxy.sol": {
+      "lastModificationDate": 1648030546623,
+      "contentHash": "aefe7713ab04e8fd32620573714161cf",
       "sourceName": "contracts/stake/lib/UpgradeabilityProxy.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3475,9 +3699,9 @@
         "UpgradeabilityProxy"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\interfaces\\IKIP7WithNonce.sol": {
-      "lastModificationDate": 1647331741101,
-      "contentHash": "36595fd5ded258e3ae3796b356db9d33",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\interfaces\\IKIP7WithNonce.sol": {
+      "lastModificationDate": 1648030546557,
+      "contentHash": "cfa9b9290a0fe19b9cc04cf0924345fc",
       "sourceName": "contracts/stake/interfaces/IKIP7WithNonce.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3520,9 +3744,9 @@
         "IKIP7WithNonce"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\interfaces\\IKIP7Detailed.sol": {
-      "lastModificationDate": 1647331741083,
-      "contentHash": "87a4b88205330e682cea9c52c68b36e0",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\stake\\interfaces\\IKIP7Detailed.sol": {
+      "lastModificationDate": 1648030546553,
+      "contentHash": "5af8427288ece0c8fb3bcc521245d58c",
       "sourceName": "contracts/stake/interfaces/IKIP7Detailed.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -3565,140 +3789,8 @@
         "IKIP7Detailed"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\stake\\stake\\StakedCAMP.sol": {
-      "lastModificationDate": 1647585720758,
-      "contentHash": "bd1dab777659d562a8949e8c1ee48b1f",
-      "sourceName": "contracts/stake/stake/StakedCAMP.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../interfaces/IKIP7.sol",
-        "./StakedToken.sol"
-      ],
-      "versionPragmas": [
-        "0.7.5"
-      ],
-      "artifacts": [
-        "StakeCAMP"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\node_modules\\hardhat\\console.sol": {
-      "lastModificationDate": 1647330241071,
-      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
-      "sourceName": "hardhat/console.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.4.22 <0.9.0"
-      ],
-      "artifacts": [
-        "console"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\node_modules\\@uniswap\\v2-core\\contracts\\interfaces\\IUniswapV2Callee.sol": {
-      "lastModificationDate": 1645536082186,
-      "contentHash": "30a4aed15b3fa3ce5588118b7cecfa7f",
-      "sourceName": "@uniswap/v2-core/contracts/interfaces/IUniswapV2Callee.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.5.0"
-      ],
-      "artifacts": [
-        "IUniswapV2Callee"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2Router.sol": {
-      "lastModificationDate": 1647587244558,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2Router.sol": {
+      "lastModificationDate": 1648030546656,
       "contentHash": "26409b848c41dcf964e2bc1db20b2f6e",
       "sourceName": "contracts/swap/interfaces/IUniswapV2Router.sol",
       "solcConfig": {
@@ -3740,8 +3832,8 @@
         "IUniswapV2Router"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\Babylonian.sol": {
-      "lastModificationDate": 1647587244553,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\libraries\\Babylonian.sol": {
+      "lastModificationDate": 1648030546664,
       "contentHash": "09621ecd310dfd4276f0c9f8f89206e9",
       "sourceName": "contracts/swap/libraries/Babylonian.sol",
       "solcConfig": {
@@ -3783,8 +3875,8 @@
         "Babylonian"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\FixedPoint.sol": {
-      "lastModificationDate": 1647587244554,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\libraries\\FixedPoint.sol": {
+      "lastModificationDate": 1648030546669,
       "contentHash": "6c7e6ef782a981b4a736d42358bb13a2",
       "sourceName": "contracts/swap/libraries/FixedPoint.sol",
       "solcConfig": {
@@ -3828,44 +3920,8 @@
         "FixedPoint"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IERC20.sol": {
-      "lastModificationDate": 1647588033523,
-      "contentHash": "acf343d764082552cce4e9abcc578f1e",
-      "sourceName": "contracts/swap/interfaces/IERC20.sol",
-      "solcConfig": {
-        "version": "0.5.6",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.5.6"
-      ],
-      "artifacts": [
-        "IERC20"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\swap\\UniswapV2Router02.sol": {
-      "lastModificationDate": 1647844792272,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\swap\\UniswapV2Router02.sol": {
+      "lastModificationDate": 1648030546701,
       "contentHash": "5af036d815fc2d17118756060e9906a8",
       "sourceName": "contracts/swap/swap/UniswapV2Router02.sol",
       "solcConfig": {
@@ -3908,8 +3964,8 @@
         "UniswapV2Router02"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IWKLAY.sol": {
-      "lastModificationDate": 1647588038970,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\interfaces\\IWKLAY.sol": {
+      "lastModificationDate": 1648030546661,
       "contentHash": "664282eea6d1ee706c5102c6499a7ff3",
       "sourceName": "contracts/swap/interfaces/IWKLAY.sol",
       "solcConfig": {
@@ -3944,49 +4000,10 @@
         "IWKLAY"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\UniswapV2Library.sol": {
-      "lastModificationDate": 1647844925431,
-      "contentHash": "3504901d25b308bfefa55bc083bbb9dc",
-      "sourceName": "contracts/swap/libraries/UniswapV2Library.sol",
-      "solcConfig": {
-        "version": "0.5.6",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../interfaces/IUniswapV2Pair.sol",
-        "../libraries/SafeMath.sol"
-      ],
-      "versionPragmas": [
-        "0.5.6"
-      ],
-      "artifacts": [
-        "UniswapV2Library"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\SafeMath.sol": {
-      "lastModificationDate": 1647587940074,
-      "contentHash": "efcfa4fda44251b2ab4f5cf4d3115108",
-      "sourceName": "contracts/swap/libraries/SafeMath.sol",
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\interfaces\\IERC20.sol": {
+      "lastModificationDate": 1648030546646,
+      "contentHash": "acf343d764082552cce4e9abcc578f1e",
+      "sourceName": "contracts/swap/interfaces/IERC20.sol",
       "solcConfig": {
         "version": "0.5.6",
         "settings": {
@@ -4016,49 +4033,11 @@
         "^0.5.6"
       ],
       "artifacts": [
-        "SafeMath"
+        "IERC20"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\swap\\UniswapV2ERC20.sol": {
-      "lastModificationDate": 1647587715639,
-      "contentHash": "98a0eab8e5de0f6bac6e87ff95854df3",
-      "sourceName": "contracts/swap/swap/UniswapV2ERC20.sol",
-      "solcConfig": {
-        "version": "0.5.6",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../libraries/SafeMath.sol"
-      ],
-      "versionPragmas": [
-        "0.5.6"
-      ],
-      "artifacts": [
-        "UniswapV2ERC20"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\swap\\UniswapV2Pair.sol": {
-      "lastModificationDate": 1647587720793,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\swap\\UniswapV2Pair.sol": {
+      "lastModificationDate": 1648030546698,
       "contentHash": "c3e2d15b4dce7e71bdebdce329d6e5b8",
       "sourceName": "contracts/swap/swap/UniswapV2Pair.sol",
       "solcConfig": {
@@ -4101,8 +4080,8 @@
         "UniswapV2Pair"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2Factory.sol": {
-      "lastModificationDate": 1647587745716,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2Factory.sol": {
+      "lastModificationDate": 1648030546652,
       "contentHash": "1fb8b5e602a9f05c5da9145dcf7c40a1",
       "sourceName": "contracts/swap/interfaces/IUniswapV2Factory.sol",
       "solcConfig": {
@@ -4137,8 +4116,8 @@
         "IUniswapV2Factory"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\swap\\UniswapV2Factory.sol": {
-      "lastModificationDate": 1647587717899,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\swap\\UniswapV2Factory.sol": {
+      "lastModificationDate": 1648030546694,
       "contentHash": "a4ea8c175c53fb0dc27d23e097d506b4",
       "sourceName": "contracts/swap/swap/UniswapV2Factory.sol",
       "solcConfig": {
@@ -4176,8 +4155,8 @@
         "UniswapV2Factory"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\UQ112x112.sol": {
-      "lastModificationDate": 1647588105758,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\libraries\\UQ112x112.sol": {
+      "lastModificationDate": 1648030546681,
       "contentHash": "ff97ab83fa05a257360ae4a56cab0e25",
       "sourceName": "contracts/swap/libraries/UQ112x112.sol",
       "solcConfig": {
@@ -4212,8 +4191,8 @@
         "UQ112x112"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\Math.sol": {
-      "lastModificationDate": 1647588073162,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\libraries\\Math.sol": {
+      "lastModificationDate": 1648030546671,
       "contentHash": "1c65162b855170e0903898c1c866604b",
       "sourceName": "contracts/swap/libraries/Math.sol",
       "solcConfig": {
@@ -4248,8 +4227,121 @@
         "Math"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2Pair.sol": {
-      "lastModificationDate": 1647587743579,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\swap\\UniswapV2ERC20.sol": {
+      "lastModificationDate": 1648030546689,
+      "contentHash": "98a0eab8e5de0f6bac6e87ff95854df3",
+      "sourceName": "contracts/swap/swap/UniswapV2ERC20.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../libraries/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "UniswapV2ERC20"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\libraries\\SafeMath.sol": {
+      "lastModificationDate": 1648030546675,
+      "contentHash": "efcfa4fda44251b2ab4f5cf4d3115108",
+      "sourceName": "contracts/swap/libraries/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.5.6"
+      ],
+      "artifacts": [
+        "SafeMath"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\libraries\\UniswapV2Library.sol": {
+      "lastModificationDate": 1648030546685,
+      "contentHash": "3504901d25b308bfefa55bc083bbb9dc",
+      "sourceName": "contracts/swap/libraries/UniswapV2Library.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IUniswapV2Pair.sol",
+        "../libraries/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "0.5.6"
+      ],
+      "artifacts": [
+        "UniswapV2Library"
+      ]
+    },
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2Pair.sol": {
+      "lastModificationDate": 1648030546653,
       "contentHash": "3911fc566e08df608d18f26a65812165",
       "sourceName": "contracts/swap/interfaces/IUniswapV2Pair.sol",
       "solcConfig": {
@@ -4284,8 +4376,8 @@
         "IUniswapV2Pair"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\libraries\\TransferHelper.sol": {
-      "lastModificationDate": 1647587986478,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\libraries\\TransferHelper.sol": {
+      "lastModificationDate": 1648030546678,
       "contentHash": "0eba0f12aa5b8d086e3542fe185a4cc1",
       "sourceName": "contracts/swap/libraries/TransferHelper.sol",
       "solcConfig": {
@@ -4320,8 +4412,8 @@
         "TransferHelper"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2ERC20.sol": {
-      "lastModificationDate": 1647587747900,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2ERC20.sol": {
+      "lastModificationDate": 1648030546649,
       "contentHash": "3b2366004b7c717a5e112d607441e8fc",
       "sourceName": "contracts/swap/interfaces/IUniswapV2ERC20.sol",
       "solcConfig": {
@@ -4356,8 +4448,8 @@
         "IUniswapV2ERC20"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2Router02.sol": {
-      "lastModificationDate": 1647587740524,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\interfaces\\IUniswapV2Router02.sol": {
+      "lastModificationDate": 1648030546658,
       "contentHash": "5dd1cbaf1ffe4a3cc390df6e152208b7",
       "sourceName": "contracts/swap/interfaces/IUniswapV2Router02.sol",
       "solcConfig": {
@@ -4392,8 +4484,8 @@
         "IUniswapV2Router02"
       ]
     },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\swap\\WKLAY.sol": {
-      "lastModificationDate": 1647588720327,
+    "C:\\Users\\82102\\Desktop\\Contract\\camp-protocol\\contracts\\swap\\WKLAY.sol": {
+      "lastModificationDate": 1648030546644,
       "contentHash": "59195663bf7d7287672e66adcd30a07a",
       "sourceName": "contracts/swap/WKLAY.sol",
       "solcConfig": {
@@ -4426,55 +4518,6 @@
       ],
       "artifacts": [
         "WKLAY"
-      ]
-    },
-    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Oracle\\AssetOracle.sol": {
-      "lastModificationDate": 1647969719180,
-      "contentHash": "d54f6b9be2e93192f359abe29a11d0e3",
-      "sourceName": "contracts/bank/Oracle/AssetOracle.sol",
-      "solcConfig": {
-        "version": "0.7.5",
-        "settings": {
-          "evmVersion": "constantinople",
-          "optimizer": {
-            "enabled": true,
-            "runs": 1000
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout",
-                "devdoc",
-                "userdoc",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../../bond/library/SafeMath.sol",
-        "./UniswapPairOracle.sol",
-        "../Owned.sol",
-        "../SCAMP.sol",
-        "../Uniswap/interfaces/IUniswapV2Pair.sol"
-      ],
-      "versionPragmas": [
-        "0.7.5"
-      ],
-      "artifacts": [
-        "AssetOracle"
       ]
     }
   }

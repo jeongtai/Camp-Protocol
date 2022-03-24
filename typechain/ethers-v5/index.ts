@@ -4,6 +4,7 @@
 export type { IUniswapV2Callee } from "./IUniswapV2Callee";
 export type { MockUSDC } from "./MockUSDC";
 export type { CAMP } from "./CAMP";
+export type { ICAMP } from "./ICAMP";
 export type { Migrations } from "./Migrations";
 export type { ERC20 } from "./ERC20";
 export type { IERC20 } from "./IERC20";
@@ -66,6 +67,7 @@ export type { WKLAY } from "./WKLAY";
 export { IUniswapV2Callee__factory } from "./factories/IUniswapV2Callee__factory";
 export { MockUSDC__factory } from "./factories/MockUSDC__factory";
 export { CAMP__factory } from "./factories/CAMP__factory";
+export { ICAMP__factory } from "./factories/ICAMP__factory";
 export { Migrations__factory } from "./factories/Migrations__factory";
 export { ERC20__factory } from "./factories/ERC20__factory";
 export { IERC20__factory } from "./factories/IERC20__factory";

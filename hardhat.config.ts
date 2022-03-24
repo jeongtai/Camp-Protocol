@@ -193,8 +193,8 @@ const config: HardhatUserConfig = {
       chainId: 1001,
       accounts: [process.env.PRIVATE_KEY!],
       saveDeployments: true,
-      // gasPrice: 750,
-      // gas: 8500000,
+      gas: 8500000,
+      gasPrice: 750000000000,
       tags: ["test"]
     },
     baobabDev: {
@@ -202,6 +202,7 @@ const config: HardhatUserConfig = {
       chainId: 1001,
       accounts: [process.env.PRIVATE_KEY!],
       saveDeployments: true,
+      gas : 8500000,
       tags: ["staging"]
     },
   },

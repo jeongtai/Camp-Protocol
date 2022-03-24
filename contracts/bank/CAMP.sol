@@ -11,7 +11,7 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Cont
     using SafeMath for uint256;
 
     /* ========== STATE VARIABLES ========== */
-    address public SCAMPAddress;
+
     address public Bonding_contract_address;
     address public Staking_contract_address;
     uint256 public constant genesis_supply = 100000000e18; // 100M is printed upon genesis

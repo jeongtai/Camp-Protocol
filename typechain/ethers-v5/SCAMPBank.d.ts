@@ -27,7 +27,6 @@ interface SCAMPBankInterface extends ethers.utils.Interface {
     "buyBackCAMP(uint256,uint256)": FunctionFragment;
     "buyback_fee()": FunctionFragment;
     "collatDollarBalance()": FunctionFragment;
-    "collat_klay_oracle_address()": FunctionFragment;
     "collectRedemption()": FunctionFragment;
     "getCollateralPrice()": FunctionFragment;
     "lastRedeemed(address)": FunctionFragment;
@@ -80,10 +79,6 @@ interface SCAMPBankInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "collatDollarBalance",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "collat_klay_oracle_address",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -223,10 +218,6 @@ interface SCAMPBankInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "collatDollarBalance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "collat_klay_oracle_address",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -445,8 +436,6 @@ export class SCAMPBank extends BaseContract {
 
     collatDollarBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    collat_klay_oracle_address(overrides?: CallOverrides): Promise<[string]>;
-
     collectRedemption(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -576,8 +565,6 @@ export class SCAMPBank extends BaseContract {
 
   collatDollarBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-  collat_klay_oracle_address(overrides?: CallOverrides): Promise<string>;
-
   collectRedemption(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -704,8 +691,6 @@ export class SCAMPBank extends BaseContract {
     buyback_fee(overrides?: CallOverrides): Promise<BigNumber>;
 
     collatDollarBalance(overrides?: CallOverrides): Promise<BigNumber>;
-
-    collat_klay_oracle_address(overrides?: CallOverrides): Promise<string>;
 
     collectRedemption(overrides?: CallOverrides): Promise<void>;
 
@@ -928,8 +913,6 @@ export class SCAMPBank extends BaseContract {
 
     collatDollarBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-    collat_klay_oracle_address(overrides?: CallOverrides): Promise<BigNumber>;
-
     collectRedemption(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1061,10 +1044,6 @@ export class SCAMPBank extends BaseContract {
     buyback_fee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     collatDollarBalance(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    collat_klay_oracle_address(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

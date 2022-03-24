@@ -25,7 +25,6 @@ interface CAMPInterface extends ethers.utils.Interface {
     "Bank_mint(address,uint256)": FunctionFragment;
     "Bond_mint(address,uint256)": FunctionFragment;
     "Bonding_contract_address()": FunctionFragment;
-    "SCAMPAddress()": FunctionFragment;
     "Staking_contract_address()": FunctionFragment;
     "Staking_mint(address,uint256)": FunctionFragment;
     "acceptOwnership()": FunctionFragment;
@@ -63,10 +62,6 @@ interface CAMPInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "Bonding_contract_address",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "SCAMPAddress",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -147,10 +142,6 @@ interface CAMPInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "Bond_mint", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "Bonding_contract_address",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "SCAMPAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -345,8 +336,6 @@ export class CAMP extends BaseContract {
 
     Bonding_contract_address(overrides?: CallOverrides): Promise<[string]>;
 
-    SCAMPAddress(overrides?: CallOverrides): Promise<[string]>;
-
     Staking_contract_address(overrides?: CallOverrides): Promise<[string]>;
 
     Staking_mint(
@@ -453,8 +442,6 @@ export class CAMP extends BaseContract {
 
   Bonding_contract_address(overrides?: CallOverrides): Promise<string>;
 
-  SCAMPAddress(overrides?: CallOverrides): Promise<string>;
-
   Staking_contract_address(overrides?: CallOverrides): Promise<string>;
 
   Staking_mint(
@@ -560,8 +547,6 @@ export class CAMP extends BaseContract {
     ): Promise<void>;
 
     Bonding_contract_address(overrides?: CallOverrides): Promise<string>;
-
-    SCAMPAddress(overrides?: CallOverrides): Promise<string>;
 
     Staking_contract_address(overrides?: CallOverrides): Promise<string>;
 
@@ -817,8 +802,6 @@ export class CAMP extends BaseContract {
 
     Bonding_contract_address(overrides?: CallOverrides): Promise<BigNumber>;
 
-    SCAMPAddress(overrides?: CallOverrides): Promise<BigNumber>;
-
     Staking_contract_address(overrides?: CallOverrides): Promise<BigNumber>;
 
     Staking_mint(
@@ -927,8 +910,6 @@ export class CAMP extends BaseContract {
     Bonding_contract_address(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    SCAMPAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     Staking_contract_address(
       overrides?: CallOverrides

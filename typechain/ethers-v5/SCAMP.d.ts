@@ -23,11 +23,12 @@ interface SCAMPInterface extends ethers.utils.Interface {
   functions: {
     "Bank_burn_from(address,uint256)": FunctionFragment;
     "Bank_mint(address,uint256)": FunctionFragment;
+    "CAMP_Price()": FunctionFragment;
     "CAMP_address()": FunctionFragment;
     "SCAMPBank()": FunctionFragment;
+    "SCAMP_Price()": FunctionFragment;
     "SCAMP_info()": FunctionFragment;
     "SCAMP_step()": FunctionFragment;
-    "_assetOracle()": FunctionFragment;
     "acceptOwnership()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
@@ -54,14 +55,16 @@ interface SCAMPInterface extends ethers.utils.Interface {
     "refresh_cooldown()": FunctionFragment;
     "setBankAddress(address)": FunctionFragment;
     "setCAMPAddress(address)": FunctionFragment;
+    "setCAMPOracleAddress(address)": FunctionFragment;
     "setController(address)": FunctionFragment;
     "setMintingFee(uint256)": FunctionFragment;
-    "setOracleAddress(address)": FunctionFragment;
     "setPriceBand(uint256)": FunctionFragment;
     "setPriceTarget(uint256)": FunctionFragment;
     "setRedemptionFee(uint256)": FunctionFragment;
     "setRefreshCooldown(uint256)": FunctionFragment;
+    "setSCAMPOracleAddress(address)": FunctionFragment;
     "setSCAMPStep(uint256)": FunctionFragment;
+    "setUSDTAddress(address)": FunctionFragment;
     "symbol()": FunctionFragment;
     "toggleCollateralRatio()": FunctionFragment;
     "totalSupply()": FunctionFragment;
@@ -79,20 +82,24 @@ interface SCAMPInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "CAMP_Price",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "CAMP_address",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "SCAMPBank", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "SCAMP_Price",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "SCAMP_info",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "SCAMP_step",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "_assetOracle",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -188,16 +195,16 @@ interface SCAMPInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
+    functionFragment: "setCAMPOracleAddress",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setController",
     values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "setMintingFee",
     values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setOracleAddress",
-    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "setPriceBand",
@@ -216,8 +223,16 @@ interface SCAMPInterface extends ethers.utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "setSCAMPOracleAddress",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setSCAMPStep",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setUSDTAddress",
+    values: [string]
   ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
@@ -246,17 +261,18 @@ interface SCAMPInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "Bank_mint", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "CAMP_Price", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "CAMP_address",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "SCAMPBank", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "SCAMP_info", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "SCAMP_step", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "_assetOracle",
+    functionFragment: "SCAMP_Price",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "SCAMP_info", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "SCAMP_step", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "acceptOwnership",
     data: BytesLike
@@ -341,15 +357,15 @@ interface SCAMPInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setCAMPOracleAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setController",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "setMintingFee",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setOracleAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -369,7 +385,15 @@ interface SCAMPInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setSCAMPOracleAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setSCAMPStep",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setUSDTAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
@@ -395,10 +419,10 @@ interface SCAMPInterface extends ethers.utils.Interface {
     "Approval(address,address,uint256)": EventFragment;
     "BankAddressSet(address)": EventFragment;
     "CAMPAddressSet(address)": EventFragment;
+    "CAMPOracleset(address)": EventFragment;
     "CollateralRatioRefreshed(uint256)": EventFragment;
     "CollateralRatioToggled(bool)": EventFragment;
     "ControllerSet(address)": EventFragment;
-    "KLAYUSDTOracleSet(address,address)": EventFragment;
     "MintingFeeSet(uint256)": EventFragment;
     "OwnerChanged(address,address)": EventFragment;
     "OwnerNominated(address)": EventFragment;
@@ -408,17 +432,19 @@ interface SCAMPInterface extends ethers.utils.Interface {
     "RefreshCooldownSet(uint256)": EventFragment;
     "SCAMPBurned(address,address,uint256)": EventFragment;
     "SCAMPMinted(address,address,uint256)": EventFragment;
+    "SCAMPOracleset(address)": EventFragment;
     "SCAMPStepSet(uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
+    "USDTAddressSet(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BankAddressSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CAMPAddressSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CAMPOracleset"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CollateralRatioRefreshed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CollateralRatioToggled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ControllerSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "KLAYUSDTOracleSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MintingFeeSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnerChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnerNominated"): EventFragment;
@@ -428,8 +454,10 @@ interface SCAMPInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "RefreshCooldownSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SCAMPBurned"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SCAMPMinted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SCAMPOracleset"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SCAMPStepSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "USDTAddressSet"): EventFragment;
 }
 
 export type ApprovalEvent = TypedEvent<
@@ -448,6 +476,10 @@ export type CAMPAddressSetEvent = TypedEvent<
   [string] & { CAMP_address: string }
 >;
 
+export type CAMPOraclesetEvent = TypedEvent<
+  [string] & { CAMP_Oracle_address: string }
+>;
+
 export type CollateralRatioRefreshedEvent = TypedEvent<
   [BigNumber] & { current_collateral_ratio: BigNumber }
 >;
@@ -458,10 +490,6 @@ export type CollateralRatioToggledEvent = TypedEvent<
 
 export type ControllerSetEvent = TypedEvent<
   [string] & { controller_address: string }
->;
-
-export type KLAYUSDTOracleSetEvent = TypedEvent<
-  [string, string] & { Klay_oracle_addr: string; klay_address: string }
 >;
 
 export type MintingFeeSetEvent = TypedEvent<
@@ -498,12 +526,20 @@ export type SCAMPMintedEvent = TypedEvent<
   [string, string, BigNumber] & { from: string; to: string; amount: BigNumber }
 >;
 
+export type SCAMPOraclesetEvent = TypedEvent<
+  [string] & { SCAMP_Oracle_address: string }
+>;
+
 export type SCAMPStepSetEvent = TypedEvent<
   [BigNumber] & { new_step: BigNumber }
 >;
 
 export type TransferEvent = TypedEvent<
   [string, string, BigNumber] & { from: string; to: string; value: BigNumber }
+>;
+
+export type USDTAddressSetEvent = TypedEvent<
+  [string] & { USDT_address: string }
 >;
 
 export class SCAMP extends BaseContract {
@@ -562,17 +598,23 @@ export class SCAMP extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    CAMP_Price(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { price: BigNumber }>;
+
     CAMP_address(overrides?: CallOverrides): Promise<[string]>;
 
     SCAMPBank(overrides?: CallOverrides): Promise<[string]>;
+
+    SCAMP_Price(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { price: BigNumber }>;
 
     SCAMP_info(
       overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>;
 
     SCAMP_step(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    _assetOracle(overrides?: CallOverrides): Promise<[string]>;
 
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -655,6 +697,11 @@ export class SCAMP extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setCAMPOracleAddress(
+      _oracleAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setController(
       _controller_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -662,11 +709,6 @@ export class SCAMP extends BaseContract {
 
     setMintingFee(
       mint_fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setOracleAddress(
-      _oracleAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -690,8 +732,18 @@ export class SCAMP extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setSCAMPOracleAddress(
+      _oracleAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setSCAMPStep(
       _new_step: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setUSDTAddress(
+      _USDT_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -731,17 +783,19 @@ export class SCAMP extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  CAMP_Price(overrides?: CallOverrides): Promise<BigNumber>;
+
   CAMP_address(overrides?: CallOverrides): Promise<string>;
 
   SCAMPBank(overrides?: CallOverrides): Promise<string>;
+
+  SCAMP_Price(overrides?: CallOverrides): Promise<BigNumber>;
 
   SCAMP_info(
     overrides?: CallOverrides
   ): Promise<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>;
 
   SCAMP_step(overrides?: CallOverrides): Promise<BigNumber>;
-
-  _assetOracle(overrides?: CallOverrides): Promise<string>;
 
   acceptOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -824,6 +878,11 @@ export class SCAMP extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setCAMPOracleAddress(
+    _oracleAddress: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setController(
     _controller_address: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -831,11 +890,6 @@ export class SCAMP extends BaseContract {
 
   setMintingFee(
     mint_fee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setOracleAddress(
-    _oracleAddress: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -859,8 +913,18 @@ export class SCAMP extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setSCAMPOracleAddress(
+    _oracleAddress: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setSCAMPStep(
     _new_step: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setUSDTAddress(
+    _USDT_address: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -900,17 +964,19 @@ export class SCAMP extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    CAMP_Price(overrides?: CallOverrides): Promise<BigNumber>;
+
     CAMP_address(overrides?: CallOverrides): Promise<string>;
 
     SCAMPBank(overrides?: CallOverrides): Promise<string>;
+
+    SCAMP_Price(overrides?: CallOverrides): Promise<BigNumber>;
 
     SCAMP_info(
       overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>;
 
     SCAMP_step(overrides?: CallOverrides): Promise<BigNumber>;
-
-    _assetOracle(overrides?: CallOverrides): Promise<string>;
 
     acceptOwnership(overrides?: CallOverrides): Promise<void>;
 
@@ -986,6 +1052,11 @@ export class SCAMP extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setCAMPOracleAddress(
+      _oracleAddress: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setController(
       _controller_address: string,
       overrides?: CallOverrides
@@ -993,11 +1064,6 @@ export class SCAMP extends BaseContract {
 
     setMintingFee(
       mint_fee: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setOracleAddress(
-      _oracleAddress: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1021,8 +1087,18 @@ export class SCAMP extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setSCAMPOracleAddress(
+      _oracleAddress: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setSCAMPStep(
       _new_step: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setUSDTAddress(
+      _USDT_address: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1083,6 +1159,14 @@ export class SCAMP extends BaseContract {
       CAMP_address?: null
     ): TypedEventFilter<[string], { CAMP_address: string }>;
 
+    "CAMPOracleset(address)"(
+      CAMP_Oracle_address?: null
+    ): TypedEventFilter<[string], { CAMP_Oracle_address: string }>;
+
+    CAMPOracleset(
+      CAMP_Oracle_address?: null
+    ): TypedEventFilter<[string], { CAMP_Oracle_address: string }>;
+
     "CollateralRatioRefreshed(uint256)"(
       current_collateral_ratio?: null
     ): TypedEventFilter<[BigNumber], { current_collateral_ratio: BigNumber }>;
@@ -1106,22 +1190,6 @@ export class SCAMP extends BaseContract {
     ControllerSet(
       controller_address?: null
     ): TypedEventFilter<[string], { controller_address: string }>;
-
-    "KLAYUSDTOracleSet(address,address)"(
-      Klay_oracle_addr?: null,
-      klay_address?: null
-    ): TypedEventFilter<
-      [string, string],
-      { Klay_oracle_addr: string; klay_address: string }
-    >;
-
-    KLAYUSDTOracleSet(
-      Klay_oracle_addr?: null,
-      klay_address?: null
-    ): TypedEventFilter<
-      [string, string],
-      { Klay_oracle_addr: string; klay_address: string }
-    >;
 
     "MintingFeeSet(uint256)"(
       min_fee?: null
@@ -1223,6 +1291,14 @@ export class SCAMP extends BaseContract {
       { from: string; to: string; amount: BigNumber }
     >;
 
+    "SCAMPOracleset(address)"(
+      SCAMP_Oracle_address?: null
+    ): TypedEventFilter<[string], { SCAMP_Oracle_address: string }>;
+
+    SCAMPOracleset(
+      SCAMP_Oracle_address?: null
+    ): TypedEventFilter<[string], { SCAMP_Oracle_address: string }>;
+
     "SCAMPStepSet(uint256)"(
       new_step?: null
     ): TypedEventFilter<[BigNumber], { new_step: BigNumber }>;
@@ -1248,6 +1324,14 @@ export class SCAMP extends BaseContract {
       [string, string, BigNumber],
       { from: string; to: string; value: BigNumber }
     >;
+
+    "USDTAddressSet(address)"(
+      USDT_address?: null
+    ): TypedEventFilter<[string], { USDT_address: string }>;
+
+    USDTAddressSet(
+      USDT_address?: null
+    ): TypedEventFilter<[string], { USDT_address: string }>;
   };
 
   estimateGas: {
@@ -1263,15 +1347,17 @@ export class SCAMP extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    CAMP_Price(overrides?: CallOverrides): Promise<BigNumber>;
+
     CAMP_address(overrides?: CallOverrides): Promise<BigNumber>;
 
     SCAMPBank(overrides?: CallOverrides): Promise<BigNumber>;
 
+    SCAMP_Price(overrides?: CallOverrides): Promise<BigNumber>;
+
     SCAMP_info(overrides?: CallOverrides): Promise<BigNumber>;
 
     SCAMP_step(overrides?: CallOverrides): Promise<BigNumber>;
-
-    _assetOracle(overrides?: CallOverrides): Promise<BigNumber>;
 
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1354,6 +1440,11 @@ export class SCAMP extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    setCAMPOracleAddress(
+      _oracleAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setController(
       _controller_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1361,11 +1452,6 @@ export class SCAMP extends BaseContract {
 
     setMintingFee(
       mint_fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setOracleAddress(
-      _oracleAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1389,8 +1475,18 @@ export class SCAMP extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    setSCAMPOracleAddress(
+      _oracleAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setSCAMPStep(
       _new_step: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setUSDTAddress(
+      _USDT_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1431,15 +1527,17 @@ export class SCAMP extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    CAMP_Price(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     CAMP_address(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     SCAMPBank(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    SCAMP_Price(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     SCAMP_info(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     SCAMP_step(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    _assetOracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1533,6 +1631,11 @@ export class SCAMP extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    setCAMPOracleAddress(
+      _oracleAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     setController(
       _controller_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1540,11 +1643,6 @@ export class SCAMP extends BaseContract {
 
     setMintingFee(
       mint_fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setOracleAddress(
-      _oracleAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1568,8 +1666,18 @@ export class SCAMP extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    setSCAMPOracleAddress(
+      _oracleAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     setSCAMPStep(
       _new_step: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setUSDTAddress(
+      _USDT_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

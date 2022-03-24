@@ -5,14 +5,14 @@ import "./module/Common/Context.sol";
 import "./module/ERC20/IERC20.sol";
 import "../bond/library/kip/KIP7.sol";
 import "./Owned.sol";
-// import "./CAMP.sol";
-// import "./Pools/SCAMPBank.sol";
 import "./Oracle/AssetOracle.sol";
+import "./Oracle/UniswapPairOracle.sol";
 
-contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
+contract SCAMP is KIP7("StableCAMP", "SCAMP", 18), Owned, Context {
   using SafeMath for uint256;
 
-  AssetOracle public _assetOracle;
+  UniswapPairOracle private SCAMP_Oracle_address;
+  UniswapPairOracle private CAMP_Oracle_address;
   address public creator_address;
   address public controller_address; 
   address public CAMP_address;
@@ -65,10 +65,20 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
 
   /* ========= views =============*/
 
+  function SCAMP_Price() public view returns (uint256 price) {
+    require(usdt_address != address(0), "Zero address detected");
+    price = PRICE_PRECISION.mul(PRICE_PRECISION).div(SCAMP_Oracle_address.consult(usdt_address, PRICE_PRECISION));
+  }
+  function CAMP_Price() public view returns (uint256 price) {
+    require(usdt_address != address(0), "Zero address detected");
+    price = PRICE_PRECISION.mul(PRICE_PRECISION).div(CAMP_Oracle_address.consult(usdt_address, PRICE_PRECISION));
+  }
+
+  
 
   function SCAMP_info() public view returns (uint256, uint256, uint256, uint256, uint256) {
     return (
-      _assetOracle.Token1_price(),
+      SCAMP_Price(),
       totalSupply(),
       current_collateral_ratio,
       minting_fee,
@@ -80,7 +90,7 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   uint256 public last_call_time;
 
   function refreshCollateralRatio() public {
-    uint256 SCAMP_cur_price = _assetOracle.Token1_price();
+    uint256 SCAMP_cur_price = SCAMP_Price();
     require(block.timestamp - last_call_time >= refresh_cooldown, "Please wait refresh_cooldown");
 
     if (SCAMP_cur_price > price_target.add(price_band)) { //SCAMP가격이 만약 목표가보다 높다면
@@ -146,6 +156,13 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
     emit CAMPAddressSet(_CAMP_address);
   }
 
+  function setUSDTAddress(address _USDT_address) external onlyByOwnOrcontroller {
+    require(_USDT_address != address(0), "Zero address detected");
+
+    usdt_address = _USDT_address;
+    emit USDTAddressSet(_USDT_address);
+  }
+
   function setBankAddress(address _Bank_address) external onlyByOwnOrcontroller {
     require(_Bank_address != address(0), "Zero address detected");
 
@@ -166,10 +183,18 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
     emit PriceBandSet(_price_band);
   }
 
-  function setOracleAddress(address _oracleAddress) external onlyByOwnOrcontroller {
+  function setSCAMPOracleAddress(address _oracleAddress) external onlyByOwnOrcontroller {
     require(_oracleAddress != address(0), "Zero address detected");
 
-    _assetOracle = AssetOracle(_oracleAddress);
+    SCAMP_Oracle_address = UniswapPairOracle(_oracleAddress);
+    emit SCAMPOracleset(_oracleAddress);
+  }
+
+    function setCAMPOracleAddress(address _oracleAddress) external onlyByOwnOrcontroller {
+    require(_oracleAddress != address(0), "Zero address detected");
+
+    CAMP_Oracle_address = UniswapPairOracle(_oracleAddress);
+    emit CAMPOracleset(_oracleAddress);
   }
 
   function toggleCollateralRatio() external onlyByOwnOrcontroller {
@@ -208,10 +233,12 @@ contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   event PriceTargetSet(uint256 new_price_target);
   event RefreshCooldownSet(uint256 new_cooldown);
   event CAMPAddressSet(address CAMP_address);
+  event USDTAddressSet(address USDT_address);
+  event SCAMPOracleset(address SCAMP_Oracle_address);
+  event CAMPOracleset(address CAMP_Oracle_address);
   event ControllerSet(address controller_address);
   event BankAddressSet(address Bank_address);
   event PriceBandSet(uint256 price_band);
-  event KLAYUSDTOracleSet(address Klay_oracle_addr, address klay_address);
   event CollateralRatioToggled(bool collateral_ratio_paused);
 
 }

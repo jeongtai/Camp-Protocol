@@ -9,7 +9,7 @@ import "./SCAMPPoolLibrary.sol";
 import "../Owned.sol";
 import "../module/ERC20/ERC20.sol";
 import "../../bond/library/SafeMath.sol";
-import "../Oracle/AssetOracle.sol";
+
 
 
 contract SCAMPBank is Owned {
@@ -25,9 +25,8 @@ contract SCAMPBank is Owned {
     CAMP private _CAMP;
     SCAMP private _SCAMP;
 
-    AssetOracle private _assetOracle;
-    address public collat_klay_oracle_address;
-    address private klay_address;
+    // address public collat_klay_oracle_address;
+    // address private klay_address;
 
     uint256 public minting_fee;
     uint256 public redemption_fee;
@@ -83,8 +82,7 @@ contract SCAMPBank is Owned {
         address _SCAMP_contract_address,
         address _CAMP_contract_address,
         address _collateral_address,
-        address _creator_address,
-        address _oracle
+        address _creator_address
     ) Owned(_creator_address){
         require(
             (_SCAMP_contract_address != address(0))
@@ -99,7 +97,6 @@ contract SCAMPBank is Owned {
         collateral_address = _collateral_address;
         collateral_token = ERC20(_collateral_address);
         missing_decimals = uint(18).sub(collateral_token.decimals());
-        _assetOracle = AssetOracle(_oracle);
     }
 
     /* ========== VIEWS ========== */
@@ -117,7 +114,7 @@ contract SCAMPBank is Owned {
         uint256 cur_collateral_ratio = _SCAMP.current_collateral_ratio();
         uint256 collat_value = collatDollarBalance();
 
-        if (collat_value > COLLATERAL_RATIO_PRECISION) cur_collateral_ratio = COLLATERAL_RATIO_PRECISION; // Handles an overcollateralized contract with CR > 1
+        if (cur_collateral_ratio > COLLATERAL_RATIO_PRECISION) cur_collateral_ratio = COLLATERAL_RATIO_PRECISION; // Handles an overcollateralized contract with CR > 1
         uint256 required_collat_dollar_value_d18 = (total_supply.mul(cur_collateral_ratio)).div(COLLATERAL_RATIO_PRECISION); // Calculates collateral needed to back each 1 SCAMP with $1 of collateral at current collat ratio
         if (collat_value > required_collat_dollar_value_d18) return collat_value.sub(required_collat_dollar_value_d18);
         else return 0;
@@ -159,7 +156,7 @@ contract SCAMPBank is Owned {
 
     // 0% collateral-backed
     function mintAlgorithmicSCAMP(uint256 CAMP_amount_d18, uint256 SCAMP_out_min) external notMintPaused {
-        uint256 CAMP_price = _assetOracle.Token0_price();
+        uint256 CAMP_price = _SCAMP.CAMP_Price();
         require(_SCAMP.current_collateral_ratio() == 0, "Collateral ratio must be 0");
         
         (uint256 SCAMP_amount_d18) = SCAMPPoolLibrary.calcMintAlgorithmicSCAMP(
@@ -177,7 +174,7 @@ contract SCAMPBank is Owned {
     // Will fail if fully collateralized or fully algorithmic
     // > 0% and < 100% collateral-backed
     function mintFractionalSCAMP(uint256 collateral_amount, uint256 CAMP_amount, uint256 SCAMP_out_min) external notMintPaused {
-        uint256 CAMP_price = _assetOracle.Token0_price();
+        uint256 CAMP_price = _SCAMP.CAMP_Price();
         uint256 current_collateral_ratio = _SCAMP.current_collateral_ratio();
 
         require(current_collateral_ratio < COLLATERAL_RATIO_MAX && current_collateral_ratio > 0, "Collateral ratio needs to be between .000001 and .999999");
@@ -185,7 +182,7 @@ contract SCAMPBank is Owned {
 
         uint256 collateral_amount_d18 = collateral_amount * (10 ** missing_decimals);
         SCAMPPoolLibrary.MintFF_Params memory input_params = SCAMPPoolLibrary.MintFF_Params(
-            _assetOracle.Token0_price(),
+            _SCAMP.CAMP_Price(),
             getCollateralPrice(),
             CAMP_amount,
             collateral_amount_d18,
@@ -229,7 +226,7 @@ contract SCAMPBank is Owned {
     // Will fail if fully collateralized or algorithmic
     // Redeem SCAMP for collateral and CAMP. > 0% and < 100% collateral-backed
     function redeemFractionalSCAMP(uint256 SCAMP_amount, uint256 CAMP_out_min, uint256 COLLATERAL_out_min) external notRedeemPaused {
-        uint256 CAMP_price = _assetOracle.Token0_price();
+        uint256 CAMP_price = _SCAMP.CAMP_Price();
         uint256 current_collateral_ratio = _SCAMP.current_collateral_ratio();
 
         require(current_collateral_ratio < COLLATERAL_RATIO_MAX && current_collateral_ratio > 0, "Collateral ratio needs to be between .000001 and .999999");
@@ -265,7 +262,7 @@ contract SCAMPBank is Owned {
 
     // Redeem SCAMP for CAMP. 0% collateral-backed
     function redeemAlgorithmicSCAMP(uint256 SCAMP_amount, uint256 CAMP_out_min) external notRedeemPaused {
-        uint256 CAMP_price = _assetOracle.Token0_price();
+        uint256 CAMP_price = _SCAMP.CAMP_Price();
         uint256 current_collateral_ratio = _SCAMP.current_collateral_ratio();
 
         require(current_collateral_ratio == 0, "Collateral ratio must be 0"); 
@@ -328,7 +325,7 @@ contract SCAMPBank is Owned {
     // Anyone can call this function to recollateralize the protocol and take the extra CAMP value from the bonus rate as an arb opportunity
     function recollateralizeSCAMP(uint256 collateral_amount, uint256 CAMP_out_min) external {
         uint256 collateral_amount_d18 = collateral_amount * (10 ** missing_decimals);
-        uint256 CAMP_price = _assetOracle.Token0_price();
+        uint256 CAMP_price = _SCAMP.CAMP_Price();
         uint256 SCAMP_total_supply = _SCAMP.totalSupply();
         uint256 current_collateral_ratio = _SCAMP.current_collateral_ratio();
         uint256 collat_value = collatDollarBalance();
@@ -353,11 +350,11 @@ contract SCAMPBank is Owned {
     // Function can be called by an CAMP holder to have the protocol buy back CAMP with excess collateral value from a desired collateral pool
     // This can also happen if the collateral ratio > 1
     function buyBackCAMP(uint256 CAMP_amount, uint256 COLLATERAL_out_min) external {
-        uint256 CAMP_price = _assetOracle.Token0_price();
+        uint256 CAMP_price = _SCAMP.CAMP_Price();
     
         SCAMPPoolLibrary.BuybackCAMP_Params memory input_params = SCAMPPoolLibrary.BuybackCAMP_Params(
             availableExcessCollatDV(),
-            _assetOracle.Token0_price(),
+            _SCAMP.CAMP_Price(),
             getCollateralPrice(),
             CAMP_amount
         );

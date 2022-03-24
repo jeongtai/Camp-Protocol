@@ -64,7 +64,7 @@ const MaxBtn = styled.button`
     color: red;
     font-weight: 400;
     font-size: 9px;
-    visibility: ${(props) => (props.haveMax && props.visible ? "visible" : "hidden")};
+    visibility: ${(props) => (props.haveMax && props.isVisible ? "visible" : "hidden")};
 `;
 
 function InputForm({ token, balance, onChange, value, type, haveMax, isVisible }) {

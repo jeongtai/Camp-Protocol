@@ -114,7 +114,6 @@ const caver = new Caver(window.klaytn);
 
 function Mintingtool() {
     let state = useSelector((state) => state);
-    let BankAddress = "0xd1A6ccb6350fd74123a71eeb8c7e85C1d21312f5";
 
     const [usdcInputAmount, setUSDCInputAmount] = useState(0);
     const [campInputAmount, setCampInputAmount] = useState(0);
@@ -137,7 +136,7 @@ function Mintingtool() {
     const [collatbal, setCollatbal] = useState();
 
     const [isLoading, setIsLoading] = useState(true);
-
+    
     async function getInfo() {
         // SCAMP UserBalance, PRICE
         await state.SCAMPContract.methods
@@ -274,7 +273,7 @@ function Mintingtool() {
     function onClick2() {
         state.CAMPContract.methods
             .approve(
-                BankAddress,
+                state.BankContract._address,
                 caver.utils.toPeb(campInputAmount * 1000, "mKLAY")
             )
             .send({
@@ -284,7 +283,7 @@ function Mintingtool() {
             .on("receipt", function () {
                 state.USDCContract.methods
                     .approve(
-                        BankAddress,
+                        state.BankContract._address,
                         caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY")
                     )
                     .send({

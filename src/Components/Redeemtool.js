@@ -66,7 +66,6 @@ const caver = new Caver(window.klaytn)
 
 function Redeemtool () {
     let state = useSelector((state) => state)
-    let BankAddress = "0x470aC5e9E098731F0911003218505151e47a6aDD"
 
     const [usdcamount, setUSDCamount] = useState(0);
     const [campamount, setCampAmount] = useState(0);
@@ -109,7 +108,7 @@ function Redeemtool () {
   
     function onClick2() {
       state.SCAMPContract.methods.approve(
-        BankAddress,
+        state.BankContract._address,
         caver.utils.toPeb(scampamount*1000, 'mKLAY')
       ).send({
         from : window.klaytn.selectedAddress,

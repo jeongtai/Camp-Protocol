@@ -182,14 +182,14 @@ function Home() {
             name: "CAMP",
             price: 0.4602,
             supply: campsupply,
-            Contract: "0x666F7ea2A0cc0980291ff1A33cBd5F979eC40522",
+            Contract: state.CAMPContract._address,
             logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg",
         },
         {
             name: "SCAMP",
             price: 0.9812,
             supply: scampsupply,
-            Contract: "0x8BC3D79E0eE2df7274c9048dE151F75EF13a03f0",
+            Contract: state.SCAMPContract._address,
             logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg",
         },
     ];

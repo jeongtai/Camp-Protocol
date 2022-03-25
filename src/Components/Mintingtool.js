@@ -143,7 +143,7 @@ function Mintingtool() {
         await state.SCAMPContract.methods
             .balanceOf(window.klaytn.selectedAddress)
             .call((e, v) =>
-                setSCAMPBalance(caver.utils.fromPeb(v.toString(), "KLAY"))
+                setSCAMPBalance(caver.utils.fromPeb(v, "KLAY"))
             );
         await state.SCAMPContract.methods
             .SCAMP_Price()
@@ -153,7 +153,7 @@ function Mintingtool() {
         await state.CAMPContract.methods
             .balanceOf(window.klaytn.selectedAddress)
             .call((e, v) =>
-                setCAMPBalance(caver.utils.fromPeb(v.toString(), "KLAY"))
+                setCAMPBalance(caver.utils.fromPeb(v, "KLAY"))
             );
         await state.SCAMPContract.methods
             .CAMP_Price()
@@ -162,18 +162,16 @@ function Mintingtool() {
         await state.USDCContract.methods
             .balanceOf(window.klaytn.selectedAddress)
             .call((e, v) =>
-                setUSDCBalance(caver.utils.fromPeb(v.toString(), "Mpeb"))
+                setUSDCBalance(caver.utils.fromPeb(v, "KLAY"))
             );
 
         //set CCR
         await state.SCAMPContract.methods
             .current_collateral_ratio()
-            .call((e, v) => setCssCR(v))
-        await state.SCAMPContract.methods.SCAMP_Price().call((e, v) => setSCampprice(v/1e6))
-        await state.SCAMPContract.methods.CAMP_Price().call((e, v) => setCampprice(v/1e6))
+            .call((e, v) => setCCR(v/1e6))
         await state.SCAMPContract.methods.minting_fee().call((e, v) => setMintingFee(v/1e6))
         await state.SCAMPContract.methods.redemption_fee().call((e, v) => setRedemptionFee(v/1e6))
-        await state.BankContract.methods.collatDollarBalance().call((e, v) => setCollatbal(v/1e6))
+        await state.BankContract.methods.collatDollarBalance().call((e, v) => setCollatbal(v/1e12))
         setIsLoading(false);
     }
     
@@ -208,11 +206,39 @@ function Mintingtool() {
     };
 
     function onClick() {
+      if (CCR >= 1) {
         state.BankContract.methods
-            .mintAlgorithmicSCAMP(
+        .mint1t1SCAMP(
+            caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"),
+            caver.utils.toPeb(
+                (scampInputAmount * 1000 * (100 - slippage)) / 100,
+                "mKLAY"
+            )
+        )
+        .send({
+            from: window.klaytn.selectedAddress,
+            gas: "3000000",
+        });
+      } else if (CCR === 0 ) {
+        state.BankContract.methods
+        .mintAlgorithmicSCAMP(
+            caver.utils.toPeb(campInputAmount * 1000, "mKLAY"),
+            caver.utils.toPeb(
+                (scampInputAmount * 1000 * (100 - slippage)) / 100,
+                "mKLAY"
+            )
+        )
+        .send({
+            from: window.klaytn.selectedAddress,
+            gas: "3000000",
+        });
+      } else {
+        state.BankContract.methods
+            .mintFractionalSCAMP(
+                caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"),
                 caver.utils.toPeb(campInputAmount * 1000, "mKLAY"),
                 caver.utils.toPeb(
-                    (scampInputAmount * 1000 * (100 - slippage)) / 100,
+                    (scampInputAmount*0.1),
                     "mKLAY"
                 )
             )
@@ -220,6 +246,7 @@ function Mintingtool() {
                 from: window.klaytn.selectedAddress,
                 gas: "3000000",
             });
+      }
     }
 
     function onClick2() {

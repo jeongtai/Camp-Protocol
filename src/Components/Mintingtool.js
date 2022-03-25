@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Caver from "caver-js";
 import styled, { keyframes } from "styled-components";
 
-import Loading from "../assets/Loading.svg";
+import LoadingBlack from "../assets/Loading-Black.svg";
 import SetIcon from "../assets/SetIcon.svg";
 
 const Content = styled.div`
@@ -32,7 +32,7 @@ const Info = styled.div`
     justify-content: space-between;
     align-items: flex-start;
 
-    span {
+    p {
         font-size: 12px;
         font-style: normal;
         font-weight: 400;
@@ -40,7 +40,7 @@ const Info = styled.div`
         color: ${(props) => props.theme.textBlack};
     }
 
-    span:first-child {
+    p:first-child {
         text-align: left;
         color: ${(props) => props.theme.textGray};
     }
@@ -158,6 +158,7 @@ function Mintingtool() {
         await state.SCAMPContract.methods
             .CAMP_Price()
             .call((e, v) => setCampprice(v / 1e6));
+
         // USDC UserBalance
         await state.USDCContract.methods
             .balanceOf(window.klaytn.selectedAddress)
@@ -165,38 +166,61 @@ function Mintingtool() {
                 setUSDCBalance(caver.utils.fromPeb(v.toString(), "Mpeb"))
             );
 
-        //set CCR
+        //set Mint Info
         await state.SCAMPContract.methods
             .current_collateral_ratio()
-            .call((e, v) => setCssCR(v))
-        await state.SCAMPContract.methods.SCAMP_Price().call((e, v) => setSCampprice(v/1e6))
-        await state.SCAMPContract.methods.CAMP_Price().call((e, v) => setCampprice(v/1e6))
-        await state.SCAMPContract.methods.minting_fee().call((e, v) => setMintingFee(v/1e6))
-        await state.SCAMPContract.methods.redemption_fee().call((e, v) => setRedemptionFee(v/1e6))
-        await state.BankContract.methods.collatDollarBalance().call((e, v) => setCollatbal(v/1e6))
+            .call((e, v) => setCCR(v / 1e6));
+        await state.SCAMPContract.methods
+            .minting_fee()
+            .call((e, v) => setMintingFee(v / 1e6));
+        await state.SCAMPContract.methods
+            .redemption_fee()
+            .call((e, v) => setRedemptionFee(v / 1e6));
+        await state.BankContract.methods
+            .collatDollarBalance()
+            .call((e, v) => setCollatbal(v / 1e6));
         setIsLoading(false);
     }
-    
+
     const mintDecimal = 10000;
     const USDCamt = (event) => {
         const usdc = event.target.value;
-        setUSDCInputAmount(Math.round(usdc*mintDecimal)/mintDecimal);
-        setCampInputAmount(Math.round((usdc/CCR)*(1-CCR)*mintDecimal)/mintDecimal);
-        setScampInputAmount(Math.round((usdc/CCR/SCAMPprice)*mintDecimal)/mintDecimal);
+        setUSDCInputAmount(Math.round(usdc * mintDecimal) / mintDecimal);
+        setCampInputAmount(
+            Math.round(((usdc / CCR - usdc) / CAMPprice) * mintDecimal) /
+                mintDecimal
+        );
+        setScampInputAmount(
+            Math.round((usdc / CCR / SCAMPprice) * mintDecimal) / mintDecimal
+        );
     };
 
     const CAMPamt = (event) => {
         const camp = event.target.value;
-        setUSDCInputAmount(Math.round(((camp*CAMPprice)/(1-CCR) -(camp*CAMPprice))*mintDecimal)/mintDecimal);
-        setCampInputAmount(Math.round(camp*mintDecimal)/mintDecimal);
-        setScampInputAmount(Math.round((camp*CAMPprice)/(1-CCR)/SCAMPprice*mintDecimal)/mintDecimal);
+        setUSDCInputAmount(
+            Math.round(
+                ((camp * CAMPprice) / (1 - CCR) - camp * CAMPprice) *
+                    mintDecimal
+            ) / mintDecimal
+        );
+        setCampInputAmount(Math.round(camp * mintDecimal) / mintDecimal);
+        setScampInputAmount(
+            Math.round(
+                ((camp * CAMPprice) / (1 - CCR) / SCAMPprice) * mintDecimal
+            ) / mintDecimal
+        );
     };
 
     const SCAMPamt = (event) => {
         const scamp = event.target.value;
-        setUSDCInputAmount(Math.round(scamp/SCAMPprice*CCR*mintDecimal)/mintDecimal);
-        setCampInputAmount(Math.round(scamp/SCAMPprice*(1-CCR)*mintDecimal)/mintDecimal);
-        setScampInputAmount(Math.round(scamp*mintDecimal)/mintDecimal);
+        setUSDCInputAmount(
+            Math.round((scamp / SCAMPprice) * CCR * mintDecimal) / mintDecimal
+        );
+        setCampInputAmount(
+            Math.round((scamp / SCAMPprice) * (1 - CCR) * mintDecimal) /
+                mintDecimal
+        );
+        setScampInputAmount(Math.round(scamp * mintDecimal) / mintDecimal);
     };
 
     const Slipamt = (event) => {
@@ -264,8 +288,8 @@ function Mintingtool() {
     return (
         <>
             {isLoading ? (
-                <p align-items="center">
-                    <img width="80px" src={Loading} />
+                <p text-align="center">
+                    <img width="80px" src={LoadingBlack} />
                 </p>
             ) : (
                 <Content>
@@ -319,9 +343,11 @@ function Mintingtool() {
                         balance={USDCBalance}
                         onChange={USDCamt}
                         value={usdcInputAmount}
+                        setValueFn={setUSDCInputAmount}
                         type="number"
-                        haveMax={true}
                         isVisible={true}
+                        haveMax={true}
+                        haveBal={true}
                     />
 
                     <InputForm
@@ -329,8 +355,11 @@ function Mintingtool() {
                         balance={CAMPBalance}
                         onChange={CAMPamt}
                         value={campInputAmount}
+                        setValueFn={setCampInputAmount}
                         type="number"
                         isVisible={true}
+                        haveMax={true}
+                        haveBal={true}
                     />
 
                     <span>Output (estimated)</span>
@@ -338,35 +367,38 @@ function Mintingtool() {
                         token="SCAMP"
                         balance={SCAMPBalance}
                         onChange={SCAMPamt}
-                        value={scampInputAmount || 0}
+                        value={scampInputAmount}
+                        setValueFn={setScampInputAmount}
                         type="number"
                         isVisible={true}
+                        haveMax={false}
+                        haveBal={false}
                     />
 
                     <MintInfos>
                         <Info>
-                            <span>Current Collateral Ratio</span>
-                            <span>{CCR*100} %</span>
+                            <p>Current Collateral Ratio</p>
+                            <p>{CCR * 100} %</p>
                         </Info>
                         <Info>
-                            <span>Minting fee</span>
-                            <span>{mintingfee*100}%</span>
+                            <p>Minting fee</p>
+                            <p>{mintingfee * 100}%</p>
                         </Info>
                         <Info>
-                            <span>Collateral balance</span>
-                            <span>{collatbal} USDT</span>
+                            <p>Collateral balance</p>
+                            <p>{collatbal} USDT</p>
                         </Info>
                         <Info>
-                            <span>Slippage</span>
-                            <span>{slippage} %</span>
+                            <p>Slippage</p>
+                            <p>{slippage} %</p>
                         </Info>
                         <Info>
-                            <span>Rates</span>
-                            <span>
-                             Scamp : {SCAMPprice}
-                             <br/>
-                             camp: {CAMPprice}
-                            </span>
+                            <p>Rates</p>
+                            <p>
+                                Scamp : {SCAMPprice}
+                                <br />
+                                camp: {CAMPprice}
+                            </p>
                         </Info>
                     </MintInfos>
 

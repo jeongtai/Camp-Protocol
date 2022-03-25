@@ -851,8 +851,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\BondDepository.sol": {
-      "lastModificationDate": 1648101474277,
-      "contentHash": "67f072295e3e2e09b597041ee92db862",
+      "lastModificationDate": 1648187411763,
+      "contentHash": "64fe358927baa229f0f4d5ef9283f9ec",
       "sourceName": "contracts/bond/BondDepository.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -1036,8 +1036,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Oracle\\UniswapPairOracle.sol": {
-      "lastModificationDate": 1647963513207,
-      "contentHash": "c4a4356509d88da547209097044520c6",
+      "lastModificationDate": 1648138948249,
+      "contentHash": "dd46667fbb210dfbb2ae44f67a058ad0",
       "sourceName": "contracts/bank/Oracle/UniswapPairOracle.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -4430,8 +4430,8 @@
       ]
     },
     "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bank\\Oracle\\AssetOracle.sol": {
-      "lastModificationDate": 1648101538980,
-      "contentHash": "a64e16e765ac369525503dee86a4f649",
+      "lastModificationDate": 1648138955929,
+      "contentHash": "c3038d71a290c93bcfc10f71ef7233d7",
       "sourceName": "contracts/bank/Oracle/AssetOracle.sol",
       "solcConfig": {
         "version": "0.7.5",
@@ -4468,13 +4468,61 @@
         "../../bond/library/SafeMath.sol",
         "./UniswapPairOracle.sol",
         "../Owned.sol",
-        "../Uniswap/interfaces/IUniswapV2Pair.sol"
+        "../Uniswap/interfaces/IUniswapV2Pair.sol",
+        "hardhat/console.sol"
       ],
       "versionPragmas": [
         "0.7.5"
       ],
       "artifacts": [
         "AssetOracle"
+      ]
+    },
+    "C:\\Users\\cq313\\CryptoCurrency\\klaytn\\camp-protocol\\contracts\\bond\\ClaimSwapCampUSDTLpDepository.sol": {
+      "lastModificationDate": 1648187676079,
+      "contentHash": "aedc0017be09b25f72b92d48146ad496",
+      "sourceName": "contracts/bond/ClaimSwapCampUSDTLpDepository.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "evmVersion": "constantinople",
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./BondDepository.sol",
+        "./interface/IClaimSwapZap.sol",
+        "./interface/IClaimSwapPair.sol"
+      ],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "ClaimSwapCampUSDTLpDepository"
       ]
     }
   }

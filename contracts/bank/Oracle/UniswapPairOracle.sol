@@ -89,6 +89,9 @@ contract UniswapPairOracle is Owned {
 
     // Note this will always return 0 before update has been called successfully for the first time.
     function consult(address token, uint amountIn) public view returns (uint amountOut) {
+        // console.log("token0", token0);
+        // console.log("token1", token1);
+        // console.log("current price", price0Average.mul(amountIn).decode144());
         uint32 blockTimestamp = UniswapV2OracleLibrary.currentBlockTimestamp();
         uint32 timeElapsed = blockTimestamp - blockTimestampLast; // Overflow is desired
 
@@ -98,7 +101,10 @@ contract UniswapPairOracle is Owned {
         if (token == token0) {
             amountOut = price0Average.mul(amountIn).decode144();
         } else {
-            require(token == token1, 'UniswapPairOracle: INVALID_TOKEN');
+            // require(token == token1, 'UniswapPairOracle: INVALID_TOKEN');
+            if (token != token1) {
+                return 0;
+            }
             amountOut = price1Average.mul(amountIn).decode144();
         }
     }

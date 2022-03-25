@@ -25,8 +25,9 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
     "DAO()": FunctionFragment;
     "NAME()": FunctionFragment;
     "REVISION()": FunctionFragment;
-    "__initialize(address,address,address,address,address,address)": FunctionFragment;
+    "__initialize(address,address,address,address,address,address,address)": FunctionFragment;
     "adjustment()": FunctionFragment;
+    "assetPrice()": FunctionFragment;
     "bondInfo(address)": FunctionFragment;
     "bondPrice()": FunctionFragment;
     "currentDebt()": FunctionFragment;
@@ -64,10 +65,14 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "REVISION", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "__initialize",
-    values: [string, string, string, string, string, string]
+    values: [string, string, string, string, string, string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "adjustment",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "assetPrice",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "bondInfo", values: [string]): string;
@@ -159,6 +164,7 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "adjustment", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "assetPrice", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "bondInfo", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "bondPrice", data: BytesLike): Result;
   decodeFunctionResult(
@@ -334,7 +340,8 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _CAMP: string,
       _DAO: string,
       _principle: string,
-      _staking: string,
+      _Token0address: string,
+      _Token1address: string,
       _treasury: string,
       _usdt_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -351,6 +358,8 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
         lastBlock: BigNumber;
       }
     >;
+
+    assetPrice(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     bondInfo(
       arg0: string,
@@ -502,7 +511,8 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     _CAMP: string,
     _DAO: string,
     _principle: string,
-    _staking: string,
+    _Token0address: string,
+    _Token1address: string,
     _treasury: string,
     _usdt_address: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -519,6 +529,8 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       lastBlock: BigNumber;
     }
   >;
+
+  assetPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
   bondInfo(
     arg0: string,
@@ -662,7 +674,8 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _CAMP: string,
       _DAO: string,
       _principle: string,
-      _staking: string,
+      _Token0address: string,
+      _Token1address: string,
       _treasury: string,
       _usdt_address: string,
       overrides?: CallOverrides
@@ -679,6 +692,8 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
         lastBlock: BigNumber;
       }
     >;
+
+    assetPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
     bondInfo(
       arg0: string,
@@ -945,13 +960,16 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _CAMP: string,
       _DAO: string,
       _principle: string,
-      _staking: string,
+      _Token0address: string,
+      _Token1address: string,
       _treasury: string,
       _usdt_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     adjustment(overrides?: CallOverrides): Promise<BigNumber>;
+
+    assetPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
     bondInfo(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1075,13 +1093,16 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _CAMP: string,
       _DAO: string,
       _principle: string,
-      _staking: string,
+      _Token0address: string,
+      _Token1address: string,
       _treasury: string,
       _usdt_address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     adjustment(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    assetPrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     bondInfo(
       arg0: string,

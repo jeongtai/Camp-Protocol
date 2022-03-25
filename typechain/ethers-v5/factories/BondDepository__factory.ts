@@ -218,7 +218,12 @@ const _abi = [
       },
       {
         internalType: "address",
-        name: "_staking",
+        name: "_Token0address",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_Token1address",
         type: "address",
       },
       {
@@ -264,6 +269,19 @@ const _abi = [
       {
         internalType: "uint256",
         name: "lastBlock",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "assetPrice",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
         type: "uint256",
       },
     ],

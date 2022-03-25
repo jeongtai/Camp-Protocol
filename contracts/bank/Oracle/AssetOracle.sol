@@ -5,6 +5,7 @@ import "../../bond/library/SafeMath.sol";
 import "./UniswapPairOracle.sol";
 import "../Owned.sol";
 import "../Uniswap/interfaces/IUniswapV2Pair.sol";
+import "hardhat/console.sol";
 
 contract AssetOracle is Owned {
     using SafeMath for uint;
@@ -22,9 +23,14 @@ contract AssetOracle is Owned {
     // if (asset == WKLAY) {
     //     return 1 ether;
     // }
+        console.log(priceOracle.length);
         for (uint i = 0; i < priceOracle.length; i++) {
+            // console.log("int i", i);
             UniswapPairOracle source = UniswapPairOracle(priceOracle[i]);
+            // console.log("oracle address", priceOracle[i]);
+            // console.log("token", asset);
             uint256 price = uint256(source.consult(asset, PRICE_PRECISION));
+            // console.log("price", price);
             if (price > 0) {
                 return price;
             }

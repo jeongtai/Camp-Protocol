@@ -100,6 +100,7 @@ const main = async () => {
     const PairFactory = await ethers.getContractFactory("UniswapV2Pair");
     const pairContract = PairFactory.attach(SCAMPPair);
     // console.log(await pairContract.factory(), await pairContract.token0(), await pairContract.token1());
+    console.log("token0", await pairContract.token0());
     let reserve = await pairContract.getReserves();
     console.log(reserve[0].toString(), reserve[1].toString(), reserve[2])
     if (reserve[0] == 0) {
@@ -113,6 +114,7 @@ const main = async () => {
     }
     
     const pairContract_CAMP = PairFactory.attach(CAMPPair);
+    console.log("token0", await pairContract_CAMP.token0());
     let reserve_CAMP = await pairContract_CAMP.getReserves();
     console.log(reserve_CAMP[0].toString(), reserve_CAMP[1].toString(), reserve_CAMP[2])
     if (reserve_CAMP[0] == 0) {
@@ -131,18 +133,37 @@ const main = async () => {
     // console.log("swap ratio:", await swapamounts[0].toString(), await swapamounts[1].toString());
     // await router.swapExactTokensForTokens(swapamounts[0].toString(), swapamounts[1].toString(), [CAMP.address, mock.address], owner.address, Math.floor(Date.now()) + 10);
 
-    const uniPairOracleFactory = await ethers.getContractFactory("UniswapPairOracle");
-    const uniPairOracle = await uniPairOracleFactory.deploy(factory.address, SCAMP.address, mock.address, owner.address);
-    // const uniPairOracle = uniPairOracleFactory.attach("0xe466293937f46db8F06B6989A99a2D6257036205");
-    console.log("uniPairOracle pair:", uniPairOracle.address);
+    const uniOracleFactory = await ethers.getContractFactory("UniswapPairOracle");
+    // const scampPairOracle = await uniOracleFactory.deploy(factory.address, SCAMP.address, mock.address, owner.address);
+    const scampPairOracle = uniOracleFactory.attach("0x765D21444b010c2DdB72B9ebc9Fd7aeee879F98b");
+    console.log("scampPairOracle:", scampPairOracle.address);
+    // await scampPairOracle.setPeriod(1);
+    console.log(await scampPairOracle.canUpdate());
+    if (await scampPairOracle.canUpdate()) {
+        console.log("scamp oracle is updated");
+        await scampPairOracle.update();
+    }
 
-    // await uniPairOracle.update();
-    console.log("is here?");
-    console.log((await uniPairOracle.PERIOD()).toString());
-    // await uniPairOracle.setPeriod(3600);
+    // const campPairOracle = await uniOracleFactory.deploy(factory.address, CAMP.address, mock.address, owner.address);
+    const campPairOracle = uniOracleFactory.attach("0xE4F11b56219F49C3111ab6B12C67dB6641e97fb3");
+    console.log("campPairOracle:", campPairOracle.address);
+    if (await campPairOracle.canUpdate()) {
+      console.log("camp oracle is updated");
+      await campPairOracle.update();
+  }
 
-    const amountOut = await uniPairOracle.consult(SCAMP.address, 1e6);
-    console.log("amountOut of oracle:", amountOut.toString());
+    const assetOracleFactory = await ethers.getContractFactory("AssetOracle");
+    // const assetOracle = await assetOracleFactory.deploy();
+    const assetOracle = assetOracleFactory.attach("0x3E574dD0D7a0d44AE9E04c8DAcA3B4E0937fe70E");
+    console.log("assetOracle:", assetOracle.address);
+    // await assetOracle.setAssetOracle([scampPairOracle.address, campPairOracle.address]);
+    // console.log(await assetOracle.priceOracle(0));
+    // console.log(await assetOracle.priceOracle(1));
+
+    console.log((await assetOracle.getAssetPrice(CAMP.address)).toString());
+
+    /////////////////////////////////////////////////////
+    // Deploy to Bond
   };
   
   const runMain = async () => {

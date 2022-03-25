@@ -29,8 +29,8 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
 
     AssetOracle private _assetOracle;
     address public oracle;
-    // address private Token0address;
-    // address private Token1address;  
+    address private Token0address;
+    address private Token1address;  
     // UniswapPairOracle private Token0USDTOracle;
     // UniswapPairOracle private Token1USDTOracle;   
     // IUniswapV2Pair private principle; // token used to create bond(아마도 lp)
@@ -89,9 +89,9 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         address _CAMP,
         address _DAO,
         address _principle,
-        // address _Token0address,
-        // address _Token1address,
-        address _staking,
+        address _Token0address,
+        address _Token1address,
+        // address _staking,
         address _treasury,
         address _usdt_address
     ) external initializer {
@@ -100,16 +100,16 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         CAMP = _CAMP;
         // require(_SCAMP != address(0));
         // SCAMP = _SCAMP;
-        // require(_Token0address != address(0));
-        // Token0address = _Token0address;
-        // require(_Token1address != address(0));
-        // Token1address = _Token1address;
+        require(_Token0address != address(0));
+        Token0address = _Token0address;
+        require(_Token1address != address(0));
+        Token1address = _Token1address;
         require(_DAO != address(0));
         DAO = _DAO;
         require(_principle != address(0));
         principle = _principle;
-        require(_staking != address(0));
-        staking = _staking;
+        // require(_staking != address(0));
+        // staking = _staking;
         require(_treasury != address(0));
         treasury = _treasury;
         require(_usdt_address != address(0));
@@ -240,7 +240,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
 
         require(_maxPrice >= priceInUSD, "BondDepository: Slippage limit: more than max price"); // slippage protection
 
-        uint256 principleValue = _assetOracle.assetPrice(principle).mul(_amount).div(10**6); // returns principle value, in USD, 10**18
+        uint256 principleValue = assetPrice().mul(_amount).div(10**6); // returns principle value, in USD, 10**18
         uint256 payout = payoutFor(principleValue); // payout to bonder is computed, bond amount
 
         require(payout >= 10 ** 16, "BondDepository: Bond too small"); // must be > 0.01 CAMP (underflow protection)
@@ -442,11 +442,22 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     //   }
     // }
 
+    // pair의 단위 가격을 구한다 in USD
+    function assetPrice() public view returns (uint256) {
+        uint256 lpSupply = IUniswapV2Pair(principle).totalSupply();
+        // uint112 reserve0, reserve1, blocktimestamp = IUniswapV2Pair(_principle).getReserves();
+        uint256 balance0 = IKIP7(Token0address).balanceOf(address(IUniswapV2Pair(principle)));
+        uint256 balance1 = IKIP7(Token1address).balanceOf(address(IUniswapV2Pair(principle)));
+        uint256 lpValue = balance0.mul(_assetOracle.getAssetPrice(Token0address)) + balance1.mul(_assetOracle.getAssetPrice(Token1address));
+
+        return lpValue.mul(1e18); //자릿수 맞추기..?!
+    }
+
     // function assetPrice() public view returns (uint256) {
     //     totalSup = IUniswapV2Pair(_principle).totalSupply();
     //     token0value = IUniswapV2Pair(_principle).price0CumulativeLast().mul(token0price());
     //     token1value = IUniswapV2Pair(_principle).price0CumulativeLast().mul(token1price());
-    //     return (token0value.add(token1value)).div(totalSup).mul(1e18) //자릿수 맞추기..?!
+    //     return (token0value.add(token1value)).div(totalSup).mul(1e18); //자릿수 맞추기..?!
     // }
 
     /**

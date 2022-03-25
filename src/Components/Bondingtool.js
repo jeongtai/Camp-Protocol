@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 const caver = new Caver(window.klaytn)
 function Bondingtool() {
   let state = useSelector((state) => state)
-  const Bondaddress = ""
   const [amount, setAmount] = useState()
   const [toggleBond, settoggleBond] = useState(true)
   const [toggleZap, settoggleZap] = useState(false)
@@ -21,7 +20,7 @@ function Bondingtool() {
     if (toggleZap === false) {
       //LP Contract로 바꿔야해
     state.CAMPContract.methods.approve(
-      Bondaddress,
+      state.BondContract._address,
       caver.utils.toPeb(amount, "KLAY")
     ).send({
       from : window.klaytn.selectedAddress,
@@ -31,14 +30,14 @@ function Bondingtool() {
       state.StakingContract.methods.Bond(
         caver.utils.toPeb(amount, "KLAY"),
         maxPrice, //이거 정보 불러와야해
-        Bondaddress
+        state.BondContract._address
       ).send({
         from: window.klaytn.selectedAddress,
         gas : '3000000'
       })
     })} else {
       state.USDCContract.methods.approve(
-        Bondaddress,
+        state.BondContract._address,
         caver.utils.toPeb(amount, "KLAY")
       ).send({
         from : window.klaytn.selectedAddress,
@@ -48,7 +47,7 @@ function Bondingtool() {
         state.StakingContract.methods.ZaptoBond(
           caver.utils.toPeb(amount, "KLAY"),
           maxPrice, //이거 정보 불러와야해
-          Bondaddress
+          state.BondContract._address
         ).send({
           from: window.klaytn.selectedAddress,
           gas : '3000000'

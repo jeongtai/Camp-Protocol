@@ -1,65 +1,90 @@
-import Caver from "caver-js";
-import { useState } from "react";
+import react, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import InputForm from "../Components/InputForm"
-import Button from "../Components/Button" 
-import Fundtool from "../Components/Fundtool"
-const caver = new Caver(window.klaytn)
-const Fund = () =>{
-  let state = useSelector((state) => state)
-  const [amount, setAmount] = useState()
+import Caver from "caver-js";
+import styled from "styled-components";
+import { Routes, Route, Link, useMatch } from "react-router-dom";
 
-  function onChange (event) {
-    setAmount(Math.round(event.target.value))
-  }
+import Recollattool from "../Components/Recollattool";
+import Buybacktool from "../Components/Buybacktool";
 
-  function onClick() {
-    state.USDCContract.methods.setBalance(
-      window.klaytn.selectedAddress,
-      caver.utils.toPeb(amount, "KLAY")
-    ).send({
-      from : window.klaytn.selectedAddress,
-      gas : 3000000
-    })
-  }
+import Loading from "../assets/Loading.svg";
 
-  function addToken () {
-    const tokenAddress = "0x886C3A92f7439060F43ed0b54ba08850ABd62213"
-    const tokenSymbol = "MUSDC"
-    const tokenDecimals = 18
-  
-    window.klaytn.sendAsync(
-      {
-        method: 'wallet_watchAsset',
-        params: {
-          type: 'ERC20', // Initially only supports ERC20, but eventually more!
-          options: {
-            address: tokenAddress, // The address that the token is at.
-            symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
-            decimals: tokenDecimals, // The number of decimals in the token//
-          }
-        },
-        id: Math.round(Math.random() * 100000)
-      }
-    )
-  }
+const Section = styled.div`
+    // flex
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 24px;
+
+    width: 50%;
+    min-width: 360px;
+    margin: 0 auto;
+    stroke: Solid #ededed 1px;
+    background-color: white;
+    border-radius: 15px;
+    border: 2px solid ${(props) => props.theme.borderColor};
+
+    span {
+        font-weight: 400;
+        font-size: 20px;
+        width: 100%;
+    }
+`;
+
+const Content = styled.div`
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+`;
+
+const Tabs = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 10px 0px;
+    gap: 10px;
+`;
+
+const Tab = styled.div`
+    text-align: center;
+    font-size: 18px;
+    font-weight: 400;
+
+    padding: 0px 0px 10px 0px;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    color: ${(props) =>
+        props.isActive ? props.theme.textBlack : props.theme.textGray};
+
+    border-bottom: ${(props) =>
+        props.isActive ? "2px solid" + props.theme.connectBtnColor : null};
+`;
+
+const caver = new Caver(window.klaytn);
+
+const Bank = () => {
+    // toggle true=mint false=redeem
+    const [isNowMint, setIsNowMint] = useState(true);
+
     return (
-      <div>
-        <InputForm
-          onChange={onChange}
-          value={amount}
-          type="text"
-          text="Staking amount"
-          isVisible={true}
-        />
-        <Button onClick={onClick} text = "amount mockUSDC you want"/>
-        <div>
-        <Button onClick={addToken} text = "Add wallet!"/>
-        </div>
-        <Fundtool/>
-        
-      </div>
-    )
-}
+        <Section>
+            <Tabs>
+                <Tab onClick={() => setIsNowMint(true)} isActive={isNowMint}>
+                    Reocollat
+                </Tab>
+                <Tab onClick={() => setIsNowMint(false)} isActive={!isNowMint}>
+                    Buyback
+                </Tab>
+            </Tabs>
+            <Content>{isNowMint ? <Recollattool /> : <Buybacktool />}</Content>
 
-export default Fund;
+
+        </Section>
+    );
+};
+
+export default react.memo(Bank);

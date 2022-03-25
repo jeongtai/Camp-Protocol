@@ -8,7 +8,6 @@ const caver = new Caver(window.klaytn)
 
 function Staketool () {
     let state = useSelector((state) =>  state)
-    let StakeAddress = "0xC0C40B7bD1B9Dfec77FECcF43451f61550c6090a"
     const [amount, setAmount] =useState()
 
     const onChange = (event) => {
@@ -17,7 +16,7 @@ function Staketool () {
 
     function Stake() {
       state.CAMPContract.methods.approve(
-        StakeAddress,
+        state.StakingContract._address,
         caver.utils.toPeb(amount, "KLAY")
       ).send({
         from : window.klaytn.selectedAddress,

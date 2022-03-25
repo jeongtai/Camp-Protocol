@@ -50,6 +50,7 @@ const Fund = () =>{
           value={amount}
           type="text"
           text="Staking amount"
+          isVisible={true}
         />
         <Button onClick={onClick} text = "amount mockUSDC you want"/>
         <div>

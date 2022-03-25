@@ -1,18 +1,19 @@
 import Button from "./Button";
 import InputForm from "./InputForm";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Caver from "caver-js";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
-import Loading from "../assets/Loading.svg";
+import LoadingBlack from "../assets/Loading-Black.svg";
+import SetIcon from "../assets/SetIcon.svg";
 
 const Content = styled.div`
     background-color: teal;
     font-size : 14px;
 `;
 
-const MintInfos = styled.div`
+const RedeemInfos = styled.div`
     height: 174px;
     padding: 10px;
 

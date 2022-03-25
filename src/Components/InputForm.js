@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useRef} from "react";
 import styles from "./css/Input.module.css";
 import styled from "styled-components";
 import TokenLogo from "./TokenLogo";
+import { useState } from "react";
 
 const Section = styled.div`
     margin: 14px 0px;
@@ -57,31 +58,36 @@ const MaxBtn = styled.button`
     margin: 0 0 0 auto;
     padding: 4px;
 
-    border: solid 1px red;
+    border: solid 1px #F96161;
     border-radius: 4px;
     background-color: transparent;
 
     color: red;
     font-weight: 400;
     font-size: 9px;
-    visibility: ${(props) => (props.haveMax && props.isVisible ? "visible" : "hidden")};
+    visibility: ${(props) => ( (props.haveMax&&props.isVisible) ? "visible" : "hidden")};
 `;
 
-function InputForm({ token, balance, onChange, value, type, haveMax, isVisible }) {
+function InputForm(props) {
+    const [formValue,setFormValue] = useState(props.value)
+    const inputRef = useRef(null);
+
+    console.log(props)
     return (
-        <Section isVisible={isVisible}>
+        <Section isVisible={props.isVisible}>
             <Top>
-                <p>Balance : {balance}</p>
+                {props.haveBal?<p>Balance : {props.balance}</p>:null}
                 <MaxBtn
-                    onClick={
-                            haveMax
-                            ? () => {
-                                  console.log(token, haveMax);
-                                  console.log("max click");
-                              }
-                            : null
+                    onClick={props.haveMax
+                              ? async(e) =>{
+                                        console.log(inputRef.current)
+                                        await props.setValueFn(props.balance)
+                                        inputRef.current.dispatchEvent(new Event('change', { bubbles: true }))
+                                     }
+                                     : null
                     }
-                    haveMax={haveMax}
+                    haveMax={props.haveMax}
+                    isVisible={props.isVisible}
                 >
                     MAX
                 </MaxBtn>
@@ -89,14 +95,15 @@ function InputForm({ token, balance, onChange, value, type, haveMax, isVisible }
             <Bottom>
                 <input
                     className={styles.input}
-                    onChange={onChange}
-                    value={value}
-                    type={type}
+                    onChange={props.onChange}
+                    value={props.value}
+                    type={props.type}
+                    ref={inputRef}
                     placeholder="0"
                 ></input>
                 <div>
-                    <TokenLogo name={token} />
-                    <p>{token}</p>
+                    <TokenLogo name={props.token} />
+                    <p>{props.token}</p>
                 </div>
             </Bottom>
         </Section>

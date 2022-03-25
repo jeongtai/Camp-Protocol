@@ -232,5 +232,7 @@ dist
 # and uncomment the following lines
 # .pnp.*
 
+artifacts/
+
 
 # End of https://www.toptal.com/developers/gitignore/api/solidity,node,yarn

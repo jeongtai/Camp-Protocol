@@ -14,8 +14,8 @@ const main = async () => {
   const CAMPPairOracle = uniPairOracleFactory.attach("0x9DeF80E4A328F287Fa2c8a981E8E5e0C76De73af");
   // console.log("CAMPPairOracle pair:", CAMPPairOracle.address);
   
-  console.log(await SCAMPPairOracle.canUpdate())
-  console.log(await CAMPPairOracle.canUpdate())
+  // console.log(await SCAMPPairOracle.canUpdate())
+  // console.log(await CAMPPairOracle.canUpdate())
 
   // await SCAMPPairOracle.update();
   // await CAMPPairOracle.update();
@@ -25,7 +25,7 @@ const main = async () => {
   // await CAMPPairOracle.setPeriod(30000);
 
 
-  // const amountOut = await SCAMPPairOracle.consult(SCAMP, 1e6);
+  //const amountOut = await SCAMPPairOracle.consult(SCAMP, 1e6);
   // console.log("amountOut of SCAMPoracle:", amountOut.toString());
 
   // const amountOut1 = await CAMPPairOracle.consult(CAMP, 1e6);

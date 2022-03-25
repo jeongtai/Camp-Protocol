@@ -36,28 +36,28 @@ const main = async () => {
     // console.log(await router.factory(), await router.WKLAY());
 
     // //addLiquidity
-    //let liquidity = await router.addLiquidity(SCAMP, mock, 1e8, 1e8, 1e3, 1e3, owner.address, Math.floor(Date.now()) + 100);
-    //console.log("Liquidity:", liquidity);
+    // let liquidity = await router.addLiquidity(SCAMP, mock, 1e10, 1e8, 1e3, 1e3, owner.address, Math.floor(Date.now()) + 100);
+    // console.log("Liquidity:", liquidity);
 
     //let liquidity = await router.addLiquidity(CAMP, mock, 1e9, 1e8, 1e3, 1e3, owner.address, Math.floor(Date.now()) + 100);
     //console.log("Liquidity:", liquidity);
 
-    // const PairFactory = await ethers.getContractFactory("UniswapV2Pair");
-    // const pairContract = PairFactory.attach(SCAMPPair);
-    // const reserve = await pairContract.getReserves();
+    const PairFactory = await ethers.getContractFactory("UniswapV2Pair");
+    const pairContract = PairFactory.attach(SCAMPPair);
+    const reserve = await pairContract.getReserves();
 
     // const pairContract1 = PairFactory.attach(CAMPPair);
     // const reserve1 = await pairContract1.getReserves();
 
-    // console.log("SCAMPPair")
-    // console.log(reserve[0].toString(), reserve[1].toString(), reserve[2])
+    console.log("SCAMPPair")
+    console.log(reserve[0].toString(), reserve[1].toString(), reserve[2])
     // console.log("CAMPPair")
     // console.log(reserve1[0].toString(), reserve1[1].toString(), reserve1[2])
 
     // //SWAP
-    // const swapamounts = await router.getAmountsOut(1e6, [CAMP, mock]);
+    // const swapamounts = await router.getAmountsOut(1e7, [SCAMP, mock]);
     // console.log("swap ratio:", await swapamounts[0].toString(), await swapamounts[1].toString());
-    // await router.swapExactTokensForTokens(swapamounts[0].toString(), swapamounts[1].toString(), [CAMP, mock], owner.address, Math.floor(Date.now()) + 10);
+    // await router.swapExactTokensForTokens(swapamounts[0].toString(), swapamounts[1].toString(), [SCAMP, mock], owner.address, Math.floor(Date.now()) + 10);
 
 
     const uniPairOracleFactory = await ethers.getContractFactory("UniswapPairOracle");
@@ -65,9 +65,9 @@ const main = async () => {
     //const SCAMPPairOracle = uniPairOracleFactory.attach("0xCb9eC050962A3266899cE6885E97709B82f2A69d");
     //console.log("SCAMPPairOracle pair:", SCAMPPairOracle.address);
 
-    const CAMPPairOracle = await uniPairOracleFactory.deploy(factory.address, CAMP, mock, owner.address);
+    //const CAMPPairOracle = await uniPairOracleFactory.deploy(factory.address, CAMP, mock, owner.address);
     //const CAMPPairOracle = uniPairOracleFactory.attach("0x9DeF80E4A328F287Fa2c8a981E8E5e0C76De73af");
-    console.log("CAMPPairOracle pair:", CAMPPairOracle.address);
+    //console.log("CAMPPairOracle pair:", CAMPPairOracle.address);
     
     // await uniPairOracle.update();
     // console.log("is here?");

@@ -12,9 +12,10 @@ const main = async () => {
   // await SCAMP.setSCAMPOracleAddress("0xCb9eC050962A3266899cE6885E97709B82f2A69d")
   // await SCAMP.setCAMPOracleAddress("0x9DeF80E4A328F287Fa2c8a981E8E5e0C76De73af")
 
-  // await SCAMP.setCAMPAddress("0x666F7ea2A0cc0980291ff1A33cBd5F979eC40522")
+  // await SCAMP.setSCAMPStep(2500)
+  await SCAMP.refreshCollateralRatio()
   // console.log(await SCAMP.SCAMPBank())
-  console.log(await SCAMP.SCAMP_info())
+  // console.log(await SCAMP.SCAMP_info())
   // await SCAMP.setMintingFee(3000)
   // await SCAMP.setRedemptionFee(3000)
   // await SCAMP.setUSDTAddress("0xE1388E74fdA951bB7777E7F7F4D195443415E8CB")
@@ -28,19 +29,20 @@ const main = async () => {
   MOCKFactory = await ethers.getContractFactory("MockUSDC");
   // // //let mock = await MOCKFactory.deploy();
   const mock = await MOCKFactory.attach("0xE1388E74fdA951bB7777E7F7F4D195443415E8CB");
-  // await mock.setBalance(owner.address, 2e8)
+  await mock.setBalance(owner.address, toBn("100"))
   // console.log((await mock.balanceOf(owner.address)).toString())
 
 
   // // Approve
   // await SCAMP.approve(bank, toBn("1e18"));
   // const SCAMPAllowance = await SCAMP.allowance(owner.address, bank);
-  // await CAMP.approve(bank, toBn("1e18"));
-  // const CAMPAllowance = await CAMP.allowance(owner.address, bank)  
-  // console.log("CAMPAllowance:", CAMPAllowance.toString());
-  // await mock.approve(bank, toBn("1e18"));
-  // const mockAllowance = await mock.allowance(owner.address, bank);
-  // console.log("mockCollatAllowance:", mockAllowance.toString());
+  // await CAMP.approve(bank, toBn("300000"));
+  const CAMPAllowance = await CAMP.allowance(owner.address, bank)  
+  console.log("CAMPAllowance:", CAMPAllowance.toString());
+  // await mock.approve(bank, toBn("30000"));
+  const mockAllowance = await mock.allowance(owner.address, bank);
+  console.log((await mock.balanceOf(owner.address)).toString())
+  console.log("mockCollatAllowance:", mockAllowance.toString());
 
   // console.log((await SCAMP.balanceOf(owner.address)).toString(), (await mock.balanceOf(owner.address)).toString())
 }

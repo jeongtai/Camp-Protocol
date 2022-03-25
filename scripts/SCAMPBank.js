@@ -20,11 +20,13 @@ const main = async () => {
   // let Bank = await BankFactory.deploy(SCAMP, CAMP, mock, owner.address);
   const Bank = await BankFactory.attach("0xd1A6ccb6350fd74123a71eeb8c7e85C1d21312f5");
   // console.log("Bank address is:", Bank.address);
-
+  console.log(await Bank.collatDollarBalance())
+  // console.log(await Bank.unclaimedPoolCAMP())
+  // console.log(await Bank.unclaimedPoolCollateral())
 
 
   // console.log(await Bank.mintAlgorithmicSCAMP(1e7, 1))
-  await Bank.mintAlgorithmicSCAMP(toBn("1000"), 1)
+  // console.log(await Bank.mintFractionalSCAMP(toBn("1"), toBn("10000"), 1))
   
 
 }

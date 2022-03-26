@@ -18,7 +18,7 @@ const Content = styled.div`
 `;
 
 const RedeemInfos = styled.div`
-    height: 174px;
+    height: 187px;
     padding: 10px;
 
     background-color: ${(props) => props.theme.backBlue};
@@ -32,6 +32,11 @@ const Info = styled.div`
     justify-content: space-between;
     align-items: flex-start;
 
+    p:first-child {
+        text-align: left;
+        color: ${(props) => props.theme.textGray};
+    }
+
     p {
         font-size: 12px;
         font-style: normal;
@@ -40,10 +45,6 @@ const Info = styled.div`
         color: ${(props) => props.theme.textBlack};
     }
 
-    p:first-child {
-        text-align: left;
-        color: ${(props) => props.theme.textGray};
-    }
 `;
 
 const Approve = styled.div`
@@ -256,6 +257,15 @@ function Redeemtool() {
     })
   }
 
+  const redeemInfos = [
+    { name: "Current Collateral Ratio", val: CCR, expression: `${CCR * 100} %`, },
+    { name: "Redemption fee", val: redemptionfee, expression: `${redemptionfee * 100} %` },
+    { name: "Collateral balance", val: collatbal, expression: `${collatbal} USDC` },
+    { name: "Slippage", val: slippage, expression: `${slippage} %` },
+    { name: "SCAMP price", val: SCAMPprice, expression: `${SCAMPprice} USDC` },
+    { name: "CAMP price", val: CAMPprice, expression: `${CAMPprice} USDC` },
+];
+
   return (
     <>
       {isLoading ? (
@@ -328,30 +338,12 @@ function Redeemtool() {
           />
 
           <RedeemInfos>
-            <Info>
-              <p>Current Collateral Ratio</p>
-              <p>{CCR == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="12px" /> : CCR * 100} %</p>
-            </Info>
-            <Info>
-              <p>Redemption fee</p>
-              <p>{mintingfee == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="12px" /> : mintingfee * 100}%</p>
-            </Info>
-            <Info>
-              <p>Collateral balance</p>
-              <p>{collatbal == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="12px" /> : collatbal} USDT</p>
-            </Info>
-            <Info>
-              <p>Slippage</p>
-              <p>{slippage == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="12px" /> : slippage} %</p>
-            </Info>
-            <Info>
-              <p>Rates</p>
-              <p>
-                Scamp : {SCAMPprice == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="12px" /> : SCAMPprice}
-                <br />
-                camp: {CAMPprice == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="12px" /> : CAMPprice}
-              </p>
-            </Info>
+          {redeemInfos.map((redeemInfo, index) => (
+                            <Info>
+                                <p>{redeemInfo.name}</p>
+                                <p>{redeemInfo.val == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : redeemInfo.expression}</p>
+                            </Info>
+                        ))}
           </RedeemInfos>
 
           <Approve>

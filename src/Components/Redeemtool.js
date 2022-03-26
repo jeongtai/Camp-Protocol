@@ -3,14 +3,18 @@ import InputForm from "./InputForm";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Caver from "caver-js";
-import styled, { keyframes } from "styled-components";
-
-import LoadingBlack from "../assets/Loading-Black.svg";
+import styled from "styled-components";
+import SlippageSetting from "./SlippageSetting";
+import LoadingSVG from "../assets/LoadingSVG.js";
 import SetIcon from "../assets/SetIcon.svg";
 
 const Content = styled.div`
-    background-color: teal;
-    font-size : 14px;
+    font-size: 14px;
+    div:first-child {
+        display: flex;
+        align-items: center;
+        justify-items: space-between;
+    }
 `;
 
 const RedeemInfos = styled.div`
@@ -28,7 +32,7 @@ const Info = styled.div`
     justify-content: space-between;
     align-items: flex-start;
 
-    span {
+    p {
         font-size: 12px;
         font-style: normal;
         font-weight: 400;
@@ -36,12 +40,11 @@ const Info = styled.div`
         color: ${(props) => props.theme.textBlack};
     }
 
-    span:first-child {
+    p:first-child {
         text-align: left;
         color: ${(props) => props.theme.textGray};
     }
 `;
-
 
 const Approve = styled.div`
     text-align: center;
@@ -64,93 +67,314 @@ const Btn = styled.button`
 
 const caver = new Caver(window.klaytn)
 
-function Redeemtool () {
-    let state = useSelector((state) => state)
+function Redeemtool() {
+  let state = useSelector((state) => state)
 
-    const [usdcamount, setUSDCamount] = useState(0);
-    const [campamount, setCampAmount] = useState(0);
-    const [scampamount, setScampAmount] = useState(0);
-    const [slippage, setSlippage] = useState(0);
+  const [usdcInputAmount, setUSDCInputAmount] = useState(0);
+  const [campInputAmount, setCampInputAmount] = useState(0);
+  const [scampInputAmount, setScampInputAmount] = useState(0);
 
-    const [isapproved, setIsApproved] = useState(false)
+  const [slippage, setSlippage] = useState(0.1);
 
-    // state.BankContract.mtehods.SCAMP_info().call((e, v) => console.log(v))
-    
-    const USDCamt = (event) => {
-        setUSDCamount(Math.round(event.target.value*100)/100)
-        setCampAmount(Math.round(event.target.value*100/4)/100)
-        setScampAmount(Math.round(event.target.value*5*100/4)/100)
-    }
-    const CAMPamt = (event) => {
-        setUSDCamount(Math.round(event.target.value*4*100)/100)
-        setCampAmount(Math.round(event.target.value*100)/100)
-        setScampAmount(Math.round(event.target.value*5*100)/100)
-    }
-    const SCAMPamt = (event) => {
-        setUSDCamount(Math.round(event.target.value*100*4/5)/100)
-        setCampAmount(Math.round(event.target.value*100/5)/100)
-        setScampAmount(Math.round(event.target.value*100)/100)
-    }
-    const Slipamt = (event) => {
-      setSlippage(event.target.value)
-    }
+  const [isapproved, setIsApproved] = useState(false);
+  const [isSetOpen, setIsSetOpen] = useState(false);
 
-    function onClick() {
+  const [SCAMPBalance, setSCAMPBalance] = useState();
+  const [CAMPBalance, setCAMPBalance] = useState();
+  const [USDCBalance, setUSDCBalance] = useState();
+
+  const [CCR, setCCR] = useState();
+  const [CAMPprice, setCampprice] = useState();
+  const [SCAMPprice, setSCampprice] = useState();
+  const [redemptionfee, setRedemptionFee] = useState();
+  const [mintingfee, setMintingFee] = useState();
+  const [collatbal, setCollatbal] = useState();
+
+  const [isLoading, setIsLoading] = useState(true);
+
+
+  // initialize hook----------------------------
+  useEffect(() => {
+    if (window.klaytn) {
+      getInfo();
+      window.klaytn.on("accountsChanged", async function (accounts) {
+        getInfo();
+        console.log("account change listen in bank");
+      });
+    }
+  }, []);
+
+
+  async function getInfo() {
+    // SCAMP UserBalance, PRICE
+    try {
+      await state.SCAMPContract.methods
+        .balanceOf(window.klaytn.selectedAddress)
+        .call((e, v) => setSCAMPBalance(caver.utils.fromPeb(v, "KLAY")));
+    } catch (e) { setSCAMPBalance(undefined) }
+
+    try {
+      await state.SCAMPContract.methods
+        .SCAMP_Price()
+        .call((e, v) => setSCampprice(v / 1e6));
+    } catch (e) { setSCampprice(undefined) }
+
+
+    // CAMP UserBalance, PRICE
+    try {
+      await state.CAMPContract.methods
+        .balanceOf(window.klaytn.selectedAddress)
+        .call((e, v) => setCAMPBalance(caver.utils.fromPeb(v, "KLAY")));
+    } catch (e) { setCAMPBalance(undefined) }
+
+    try {
+      await state.SCAMPContract.methods
+        .CAMP_Price()
+        .call((e, v) => setCampprice(v / 1e6));
+    } catch (e) { setCampprice(undefined) }
+
+
+    // USDC UserBalance
+    try {
+      await state.USDCContract.methods
+        .balanceOf(window.klaytn.selectedAddress)
+        .call((e, v) => setUSDCBalance(caver.utils.fromPeb(v, "KLAY")));
+    } catch (e) { setUSDCBalance(undefined) }
+
+
+    //set Mint Info
+    try {
+      await state.SCAMPContract.methods
+        .current_collateral_ratio()
+        .call((e, v) => setCCR(v / 1e6));
+    } catch (e) { setCCR(undefined) }
+
+    try {
+      await state.SCAMPContract.methods
+        .minting_fee()
+        .call((e, v) => setMintingFee(v / 1e6));
+    } catch (e) { setMintingFee(undefined) }
+
+    try {
+      await state.SCAMPContract.methods
+        .redemption_fee()
+        .call((e, v) => setRedemptionFee(v / 1e6));
+    } catch (e) { setRedemptionFee(undefined) }
+
+    try {
+      await state.BankContract.methods
+        .collatDollarBalance()
+        .call((e, v) => setCollatbal(v / 1e12));
+    } catch (e) { setCollatbal(undefined) }
+
+    setIsLoading(false);
+  }
+
+  const RedeemDecimal = 1000;
+
+  const SCAMPamt = (event) => {
+    console.log(CCR);
+    const scamp = event.target.value;
+    setUSDCInputAmount(
+      Math.round(scamp * SCAMPprice * CCR * RedeemDecimal) / RedeemDecimal
+    );
+    setCampInputAmount(
+      Math.round(
+        ((scamp * SCAMPprice * (1 - CCR)) / CAMPprice) * RedeemDecimal
+      ) / RedeemDecimal
+    );
+    setScampInputAmount(Math.round(scamp * RedeemDecimal) / RedeemDecimal);
+  };
+
+  const USDCamt = (event) => {
+    const usdc = event.target.value;
+    setUSDCInputAmount(Math.round(usdc * RedeemDecimal) / RedeemDecimal);
+    setCampInputAmount(
+      Math.round(((usdc / CCR - usdc) / CAMPprice) * RedeemDecimal) /
+      RedeemDecimal
+    );
+    setScampInputAmount(
+      Math.round((usdc / CCR / SCAMPprice) * RedeemDecimal) / RedeemDecimal
+    );
+  };
+
+  const CAMPamt = (event) => {
+    const camp = event.target.value;
+    setUSDCInputAmount(
+      Math.round(
+        ((camp * CAMPprice) / (1 - CCR) - camp * CAMPprice) *
+        RedeemDecimal
+      ) / RedeemDecimal
+    );
+    setCampInputAmount(Math.round(camp * RedeemDecimal) / RedeemDecimal);
+    setScampInputAmount(
+      Math.round(
+        ((camp * CAMPprice) / (1 - CCR) / SCAMPprice) * RedeemDecimal
+      ) / RedeemDecimal
+    );
+  };
+
+
+  const Slipamt = (event) => {
+    const value = event.target.value;
+    if (value <= 100 && value >= 0) {
+      setSlippage(value);
+    } else if (value >= 100) setSlippage(100);
+    else if (value <= 0) setSlippage(0);
+  };
+
+
+  function onClick() {
+    if (CCR >= 1) {
       state.BankContract.methods.redeem(
-        caver.utils.toPeb(usdcamount*1000, 'kpeb'),
-        caver.utils.toPeb(campamount*1000, 'mKLAY'),
-        caver.utils.toPeb(scampamount*1000*(100 - {slippage})/100, 'mKLAY')
+        caver.utils.toPeb(usdcInputAmount * 1000, 'kpeb'),
+        caver.utils.toPeb(campInputAmount * 1000, 'mKLAY'),
+        caver.utils.toPeb(scampInputAmount * 1000 * (100 - { slippage }) / 100, 'mKLAY')
       ).send({
         from: window.klaytn.selectedAddress,
-        gas : '3000000'
-      })
-    }
-  
-    function onClick2() {
-      state.SCAMPContract.methods.approve(
-        state.BankContract._address,
-        caver.utils.toPeb(scampamount*1000, 'mKLAY')
-      ).send({
-        from : window.klaytn.selectedAddress,
         gas: '3000000'
-      }).on('receipt', function() {
-        setIsApproved(true)
       })
+      // redeem contract 구현 끝나면 정리-------------------
+    } else if (CCR = 0) {
+      console.log("CCR=0")
+    } else {
+      console.log("CCR < 0")
     }
+    // -----------------------------------------
+  }
 
-    return(
-      <div>
-        <div>
+
+  function onClick2() {
+    state.SCAMPContract.methods.approve(
+      state.BankContract._address,
+      caver.utils.toPeb(scampInputAmount * 1000, 'mKLAY')
+    ).send({
+      from: window.klaytn.selectedAddress,
+      gas: '3000000'
+    }).on('receipt', function () {
+      setIsApproved(true)
+    })
+  }
+
+  return (
+    <>
+      {isLoading ? (
+        <p align-items="center">
+          <LoadingSVG
+            type="circle"
+            color="#000"
+            width="80px"
+            height="80px"
+            strokeWidth="1"
+          />
+        </p>
+      ) : (
+        <Content>
+          <div>
+            <span>Input</span>
+            <span>
+              <img
+                align="right"
+                onClick={() => setIsSetOpen((prev) => !prev)}
+                src={SetIcon}
+              />
+              {isSetOpen ? (
+                <SlippageSetting
+                  slippage={slippage}
+                  Slipamt={Slipamt}
+                  setSlippage={setSlippage}
+                />
+              ) : null}
+            </span>
+
+          </div>
+
           <InputForm
-            onChange={Slipamt}
-            value ={slippage}
-            type = 'text'
-            text = "Slippage Tolerance" />
-        </div>
-        <div>        
-          <InputForm
+            token="SCAMP"
+            balance={SCAMPBalance}
             onChange={SCAMPamt}
-            value ={scampamount}
-            type = 'text'
-            text = "SCAMP amount to redeem">
-          </InputForm>
-          <InputForm
-            onChange={USDCamt}
-            value ={usdcamount}
-            type = 'text'
-            text = "USDC amount to redeem">
-          </InputForm>
-          <InputForm
-            onChange={CAMPamt}
-            value ={campamount}
-            type = 'text'
-            text = "CAMP amount to redeem">
-          </InputForm>
+            value={scampInputAmount}
+            setValueFn={setScampInputAmount}
+            type="number"
+            isVisible={true}
+            haveMax={true}
+            haveBal={true}
+          />
 
-          {isapproved ? <Button text = "Redeem" onClick={onClick}></Button> : <Button text="Approve" onClick={onClick2}>Approve</Button>}
-        </div>
-    </div>
-    )
+
+          <span>Output (estimated)</span>
+          <InputForm
+            token="USDC"
+            balance={USDCBalance}
+            onChange={USDCamt}
+            value={usdcInputAmount}
+            setValueFn={setUSDCInputAmount}
+            type="number"
+            isVisible={true}
+            haveMax={false}
+            haveBal={true}
+          />
+
+          <InputForm
+            token="CAMP"
+            balance={CAMPBalance}
+            onChange={CAMPamt}
+            value={campInputAmount}
+            setValueFn={setCampInputAmount}
+            type="number"
+            isVisible={true}
+            haveMax={false}
+            haveBal={true}
+          />
+
+          <RedeemInfos>
+            <Info>
+              <p>Current Collateral Ratio</p>
+              <p>{CCR == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="12px" /> : CCR * 100} %</p>
+            </Info>
+            <Info>
+              <p>Redemption fee</p>
+              <p>{mintingfee == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="12px" /> : mintingfee * 100}%</p>
+            </Info>
+            <Info>
+              <p>Collateral balance</p>
+              <p>{collatbal == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="12px" /> : collatbal} USDT</p>
+            </Info>
+            <Info>
+              <p>Slippage</p>
+              <p>{slippage == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="12px" /> : slippage} %</p>
+            </Info>
+            <Info>
+              <p>Rates</p>
+              <p>
+                Scamp : {SCAMPprice == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="12px" /> : SCAMPprice}
+                <br />
+                camp: {CAMPprice == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="12px" /> : CAMPprice}
+              </p>
+            </Info>
+          </RedeemInfos>
+
+          <Approve>
+            <p>
+              First time Redeem SCAMP?<br />
+              Please approve SCAMP to use your<br />
+              SCAMP for Redemption.
+            </p>
+
+            {isapproved ? (
+              <Btn text="Redeem" onClick={onClick}>
+                Redeem
+              </Btn>
+            ) : (
+              <Btn text="Approve" onClick={onClick2}>
+                Approve
+              </Btn>
+            )}
+          </Approve>
+        </Content>
+      )}
+    </>
+  );
 }
 
 export default Redeemtool;

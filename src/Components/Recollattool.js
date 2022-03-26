@@ -32,7 +32,7 @@ function Recollattool () {
   const [USDCBalance, setUSDCBalance] = useState();
   const [isapproved, setIsApproved] = useState(false);
   const [CAMPprice, setCampprice] = useState();
-
+  const [CAMPBalance, setCAMPBalance] = useState();
 
   async function getInfo() {
     await state.SCAMPContract.methods

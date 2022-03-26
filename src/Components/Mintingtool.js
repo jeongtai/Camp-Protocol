@@ -3,9 +3,9 @@ import InputForm from "./InputForm";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Caver from "caver-js";
-import styled, { keyframes } from "styled-components";
-
-import LoadingBlack from "../assets/Loading-Black.svg";
+import styled from "styled-components";
+import SlippageSetting from "./SlippageSetting";
+import LoadingSVG from "../assets/LoadingSVG.js";
 import SetIcon from "../assets/SetIcon.svg";
 
 const Content = styled.div`
@@ -18,7 +18,7 @@ const Content = styled.div`
 `;
 
 const MintInfos = styled.div`
-    height: 174px;
+    height: 187px;
     padding: 10px;
 
     background-color: ${(props) => props.theme.backBlue};
@@ -32,6 +32,11 @@ const Info = styled.div`
     justify-content: space-between;
     align-items: flex-start;
 
+    p:first-child {
+        text-align: left;
+        color: ${(props) => props.theme.textGray};
+    }
+
     p {
         font-size: 12px;
         font-style: normal;
@@ -40,10 +45,6 @@ const Info = styled.div`
         color: ${(props) => props.theme.textBlack};
     }
 
-    p:first-child {
-        text-align: left;
-        color: ${(props) => props.theme.textGray};
-    }
 `;
 
 const Approve = styled.div`
@@ -63,51 +64,6 @@ const Btn = styled.button`
     padding: 8px;
     border-radius: 6px;
     width: 100%;
-`;
-
-const Setting = styled.div`
-    position: absolute;
-    margin-top: 20px;
-    padding: 20px;
-
-    width: 200px;
-    height: 150px;
-
-    left: auto;
-    right: auto;
-    background-color: white;
-    border-radius: 15px;
-    border: 2px solid ${(props) => props.theme.borderColor};
-    z-index: 2;
-    box-shadow: 0px 4px 20px 0px #00000033;
-
-    font-size: 14px;
-
-    transform-origin: 80% 0;
-    animation: ${keyframes`
-                  0% { transform:scale(0) }
-                  100% { transform:scale(1) }
-                  `} 0.2s linear;
-`;
-
-const InputSlippage = styled.input.attrs({ required: true })`
-    margin: 14px 0px;
-    border-radius: 8px;
-    width: 80%;
-    height: 40px;
-    border: 1px solid ${(props) => props.theme.connectBtnColor};
-    font-size: 18px;
-    font-family: "Lexend", sans-serif;
-    opacity: 1;
-`;
-
-const SlippageButton = styled.button`
-    padding: 4px 10px;
-    margin: 4px;
-    border-radius: 5px;
-    background-color: ${(props) =>
-        props.isMatch ? props.theme.connectBtnColor : props.theme.addBtnColor};
-    color: ${(props) => (props.isMatch ? "white" : "black")};
 `;
 
 const caver = new Caver(window.klaytn);
@@ -136,42 +92,81 @@ function Mintingtool() {
     const [collatbal, setCollatbal] = useState();
 
     const [isLoading, setIsLoading] = useState(true);
-    
+
+
+    // initialize hook----------------------------
+    useEffect(() => {
+        if (window.klaytn) {
+            getInfo();
+            window.klaytn.on("accountsChanged", async function (accounts) {
+                getInfo();
+                console.log("account change listen in bank");
+            });
+        }
+    }, []);
+
     async function getInfo() {
         // SCAMP UserBalance, PRICE
-        await state.SCAMPContract.methods
-            .balanceOf(window.klaytn.selectedAddress)
-            .call((e, v) =>
-                setSCAMPBalance(caver.utils.fromPeb(v, "KLAY"))
-            );
-        await state.SCAMPContract.methods
-            .SCAMP_Price()
-            .call((e, v) => setSCampprice(v / 1e6));
+        try {
+            await state.SCAMPContract.methods
+                .balanceOf(window.klaytn.selectedAddress)
+                .call((e, v) => setSCAMPBalance(caver.utils.fromPeb(v, "KLAY")));
+        } catch (e) { setSCAMPBalance(undefined) }
+
+        try {
+            await state.SCAMPContract.methods
+                .SCAMP_Price()
+                .call((e, v) => setSCampprice(v / 1e6));
+        } catch (e) { setSCampprice(undefined) }
+
 
         // CAMP UserBalance, PRICE
-        await state.CAMPContract.methods
-            .balanceOf(window.klaytn.selectedAddress)
-            .call((e, v) =>
-                setCAMPBalance(caver.utils.fromPeb(v, "KLAY"))
-            );
-        await state.SCAMPContract.methods
-            .CAMP_Price()
-            .call((e, v) => setCampprice(v / 1e6));
+        try {
+            await state.CAMPContract.methods
+                .balanceOf(window.klaytn.selectedAddress)
+                .call((e, v) => setCAMPBalance(caver.utils.fromPeb(v, "KLAY")));
+        } catch (e) { setCAMPBalance(undefined) }
+
+        try {
+            await state.SCAMPContract.methods
+                .CAMP_Price()
+                .call((e, v) => setCampprice(v / 1e6));
+        } catch (e) { setCampprice(undefined) }
+
 
         // USDC UserBalance
-        await state.USDCContract.methods
-            .balanceOf(window.klaytn.selectedAddress)
-            .call((e, v) =>
-                setUSDCBalance(caver.utils.fromPeb(v, "KLAY"))
-            );
+        try {
+            await state.USDCContract.methods
+                .balanceOf(window.klaytn.selectedAddress)
+                .call((e, v) => setUSDCBalance(caver.utils.fromPeb(v, "KLAY")));
+        } catch (e) { setUSDCBalance(undefined) }
+
 
         //set Mint Info
-        await state.SCAMPContract.methods
-            .current_collateral_ratio()
-            .call((e, v) => setCCR(v/1e6))
-        await state.SCAMPContract.methods.minting_fee().call((e, v) => setMintingFee(v/1e6))
-        await state.SCAMPContract.methods.redemption_fee().call((e, v) => setRedemptionFee(v/1e6))
-        await state.BankContract.methods.collatDollarBalance().call((e, v) => setCollatbal(v/1e12))
+        try {
+            await state.SCAMPContract.methods
+                .current_collateral_ratio()
+                .call((e, v) => setCCR(v / 1e6));
+        } catch (e) { setCCR(undefined) }
+
+        try {
+            await state.SCAMPContract.methods
+                .minting_fee()
+                .call((e, v) => setMintingFee(v / 1e6));
+        } catch (e) { setMintingFee(undefined) }
+
+        try {
+            await state.SCAMPContract.methods
+                .redemption_fee()
+                .call((e, v) => setRedemptionFee(v / 1e6));
+        } catch (e) { setRedemptionFee(undefined) }
+
+        try {
+            await state.BankContract.methods
+                .collatDollarBalance()
+                .call((e, v) => setCollatbal(v / 1e12));
+        } catch (e) { setCollatbal(undefined) }
+
         setIsLoading(false);
     }
 
@@ -181,7 +176,7 @@ function Mintingtool() {
         setUSDCInputAmount(Math.round(usdc * mintDecimal) / mintDecimal);
         setCampInputAmount(
             Math.round(((usdc / CCR - usdc) / CAMPprice) * mintDecimal) /
-                mintDecimal
+            mintDecimal
         );
         setScampInputAmount(
             Math.round((usdc / CCR / SCAMPprice) * mintDecimal) / mintDecimal
@@ -193,7 +188,7 @@ function Mintingtool() {
         setUSDCInputAmount(
             Math.round(
                 ((camp * CAMPprice) / (1 - CCR) - camp * CAMPprice) *
-                    mintDecimal
+                mintDecimal
             ) / mintDecimal
         );
         setCampInputAmount(Math.round(camp * mintDecimal) / mintDecimal);
@@ -205,14 +200,15 @@ function Mintingtool() {
     };
 
     const SCAMPamt = (event) => {
-      console.log(CCR)
+        console.log(CCR);
         const scamp = event.target.value;
         setUSDCInputAmount(
-            Math.round((scamp * SCAMPprice) * CCR * mintDecimal) / mintDecimal
+            Math.round(scamp * SCAMPprice * CCR * mintDecimal) / mintDecimal
         );
         setCampInputAmount(
-            Math.round((scamp * SCAMPprice) * (1 - CCR) / CAMPprice * mintDecimal) /
-                mintDecimal
+            Math.round(
+                ((scamp * SCAMPprice * (1 - CCR)) / CAMPprice) * mintDecimal
+            ) / mintDecimal
         );
         setScampInputAmount(Math.round(scamp * mintDecimal) / mintDecimal);
     };
@@ -226,48 +222,44 @@ function Mintingtool() {
     };
 
     function onClick() {
-      if (CCR >= 1) {
-        state.BankContract.methods
-        .mint1t1SCAMP(
-            caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"),
-            caver.utils.toPeb(
-                (scampInputAmount * 1000 * (100 - slippage)) / 100,
-                "mKLAY"
-            )
-        )
-        .send({
-            from: window.klaytn.selectedAddress,
-            gas: "3000000",
-        });
-      } else if (CCR === 0 ) {
-        state.BankContract.methods
-        .mintAlgorithmicSCAMP(
-            caver.utils.toPeb(campInputAmount * 1000, "mKLAY"),
-            caver.utils.toPeb(
-                (scampInputAmount * 1000 * (100 - slippage)) / 100,
-                "mKLAY"
-            )
-        )
-        .send({
-            from: window.klaytn.selectedAddress,
-            gas: "3000000",
-        });
-      } else {
-        state.BankContract.methods
-            .mintFractionalSCAMP(
-                caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"),
-                caver.utils.toPeb(campInputAmount * 1000* 100, "mKLAY"),
-                caver.utils.toPeb(
-                    (scampInputAmount*1000*0.5),
-                    "mKLAY"
+        if (CCR >= 1) {
+            state.BankContract.methods
+                .mint1t1SCAMP(
+                    caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"),
+                    caver.utils.toPeb(
+                        (scampInputAmount * 1000 * (100 - slippage)) / 100,
+                        "mKLAY"
+                    )
                 )
-            )
-            .send({
-                from: window.klaytn.selectedAddress,
-                gas: "3000000",
-            });
-            // .on('receipt', ()=>getInfo()));
-      }
+                .send({
+                    from: window.klaytn.selectedAddress,
+                    gas: "3000000",
+                });
+        } else if (CCR === 0) {
+            state.BankContract.methods
+                .mintAlgorithmicSCAMP(
+                    caver.utils.toPeb(campInputAmount * 1000, "mKLAY"),
+                    caver.utils.toPeb(
+                        (scampInputAmount * 1000 * (100 - slippage)) / 100,
+                        "mKLAY"
+                    )
+                )
+                .send({
+                    from: window.klaytn.selectedAddress,
+                    gas: "3000000",
+                });
+        } else {
+            state.BankContract.methods
+                .mintFractionalSCAMP(
+                    caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"),
+                    caver.utils.toPeb(campInputAmount * 1000 * 100, "mKLAY"),
+                    caver.utils.toPeb(scampInputAmount * 1000 * 0.5, "mKLAY")
+                )
+                .send({
+                    from: window.klaytn.selectedAddress,
+                    gas: "3000000",
+                });
+        }
     }
 
     function onClick2() {
@@ -296,22 +288,27 @@ function Mintingtool() {
             });
     }
 
-    // initialize hook----------------------------
-    useEffect(() => {
-        if (window.klaytn) {
-            getInfo();
-            window.klaytn.on("accountsChanged", async function (accounts) {
-                getInfo();
-                console.log("account change listen in bank");
-            });
-        }
-    }, []);
+
+    const mintInfos = [
+        { name: "Current Collateral Ratio", val: CCR, expression: `${CCR * 100} %`, },
+        { name: "Minting fee", val: mintingfee, expression: `${mintingfee * 100} %` },
+        { name: "Collateral balance", val: collatbal, expression: `${collatbal} USDC` },
+        { name: "Slippage", val: slippage, expression: `${slippage} %` },
+        { name: "SCAMP price", val: SCAMPprice, expression: `${SCAMPprice} USDC` },
+        { name: "CAMP price", val: CAMPprice, expression: `${CAMPprice} USDC` },
+    ];
 
     return (
         <>
             {isLoading ? (
-                <p text-align="center">
-                    <img width="80px" src={LoadingBlack} />
+                <p align-items="center">
+                    <LoadingSVG
+                        type="circle"
+                        color="#000"
+                        width="80px"
+                        height="80px"
+                        strokeWidth="1"
+                    />
                 </p>
             ) : (
                 <Content>
@@ -324,38 +321,11 @@ function Mintingtool() {
                                 src={SetIcon}
                             />
                             {isSetOpen ? (
-                                <Setting>
-                                    <p>Slippage Tolerance</p>
-                                    <InputSlippage
-                                        max="100"
-                                        type="number"
-                                        onChange={Slipamt}
-                                        value={slippage <= 100 ? slippage : 100}
-                                    />
-                                    <span>%</span>
-                                    <div>
-                                        <SlippageButton
-                                            onClick={() => setSlippage(0.1)}
-                                            isMatch={0.1 === slippage}
-                                        >
-                                            0.1
-                                        </SlippageButton>
-
-                                        <SlippageButton
-                                            onClick={() => setSlippage(0.5)}
-                                            isMatch={0.5 === slippage}
-                                        >
-                                            0.5
-                                        </SlippageButton>
-
-                                        <SlippageButton
-                                            onClick={() => setSlippage(1.0)}
-                                            isMatch={1.0 === slippage}
-                                        >
-                                            1.0
-                                        </SlippageButton>
-                                    </div>
-                                </Setting>
+                                <SlippageSetting
+                                    slippage={slippage}
+                                    Slipamt={Slipamt}
+                                    setSlippage={setSlippage}
+                                />
                             ) : null}
                         </span>
                     </div>
@@ -398,30 +368,12 @@ function Mintingtool() {
                     />
 
                     <MintInfos>
-                        <Info>
-                            <p>Current Collateral Ratio</p>
-                            <p>{CCR * 100} %</p>
-                        </Info>
-                        <Info>
-                            <p>Minting fee</p>
-                            <p>{mintingfee * 100}%</p>
-                        </Info>
-                        <Info>
-                            <p>Collateral balance</p>
-                            <p>{collatbal} USDT</p>
-                        </Info>
-                        <Info>
-                            <p>Slippage</p>
-                            <p>{slippage} %</p>
-                        </Info>
-                        <Info>
-                            <p>Rates</p>
-                            <p>
-                                Scamp : {SCAMPprice}
-                                <br />
-                                camp: {CAMPprice}
-                            </p>
-                        </Info>
+                        {mintInfos.map((mintInfo, index) => (
+                            <Info>
+                                <p>{mintInfo.name}</p>
+                                <p>{mintInfo.val == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : mintInfo.expression}</p>
+                            </Info>
+                        ))}
                     </MintInfos>
 
                     <Approve>

@@ -40,9 +40,9 @@ const ConnectWallet = styled.button`
 
 function PageHeader() {
     const [isWalletConnected, setIsWalletConnected] = useState(false);
-    const [currentAddress, setCurrentAddress] = useState(
-        window.klaytn ? window.klaytn.selectedAddress : undefined
-    );
+    const [currentAddress, setCurrentAddress] = useState(window.klaytn
+                                                        ? window.klaytn.selectedAddress
+                                                        : undefined);
     const { pathname } = useLocation();
     
     // initialize hook----------------------------
@@ -81,6 +81,7 @@ function PageHeader() {
     async function connectKaikas() {
         const response = await window.klaytn.enable();
         console.log("connect Btn Click : ", response);
+        setCurrentAddress(response[0]);
         setIsWalletConnected(true);
         return window.klaytn.selectedAddress;
     }
@@ -98,7 +99,7 @@ function PageHeader() {
                 </a>
                 <ConnectWallet onClick={() => connectKaikas()}>
                     {isWalletConnected
-                        ? currentAddress.slice(0, 10) +
+                        ? currentAddress.slice(0,10) +
                           "..." +
                           currentAddress.slice(-3)
                         : "Connect Wallet"}

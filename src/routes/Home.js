@@ -4,7 +4,8 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import CAMPColor from "../assets/CAMP-color.svg";
 import SCAMPColor from "../assets/SCAMP-color.svg";
-import Loading from  "../assets/Loading.svg";
+import LoadingSVG from "../assets/LoadingSVG.js";
+import { isNullOrUndefined } from "url/util";
 
 const Dashboard = styled.div`
     justify-content: center;
@@ -13,9 +14,8 @@ const Dashboard = styled.div`
     grid-template-columns: 60% 40%;
 
     div:nth-child(1) {
-	    grid-column: 1/3;
+        grid-column: 1/3;
     }
-    
 `;
 
 const Overview = styled.div`
@@ -33,7 +33,7 @@ const Overview = styled.div`
     border: 2px solid ${(props) => props.theme.borderColor};
 
     span {
-        margin : 0 20px;
+        margin: 0 20px;
         font-weight: 400;
         font-size: 20px;
         width: 100%;
@@ -45,7 +45,7 @@ const OverviewItem = styled.div`
     flex: 1 1 20%;
 
     margin: 15px 10px;
-    padding : 0px 10px;
+    padding: 0px 10px;
 
     width: 23%;
     min-width: 120px;
@@ -162,21 +162,22 @@ function Home() {
     const [campsupply, setCampSupply] = useState();
     const [pricetarget, setPriceTarget] = useState();
     const [cur_ratio, setCur_Ratio] = useState();
-    const [isLoading, setIsLoading] = useState(true);
     const [SCAMPprice, setSCampprice] = useState();
 
+    const [isLoading, setIsLoading] = useState(true);
+
     const caver = new Caver(window.klaytn);
-    const Infos = [
+    const infos = [
         { name: "Total Market Cap", amt: "$ 415252.5102" },
         { name: "sCAMP Price", amt: `${SCAMPprice}` },
         { name: "TVL", amt: "$ 19240.4912" },
         { name: "Treasury Balance", amt: "$ 7608.0027" },
         { name: "Price Target", amt: ` $ ${pricetarget}` },
-        { name: "Current_Ratio", amt: `${cur_ratio * 100} %` },
+        { name: "Current Ratio", amt: `${cur_ratio * 100} %` },
         { name: "Owned Liquidity", amt: "$ 12667.3552" },
         { name: "Rented Liquidity", amt: "$ 16891.8558" },
     ];
-
+    
     const Tokens = [
         {
             name: "CAMP",
@@ -195,21 +196,31 @@ function Home() {
     ];
 
     async function getTokenInfo() {
-        await state.SCAMPContract.methods
-            .totalSupply()
-            .call((e, v) => setScampSupply(caver.utils.fromPeb(v, "KLAY")));
-        await state.CAMPContract.methods
-            .totalSupply()
-            .call((e, v) => setCampSupply(caver.utils.fromPeb(v, "KLAY")));
-        await state.SCAMPContract.methods
-            .price_target()
-            .call((e, v) => setPriceTarget(v / 1000000));
-        await state.SCAMPContract.methods
-            .current_collateral_ratio()
-            .call((e, v) => setCur_Ratio(v/1e6));
-        await state.SCAMPContract.methods
-            .SCAMP_Price()
-            .call((e, v) => setSCampprice(v / 1e6));
+        try {await state.SCAMPContract.methods
+                .totalSupply()
+                .call((e, v) => setScampSupply(caver.utils.fromPeb(v, "KLAY")));
+        } catch {setScampSupply(undefined)}
+
+        try {await state.CAMPContract.methods
+                .totalSupply()
+                .call((e, v) => setCampSupply(caver.utils.fromPeb(v, "KLAY")));
+        } catch {setCampSupply(undefined)}
+
+        try {await state.SCAMPContract.methods
+                .price_target()
+                .call((e, v) => setPriceTarget(v / 1e6));
+        } catch {setPriceTarget(undefined)}
+
+        try {await state.SCAMPContract.methods
+                .current_collateral_ratio()
+                .call((e, v) => setCur_Ratio(v / 1e6));
+        } catch {setCur_Ratio(undefined)}
+
+        try {await state.SCAMPContract.methods
+                .SCAMP_Price()
+                .call((e, v) => setSCampprice(v / 1e6));
+        } catch {setSCampprice(undefined)}
+        
         setIsLoading(false);
     }
     useEffect(() => {
@@ -219,22 +230,34 @@ function Home() {
     return (
         <>
             {isLoading ? (
-                <p align-items="center"><img width="80px" src={Loading}/></p>
+                <p align-items="center">
+                    <LoadingSVG
+                        type="circle"
+                        color="#fff"
+                        width="80px"
+                        height="80px"
+                        strokeWidth="6"
+                    />
+                </p>
             ) : (
                 <Dashboard>
                     <Overview>
                         <span>Overview</span>
 
-                        {Infos.map((info, index) => (
+                        {infos.map((info, index) => (
                             <OverviewItem key={info.name}>
                                 <p>{info.name}</p>
-                                <p>{info.amt}</p>
+                                <p>
+                                    {info.amt==="undefined"
+                                    ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
+                                    : info.amt}
+                                </p>
                             </OverviewItem>
                         ))}
                     </Overview>
                     <TVL>
                         <span>TVL</span>
-                        <p>{Infos[2].amt}</p>
+                        <p>{infos[2].amt}</p>
                     </TVL>
                     <TokensList>
                         {Tokens.map((token, index) => (

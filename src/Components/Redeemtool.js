@@ -360,7 +360,7 @@ function Redeemtool() {
 
           <RedeemInfos>
           {redeemInfos.map((redeemInfo, index) => (
-                            <Info>
+                            <Info key={redeemInfos.name}>
                                 <p>{redeemInfo.name}</p>
                                 <p>{redeemInfo.val == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : redeemInfo.expression}</p>
                             </Info>

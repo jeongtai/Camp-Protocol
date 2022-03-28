@@ -267,13 +267,11 @@ function Redeemtool() {
 
 
   function onClick2() {
-    state.SCAMPContract.methods.approve(
-      state.BankContract._address,
-      caver.utils.toPeb(scampInputAmount * 1000, 'mKLAY')
-    ).send({
-      from: window.klaytn.selectedAddress,
-      gas: '3000000'
-    }).on('receipt', function () {
+    state.SCAMPContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "KLAY"))
+    .send({
+      from : window.klaytn.selectedAddress,
+      gas : 3000000
+    }).on('receipt', () => {
       setIsApproved(true)
     })
   }

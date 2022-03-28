@@ -31,7 +31,7 @@ function Recollattool () {
   const [USDCBalance, setUSDCBalance] = useState();
   const [isapproved, setIsApproved] = useState(false);
   const [CAMPprice, setCampprice] = useState();
-
+  const [CAMPBalance, setCAMPBalance] = useState();
 
   async function getInfo() {
     await state.SCAMPContract.methods
@@ -50,6 +50,7 @@ function Recollattool () {
       }
     })
   }
+  
   function ApproveUSDC() {
     state.USDCContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "mKLAY"))
     .send({
@@ -83,6 +84,8 @@ function Recollattool () {
   
   return (
     <div>
+      <p>Input</p>
+
         <InputForm
           token="USDC"
           balance={USDCBalance}
@@ -94,7 +97,18 @@ function Recollattool () {
           haveMax={true}
           haveBal={true}
         />
-
+        <p>Output</p>
+<InputForm
+          token="CAMP"
+          balance={CAMPBalance}
+          onChange={USDCamt}
+          value={usdcInputAmount}
+          setValueFn={setUSDCInputAmount}
+          type="number"
+          isVisible={true}
+          haveMax={true}
+          haveBal={true}
+        />
         <Approve>
           <p>
             First time Mint SCAMP?

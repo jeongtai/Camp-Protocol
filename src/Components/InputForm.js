@@ -1,8 +1,11 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import styles from "./css/Input.module.css";
 import styled from "styled-components";
 import TokenLogo from "./TokenLogo";
 import { useState } from "react";
+import LoadingSVG from "../assets/LoadingSVG.js";
+
+
 
 const Section = styled.div`
     margin: 14px 0px;
@@ -16,7 +19,7 @@ const Section = styled.div`
     border-radius: 8px;
 
     color: gray;
-    display : ${props=>props.isVisible ? "block" : "none"};
+    display : ${props => props.isVisible ? "block" : "none"};
 
     p {
         font-size: 12px;
@@ -52,6 +55,7 @@ const Bottom = styled.div`
         color: black;
         text-align: right;
     }
+    
 `;
 
 const MaxBtn = styled.button`
@@ -65,26 +69,32 @@ const MaxBtn = styled.button`
     color: red;
     font-weight: 400;
     font-size: 9px;
-    visibility: ${(props) => ( (props.haveMax&&props.isVisible) ? "visible" : "hidden")};
+    visibility: ${(props) => ((props.haveMax && props.isVisible) ? "visible" : "hidden")};
 `;
 
+
 function InputForm(props) {
-    const [formValue,setFormValue] = useState(props.value)
+    const [formValue, setFormValue] = useState(props.value)
     const inputRef = useRef(null);
 
-    console.log(props)
     return (
         <Section isVisible={props.isVisible}>
             <Top>
-                {props.haveBal?<p>Balance : {props.balance}</p>:null}
+                {props.haveBal ? <p>Balance : {props.balance == -1 ? <LoadingSVG
+                                                type="dot"
+                                                color="#000"
+                                                width="15px"
+                                                height="15px"
+                                            /> : props.balance}
+                </p> : null}
                 <MaxBtn
                     onClick={props.haveMax
-                              ? async(e) =>{
-                                        console.log(inputRef.current)
-                                        await props.setValueFn(props.balance)
-                                        inputRef.current.dispatchEvent(new Event('change', { bubbles: true }))
-                                     }
-                                     : null
+                        ? async (e) => {
+                            props.setValueFn(props.balance)
+                            
+                            inputRef.current.dispatchEvent(new Event('change', { bubbles: true }))
+                        }
+                        : null
                     }
                     haveMax={props.haveMax}
                     isVisible={props.isVisible}

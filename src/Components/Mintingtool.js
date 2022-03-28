@@ -84,8 +84,8 @@ function Mintingtool() {
     const [CAMPBalance, setCAMPBalance] = useState();
     const [USDCBalance, setUSDCBalance] = useState();
 
-    const [USDCapprove, setUSDCapprove] = useState();
-    const [CAMPapprove, setCAMPapprove] = useState();
+    const [USDCapprove, setUSDCapprove] = useState(false);
+    const [CAMPapprove, setCAMPapprove] = useState(false);
     const [CCR, setCCR] = useState();
     const [CAMPprice, setCampprice] = useState();
     const [SCAMPprice, setSCampprice] = useState();

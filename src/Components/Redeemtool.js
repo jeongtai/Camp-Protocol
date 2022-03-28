@@ -234,21 +234,27 @@ function Redeemtool() {
 
   function onClick() {
     if (CCR >= 1) {
-      state.BankContract.methods.redeem(
-        caver.utils.toPeb(usdcInputAmount * 1000, 'kpeb'),
-        caver.utils.toPeb(campInputAmount * 1000, 'mKLAY'),
-        caver.utils.toPeb(scampInputAmount * 1000 * (100 - { slippage }) / 100, 'mKLAY')
-      ).send({
-        from: window.klaytn.selectedAddress,
-        gas: '3000000'
-      })
-      // redeem contract 구현 끝나면 정리-------------------
-    } else if (CCR = 0) {
-      console.log("CCR=0")
-    } else {
-      console.log("CCR < 0")
-    }
-    // -----------------------------------------
+      state.BankContract.methods
+        .redeem1t1SCAMP(caver.utils.toPeb(scampInputAmount * 1000, 'mKLAY'), caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"))
+        .send({
+          from : window.klaytn.selectedAddress,
+          gas : 3000000
+        })}
+    else if (CCR === 0){
+      state.BankContract.methods
+        .redeemAlgorithmicSCAMP(caver.utils.toPeb(scampInputAmount * 1000, 'mKLAY'), caver.utils.toPeb(campInputAmount * 1000, "mKLAY"))
+        .send({
+          from : window.klaytn.selectedAddress,
+          gas : 3000000
+        })}
+
+    else {
+      state.BankContract.methods
+      .redeemFractionalSCAMP(caver.utils.toPeb(scampInputAmount * 1000, 'mKLAY'), caver.utils.toPeb(campInputAmount * 1000, "mKLAY"), caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"))
+      .send({
+        from : window.klaytn.selectedAddress,
+        gas : 3000000
+      })}
   }
 
 

@@ -21,105 +21,60 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface IUniswapV2FactoryInterface extends ethers.utils.Interface {
   functions: {
+    "allPairs(uint256)": FunctionFragment;
+    "allPairsLength()": FunctionFragment;
+    "createPair(address,address)": FunctionFragment;
     "feeTo()": FunctionFragment;
     "feeToSetter()": FunctionFragment;
-    "feeDistributor()": FunctionFragment;
-    "allPairs(uint256)": FunctionFragment;
-    "setMigrator(address)": FunctionFragment;
-    "allPairsLength()": FunctionFragment;
-    "klayBuybackFund()": FunctionFragment;
-    "migrator()": FunctionFragment;
-    "setFeeToSetter(address)": FunctionFragment;
-    "createPair(address,address)": FunctionFragment;
-    "setFeeDistributor(address)": FunctionFragment;
     "getPair(address,address)": FunctionFragment;
-    "setKlayBuybackFund(address)": FunctionFragment;
     "setFeeTo(address)": FunctionFragment;
+    "setFeeToSetter(address)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "allPairs",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "allPairsLength",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "createPair",
+    values: [string, string]
+  ): string;
   encodeFunctionData(functionFragment: "feeTo", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "feeToSetter",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "feeDistributor",
-    values?: undefined
+    functionFragment: "getPair",
+    values: [string, string]
   ): string;
-  encodeFunctionData(
-    functionFragment: "allPairs",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(functionFragment: "setMigrator", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "allPairsLength",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "klayBuybackFund",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "migrator", values?: undefined): string;
+  encodeFunctionData(functionFragment: "setFeeTo", values: [string]): string;
   encodeFunctionData(
     functionFragment: "setFeeToSetter",
     values: [string]
   ): string;
-  encodeFunctionData(
-    functionFragment: "createPair",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setFeeDistributor",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getPair",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setKlayBuybackFund",
-    values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "setFeeTo", values: [string]): string;
 
+  decodeFunctionResult(functionFragment: "allPairs", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "allPairsLength",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "createPair", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "feeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "feeToSetter",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "feeDistributor",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "allPairs", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setMigrator",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "allPairsLength",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "klayBuybackFund",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "migrator", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getPair", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setFeeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setFeeToSetter",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "createPair", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setFeeDistributor",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getPair", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setKlayBuybackFund",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "setFeeTo", data: BytesLike): Result;
 
   events: {
     "PairCreated(address,address,address,uint256)": EventFragment;
@@ -181,32 +136,12 @@ export class IUniswapV2Factory extends BaseContract {
   interface: IUniswapV2FactoryInterface;
 
   functions: {
-    feeTo(overrides?: CallOverrides): Promise<[string]>;
-
-    feeToSetter(overrides?: CallOverrides): Promise<[string]>;
-
-    feeDistributor(overrides?: CallOverrides): Promise<[string]>;
-
     allPairs(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string] & { pair: string }>;
 
-    setMigrator(
-      arg0: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     allPairsLength(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    klayBuybackFund(overrides?: CallOverrides): Promise<[string]>;
-
-    migrator(overrides?: CallOverrides): Promise<[string]>;
-
-    setFeeToSetter(
-      arg0: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
 
     createPair(
       tokenA: string,
@@ -214,10 +149,9 @@ export class IUniswapV2Factory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    setFeeDistributor(
-      arg0: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    feeTo(overrides?: CallOverrides): Promise<[string]>;
+
+    feeToSetter(overrides?: CallOverrides): Promise<[string]>;
 
     getPair(
       tokenA: string,
@@ -225,40 +159,20 @@ export class IUniswapV2Factory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string] & { pair: string }>;
 
-    setKlayBuybackFund(
+    setFeeTo(
       arg0: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    setFeeTo(
+    setFeeToSetter(
       arg0: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
-  feeTo(overrides?: CallOverrides): Promise<string>;
-
-  feeToSetter(overrides?: CallOverrides): Promise<string>;
-
-  feeDistributor(overrides?: CallOverrides): Promise<string>;
-
   allPairs(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  setMigrator(
-    arg0: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   allPairsLength(overrides?: CallOverrides): Promise<BigNumber>;
-
-  klayBuybackFund(overrides?: CallOverrides): Promise<string>;
-
-  migrator(overrides?: CallOverrides): Promise<string>;
-
-  setFeeToSetter(
-    arg0: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
 
   createPair(
     tokenA: string,
@@ -266,10 +180,9 @@ export class IUniswapV2Factory extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  setFeeDistributor(
-    arg0: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  feeTo(overrides?: CallOverrides): Promise<string>;
+
+  feeToSetter(overrides?: CallOverrides): Promise<string>;
 
   getPair(
     tokenA: string,
@@ -277,34 +190,20 @@ export class IUniswapV2Factory extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  setKlayBuybackFund(
-    arg0: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   setFeeTo(
     arg0: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setFeeToSetter(
+    arg0: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
-    feeTo(overrides?: CallOverrides): Promise<string>;
-
-    feeToSetter(overrides?: CallOverrides): Promise<string>;
-
-    feeDistributor(overrides?: CallOverrides): Promise<string>;
-
     allPairs(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-    setMigrator(arg0: string, overrides?: CallOverrides): Promise<void>;
-
     allPairsLength(overrides?: CallOverrides): Promise<BigNumber>;
-
-    klayBuybackFund(overrides?: CallOverrides): Promise<string>;
-
-    migrator(overrides?: CallOverrides): Promise<string>;
-
-    setFeeToSetter(arg0: string, overrides?: CallOverrides): Promise<void>;
 
     createPair(
       tokenA: string,
@@ -312,7 +211,9 @@ export class IUniswapV2Factory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    setFeeDistributor(arg0: string, overrides?: CallOverrides): Promise<void>;
+    feeTo(overrides?: CallOverrides): Promise<string>;
+
+    feeToSetter(overrides?: CallOverrides): Promise<string>;
 
     getPair(
       tokenA: string,
@@ -320,9 +221,9 @@ export class IUniswapV2Factory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    setKlayBuybackFund(arg0: string, overrides?: CallOverrides): Promise<void>;
-
     setFeeTo(arg0: string, overrides?: CallOverrides): Promise<void>;
+
+    setFeeToSetter(arg0: string, overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -348,29 +249,9 @@ export class IUniswapV2Factory extends BaseContract {
   };
 
   estimateGas: {
-    feeTo(overrides?: CallOverrides): Promise<BigNumber>;
-
-    feeToSetter(overrides?: CallOverrides): Promise<BigNumber>;
-
-    feeDistributor(overrides?: CallOverrides): Promise<BigNumber>;
-
     allPairs(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-    setMigrator(
-      arg0: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     allPairsLength(overrides?: CallOverrides): Promise<BigNumber>;
-
-    klayBuybackFund(overrides?: CallOverrides): Promise<BigNumber>;
-
-    migrator(overrides?: CallOverrides): Promise<BigNumber>;
-
-    setFeeToSetter(
-      arg0: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
 
     createPair(
       tokenA: string,
@@ -378,10 +259,9 @@ export class IUniswapV2Factory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    setFeeDistributor(
-      arg0: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    feeTo(overrides?: CallOverrides): Promise<BigNumber>;
+
+    feeToSetter(overrides?: CallOverrides): Promise<BigNumber>;
 
     getPair(
       tokenA: string,
@@ -389,44 +269,24 @@ export class IUniswapV2Factory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    setKlayBuybackFund(
+    setFeeTo(
       arg0: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    setFeeTo(
+    setFeeToSetter(
       arg0: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    feeTo(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    feeToSetter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    feeDistributor(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     allPairs(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    setMigrator(
-      arg0: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     allPairsLength(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    klayBuybackFund(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    migrator(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    setFeeToSetter(
-      arg0: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
 
     createPair(
       tokenA: string,
@@ -434,10 +294,9 @@ export class IUniswapV2Factory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    setFeeDistributor(
-      arg0: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    feeTo(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    feeToSetter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getPair(
       tokenA: string,
@@ -445,12 +304,12 @@ export class IUniswapV2Factory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    setKlayBuybackFund(
+    setFeeTo(
       arg0: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    setFeeTo(
+    setFeeToSetter(
       arg0: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

@@ -2,6 +2,2979 @@
   "version": "3.2",
   "log": [
     {
+      "IUniswapV2Callee": {
+        "src": "@uniswap\\v2-core\\contracts\\interfaces\\IUniswapV2Callee.sol:3",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "uniswapV2Call(address,uint256,uint256,bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "CAMP": {
+        "src": "contracts\\bank\\CAMP.sol:10",
+        "version": {
+          "withMetadata": "50bcc7e2c65884528b22162461dfd2a9ca48f0bc837ee8cf74200afff2f46608",
+          "withoutMetadata": "975a025ece8b0470db585b9170167f27e02fb1557185b1778f9a55778e11f5b1",
+          "linkedWithoutMetadata": "975a025ece8b0470db585b9170167f27e02fb1557185b1778f9a55778e11f5b1"
+        },
+        "inherit": [
+          "Context",
+          "Owned",
+          "KIP7",
+          "IKIP7Detailed",
+          "IKIP7"
+        ],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [
+          "(address)",
+          "setSCAMPAddress(address)",
+          "setBondAddress(address)",
+          "setStakeAddress(address)",
+          "Bank_mint(address,uint256)",
+          "Bank_burn_from(address,uint256)",
+          "Bond_mint(address,uint256)",
+          "Staking_mint(address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CAMP",
+            "src": "contracts\\bank\\CAMP.sol:45"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_balances",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:12"
+            },
+            {
+              "label": "_allowances",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:14"
+            },
+            {
+              "label": "_totalSupply",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:16"
+            },
+            {
+              "label": "_name",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_string_storage",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:18"
+            },
+            {
+              "label": "_symbol",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_string_storage",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:20"
+            },
+            {
+              "label": "_decimals",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint8",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:22"
+            },
+            {
+              "label": "owner",
+              "offset": 1,
+              "slot": "5",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:8"
+            },
+            {
+              "label": "nominatedOwner",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:9"
+            },
+            {
+              "label": "Bonding_contract_address",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_address",
+              "contract": "CAMP",
+              "src": "contracts\\bank\\CAMP.sol:15"
+            },
+            {
+              "label": "Staking_contract_address",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_address",
+              "contract": "CAMP",
+              "src": "contracts\\bank\\CAMP.sol:16"
+            },
+            {
+              "label": "_SCAMP",
+              "offset": 0,
+              "slot": "9",
+              "type": "t_contract(SCAMP)3485",
+              "contract": "CAMP",
+              "src": "contracts\\bank\\CAMP.sol:18"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(SCAMP)3485": {
+              "label": "contract SCAMP",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint8": {
+              "label": "uint8",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "AssetOracle": {
+        "src": "contracts\\bank\\Oracle\\AssetOracle.sol:10",
+        "version": {
+          "withMetadata": "3e3f6517af23ef9267d582a6863301bc72eac85fff33943debe0288c0fba32f9",
+          "withoutMetadata": "3e3f6517af23ef9267d582a6863301bc72eac85fff33943debe0288c0fba32f9",
+          "linkedWithoutMetadata": "3e3f6517af23ef9267d582a6863301bc72eac85fff33943debe0288c0fba32f9"
+        },
+        "inherit": [
+          "Owned"
+        ],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [
+          "(address,address)",
+          "Token0_price()",
+          "Token1_price()",
+          "setToken0Oracle(address)",
+          "setToken1Oracle(address)",
+          "assetPrice(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "AssetOracle",
+            "src": "contracts\\bank\\Oracle\\AssetOracle.sol:23"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:8"
+            },
+            {
+              "label": "nominatedOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:9"
+            },
+            {
+              "label": "Token0Oracle",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_contract(UniswapPairOracle)862",
+              "contract": "AssetOracle",
+              "src": "contracts\\bank\\Oracle\\AssetOracle.sol:13"
+            },
+            {
+              "label": "Token1Oracle",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_contract(UniswapPairOracle)862",
+              "contract": "AssetOracle",
+              "src": "contracts\\bank\\Oracle\\AssetOracle.sol:14"
+            },
+            {
+              "label": "Token0_address",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_address",
+              "contract": "AssetOracle",
+              "src": "contracts\\bank\\Oracle\\AssetOracle.sol:17"
+            },
+            {
+              "label": "Token1_address",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_address",
+              "contract": "AssetOracle",
+              "src": "contracts\\bank\\Oracle\\AssetOracle.sol:18"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(UniswapPairOracle)862": {
+              "label": "contract UniswapPairOracle",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "UniswapPairOracle": {
+        "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:16",
+        "version": {
+          "withMetadata": "a2ebe990ea94bbcf33333d3e265fe56c78549131afe35cfaf91e5144a3013eab",
+          "withoutMetadata": "a2ebe990ea94bbcf33333d3e265fe56c78549131afe35cfaf91e5144a3013eab",
+          "linkedWithoutMetadata": "a2ebe990ea94bbcf33333d3e265fe56c78549131afe35cfaf91e5144a3013eab"
+        },
+        "inherit": [
+          "Owned"
+        ],
+        "libraries": [
+          "FixedPoint",
+          "UniswapV2Library",
+          "UniswapV2OracleLibrary"
+        ],
+        "methods": [
+          "(address,address,address,address)",
+          "setPeriod(uint256)",
+          "setConsultLeniency(uint256)",
+          "setAllowStaleConsults(bool)",
+          "canUpdate()",
+          "update()",
+          "consult(address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "UniswapPairOracle",
+            "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:34"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "PERIOD",
+            "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:19"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "CONSULT_LENIENCY",
+            "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:20"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "ALLOW_STALE_CONSULTS",
+            "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:21"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "pair",
+            "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:23"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "token0",
+            "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:24"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "token1",
+            "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:25"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:8"
+            },
+            {
+              "label": "nominatedOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:9"
+            },
+            {
+              "label": "PERIOD",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "UniswapPairOracle",
+              "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:19"
+            },
+            {
+              "label": "CONSULT_LENIENCY",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "UniswapPairOracle",
+              "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:20"
+            },
+            {
+              "label": "ALLOW_STALE_CONSULTS",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_bool",
+              "contract": "UniswapPairOracle",
+              "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:21"
+            },
+            {
+              "label": "price0CumulativeLast",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint256",
+              "contract": "UniswapPairOracle",
+              "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:27"
+            },
+            {
+              "label": "price1CumulativeLast",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "UniswapPairOracle",
+              "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:28"
+            },
+            {
+              "label": "blockTimestampLast",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_uint32",
+              "contract": "UniswapPairOracle",
+              "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:29"
+            },
+            {
+              "label": "price0Average",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_struct(uq112x112)5340_storage",
+              "contract": "UniswapPairOracle",
+              "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:30"
+            },
+            {
+              "label": "price1Average",
+              "offset": 0,
+              "slot": "9",
+              "type": "t_struct(uq112x112)5340_storage",
+              "contract": "UniswapPairOracle",
+              "src": "contracts\\bank\\Oracle\\UniswapPairOracle.sol:31"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_struct(uq112x112)5340_storage": {
+              "label": "struct FixedPoint.uq112x112",
+              "members": [
+                {
+                  "label": "_x",
+                  "type": "t_uint224",
+                  "offset": 0,
+                  "slot": "0"
+                }
+              ],
+              "numberOfBytes": "32"
+            },
+            "t_uint224": {
+              "label": "uint224",
+              "numberOfBytes": "28"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint32": {
+              "label": "uint32",
+              "numberOfBytes": "4"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "Owned": {
+        "src": "contracts\\bank\\Owned.sol:7",
+        "version": {
+          "withMetadata": "4a3caf579a36f5d1af87add3eb176e41f7ed4bcaa8c3382e2cfa30eabbfba212",
+          "withoutMetadata": "18f7c08ce54f8f49bd02cfadb03ec4582483d11fdb3330048d288a39a9f7d146",
+          "linkedWithoutMetadata": "18f7c08ce54f8f49bd02cfadb03ec4582483d11fdb3330048d288a39a9f7d146"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address)",
+          "nominateNewOwner(address)",
+          "acceptOwnership()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Owned",
+            "src": "contracts\\bank\\Owned.sol:11"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:8"
+            },
+            {
+              "label": "nominatedOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:9"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "SCAMPBank": {
+        "src": "contracts\\bank\\Pools\\SCAMPBank.sol:15",
+        "version": {
+          "withMetadata": "a68d821a64f8d0d5cafb638434a5fe7724bbffef46a38d82e47dd81b7839986c",
+          "withoutMetadata": "885ba1d51ae308f0a9e3bad251a5c5049bfa5aed01e4112ff5dbd2365d3754f5",
+          "linkedWithoutMetadata": "885ba1d51ae308f0a9e3bad251a5c5049bfa5aed01e4112ff5dbd2365d3754f5"
+        },
+        "inherit": [
+          "Owned"
+        ],
+        "libraries": [
+          "SafeMath",
+          "SCAMPPoolLibrary",
+          "TransferHelper"
+        ],
+        "methods": [
+          "(address,address,address,address)",
+          "collatDollarBalance()",
+          "availableExcessCollatDV()",
+          "getCollateralPrice()",
+          "mint1t1SCAMP(uint256,uint256)",
+          "mintAlgorithmicSCAMP(uint256,uint256)",
+          "mintFractionalSCAMP(uint256,uint256,uint256)",
+          "redeem1t1SCAMP(uint256,uint256)",
+          "redeemFractionalSCAMP(uint256,uint256,uint256)",
+          "redeemAlgorithmicSCAMP(uint256,uint256)",
+          "collectRedemption()",
+          "recollateralizeSCAMP(uint256,uint256)",
+          "buyBackCAMP(uint256,uint256)",
+          "toggleMinting()",
+          "toggleRedeeming()",
+          "setPoolParameters(uint256,uint256,uint256,uint256,uint256,uint256,uint256)"
+        ],
+        "linkReferences": [
+          {
+            "src": "contracts/bank/Pools/SCAMPPoolLibrary.sol",
+            "name": "SCAMPPoolLibrary",
+            "length": 20,
+            "start": 3421,
+            "placeholder": "__$c62d9d844820a7ef31bfe5c244420fd885$__"
+          },
+          {
+            "src": "contracts/bank/Pools/SCAMPPoolLibrary.sol",
+            "name": "SCAMPPoolLibrary",
+            "length": 20,
+            "start": 7272,
+            "placeholder": "__$c62d9d844820a7ef31bfe5c244420fd885$__"
+          },
+          {
+            "src": "contracts/bank/Pools/SCAMPPoolLibrary.sol",
+            "name": "SCAMPPoolLibrary",
+            "length": 20,
+            "start": 8470,
+            "placeholder": "__$c62d9d844820a7ef31bfe5c244420fd885$__"
+          },
+          {
+            "src": "contracts/bank/Pools/SCAMPPoolLibrary.sol",
+            "name": "SCAMPPoolLibrary",
+            "length": 20,
+            "start": 10970,
+            "placeholder": "__$c62d9d844820a7ef31bfe5c244420fd885$__"
+          }
+        ],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SCAMPBank",
+            "src": "contracts\\bank\\Pools\\SCAMPBank.sol:81"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "missing_decimals",
+            "src": "contracts\\bank\\Pools\\SCAMPBank.sol:48"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "pool_ceiling",
+            "src": "contracts\\bank\\Pools\\SCAMPBank.sol:51"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "pausedPrice",
+            "src": "contracts\\bank\\Pools\\SCAMPBank.sol:54"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "bonus_rate",
+            "src": "contracts\\bank\\Pools\\SCAMPBank.sol:57"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "redemption_delay",
+            "src": "contracts\\bank\\Pools\\SCAMPBank.sol:60"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "mintPaused",
+            "src": "contracts\\bank\\Pools\\SCAMPBank.sol:63"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "redeemPaused",
+            "src": "contracts\\bank\\Pools\\SCAMPBank.sol:64"
+          },
+          {
+            "kind": "external-library-linking",
+            "name": "SCAMPPoolLibrary",
+            "src": "contracts/bank/Pools/SCAMPPoolLibrary.sol"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:8"
+            },
+            {
+              "label": "nominatedOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:9"
+            },
+            {
+              "label": "collateral_token",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_contract(ERC20)5197",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:20"
+            },
+            {
+              "label": "collateral_address",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:21"
+            },
+            {
+              "label": "SCAMP_contract_address",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_address",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:23"
+            },
+            {
+              "label": "CAMP_contract_address",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_address",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:24"
+            },
+            {
+              "label": "_CAMP",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_contract(CAMP)367",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:25"
+            },
+            {
+              "label": "_SCAMP",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_contract(SCAMP)3485",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:26"
+            },
+            {
+              "label": "minting_fee",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_uint256",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:31"
+            },
+            {
+              "label": "redemption_fee",
+              "offset": 0,
+              "slot": "9",
+              "type": "t_uint256",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:32"
+            },
+            {
+              "label": "buyback_fee",
+              "offset": 0,
+              "slot": "10",
+              "type": "t_uint256",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:33"
+            },
+            {
+              "label": "recollat_fee",
+              "offset": 0,
+              "slot": "11",
+              "type": "t_uint256",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:34"
+            },
+            {
+              "label": "redeemCAMPBalances",
+              "offset": 0,
+              "slot": "12",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:36"
+            },
+            {
+              "label": "redeemCollateralBalances",
+              "offset": 0,
+              "slot": "13",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:37"
+            },
+            {
+              "label": "unclaimedPoolCollateral",
+              "offset": 0,
+              "slot": "14",
+              "type": "t_uint256",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:38"
+            },
+            {
+              "label": "unclaimedPoolCAMP",
+              "offset": 0,
+              "slot": "15",
+              "type": "t_uint256",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:39"
+            },
+            {
+              "label": "lastRedeemed",
+              "offset": 0,
+              "slot": "16",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:40"
+            },
+            {
+              "label": "pool_ceiling",
+              "offset": 0,
+              "slot": "17",
+              "type": "t_uint256",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:51"
+            },
+            {
+              "label": "pausedPrice",
+              "offset": 0,
+              "slot": "18",
+              "type": "t_uint256",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:54"
+            },
+            {
+              "label": "bonus_rate",
+              "offset": 0,
+              "slot": "19",
+              "type": "t_uint256",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:57"
+            },
+            {
+              "label": "redemption_delay",
+              "offset": 0,
+              "slot": "20",
+              "type": "t_uint256",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:60"
+            },
+            {
+              "label": "mintPaused",
+              "offset": 0,
+              "slot": "21",
+              "type": "t_bool",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:63"
+            },
+            {
+              "label": "redeemPaused",
+              "offset": 1,
+              "slot": "21",
+              "type": "t_bool",
+              "contract": "SCAMPBank",
+              "src": "contracts\\bank\\Pools\\SCAMPBank.sol:64"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_contract(CAMP)367": {
+              "label": "contract CAMP",
+              "numberOfBytes": "20"
+            },
+            "t_contract(ERC20)5197": {
+              "label": "contract ERC20",
+              "numberOfBytes": "20"
+            },
+            "t_contract(SCAMP)3485": {
+              "label": "contract SCAMP",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "SCAMPPoolLibrary": {
+        "src": "contracts\\bank\\Pools\\SCAMPPoolLibrary.sol:7",
+        "version": {
+          "withMetadata": "2bb0b7bdcb6aaf7738da1a601c2f1fa470473e179909587d4fbe7d4497f0088e",
+          "withoutMetadata": "06ea1f6f3f2ed0a222b6598d6cb4b58de309f3036056354606ef0cc9bc5a239d",
+          "linkedWithoutMetadata": "06ea1f6f3f2ed0a222b6598d6cb4b58de309f3036056354606ef0cc9bc5a239d"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMathUpgradeSafe"
+        ],
+        "methods": [
+          "calcMint1t1SCAMP(uint256,uint256)",
+          "calcMintAlgorithmicSCAMP(uint256,uint256)",
+          "calcRedeem1t1SCAMP(uint256,uint256)",
+          "recollateralizeAmount(uint256,uint256,uint256)",
+          "calcRecollateralizeSCAMPInner(uint256,uint256,uint256,uint256,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "SCAMP": {
+        "src": "contracts\\bank\\SCAMP.sol:11",
+        "version": {
+          "withMetadata": "6501b81c3767eddcf953f81f1061e86dae8940d18ba715656202d1238345f635",
+          "withoutMetadata": "52b04793060a3210404af41e86ed639fd81aed9b329f19a43437b221290cde1c",
+          "linkedWithoutMetadata": "52b04793060a3210404af41e86ed639fd81aed9b329f19a43437b221290cde1c"
+        },
+        "inherit": [
+          "Context",
+          "Owned",
+          "KIP7",
+          "IKIP7Detailed",
+          "IKIP7"
+        ],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [
+          "(address)",
+          "SCAMP_Price()",
+          "CAMP_Price()",
+          "SCAMP_info()",
+          "refreshCollateralRatio()",
+          "Bank_burn_from(address,uint256)",
+          "Bank_mint(address,uint256)",
+          "setRedemptionFee(uint256)",
+          "setMintingFee(uint256)",
+          "setPriceTarget(uint256)",
+          "setSCAMPStep(uint256)",
+          "setRefreshCooldown(uint256)",
+          "setCAMPAddress(address)",
+          "setUSDTAddress(address)",
+          "setBankAddress(address)",
+          "setController(address)",
+          "setPriceBand(uint256)",
+          "setSCAMPOracleAddress(address)",
+          "setCAMPOracleAddress(address)",
+          "toggleCollateralRatio()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SCAMP",
+            "src": "contracts\\bank\\SCAMP.sol:55"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "collateral_ratio_paused",
+            "src": "contracts\\bank\\SCAMP.sol:35"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_balances",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:12"
+            },
+            {
+              "label": "_allowances",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:14"
+            },
+            {
+              "label": "_totalSupply",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:16"
+            },
+            {
+              "label": "_name",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_string_storage",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:18"
+            },
+            {
+              "label": "_symbol",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_string_storage",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:20"
+            },
+            {
+              "label": "_decimals",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint8",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:22"
+            },
+            {
+              "label": "owner",
+              "offset": 1,
+              "slot": "5",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:8"
+            },
+            {
+              "label": "nominatedOwner",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:9"
+            },
+            {
+              "label": "SCAMP_Oracle_address",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_contract(UniswapPairOracle)862",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:14"
+            },
+            {
+              "label": "CAMP_Oracle_address",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_contract(UniswapPairOracle)862",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:15"
+            },
+            {
+              "label": "creator_address",
+              "offset": 0,
+              "slot": "9",
+              "type": "t_address",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:16"
+            },
+            {
+              "label": "controller_address",
+              "offset": 0,
+              "slot": "10",
+              "type": "t_address",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:17"
+            },
+            {
+              "label": "CAMP_address",
+              "offset": 0,
+              "slot": "11",
+              "type": "t_address",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:18"
+            },
+            {
+              "label": "usdt_address",
+              "offset": 0,
+              "slot": "12",
+              "type": "t_address",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:19"
+            },
+            {
+              "label": "SCAMPBank",
+              "offset": 0,
+              "slot": "13",
+              "type": "t_address",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:22"
+            },
+            {
+              "label": "current_collateral_ratio",
+              "offset": 0,
+              "slot": "14",
+              "type": "t_uint256",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:26"
+            },
+            {
+              "label": "redemption_fee",
+              "offset": 0,
+              "slot": "15",
+              "type": "t_uint256",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:27"
+            },
+            {
+              "label": "minting_fee",
+              "offset": 0,
+              "slot": "16",
+              "type": "t_uint256",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:28"
+            },
+            {
+              "label": "SCAMP_step",
+              "offset": 0,
+              "slot": "17",
+              "type": "t_uint256",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:29"
+            },
+            {
+              "label": "refresh_cooldown",
+              "offset": 0,
+              "slot": "18",
+              "type": "t_uint256",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:30"
+            },
+            {
+              "label": "price_target",
+              "offset": 0,
+              "slot": "19",
+              "type": "t_uint256",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:31"
+            },
+            {
+              "label": "price_band",
+              "offset": 0,
+              "slot": "20",
+              "type": "t_uint256",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:32"
+            },
+            {
+              "label": "default_admin_address",
+              "offset": 0,
+              "slot": "21",
+              "type": "t_address",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:34"
+            },
+            {
+              "label": "collateral_ratio_paused",
+              "offset": 20,
+              "slot": "21",
+              "type": "t_bool",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:35"
+            },
+            {
+              "label": "last_call_time",
+              "offset": 0,
+              "slot": "22",
+              "type": "t_uint256",
+              "contract": "SCAMP",
+              "src": "contracts\\bank\\SCAMP.sol:90"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_contract(UniswapPairOracle)862": {
+              "label": "contract UniswapPairOracle",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint8": {
+              "label": "uint8",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "TransferHelper": {
+        "src": "contracts\\bank\\Uniswap\\TransferHelper.sol:5",
+        "version": {
+          "withMetadata": "622458cea2ebe359f869b3941c2d35f333147b6b5ffcde69c770225a2c973858",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2Library": {
+        "src": "contracts\\bank\\Uniswap\\UniswapV2Library.sol:8",
+        "version": {
+          "withMetadata": "214fd7a2dd2ba10e70c1fdb66da59d2b5ee348f644e42b0742952c2bae66f8ca",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMathUpgradeSafe"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "UniswapV2OracleLibrary": {
+        "src": "contracts\\bank\\Uniswap\\UniswapV2OracleLibrary.sol:8",
+        "version": {
+          "withMetadata": "19c09c7f85bb8555df352cf129f63d43daa26387cd83191ea293d40575db9208",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "FixedPoint"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV2Factory": {
+        "src": "contracts\\bank\\Uniswap\\interfaces\\IUniswapV2Factory.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "feeTo()",
+          "feeToSetter()",
+          "getPair(address,address)",
+          "allPairs(uint256)",
+          "allPairsLength()",
+          "createPair(address,address)",
+          "setFeeTo(address)",
+          "setFeeToSetter(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV2Pair": {
+        "src": "contracts\\bank\\Uniswap\\interfaces\\IUniswapV2Pair.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "name()",
+          "symbol()",
+          "decimals()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transfer(address,uint256)",
+          "transferFrom(address,address,uint256)",
+          "DOMAIN_SEPARATOR()",
+          "PERMIT_TYPEHASH()",
+          "nonces(address)",
+          "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)",
+          "MINIMUM_LIQUIDITY()",
+          "factory()",
+          "token0()",
+          "token1()",
+          "getReserves()",
+          "price0CumulativeLast()",
+          "price1CumulativeLast()",
+          "kLast()",
+          "mint(address)",
+          "burn(address)",
+          "swap(uint256,uint256,address,bytes)",
+          "skim(address)",
+          "sync()",
+          "initialize(address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MockUSDC": {
+        "src": "contracts\\bank\\_mock\\MockUSDC.sol:8",
+        "version": {
+          "withMetadata": "d2c9f6d96327648043ce199ace405755928082358153fb17624bd47de378ac06",
+          "withoutMetadata": "9acd2df855affd66e99fa26326794c9ca0a55ea5038f82af09875944478c55b2",
+          "linkedWithoutMetadata": "9acd2df855affd66e99fa26326794c9ca0a55ea5038f82af09875944478c55b2"
+        },
+        "inherit": [
+          "Owned",
+          "KIP7",
+          "IKIP7Detailed",
+          "IKIP7"
+        ],
+        "libraries": [],
+        "methods": [
+          "setBalance(address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_balances",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:12"
+            },
+            {
+              "label": "_allowances",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:14"
+            },
+            {
+              "label": "_totalSupply",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:16"
+            },
+            {
+              "label": "_name",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_string_storage",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:18"
+            },
+            {
+              "label": "_symbol",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_string_storage",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:20"
+            },
+            {
+              "label": "_decimals",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint8",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:22"
+            },
+            {
+              "label": "owner",
+              "offset": 1,
+              "slot": "5",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:8"
+            },
+            {
+              "label": "nominatedOwner",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_address",
+              "contract": "Owned",
+              "src": "contracts\\bank\\Owned.sol:9"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint8": {
+              "label": "uint8",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "Context": {
+        "src": "contracts\\bank\\module\\Common\\Context.sol:14",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "ERC20": {
+        "src": "contracts\\bank\\module\\ERC20\\ERC20.sol:36",
+        "version": {
+          "withMetadata": "2e2b96c31ced67dd6d51cf00374e5c188ff8751fe34647d88965a53937c72bb9",
+          "withoutMetadata": "1830ac8120474e736a96e65db493b6afc163b96faf072cecc43474c448537375",
+          "linkedWithoutMetadata": "1830ac8120474e736a96e65db493b6afc163b96faf072cecc43474c448537375"
+        },
+        "inherit": [
+          "IERC20",
+          "Context"
+        ],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [
+          "(string,string)",
+          "name()",
+          "symbol()",
+          "decimals()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)",
+          "increaseAllowance(address,uint256)",
+          "decreaseAllowance(address,uint256)",
+          "burn(uint256)",
+          "burnFrom(address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ERC20",
+            "src": "contracts\\bank\\module\\ERC20\\ERC20.sol:58"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_balances",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "ERC20",
+              "src": "contracts\\bank\\module\\ERC20\\ERC20.sol:39"
+            },
+            {
+              "label": "_allowances",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "contract": "ERC20",
+              "src": "contracts\\bank\\module\\ERC20\\ERC20.sol:41"
+            },
+            {
+              "label": "_totalSupply",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "ERC20",
+              "src": "contracts\\bank\\module\\ERC20\\ERC20.sol:43"
+            },
+            {
+              "label": "_name",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_string_storage",
+              "contract": "ERC20",
+              "src": "contracts\\bank\\module\\ERC20\\ERC20.sol:45"
+            },
+            {
+              "label": "_symbol",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_string_storage",
+              "contract": "ERC20",
+              "src": "contracts\\bank\\module\\ERC20\\ERC20.sol:46"
+            },
+            {
+              "label": "_decimals",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint8",
+              "contract": "ERC20",
+              "src": "contracts\\bank\\module\\ERC20\\ERC20.sol:47"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint8": {
+              "label": "uint8",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IERC20": {
+        "src": "contracts\\bank\\module\\ERC20\\IERC20.sol:11",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Babylonian": {
+        "src": "contracts\\bank\\module\\Math\\Babylonian.sol:6",
+        "version": {
+          "withMetadata": "1483dc0e7bbb95d980410cb9243f53b7390f0e26cd8c8bccea6badc30f653e93",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "FixedPoint": {
+        "src": "contracts\\bank\\module\\Math\\FixedPoint.sol:7",
+        "version": {
+          "withMetadata": "2fe7a2f2a607449fa15000989cc4debcea9e1a1de2e66b3e7475c22d68f67c0c",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "Babylonian"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "SafeMathUpgradeSafe": {
+        "src": "contracts\\bank\\module\\Math\\SafeMathupgradeable.sol:18",
+        "version": {
+          "withMetadata": "66f9004cf285aa5198919488c618a5dcef4f2dd0aefe4655dfbdd0158d4ed6a2",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Address": {
+        "src": "contracts\\bond\\library\\Address.sol:5",
+        "version": {
+          "withMetadata": "d66a2df89668955d8ff83314397d2944af62af06089fb717aa0fac512a1ceef5",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "delegatecall",
+            "src": "contracts\\bond\\library\\Address.sol:89"
+          }
+        ],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "BondDepository": {
+        "src": "contracts\\bond\\BondDepository.sol:14",
+        "inherit": [
+          "IBondDepository",
+          "VersionedInitializable",
+          "Ownable",
+          "IOwnable"
+        ],
+        "libraries": [
+          "SafeKIP7",
+          "SafeMath"
+        ],
+        "methods": [
+          "__initialize(address,address,address,address,address,address)",
+          "initializeBondTerms(uint256,uint256,uint256,uint256,uint256,uint256,uint256)",
+          "setBondTerms(uint8,uint256)",
+          "setAdjustment(bool,uint256,uint256,uint256)",
+          "setStaking(address)",
+          "deposit(uint256,uint256,address)",
+          "redeem(address,bool)",
+          "NAME()",
+          "maxPayout()",
+          "payoutFor(uint256)",
+          "bondPrice()",
+          "priceRate()",
+          "debtRatio()",
+          "currentDebt()",
+          "debtDecay()",
+          "percentVestedFor(address)",
+          "pendingPayoutFor(address)",
+          "recoverLostToken(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "contracts\\bond\\library\\Ownable.sol:9"
+            },
+            {
+              "label": "_newOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "contracts\\bond\\library\\Ownable.sol:10"
+            },
+            {
+              "label": "lastInitializedRevision",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "VersionedInitializable",
+              "src": "contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol:22"
+            },
+            {
+              "label": "______gap",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "VersionedInitializable",
+              "src": "contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol:41"
+            },
+            {
+              "label": "DAO",
+              "offset": 0,
+              "slot": "53",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:27"
+            },
+            {
+              "label": "CAMP",
+              "offset": 0,
+              "slot": "54",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:28"
+            },
+            {
+              "label": "_assetOracle",
+              "offset": 0,
+              "slot": "55",
+              "type": "t_contract(AssetOracle)545",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:30"
+            },
+            {
+              "label": "oracle",
+              "offset": 0,
+              "slot": "56",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:31"
+            },
+            {
+              "label": "principle",
+              "offset": 0,
+              "slot": "57",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:37"
+            },
+            {
+              "label": "treasury",
+              "offset": 0,
+              "slot": "58",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:38"
+            },
+            {
+              "label": "usdt_address",
+              "offset": 0,
+              "slot": "59",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:39"
+            },
+            {
+              "label": "staking",
+              "offset": 0,
+              "slot": "60",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:41"
+            },
+            {
+              "label": "terms",
+              "offset": 0,
+              "slot": "61",
+              "type": "t_struct(Terms)6167_storage",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:43"
+            },
+            {
+              "label": "adjustment",
+              "offset": 0,
+              "slot": "67",
+              "type": "t_struct(Adjust)6187_storage",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:44"
+            },
+            {
+              "label": "bondInfo",
+              "offset": 0,
+              "slot": "72",
+              "type": "t_mapping(t_address,t_struct(Bond)6176_storage)",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:46"
+            },
+            {
+              "label": "totalDebt",
+              "offset": 0,
+              "slot": "73",
+              "type": "t_uint256",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:48"
+            },
+            {
+              "label": "lastDecay",
+              "offset": 0,
+              "slot": "74",
+              "type": "t_uint256",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:49"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint256)50_storage": {
+              "label": "uint256[50]",
+              "numberOfBytes": "1600"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_contract(AssetOracle)545": {
+              "label": "contract AssetOracle",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_struct(Bond)6176_storage)": {
+              "label": "mapping(address => struct BondDepository.Bond)",
+              "numberOfBytes": "32"
+            },
+            "t_struct(Adjust)6187_storage": {
+              "label": "struct BondDepository.Adjust",
+              "members": [
+                {
+                  "label": "add",
+                  "type": "t_bool",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "rate",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "target",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "buffer",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "3"
+                },
+                {
+                  "label": "lastBlock",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "4"
+                }
+              ],
+              "numberOfBytes": "160"
+            },
+            "t_struct(Bond)6176_storage": {
+              "label": "struct BondDepository.Bond",
+              "members": [
+                {
+                  "label": "payout",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "vesting",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "lastBlock",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "pricePaid",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "3"
+                }
+              ],
+              "numberOfBytes": "128"
+            },
+            "t_struct(Terms)6167_storage": {
+              "label": "struct BondDepository.Terms",
+              "members": [
+                {
+                  "label": "controlVariable",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "vestingTerm",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "minimumPriceRate",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "maxPayout",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "3"
+                },
+                {
+                  "label": "fee",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "4"
+                },
+                {
+                  "label": "maxDebt",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "5"
+                }
+              ],
+              "numberOfBytes": "192"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "BondTreasury": {
+        "src": "contracts\\bond\\BondTreasury.sol:11",
+        "version": {
+          "withMetadata": "0ea07928bd27bd48e1218a3b753cf2203f73e8ed0893959833534fe384129ddf",
+          "withoutMetadata": "8fabd15b87154943087858573b978b90eb46b7b57084accefb0c29cca64ce545",
+          "linkedWithoutMetadata": "8fabd15b87154943087858573b978b90eb46b7b57084accefb0c29cca64ce545"
+        },
+        "inherit": [
+          "IBondTreasury",
+          "VersionedInitializable",
+          "Ownable",
+          "IOwnable"
+        ],
+        "libraries": [
+          "SafeMath",
+          "SafeKIP7"
+        ],
+        "methods": [
+          "__initialize(address,address)",
+          "getBalance()",
+          "reserveTokens()",
+          "reserveDepositors()",
+          "deposit(uint256,address,uint256)",
+          "register(address,address)",
+          "unregisterDepositor(address)",
+          "recoverLostToken(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "contracts\\bond\\library\\Ownable.sol:9"
+            },
+            {
+              "label": "_newOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "contracts\\bond\\library\\Ownable.sol:10"
+            },
+            {
+              "label": "lastInitializedRevision",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "VersionedInitializable",
+              "src": "contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol:22"
+            },
+            {
+              "label": "______gap",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "VersionedInitializable",
+              "src": "contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol:41"
+            },
+            {
+              "label": "DAO",
+              "offset": 0,
+              "slot": "53",
+              "type": "t_address",
+              "contract": "BondTreasury",
+              "src": "contracts\\bond\\BondTreasury.sol:17"
+            },
+            {
+              "label": "KBT",
+              "offset": 0,
+              "slot": "54",
+              "type": "t_address",
+              "contract": "BondTreasury",
+              "src": "contracts\\bond\\BondTreasury.sol:18"
+            },
+            {
+              "label": "_reserveTokens",
+              "offset": 0,
+              "slot": "55",
+              "type": "t_array(t_address)dyn_storage",
+              "contract": "BondTreasury",
+              "src": "contracts\\bond\\BondTreasury.sol:19"
+            },
+            {
+              "label": "isReserveToken",
+              "offset": 0,
+              "slot": "56",
+              "type": "t_mapping(t_address,t_bool)",
+              "contract": "BondTreasury",
+              "src": "contracts\\bond\\BondTreasury.sol:20"
+            },
+            {
+              "label": "tokenPaidAmounts",
+              "offset": 0,
+              "slot": "57",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "BondTreasury",
+              "src": "contracts\\bond\\BondTreasury.sol:21"
+            },
+            {
+              "label": "_reserveDepositors",
+              "offset": 0,
+              "slot": "58",
+              "type": "t_array(t_address)dyn_storage",
+              "contract": "BondTreasury",
+              "src": "contracts\\bond\\BondTreasury.sol:22"
+            },
+            {
+              "label": "isReserveDepositor",
+              "offset": 0,
+              "slot": "59",
+              "type": "t_mapping(t_address,t_bool)",
+              "contract": "BondTreasury",
+              "src": "contracts\\bond\\BondTreasury.sol:23"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_address)dyn_storage": {
+              "label": "address[]",
+              "numberOfBytes": "32"
+            },
+            "t_array(t_uint256)50_storage": {
+              "label": "uint256[50]",
+              "numberOfBytes": "1600"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "ClaimSwapBondZap": {
+        "src": "contracts\\bond\\ClaimSwapBondZap.sol:13",
+        "version": {
+          "withMetadata": "02f29c3d1027a44e2c342830398d45536cd03b570ff66fed689d62ecc71609e1",
+          "withoutMetadata": "c8d52f7f2ae7e7f08efa5f289f311ecc08d02b3a09f400d2cab7cf06bea3e01e",
+          "linkedWithoutMetadata": "c8d52f7f2ae7e7f08efa5f289f311ecc08d02b3a09f400d2cab7cf06bea3e01e"
+        },
+        "inherit": [
+          "Ownable",
+          "IOwnable",
+          "VersionedInitializable",
+          "ReentrancyGuard"
+        ],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [
+          "(address)",
+          "__initialize()",
+          "getBalance(address)",
+          "zapToBond(address,address,uint256,uint256,uint256)",
+          "estimatePoolTokens(address,address,address,uint256)",
+          "estimatePoolTokensInverse(address,address,address,uint256)",
+          "()",
+          "withdraw(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ClaimSwapBondZap",
+            "src": "contracts\\bond\\ClaimSwapBondZap.sol:19"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ClaimSwapZap",
+            "src": "contracts\\bond\\ClaimSwapBondZap.sol:17"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_status",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "ReentrancyGuard",
+              "src": "contracts\\bond\\library\\ReentrancyGuard.sol:37"
+            },
+            {
+              "label": "lastInitializedRevision",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "VersionedInitializable",
+              "src": "contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol:22"
+            },
+            {
+              "label": "______gap",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "VersionedInitializable",
+              "src": "contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol:41"
+            },
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "52",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "contracts\\bond\\library\\Ownable.sol:9"
+            },
+            {
+              "label": "_newOwner",
+              "offset": 0,
+              "slot": "53",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "contracts\\bond\\library\\Ownable.sol:10"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint256)50_storage": {
+              "label": "uint256[50]",
+              "numberOfBytes": "1600"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "ClaimSwapKlayKbtLpDepository": {
+        "src": "contracts\\bond\\ClaimSwapKlayKbtLpDepository.sol:9",
+        "version": {
+          "withMetadata": "eb88497286721dcf1802aef74d892ad82ada094e59106f0f3b7fb9a12f49bd77",
+          "withoutMetadata": "2ba91e9264093f39f2cbf9452679e7c27e412a0a1a45dc49a7e832cd4fce2d7c",
+          "linkedWithoutMetadata": "2ba91e9264093f39f2cbf9452679e7c27e412a0a1a45dc49a7e832cd4fce2d7c"
+        },
+        "inherit": [
+          "BondDepository",
+          "IBondDepository",
+          "VersionedInitializable",
+          "Ownable",
+          "IOwnable"
+        ],
+        "libraries": [],
+        "methods": [
+          "NAME()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "contracts\\bond\\library\\Ownable.sol:9"
+            },
+            {
+              "label": "_newOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "contracts\\bond\\library\\Ownable.sol:10"
+            },
+            {
+              "label": "lastInitializedRevision",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "VersionedInitializable",
+              "src": "contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol:22"
+            },
+            {
+              "label": "______gap",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "VersionedInitializable",
+              "src": "contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol:41"
+            },
+            {
+              "label": "DAO",
+              "offset": 0,
+              "slot": "53",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:27"
+            },
+            {
+              "label": "CAMP",
+              "offset": 0,
+              "slot": "54",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:28"
+            },
+            {
+              "label": "_assetOracle",
+              "offset": 0,
+              "slot": "55",
+              "type": "t_contract(AssetOracle)545",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:30"
+            },
+            {
+              "label": "oracle",
+              "offset": 0,
+              "slot": "56",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:31"
+            },
+            {
+              "label": "principle",
+              "offset": 0,
+              "slot": "57",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:37"
+            },
+            {
+              "label": "treasury",
+              "offset": 0,
+              "slot": "58",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:38"
+            },
+            {
+              "label": "usdt_address",
+              "offset": 0,
+              "slot": "59",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:39"
+            },
+            {
+              "label": "staking",
+              "offset": 0,
+              "slot": "60",
+              "type": "t_address",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:41"
+            },
+            {
+              "label": "terms",
+              "offset": 0,
+              "slot": "61",
+              "type": "t_struct(Terms)6167_storage",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:43"
+            },
+            {
+              "label": "adjustment",
+              "offset": 0,
+              "slot": "67",
+              "type": "t_struct(Adjust)6187_storage",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:44"
+            },
+            {
+              "label": "bondInfo",
+              "offset": 0,
+              "slot": "72",
+              "type": "t_mapping(t_address,t_struct(Bond)6176_storage)",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:46"
+            },
+            {
+              "label": "totalDebt",
+              "offset": 0,
+              "slot": "73",
+              "type": "t_uint256",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:48"
+            },
+            {
+              "label": "lastDecay",
+              "offset": 0,
+              "slot": "74",
+              "type": "t_uint256",
+              "contract": "BondDepository",
+              "src": "contracts\\bond\\BondDepository.sol:49"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint256)50_storage": {
+              "label": "uint256[50]",
+              "numberOfBytes": "1600"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_contract(AssetOracle)545": {
+              "label": "contract AssetOracle",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_struct(Bond)6176_storage)": {
+              "label": "mapping(address => struct BondDepository.Bond)",
+              "numberOfBytes": "32"
+            },
+            "t_struct(Adjust)6187_storage": {
+              "label": "struct BondDepository.Adjust",
+              "members": [
+                {
+                  "label": "add",
+                  "type": "t_bool",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "rate",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "target",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "buffer",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "3"
+                },
+                {
+                  "label": "lastBlock",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "4"
+                }
+              ],
+              "numberOfBytes": "160"
+            },
+            "t_struct(Bond)6176_storage": {
+              "label": "struct BondDepository.Bond",
+              "members": [
+                {
+                  "label": "payout",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "vesting",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "lastBlock",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "pricePaid",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "3"
+                }
+              ],
+              "numberOfBytes": "128"
+            },
+            "t_struct(Terms)6167_storage": {
+              "label": "struct BondDepository.Terms",
+              "members": [
+                {
+                  "label": "controlVariable",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "vestingTerm",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "minimumPriceRate",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "maxPayout",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "3"
+                },
+                {
+                  "label": "fee",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "4"
+                },
+                {
+                  "label": "maxDebt",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "5"
+                }
+              ],
+              "numberOfBytes": "192"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IBondDepository": {
+        "src": "contracts\\bond\\interface\\IBondDepository.sol:5",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "principle()",
+          "deposit(uint256,uint256,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IBondTreasury": {
+        "src": "contracts\\bond\\interface\\IBondTreasury.sol:5",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "deposit(uint256,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IClaimSwapPair": {
+        "src": "contracts\\bond\\interface\\IClaimSwapPair.sol:7",
+        "inherit": [
+          "IKIP7Detailed",
+          "IKIP7"
+        ],
+        "libraries": [],
+        "methods": [
+          "getReserves()",
+          "token0()",
+          "token1()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IClaimSwapZap": {
+        "src": "contracts\\bond\\interface\\IClaimSwapZap.sol:5",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "zapIn(address,address,address,address,uint256,uint256)",
+          "estimatePoolTokens(address,address,address,uint256)",
+          "estimatePoolTokensInverse(address,address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IStakedToken": {
+        "src": "contracts\\bond\\interface\\IStakedToken.sol:5",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "stake(address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Counters": {
+        "src": "contracts\\bond\\library\\Counters.sol:7",
+        "version": {
+          "withMetadata": "6d5418d90bd87eebfa1f1b51211fb34b80562b79e583950bef96ff65fd7e4f9f",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IOwnable": {
+        "src": "contracts\\bond\\library\\IOwnable.sol:5",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceManagement()",
+          "pushManagement(address)",
+          "pullManagement()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Ownable": {
+        "src": "contracts\\bond\\library\\Ownable.sol:7",
+        "version": {
+          "withMetadata": "27eea22869ee8a1de64c6845b44ca284ec668f31e31fe870c78dae1a829fedc6",
+          "withoutMetadata": "10ea023c17bd8eb906f1fe39be30c73395fdb418894afd7c4b576c297d1242e7",
+          "linkedWithoutMetadata": "10ea023c17bd8eb906f1fe39be30c73395fdb418894afd7c4b576c297d1242e7"
+        },
+        "inherit": [
+          "IOwnable"
+        ],
+        "libraries": [],
+        "methods": [
+          "()",
+          "owner()",
+          "renounceManagement()",
+          "pushManagement(address)",
+          "pullManagement()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "contracts\\bond\\library\\Ownable.sol:15"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "contracts\\bond\\library\\Ownable.sol:9"
+            },
+            {
+              "label": "_newOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "contracts\\bond\\library\\Ownable.sol:10"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "ReentrancyGuard": {
+        "src": "contracts\\bond\\library\\ReentrancyGuard.sol:22",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ReentrancyGuard",
+            "src": "contracts\\bond\\library\\ReentrancyGuard.sol:39"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_status",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "ReentrancyGuard",
+              "src": "contracts\\bond\\library\\ReentrancyGuard.sol:37"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "SafeMath": {
+        "src": "contracts\\bond\\library\\SafeMath.sol:5",
+        "version": {
+          "withMetadata": "fbf8188f542bb72ca648b07700e13c9c1df8b69ae4dc01dc4e0662ba18ed9ad9",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IKIP7": {
+        "src": "contracts\\bond\\library\\kip\\IKIP7.sol:5",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IKIP7Detailed": {
+        "src": "contracts\\bond\\library\\kip\\IKIP7Detailed.sol:7",
+        "inherit": [
+          "IKIP7"
+        ],
+        "libraries": [],
+        "methods": [
+          "name()",
+          "symbol()",
+          "decimals()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "KIP7": {
+        "src": "contracts\\bond\\library\\kip\\KIP7.sol:8",
+        "inherit": [
+          "IKIP7Detailed",
+          "IKIP7"
+        ],
+        "libraries": [
+          "SafeMath"
+        ],
+        "methods": [
+          "name()",
+          "symbol()",
+          "decimals()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)",
+          "increaseAllowance(address,uint256)",
+          "decreaseAllowance(address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "KIP7",
+            "src": "contracts\\bond\\library\\kip\\KIP7.sol:24"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_balances",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:12"
+            },
+            {
+              "label": "_allowances",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:14"
+            },
+            {
+              "label": "_totalSupply",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:16"
+            },
+            {
+              "label": "_name",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_string_storage",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:18"
+            },
+            {
+              "label": "_symbol",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_string_storage",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:20"
+            },
+            {
+              "label": "_decimals",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint8",
+              "contract": "KIP7",
+              "src": "contracts\\bond\\library\\kip\\KIP7.sol:22"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint8": {
+              "label": "uint8",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "SafeKIP7": {
+        "src": "contracts\\bond\\library\\kip\\SafeKIP7.sol:9",
+        "version": {
+          "withMetadata": "73ec665bf437e3a263de3fcb020549e247b1cda45db5dcec72ede8ea06b9f6a6",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeMath",
+          "Address"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "VersionedInitializable": {
+        "src": "contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol:18",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "state-variable-assignment",
+            "name": "lastInitializedRevision",
+            "src": "contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol:22"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "lastInitializedRevision",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "VersionedInitializable",
+              "src": "contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol:22"
+            },
+            {
+              "label": "______gap",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "VersionedInitializable",
+              "src": "contracts\\bond\\library\\upgradeable\\VersionedInitializable.sol:41"
+            }
+          ],
+          "types": {
+            "t_array(t_uint256)50_storage": {
+              "label": "uint256[50]",
+              "numberOfBytes": "1600"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "console": {
+        "src": "hardhat\\console.sol:4",
+        "version": {
+          "withMetadata": "d70832b991b498d467b4c9838d4c32d5869ac64921f4ac130a9342bb4530a8d2",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
       "IERC20": {
         "src": "contracts\\swap\\interfaces\\IERC20.sol:8",
         "inherit": [],

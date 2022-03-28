@@ -14,11 +14,11 @@ const main = async () => {
   const CAMPPairOracle = uniPairOracleFactory.attach("0x9DeF80E4A328F287Fa2c8a981E8E5e0C76De73af");
   // console.log("CAMPPairOracle pair:", CAMPPairOracle.address);
   
-  // console.log(await SCAMPPairOracle.canUpdate())
-  // console.log(await CAMPPairOracle.canUpdate())
+  console.log(await SCAMPPairOracle.canUpdate())
+  console.log(await CAMPPairOracle.canUpdate())
 
-  // await SCAMPPairOracle.update();
-  // await CAMPPairOracle.update();
+  await SCAMPPairOracle.update();
+  await CAMPPairOracle.update();
 
   // console.log("is here?");
   // await SCAMPPairOracle.setPeriod(30000);

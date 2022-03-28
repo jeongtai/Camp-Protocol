@@ -11,51 +11,40 @@ import type {
 
 const _abi = [
   {
-    constant: true,
-    inputs: [],
-    name: "feeTo",
-    outputs: [
-      {
-        name: "",
-        type: "address",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: "feeToSetter",
-    outputs: [
-      {
-        name: "",
-        type: "address",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: "feeDistributor",
-    outputs: [
-      {
-        name: "",
-        type: "address",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: true,
+    anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "address",
+        name: "token0",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token1",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "pair",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "PairCreated",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
         name: "",
         type: "uint256",
       },
@@ -63,92 +52,36 @@ const _abi = [
     name: "allPairs",
     outputs: [
       {
+        internalType: "address",
         name: "pair",
         type: "address",
       },
     ],
-    payable: false,
     stateMutability: "view",
     type: "function",
   },
   {
-    constant: false,
-    inputs: [
-      {
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "setMigrator",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: true,
     inputs: [],
     name: "allPairsLength",
     outputs: [
       {
+        internalType: "uint256",
         name: "",
         type: "uint256",
       },
     ],
-    payable: false,
     stateMutability: "view",
     type: "function",
   },
   {
-    constant: true,
-    inputs: [],
-    name: "klayBuybackFund",
-    outputs: [
-      {
-        name: "",
-        type: "address",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: "migrator",
-    outputs: [
-      {
-        name: "",
-        type: "address",
-      },
-    ],
-    payable: false,
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: false,
     inputs: [
       {
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "setFeeToSetter",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
+        internalType: "address",
         name: "tokenA",
         type: "address",
       },
       {
+        internalType: "address",
         name: "tokenB",
         type: "address",
       },
@@ -156,36 +89,49 @@ const _abi = [
     name: "createPair",
     outputs: [
       {
+        internalType: "address",
         name: "pair",
         type: "address",
       },
     ],
-    payable: false,
     stateMutability: "nonpayable",
     type: "function",
   },
   {
-    constant: false,
-    inputs: [
+    inputs: [],
+    name: "feeTo",
+    outputs: [
       {
+        internalType: "address",
         name: "",
         type: "address",
       },
     ],
-    name: "setFeeDistributor",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
-    constant: true,
+    inputs: [],
+    name: "feeToSetter",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
+        internalType: "address",
         name: "tokenA",
         type: "address",
       },
       {
+        internalType: "address",
         name: "tokenB",
         type: "address",
       },
@@ -193,68 +139,39 @@ const _abi = [
     name: "getPair",
     outputs: [
       {
+        internalType: "address",
         name: "pair",
         type: "address",
       },
     ],
-    payable: false,
     stateMutability: "view",
     type: "function",
   },
   {
-    constant: false,
     inputs: [
       {
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "setKlayBuybackFund",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
+        internalType: "address",
         name: "",
         type: "address",
       },
     ],
     name: "setFeeTo",
     outputs: [],
-    payable: false,
     stateMutability: "nonpayable",
     type: "function",
   },
   {
-    anonymous: false,
     inputs: [
       {
-        indexed: true,
-        name: "token0",
-        type: "address",
-      },
-      {
-        indexed: true,
-        name: "token1",
-        type: "address",
-      },
-      {
-        indexed: false,
-        name: "pair",
-        type: "address",
-      },
-      {
-        indexed: false,
+        internalType: "address",
         name: "",
-        type: "uint256",
+        type: "address",
       },
     ],
-    name: "PairCreated",
-    type: "event",
+    name: "setFeeToSetter",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
 ];
 

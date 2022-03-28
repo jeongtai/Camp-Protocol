@@ -104,7 +104,7 @@ contract SCAMPBank is Owned {
     // Returns dollar value of collateral held in this SCAMP pool
     
     function collatDollarBalance() public view returns (uint256) {
-      return (collateral_token.balanceOf(address(this)).sub(unclaimedPoolCollateral)).mul(10 ** missing_decimals).div(PRICE_PRECISION);
+      return (collateral_token.balanceOf(address(this)).sub(unclaimedPoolCollateral)).mul(10 ** missing_decimals);
     } 
 
 

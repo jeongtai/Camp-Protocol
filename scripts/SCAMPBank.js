@@ -18,11 +18,12 @@ const main = async () => {
       },
   });
   // let Bank = await BankFactory.deploy(SCAMP, CAMP, mock, owner.address);
-  const Bank = await BankFactory.attach("0xd1A6ccb6350fd74123a71eeb8c7e85C1d21312f5");
+  const Bank = await BankFactory.attach("0xBbba6DBc7b3C2FCFE5676af9E646A115062f2d03");
   // console.log("Bank address is:", Bank.address);
-  console.log(await Bank.collatDollarBalance())
-  // console.log(await Bank.unclaimedPoolCAMP())
-  // console.log(await Bank.unclaimedPoolCollateral())
+
+  console.log((await Bank.collatDollarBalance()).toString())
+  console.log((await Bank.availableExcessCollatDV()).toString())
+
 
 
   // console.log(await Bank.mintAlgorithmicSCAMP(1e7, 1))

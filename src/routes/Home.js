@@ -163,11 +163,13 @@ function Home() {
     const [pricetarget, setPriceTarget] = useState();
     const [cur_ratio, setCur_Ratio] = useState();
     const [isLoading, setIsLoading] = useState(true);
+    const [campprice, setCampprice] = useState()
+    const [scampprice, setScampprice] = useState()
 
     const caver = new Caver(window.klaytn);
     const Infos = [
         { name: "Total Market Cap", amt: "$ 415252.5102" },
-        { name: "CAMP Price", amt: "$ 0.4602" },
+        { name: "CAMP Price", amt: `$ ${campprice}` },
         { name: "TVL", amt: "$ 19240.4912" },
         { name: "Treasury Balance", amt: "$ 7608.0027" },
         { name: "Price Target", amt: ` $ ${pricetarget}` },
@@ -179,14 +181,14 @@ function Home() {
     const Tokens = [
         {
             name: "CAMP",
-            price: 0.4602,
+            price: campprice,
             supply: campsupply,
             Contract: state.CAMPContract._address,
             logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg",
         },
         {
             name: "SCAMP",
-            price: 0.9812,
+            price: scampprice,
             supply: scampsupply,
             Contract: state.SCAMPContract._address,
             logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg",
@@ -206,6 +208,8 @@ function Home() {
         await state.SCAMPContract.methods
             .current_collateral_ratio()
             .call((e, v) => setCur_Ratio(v/1e6));
+        await state.SCAMPContract.methods.SCAMP_Price().call((e,v) => setScampprice(v/1e6))
+        await state.SCAMPContract.methods.CAMP_Price().call((e,v) => setCampprice(v/1e6))
         setIsLoading(false);
     }
     useEffect(() => {

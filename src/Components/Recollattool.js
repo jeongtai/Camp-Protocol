@@ -27,7 +27,6 @@ const Btn = styled.button`
 
 function Recollattool () {
   let state = useSelector((state) => state)
-
   const [usdcInputAmount, setUSDCInputAmount] = useState(0);
   const [USDCBalance, setUSDCBalance] = useState();
   const [isapproved, setIsApproved] = useState(false);
@@ -44,9 +43,15 @@ function Recollattool () {
     .call((e, v) =>
         setUSDCBalance(caver.utils.fromPeb(v, "KLAY"))
     );
+
+    await state.USDCContract.methods.allowance(window.klaytn.selectedAddress, state.BankContract._address).call((e, v) => {
+      if (v > 100000000) {
+        setIsApproved(true)
+      }
+    })
   }
   function ApproveUSDC() {
-    state.USDCContract.methods.approve(state.BankContract._address, caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"))
+    state.USDCContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "mKLAY"))
     .send({
       from : window.klaytn.selectedAddress,
       gas : 3000000

@@ -254,7 +254,15 @@ function Redeemtool() {
       .send({
         from : window.klaytn.selectedAddress,
         gas : 3000000
+      }).on('receipt', () => {
+        state.BankContract.methods
+          .collectRedemption()
+          .send({
+            from : window.klaytn.selectedAddress,
+            gas : 3000000
+          })
       })}
+      //COllectRedemption 구현 필요!
   }
 
 

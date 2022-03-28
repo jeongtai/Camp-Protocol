@@ -44,9 +44,14 @@ function Buybacktool () {
     .call((e, v) =>
         setCAMPBalance(caver.utils.fromPeb(v, "KLAY"))
     );
+    await state.CAMPContract.methods.allowance(window.klaytn.selectedAddress, state.BankContract._address).call((e, v) => {
+      if (v > 100000000) {
+        setIsApproved(true)
+      }
+    })
   }
   function ApproveUSDC() {
-    state.USDCContract.methods.approve(state.BankContract._address, caver.utils.toPeb(campInputAmount * 1000, "mKLAY"))
+    state.USDCContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "mKLAY"))
     .send({
       from : window.klaytn.selectedAddress,
       gas : 3000000

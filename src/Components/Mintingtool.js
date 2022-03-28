@@ -84,6 +84,8 @@ function Mintingtool() {
     const [CAMPBalance, setCAMPBalance] = useState();
     const [USDCBalance, setUSDCBalance] = useState();
 
+    const [USDCapprove, setUSDCapprove] = useState();
+    const [CAMPapprove, setCAMPapprove] = useState();
     const [CCR, setCCR] = useState();
     const [CAMPprice, setCampprice] = useState();
     const [SCAMPprice, setSCampprice] = useState();
@@ -166,6 +168,42 @@ function Mintingtool() {
                 .collatDollarBalance()
                 .call((e, v) => setCollatbal(v / 1e12));
         } catch (e) { setCollatbal(undefined) }
+
+        // try {
+        //   await state.CAMPContract.methods 
+        //       .allowwance(window.klaytn.selectedAddress, state.BankContract._address)
+        //       .call((e, v) => {
+        //         if (v > 1e18) {
+        //           setCAMPapprove(true)
+        //         }
+        //       })
+        // } catch (e) {setCAMPapprove(false)}
+
+        // try {
+        //   await state.USDCContract.methods 
+        //       .allowwance(window.klaytn.selectedAddress, state.BankContract._address)
+        //       .call((e, v) => {
+        //         if (v > 1e18) {
+        //           setUSDCapprove(true)
+        //         }
+        //       })
+        // } catch (e) {setUSDCapprove(false)}
+        
+        await state.CAMPContract.methods
+            .allowance(window.klaytn.selectedAddress, state.BankContract._address)
+            .call((e,v) => {
+              if (v>1e18) {
+                setCAMPapprove(true)
+              }
+            })
+      
+        await state.USDCContract.methods
+            .allowance(window.klaytn.selectedAddress, state.BankContract._address)
+            .call((e,v) => {
+              if (v>1e18) {
+                setUSDCapprove(true)
+              }
+            })
 
         setIsLoading(false);
     }
@@ -263,30 +301,64 @@ function Mintingtool() {
     }
 
     function onClick2() {
+      if (CAMPapprove === false && USDCapprove === false) {
         state.CAMPContract.methods
             .approve(
                 state.BankContract._address,
-                caver.utils.toPeb(campInputAmount * 1000, "mKLAY")
+                caver.utils.toPeb(1e18, "mKLAY")
             )
             .send({
                 from: window.klaytn.selectedAddress,
                 gas: "3000000",
             })
             .on("receipt", function () {
+                setCAMPapprove(true)
                 state.USDCContract.methods
                     .approve(
                         state.BankContract._address,
-                        caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY")
+                        caver.utils.toPeb(1e18, "mKLAY")
                     )
                     .send({
                         from: window.klaytn.selectedAddress,
                         gas: "3000000",
                     })
                     .on("receipt", function () {
-                        setIsApproved(true);
+                        setUSDCapprove(true)
                     });
             });
+      } else if (CAMPapprove === false && USDCapprove === true) {
+        state.CAMPContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "KLAY"))
+        .send({
+          from : window.klaytn.selectedAddress,
+          gas : 3000000
+        }).on('receipt', () => {
+          setCAMPapprove(true)
+        })
+      } else if (USDCapprove === false && CAMPapprove === true) {
+        state.USDCContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "KLAY"))
+        .send({
+          from : window.klaytn.selectedAddress,
+          gas : 3000000
+        }).on('receipt', ()=> {
+          setUSDCapprove(true)
+        })
+      }
     }
+    useEffect(() => {
+      if (USDCapprove === true && CAMPapprove === true) {
+        setIsApproved(true)
+      }
+    }, [USDCapprove, CAMPapprove])
+    // initialize hook----------------------------
+    useEffect(() => {
+        if (window.klaytn) {
+            getInfo();
+            window.klaytn.on("accountsChanged", async function (accounts) {
+                getInfo();
+                console.log("account change listen in bank");
+            });
+        }
+    }, []);
 
 
     const mintInfos = [

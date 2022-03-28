@@ -105,7 +105,6 @@ function Redeemtool() {
     }
   }, []);
 
-
   async function getInfo() {
     // SCAMP UserBalance, PRICE
     try {
@@ -167,6 +166,14 @@ function Redeemtool() {
         .collatDollarBalance()
         .call((e, v) => setCollatbal(v / 1e12));
     } catch (e) { setCollatbal(undefined) }
+
+    await state.SCAMPContract.methods
+    .allowance(window.klaytn.selectedAddress, state.BankContract._address)
+    .call((e,v) => {
+      if (v>1e18) {
+        setIsApproved(true)
+      }
+    })
 
     setIsLoading(false);
   }

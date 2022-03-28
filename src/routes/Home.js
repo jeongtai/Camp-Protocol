@@ -165,6 +165,7 @@ function Home() {
     const [SCAMPprice, setSCampprice] = useState();
 
     const [isLoading, setIsLoading] = useState(true);
+    const [campprice, setCampprice] = useState()
 
     const caver = new Caver(window.klaytn);
     const infos = [
@@ -181,14 +182,14 @@ function Home() {
     const Tokens = [
         {
             name: "CAMP",
-            price: 0.4602,
+            price: campprice,
             supply: campsupply,
             Contract: state.CAMPContract._address,
             logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg",
         },
         {
             name: "SCAMP",
-            price: 0.9812,
+            price: SCAMPprice,
             supply: scampsupply,
             Contract: state.SCAMPContract._address,
             logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg",
@@ -220,6 +221,11 @@ function Home() {
                 .SCAMP_Price()
                 .call((e, v) => setSCampprice(v / 1e6));
         } catch {setSCampprice(undefined)}
+
+        try {await state.SCAMPContract.methods
+          .CAMP_Price()
+          .call((e, v) => setCampprice(v / 1e6));
+        } catch {setCampprice(undefined)}
         
         setIsLoading(false);
     }

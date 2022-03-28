@@ -195,7 +195,7 @@ function Home() {
         },
     ];
 
-    async function getTokenInfo() {
+    async function getInfo() {
         try {await state.SCAMPContract.methods
                 .totalSupply()
                 .call((e, v) => setScampSupply(caver.utils.fromPeb(v, "KLAY")));
@@ -224,7 +224,13 @@ function Home() {
         setIsLoading(false);
     }
     useEffect(() => {
-        getTokenInfo();
+        getInfo();
+        if (window.klaytn) {            
+            window.klaytn.on("accountsChanged", async function (accounts) {
+                getInfo();
+                console.log("account change listen in home");
+            });
+        }
     }, []);
 
     return (

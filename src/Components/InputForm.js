@@ -32,11 +32,13 @@ const Section = styled.div`
 const Top = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
+    justify-items: space-between;
+    align-content : center;
+    
     height: 20px;
-
+    p{
+        
+    }
 `;
 
 const Bottom = styled.div`
@@ -80,8 +82,8 @@ function InputForm(props) {
     return (
         <Section isVisible={props.isVisible}>
             <Top>
-                {props.haveBal ? <p>Balance : {props.balance == -1 ? <LoadingSVG
-                                                type="dot"
+                {props.haveBal ?<p>Balance : {props.balance == undefined ? <LoadingSVG
+                                                type="circle"
                                                 color="#000"
                                                 width="15px"
                                                 height="15px"

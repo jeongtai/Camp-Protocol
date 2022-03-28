@@ -55,7 +55,8 @@ function PageHeader() {
             }
         };
         // load eventlistner 추가해서
-        // 문서내 모든 컨텐츠가 되어야만 isWalletConnected를 True로 바꿔줌
+        // 문서내 모든 컨텐츠가 load되면
+        // current address 바꿔주고 isWalletConnected를 True로 바꿔줌
         window.addEventListener("load", onLoad);
 
         // accountChange EventListner

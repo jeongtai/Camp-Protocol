@@ -96,8 +96,8 @@ function Mintingtool() {
 
     // initialize hook----------------------------
     useEffect(() => {
-        if (window.klaytn) {
-            getInfo();
+        getInfo();
+        if (window.klaytn) {            
             window.klaytn.on("accountsChanged", async function (accounts) {
                 getInfo();
                 console.log("account change listen in bank");
@@ -369,7 +369,7 @@ function Mintingtool() {
 
                     <MintInfos>
                         {mintInfos.map((mintInfo, index) => (
-                            <Info>
+                            <Info key={mintInfo.name}>
                                 <p>{mintInfo.name}</p>
                                 <p>{mintInfo.val == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : mintInfo.expression}</p>
                             </Info>

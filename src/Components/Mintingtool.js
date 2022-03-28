@@ -78,14 +78,17 @@ function Mintingtool() {
     const [slippage, setSlippage] = useState(0.1);
 
     const [isapproved, setIsApproved] = useState(false);
+    const [USDCapprove, setUSDCapprove] = useState(false);
+    const [CAMPapprove, setCAMPapprove] = useState(false);
+    
     const [isSetOpen, setIsSetOpen] = useState(false);
 
     const [SCAMPBalance, setSCAMPBalance] = useState();
     const [CAMPBalance, setCAMPBalance] = useState();
     const [USDCBalance, setUSDCBalance] = useState();
 
-    const [USDCapprove, setUSDCapprove] = useState();
-    const [CAMPapprove, setCAMPapprove] = useState();
+
+
     const [CCR, setCCR] = useState();
     const [CAMPprice, setCampprice] = useState();
     const [SCAMPprice, setSCampprice] = useState();
@@ -168,26 +171,6 @@ function Mintingtool() {
                 .collatDollarBalance()
                 .call((e, v) => setCollatbal(v / 1e12));
         } catch (e) { setCollatbal(undefined) }
-
-        // try {
-        //   await state.CAMPContract.methods 
-        //       .allowwance(window.klaytn.selectedAddress, state.BankContract._address)
-        //       .call((e, v) => {
-        //         if (v > 1e18) {
-        //           setCAMPapprove(true)
-        //         }
-        //       })
-        // } catch (e) {setCAMPapprove(false)}
-
-        // try {
-        //   await state.USDCContract.methods 
-        //       .allowwance(window.klaytn.selectedAddress, state.BankContract._address)
-        //       .call((e, v) => {
-        //         if (v > 1e18) {
-        //           setUSDCapprove(true)
-        //         }
-        //       })
-        // } catch (e) {setUSDCapprove(false)}
         
         await state.CAMPContract.methods
             .allowance(window.klaytn.selectedAddress, state.BankContract._address)
@@ -196,7 +179,7 @@ function Mintingtool() {
                 setCAMPapprove(true)
               }
             })
-      
+        
         await state.USDCContract.methods
             .allowance(window.klaytn.selectedAddress, state.BankContract._address)
             .call((e,v) => {
@@ -301,6 +284,7 @@ function Mintingtool() {
     }
 
     function onClick2() {
+    console.log(CAMPapprove, USDCapprove)
       if (CAMPapprove === false && USDCapprove === false) {
         state.CAMPContract.methods
             .approve(
@@ -349,6 +333,7 @@ function Mintingtool() {
         setIsApproved(true)
       }
     }, [USDCapprove, CAMPapprove])
+
     // initialize hook----------------------------
     useEffect(() => {
         if (window.klaytn) {

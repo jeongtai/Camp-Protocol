@@ -51,7 +51,7 @@ function Buybacktool () {
     })
   }
   function ApproveUSDC() {
-    state.USDCContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "mKLAY"))
+    state.CAMPContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "mKLAY"))
     .send({
       from : window.klaytn.selectedAddress,
       gas : 3000000

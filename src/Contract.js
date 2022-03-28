@@ -7,7 +7,7 @@ import Stakejs from "./abis/CAMPStake.json"
 import Oraclejs from "./abis/Oraclejs.json"
 
 const caver = new Caver(window.klaytn)
-const BankContract = new caver.klay.Contract(Bankjs.abi, "0xd1A6ccb6350fd74123a71eeb8c7e85C1d21312f5")
+const BankContract = new caver.klay.Contract(Bankjs.abi, "0xBbba6DBc7b3C2FCFE5676af9E646A115062f2d03")
 const SCAMPContract = new caver.klay.Contract(SCAMPjs.abi, "0x8BC3D79E0eE2df7274c9048dE151F75EF13a03f0")
 const CAMPContract = new caver.klay.Contract(CAMPjs.abi, "0x666F7ea2A0cc0980291ff1A33cBd5F979eC40522")
 const USDCContract = new caver.klay.Contract(USDCjs.abi, "0xE1388E74fdA951bB7777E7F7F4D195443415E8CB")

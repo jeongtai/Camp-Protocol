@@ -167,7 +167,7 @@ function Mintingtool() {
         try {
             await state.BankContract.methods
                 .collatDollarBalance()
-                .call((e, v) => setCollatbal(v / 1e12));
+                .call((e, v) => setCollatbal(v / 1e18));
         } catch (e) { setCollatbal(undefined) }
         
         await state.CAMPContract.methods

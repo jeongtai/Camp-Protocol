@@ -57,14 +57,6 @@ const Approve = styled.div`
     line-height: 18px;
 `;
 
-const Btn = styled.button`
-    margin-top: 20px;
-    background-color: ${(props) => props.theme.getBtnColor};
-    color: white;
-    padding: 8px;
-    border-radius: 6px;
-    width: 100%;
-`;
 
 const caver = new Caver(window.klaytn);
 
@@ -458,13 +450,13 @@ function Mintingtool() {
                         </p>
 
                         {isapproved ? (
-                            <Btn text="Mint" onClick={onClick}>
+                            <Button text="Mint" onClick={onClick}>
                                 Mint
-                            </Btn>
+                            </Button>
                         ) : (
-                            <Btn text="Approve" onClick={onClick2}>
+                            <Button text="Approve" onClick={onClick2}>
                                 Approve
-                            </Btn>
+                            </Button>
                         )}
                     </Approve>
                 </Content>

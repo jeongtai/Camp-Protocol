@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import InputForm from "./InputForm";
 import { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
+import Button from "./Button";
 
 const caver = new Caver(window.klaytn)
 
@@ -14,15 +15,6 @@ const Approve = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: 18px;
-`;
-
-const Btn = styled.button`
-    margin-top: 20px;
-    background-color: ${(props) => props.theme.getBtnColor};
-    color: white;
-    padding: 8px;
-    border-radius: 6px;
-    width: 100%;
 `;
 
 function Buybacktool () {
@@ -106,13 +98,13 @@ function Buybacktool () {
           </p>
 
             {isapproved ? (
-              <Btn text="Buyback!" onClick={Buyback}>
+              <Button text="Buyback!" onClick={Buyback}>
                 Buyback!!
-              </Btn>
+              </Button>
               ) : (
-              <Btn text="Approve" onClick={ApproveUSDC}>
+              <Button text="Approve" onClick={ApproveUSDC}>
                 Approve
-              </Btn>
+              </Button>
             )}
         </Approve>
     </div>

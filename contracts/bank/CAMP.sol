@@ -83,12 +83,12 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Cont
         emit BankBurned(b_address, address(this), b_amount);
     }
 
-    function Bond_mint(address m_address, uint256 m_amount) external onlyBond {        
+    function Bond_mint(address m_address, uint256 m_amount) external onlyByOwnOrcontroller {        
         super._mint(m_address, m_amount);
         emit BondMinted(address(this), m_address, m_amount);
     }
   
-    function Staking_mint(address m_address, uint256 m_amount) external onlyStake {        
+    function Staking_mint(address m_address, uint256 m_amount) external onlyByOwnOrcontroller {        
         super._mint(m_address, m_amount);
         emit StakeMinted(address(this), m_address, m_amount);
     }

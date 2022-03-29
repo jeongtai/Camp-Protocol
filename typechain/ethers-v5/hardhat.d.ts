@@ -289,6 +289,26 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.UniswapV2Router02__factory>;
     getContractFactory(
+      name: "IKIP13",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IKIP13__factory>;
+    getContractFactory(
+      name: "IKIP7",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IKIP7__factory>;
+    getContractFactory(
+      name: "IKIP7Receiver",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IKIP7Receiver__factory>;
+    getContractFactory(
+      name: "KIP13",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.KIP13__factory>;
+    getContractFactory(
+      name: "KlaytnToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.KlaytnToken__factory>;
+    getContractFactory(
       name: "WKLAY",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.WKLAY__factory>;
@@ -638,6 +658,31 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.UniswapV2Router02>;
+    getContractAt(
+      name: "IKIP13",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IKIP13>;
+    getContractAt(
+      name: "IKIP7",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IKIP7>;
+    getContractAt(
+      name: "IKIP7Receiver",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IKIP7Receiver>;
+    getContractAt(
+      name: "KIP13",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.KIP13>;
+    getContractAt(
+      name: "KlaytnToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.KlaytnToken>;
     getContractAt(
       name: "WKLAY",
       address: string,

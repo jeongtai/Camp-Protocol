@@ -175,6 +175,17 @@ const config: HardhatUserConfig = {
           },
         },
       },
+
+      "contracts/swap/USDT.sol": {
+        version: "0.5.0",
+        settings: {
+          evmVersion: "constantinople",
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
       "contracts/swap/WKLAY.sol": {
         version: "0.5.6",
         settings: {
@@ -197,9 +208,9 @@ const config: HardhatUserConfig = {
       gasPrice: 750000000000,
       tags: ["test"]
     },
-    baobabDev: {
-      url: 'https://kaikas.baobab.klaytn.net:8651',
-      chainId: 1001,
+    cypress: {
+      url: 'https://public-node-api.klaytnapi.com/v1/cypress',
+      chainId: 8217,
       accounts: [process.env.PRIVATE_KEY!],
       saveDeployments: true,
       gas : 8500000,

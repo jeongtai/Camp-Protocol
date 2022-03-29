@@ -62,6 +62,10 @@ export type { UniswapV2Factory } from "./UniswapV2Factory";
 export type { IMigrator } from "./IMigrator";
 export type { UniswapV2Pair } from "./UniswapV2Pair";
 export type { UniswapV2Router02 } from "./UniswapV2Router02";
+export type { IKIP13 } from "./IKIP13";
+export type { IKIP7Receiver } from "./IKIP7Receiver";
+export type { KIP13 } from "./KIP13";
+export type { KlaytnToken } from "./KlaytnToken";
 export type { WKLAY } from "./WKLAY";
 
 export { IUniswapV2Callee__factory } from "./factories/IUniswapV2Callee__factory";
@@ -125,4 +129,8 @@ export { UniswapV2Factory__factory } from "./factories/UniswapV2Factory__factory
 export { IMigrator__factory } from "./factories/IMigrator__factory";
 export { UniswapV2Pair__factory } from "./factories/UniswapV2Pair__factory";
 export { UniswapV2Router02__factory } from "./factories/UniswapV2Router02__factory";
+export { IKIP13__factory } from "./factories/IKIP13__factory";
+export { IKIP7Receiver__factory } from "./factories/IKIP7Receiver__factory";
+export { KIP13__factory } from "./factories/KIP13__factory";
+export { KlaytnToken__factory } from "./factories/KlaytnToken__factory";
 export { WKLAY__factory } from "./factories/WKLAY__factory";

@@ -15,7 +15,7 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
     uint256 public constant REVISION = 1;
 
     address public DAO;
-    address public KBT;
+    address public CAMP;
     address[] internal _reserveTokens;
     mapping(address => bool) public isReserveToken;
     mapping(address => uint256) public tokenPaidAmounts;
@@ -24,17 +24,17 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
 
     function __initialize(
         address DAO_,
-        address KBT_
+        address CAMP_
     ) external initializer {
-        _setInitialOwner();
-        require(KBT_ != address(0), "BondTreasury: 0 address");
+        // _setInitialOwner();
+        require(CAMP_ != address(0), "BondTreasury: 0 address");
         DAO = DAO_;
         require(DAO_ != address(0), "BondTreasury: 0 address");
-        KBT = KBT_;
+        CAMP = CAMP_;
     }
 
     function getBalance() external view returns (uint256) {
-        return IKIP7(KBT).balanceOf(address(this));
+        return IKIP7(CAMP).balanceOf(address(this));
     }
 
     function getRevision() internal pure override returns (uint256) {
@@ -55,8 +55,8 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
 
         IKIP7(_token).safeTransferFrom(msg.sender, address(this), _amount);
 
-        // mint KBT needed and store amount of rewards for distribution
-        IKIP7(KBT).transfer(msg.sender, _pay);
+        // mint CAMP needed and store amount of rewards for distribution
+        IKIP7(CAMP).transfer(msg.sender, _pay);
 
         tokenPaidAmounts[_token] = tokenPaidAmounts[_token].add(_pay);
         emit Deposit(_token, _amount, _pay);
@@ -94,11 +94,11 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
     /* ======= AUXILLIARY ======= */
 
     /**
-     *  @notice allow anyone to send lost tokens (excluding principle or KBT) to the DAO
+     *  @notice allow anyone to send lost tokens (excluding principle or CAMP) to the DAO
      *  @return bool
      */
     function recoverLostToken(address _token) external returns (bool) {
-        require(_token != KBT, "BondTreasury: cannot withdraw KBT");
+        require(_token != CAMP, "BondTreasury: cannot withdraw CAMP");
         require(!isReserveToken[_token], "BondTreasury: cannot withdraw reserve tokens");
         IKIP7(_token).safeTransfer(DAO, IKIP7(_token).balanceOf(address(this)));
         return true;

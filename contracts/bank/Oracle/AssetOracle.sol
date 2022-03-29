@@ -23,7 +23,6 @@ contract AssetOracle is Owned {
     // if (asset == WKLAY) {
     //     return 1 ether;
     // }
-        console.log(priceOracle.length);
         for (uint i = 0; i < priceOracle.length; i++) {
             // console.log("int i", i);
             UniswapPairOracle source = UniswapPairOracle(priceOracle[i]);
@@ -46,10 +45,10 @@ contract AssetOracle is Owned {
     }
 
     // pair의 단위 가격을 구한다 in USD
-    function assetPrice(address _principle) external view returns (uint256) {
-        uint256 totalSup = IUniswapV2Pair(_principle).totalSupply();
-        uint256 token0value = IUniswapV2Pair(_principle).price0CumulativeLast();
-        uint256 token1value = IUniswapV2Pair(_principle).price1CumulativeLast();
-        return (token0value.add(token1value)).div(totalSup).mul(1e18); //자릿수 맞추기..?!
-    }
+    // function assetPrice(address _principle) external view returns (uint256) {
+    //     uint256 lpSupply = IUniswapV2Pair(_principle).totalSupply();
+    //     uint112 reserve0, reserve1, blocktimestamp = IUniswapV2Pair(_principle).getReserves();
+    //     uint256 token1value = IUniswapV2Pair(_principle).price1CumulativeLast();
+    //     return (token0value.add(token1value)).div(totalSup).mul(1e18); //자릿수 맞추기..?!
+    // }
 }

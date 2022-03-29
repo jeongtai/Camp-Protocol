@@ -236,6 +236,11 @@ const _abi = [
         name: "_usdt_address",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "_oracle",
+        type: "address",
+      },
     ],
     name: "__initialize",
     outputs: [],
@@ -467,19 +472,6 @@ const _abi = [
         internalType: "uint256",
         name: "",
         type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "oracle",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
       },
     ],
     stateMutability: "view",

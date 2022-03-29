@@ -25,7 +25,7 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
     "DAO()": FunctionFragment;
     "NAME()": FunctionFragment;
     "REVISION()": FunctionFragment;
-    "__initialize(address,address,address,address,address,address,address)": FunctionFragment;
+    "__initialize(address,address,address,address,address,address,address,address)": FunctionFragment;
     "adjustment()": FunctionFragment;
     "assetPrice()": FunctionFragment;
     "bondInfo(address)": FunctionFragment;
@@ -37,7 +37,6 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
     "initializeBondTerms(uint256,uint256,uint256,uint256,uint256,uint256,uint256)": FunctionFragment;
     "lastDecay()": FunctionFragment;
     "maxPayout()": FunctionFragment;
-    "oracle()": FunctionFragment;
     "owner()": FunctionFragment;
     "payoutFor(uint256)": FunctionFragment;
     "pendingPayoutFor(address)": FunctionFragment;
@@ -65,7 +64,7 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "REVISION", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "__initialize",
-    values: [string, string, string, string, string, string, string]
+    values: [string, string, string, string, string, string, string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "adjustment",
@@ -101,7 +100,6 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "lastDecay", values?: undefined): string;
   encodeFunctionData(functionFragment: "maxPayout", values?: undefined): string;
-  encodeFunctionData(functionFragment: "oracle", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "payoutFor",
@@ -180,7 +178,6 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "lastDecay", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "maxPayout", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "oracle", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "payoutFor", data: BytesLike): Result;
   decodeFunctionResult(
@@ -344,6 +341,7 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _Token1address: string,
       _treasury: string,
       _usdt_address: string,
+      _oracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -408,8 +406,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     lastDecay(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     maxPayout(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    oracle(overrides?: CallOverrides): Promise<[string]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
@@ -515,6 +511,7 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     _Token1address: string,
     _treasury: string,
     _usdt_address: string,
+    _oracle: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -573,8 +570,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
   lastDecay(overrides?: CallOverrides): Promise<BigNumber>;
 
   maxPayout(overrides?: CallOverrides): Promise<BigNumber>;
-
-  oracle(overrides?: CallOverrides): Promise<string>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
@@ -678,6 +673,7 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _Token1address: string,
       _treasury: string,
       _usdt_address: string,
+      _oracle: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -736,8 +732,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     lastDecay(overrides?: CallOverrides): Promise<BigNumber>;
 
     maxPayout(overrides?: CallOverrides): Promise<BigNumber>;
-
-    oracle(overrides?: CallOverrides): Promise<string>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -964,6 +958,7 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _Token1address: string,
       _treasury: string,
       _usdt_address: string,
+      _oracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1002,8 +997,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     lastDecay(overrides?: CallOverrides): Promise<BigNumber>;
 
     maxPayout(overrides?: CallOverrides): Promise<BigNumber>;
-
-    oracle(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1097,6 +1090,7 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _Token1address: string,
       _treasury: string,
       _usdt_address: string,
+      _oracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1138,8 +1132,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     lastDecay(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     maxPayout(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    oracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

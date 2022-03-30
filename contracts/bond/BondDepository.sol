@@ -461,7 +461,6 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         uint256 balance1 = IKIP7(Token1address).balanceOf(address(IUniswapV2Pair(principle)));
         uint256 lpValue = balance0.mul(_assetOracle.getAssetPrice(Token0address)) + balance1.mul(_assetOracle.getAssetPrice(Token1address));
 
-
         return lpValue.div(lpSupply); //자릿수 맞추기..?!
     }
 

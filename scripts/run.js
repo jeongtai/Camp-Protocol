@@ -8,29 +8,29 @@ const main = async () => {
     // Get the ContractFactory and Signers here.
     SCAMPFactory = await ethers.getContractFactory("SCAMP");
     // let SCAMP = await SCAMPFactory.deploy(owner.address);
-    const SCAMP = await SCAMPFactory.attach("0x4A6Db7b289aE4ce69BFb5Dd342144261174c2A32");
+    const SCAMP = await SCAMPFactory.attach("0x02dd4220425AAC67b1c8E2A80c4D228C926C8972");
     console.log("SCAMP address is:", await SCAMP.address);
 
     CAMPFactory = await ethers.getContractFactory("CAMP");
     // let CAMP = await CAMPFactory.deploy(owner.address);
-    const CAMP = await CAMPFactory.attach("0xc7483f488216199F452307D0e9ff85366cCC1e14");
+    const CAMP = await CAMPFactory.attach("0x140Fe6e0f360D959c25D905042EfC78927990460");
     console.log("CAMP address is:", await CAMP.address);
 
     const assetOracleFactory = await ethers.getContractFactory("AssetOracle");
     // const assetOracle = await assetOracleFactory.deploy();
-    const assetOracle = await assetOracleFactory.attach("0x9c4ce014EFcc483119C101D8f346a32f6E228f18");
+    const assetOracle = await assetOracleFactory.attach("0xEE2a8e4B50c225c8cb4996904Eb80F91013a24Dd");
     console.log("assetOracle:", assetOracle.address);
 
     mockFactory = await ethers.getContractFactory("MockUSDC");
     // let mock = await mockFactory.deploy();
-    const mock = await mockFactory.attach("0x886C3A92f7439060F43ed0b54ba08850ABd62213");
+    const mock = await mockFactory.attach("0x054a15A61EE57eABfd92c493A0A9Ea186c0aa6E6");
     // await mock.setBalance("0x91Add885cdF83Ba62578eF7de912067f52aB3130", toBn("10000"))
-    // await mock.setBalance(owner.address, toBn("1000000"))
+    await mock.setBalance(owner.address, toBn("1000000"))
     console.log("mock address is:", await mock.address);
 
     SCAMPPoolLibraryFactory = await ethers.getContractFactory("SCAMPPoolLibrary");
     // let SCAMPPoolLibrary = await SCAMPPoolLibraryFactory.deploy();
-    const SCAMPPoolLibrary = await SCAMPPoolLibraryFactory.attach("0x66e6b9d4c9a56444DfB01ce925118401Cab4300c");
+    const SCAMPPoolLibrary = await SCAMPPoolLibraryFactory.attach("0x5c5462A3C21B45BaC7914f46826324C28563085b");
     console.log("SCAMPPoolLibrary address is:", await SCAMPPoolLibrary.address);
 
     BankFactory = await ethers.getContractFactory("SCAMPBank", {
@@ -38,8 +38,8 @@ const main = async () => {
             SCAMPPoolLibrary: SCAMPPoolLibrary.address,
         },
     });
-    // let Bank = await BankFactory.deploy(SCAMP.address, CAMP.address, mock.address, owner.address, oracle.address);
-    const Bank = await BankFactory.attach("0xeE8aBBa64D3fBc3ce0C06C869040A2054b57f9cE");
+    // let Bank = await BankFactory.deploy(SCAMP.address, CAMP.address, mock.address, owner.address, assetOracle.address);
+    const Bank = await BankFactory.attach("0xacf51f865a44FA4409f0cb506D3c9977049E0120");
     console.log("Bank address is:", Bank.address);
 
     // Set controller
@@ -52,7 +52,7 @@ const main = async () => {
     // ADD LIQUIDITY
     const uniConFactory = await ethers.getContractFactory("UniswapV2Factory");
     // const factory = await uniConFactory.deploy(owner.address);
-    const factory = uniConFactory.attach("0x3e84f626469D508cb973984528Fc1A5A306F5463"); // with wKLAY
+    const factory = uniConFactory.attach("0x04Ef5E35242e2A2E6d37678dc16661Ac33894e85"); // with wKLAY
     console.log("Factory address is:", factory.address);
     const pairCodeHash = await factory.pairCodeHash();
     console.log("pairCodeHash:", pairCodeHash);
@@ -77,12 +77,12 @@ const main = async () => {
 
     const wKLAYFactory = await ethers.getContractFactory("WKLAY");
     // const wKLAY = await wKLAYFactory.deploy();
-    const wKLAY = wKLAYFactory.attach("0x1D8D03ad7D13389b095Fd6B8f98F00e12D2d2f19");
+    const wKLAY = wKLAYFactory.attach("0xbb73258dd2d962A543B37902fe55655A1d136eC1");
     console.log("wKLAY address:", wKLAY.address);
 
     const RouterFactory = await ethers.getContractFactory("UniswapV2Router02");
     // const router = await RouterFactory.deploy(factory.address, wKLAY.address);
-    const router = RouterFactory.attach("0x0C4c082F2cB8CE68fBDF6559899BDC9E367a69A2");
+    const router = RouterFactory.attach("0x078b8039FAFbAbd8bDe429964589F7dC2C7866f8");
     console.log("router address:", router.address);
 
     // Approve and addLiquidity
@@ -128,13 +128,13 @@ const main = async () => {
     }
 
     // swap
-    // const swapamounts = await router.getAmountsOut(1e6, [CAMP.address, mock.address]);
+    // const swapamounts = await router.getAmountsOut(1e6, [SCAMP.address, mock.address]);
     // console.log("swap ratio:", await swapamounts[0].toString(), await swapamounts[1].toString());
-    // await router.swapExactTokensForTokens(swapamounts[0].toString(), swapamounts[1].toString(), [CAMP.address, mock.address], owner.address, Math.floor(Date.now()) + 10);
+    // await router.swapExactTokensForTokens(swapamounts[0].toString(), swapamounts[1].toString(), [SCAMP.address, mock.address], owner.address, Math.floor(Date.now()) + 10);
 
     const uniOracleFactory = await ethers.getContractFactory("UniswapPairOracle");
     // const scampPairOracle = await uniOracleFactory.deploy(factory.address, SCAMP.address, mock.address, owner.address);
-    const scampPairOracle = uniOracleFactory.attach("0xA091F4DCA4274F12e315bDC786F8db85067FC31F");
+    const scampPairOracle = uniOracleFactory.attach("0x5603d6Ea3395a1305Fdf7f58c9e263b6F71dfeD2");
     console.log("scampPairOracle:", scampPairOracle.address);
     // await scampPairOracle.setPeriod(1);
     console.log(await scampPairOracle.canUpdate());
@@ -144,7 +144,7 @@ const main = async () => {
     }
 
     // const campPairOracle = await uniOracleFactory.deploy(factory.address, CAMP.address, mock.address, owner.address);
-    const campPairOracle = uniOracleFactory.attach("0xf1d7DFBa1f780d78b923445ba7E9E8EA2B5051DA");
+    const campPairOracle = uniOracleFactory.attach("0xF606E76c36F170dc0BC65001c0c53BCc7fB50bD5");
     console.log("campPairOracle:", campPairOracle.address);
     if (await campPairOracle.canUpdate()) {
       console.log("camp oracle is updated");
@@ -152,13 +152,7 @@ const main = async () => {
   }
 
   // await assetOracle.setAssetOracle([scampPairOracle.address, campPairOracle.address]);
-
-    // const assetOracleFactory = await ethers.getContractFactory("AssetOracle");
-    // // const assetOracle = await assetOracleFactory.deploy();
-    // const assetOracle = assetOracleFactory.attach("0x3E574dD0D7a0d44AE9E04c8DAcA3B4E0937fe70E");
-    // console.log("assetOracle:", assetOracle.address);
-    
-    // // console.log(await assetOracle.priceOracle(0));
+    console.log(await assetOracle.priceOracle(0));
     // // console.log(await assetOracle.priceOracle(1));
 
     // console.log((await assetOracle.getAssetPrice(CAMP.address)).toString());
@@ -167,13 +161,13 @@ const main = async () => {
     // Deploy to Bond
     const ClaimSwapCampUSDTLpDepositoryFactory = await ethers.getContractFactory("ClaimSwapCampUSDTLpDepository");
     // const ClaimSwapCampUSDTLpDepository = await ClaimSwapCampUSDTLpDepositoryFactory.deploy();
-    const ClaimSwapCampUSDTLpDepository = ClaimSwapCampUSDTLpDepositoryFactory.attach("0x8a82225aB5B345e20CDA290b028a8B2565Ac3F9f");
+    const ClaimSwapCampUSDTLpDepository = ClaimSwapCampUSDTLpDepositoryFactory.attach("0xa0fee2DD524a531EC217C430f7D4F07fb1838782");
     console.log("ClaimSwapCampUSDTLpDepository address:", ClaimSwapCampUSDTLpDepository.address);
 
     // Deploy bond treasury
     const BondTreasuryFactory = await ethers.getContractFactory("BondTreasury");
     // const bondTreasury = await BondTreasuryFactory.deploy();
-    const bondTreasury = BondTreasuryFactory.attach("0xD8f3317dc6d07f2B85b0d4B004D4F3318d51B6B9");
+    const bondTreasury = BondTreasuryFactory.attach("0x43c48162032cFA4E3b75B46627f42B8e76116468");
     console.log("bondTreasury address:", bondTreasury.address);
 
     // initialize - bond mint
@@ -197,10 +191,9 @@ const main = async () => {
     //     toBn("1e4") //_initialDebt 초기 빚(다른 곳에서 쓴?)
     // );
     
-    // console.log("register", (await bondTreasury.isReserveToken(SCAMPPair)));
+    console.log("register", (await bondTreasury.isReserveToken(CAMPPair)));
     // register
     // await bondTreasury.register(CAMPPair, ClaimSwapCampUSDTLpDepository.address);
-    console.log("register", (await bondTreasury.isReserveToken(CAMPPair)));
     
     console.log("max payout", (await ClaimSwapCampUSDTLpDepository.maxPayout() / 1e18).toString());
 
@@ -215,9 +208,9 @@ const main = async () => {
     // deposit
     console.log("bond price:", (await ClaimSwapCampUSDTLpDepository.bondPrice() / 1e6).toString());
     console.log("CAMP, LP balance:", (await CAMP.balanceOf(owner.address)).toString(), (await pairContract_CAMP.balanceOf(owner.address)).toString());
-    // await ClaimSwapCampUSDTLpDepository.deposit(toBn("10"), await ClaimSwapCampUSDTLpDepository.bondPrice(), owner.address);
+    await ClaimSwapCampUSDTLpDepository.deposit(toBn("10"), await ClaimSwapCampUSDTLpDepository.bondPrice(), owner.address);
     console.log("CAMP, LP balance:", (await CAMP.balanceOf(owner.address)).toString(), (await pairContract_CAMP.balanceOf(owner.address)).toString());
-    // await ClaimSwapCampUSDTLpDepository.redeem(owner.address, false);
+    await ClaimSwapCampUSDTLpDepository.redeem(owner.address, false);
     console.log("CAMP, LP balance:", (await CAMP.balanceOf(owner.address)).toString(), (await pairContract_CAMP.balanceOf(owner.address)).toString());
   };
   

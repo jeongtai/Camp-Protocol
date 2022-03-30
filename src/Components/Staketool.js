@@ -17,7 +17,7 @@ function Staketool () {
     function Stake() {
       state.CAMPContract.methods.approve(
         state.StakingContract._address,
-        caver.utils.toPeb(amount, "KLAY")
+        
       ).send({
         from : window.klaytn.selectedAddress,
         gas : 3000000

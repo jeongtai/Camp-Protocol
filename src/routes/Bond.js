@@ -2,6 +2,8 @@ import Bondingtool from "../Components/Bondingtool";
 import styled from "styled-components";
 import LPInfoDiv from "../Components/LPinfos";
 import LoadingSVG from "../assets/LoadingSVG";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const Bond = () =>{
 
@@ -45,12 +47,68 @@ const OverviewItem = styled.div`
         font-size: 18px;
     }
 `;
+const Section = styled.div`
+    // flex
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 24px;
 
+    width: 50%;
+    min-width: 360px;
+    margin: 0 auto;
+    stroke: Solid #ededed 1px;
+    background-color: white;
+    border-radius: 15px;
+    border: 2px solid ${(props) => props.theme.borderColor};
+
+    span {
+        font-weight: 400;
+        font-size: 20px;
+        width: 100%;
+    }
+`;
+
+const Content = styled.div`
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+`;
+
+  let state = useSelector((state) => state)
+  const [campprice, setCampprice] = useState()
+  const [treasurybal, setTreasurybal] = useState()
+
+  async function getInfo() {
+    try {
+      await state.OracleContract.methods
+            .getAssetPrice(state.CampContract._address).call((e, v) => setCampprice(v))
+    } catch (e) {setCampprice(undefined)}
+
+    // try {
+    //   await state.BondContract.methods
+    //   .assetPrice()
+    // }
+
+    // try{
+    //   await state.TreasuryContract.methods
+    //         .
+    // }
+  }
+
+    useEffect(() => {
+      getInfo()
+    }, [])
+
+
+  
 const Bondinfos = [
-  {name : "Total market Cap", amt : 100000000000},
-  {name : "CAMP Price", amt : 10000000},
+  {name : "Total market Cap", amt : 100000000},
+  {name : "CAMP Price", amt : campprice},
   {name : "TVL", amt : 10000000},
-  {name : "Treasury Balance", amt : 100000},
+  {name : "Treasury Balance"},
 ]
 
     return (
@@ -80,6 +138,12 @@ const Bondinfos = [
           ))}
 
       </LPToken> */}
+      <Section>
+        <Content>
+          <Bondingtool/>
+        </Content>
+      </Section>
+      
       </div>
         
     )

@@ -27,8 +27,8 @@ function Buybacktool () {
 
 
   async function getInfo() {
-    await state.SCAMPContract.methods
-    .CAMP_Price()
+    await state.OracleContract.methods
+    .getAssetPrice(state.CAMPContract._address)
     .call((e, v) => setCampprice(v / 1e6));
 
     await state.CAMPContract.methods

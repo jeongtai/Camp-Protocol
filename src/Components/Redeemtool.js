@@ -105,8 +105,8 @@ function Redeemtool() {
     } catch (e) { setSCAMPBalance(undefined) }
 
     try {
-      await state.SCAMPContract.methods
-        .SCAMP_Price()
+      await state.OracleContract.methods
+      .getAssetPrice(state.SCAMPContract._address)
         .call((e, v) => setSCampprice(v / 1e6));
     } catch (e) { setSCampprice(undefined) }
 
@@ -119,8 +119,8 @@ function Redeemtool() {
     } catch (e) { setCAMPBalance(undefined) }
 
     try {
-      await state.SCAMPContract.methods
-        .CAMP_Price()
+      await state.OracleContract.methods
+        .getAssetPrice(state.CAMPContract._address)
         .call((e, v) => setCampprice(v / 1e6));
     } catch (e) { setCampprice(undefined) }
 

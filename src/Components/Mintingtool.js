@@ -108,8 +108,8 @@ function Mintingtool() {
         } catch (e) { setSCAMPBalance(undefined) }
 
         try {
-            await state.SCAMPContract.methods
-                .SCAMP_Price()
+            await state.OracleContract.methods
+                .getAssetPrice(state.SCAMPContract._address)
                 .call((e, v) => setSCampprice(v / 1e6));
         } catch (e) { setSCampprice(undefined) }
 
@@ -122,8 +122,8 @@ function Mintingtool() {
         } catch (e) { setCAMPBalance(undefined) }
 
         try {
-            await state.SCAMPContract.methods
-                .CAMP_Price()
+            await state.OracleContract.methods
+                .getAssetPrice(state.CAMPContract._address)
                 .call((e, v) => setCampprice(v / 1e6));
         } catch (e) { setCampprice(undefined) }
 
@@ -252,13 +252,14 @@ function Mintingtool() {
     };
 
     function onClick() {
+      const decimal = 1e6
         if (CCR >= 1) {
             state.BankContract.methods
                 .mint1t1SCAMP(
-                    caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"),
+                    caver.utils.toPeb(usdcInputAmount * decimal, "uKLAY"),
                     caver.utils.toPeb(
-                        (scampInputAmount * 1000 * (100 - slippage)) / 100,
-                        "mKLAY"
+                        (scampInputAmount * decimal * (100 - slippage)) / 100,
+                        "uKLAY"
                     )
                 )
                 .send({
@@ -268,10 +269,10 @@ function Mintingtool() {
         } else if (CCR === 0) {
             state.BankContract.methods
                 .mintAlgorithmicSCAMP(
-                    caver.utils.toPeb(campInputAmount * 1000, "mKLAY"),
+                    caver.utils.toPeb(campInputAmount * decimal, "uKLAY"),
                     caver.utils.toPeb(
-                        (scampInputAmount * 1000 * (100 - slippage)) / 100,
-                        "mKLAY"
+                        (scampInputAmount * decimal * (100 - slippage)) / 100 ,
+                        "uKLAY"
                     )
                 )
                 .send({
@@ -281,9 +282,9 @@ function Mintingtool() {
         } else {
             state.BankContract.methods
                 .mintFractionalSCAMP(
-                    caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"),
-                    caver.utils.toPeb(campInputAmount * 1000 * 100, "mKLAY"),
-                    caver.utils.toPeb(scampInputAmount * 1000 * 0.5, "mKLAY")
+                    caver.utils.toPeb(usdcInputAmount * decimal, "uKLAY"),
+                    caver.utils.toPeb(campInputAmount * decimal * (100 - slippage) / 100, "uKLAY"),
+                    caver.utils.toPeb(scampInputAmount * decimal * (100 - slippage) / 100, "uKLAY")
                 )
                 .send({
                     from: window.klaytn.selectedAddress,

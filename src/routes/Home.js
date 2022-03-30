@@ -217,13 +217,13 @@ function Home() {
                 .call((e, v) => setCur_Ratio(v / 1e6));
         } catch {setCur_Ratio(undefined)}
 
-        try {await state.SCAMPContract.methods
-                .SCAMP_Price()
+        try {await state.OracleContract.methods
+                .getAssetPrice(state.SCAMPContract._address)
                 .call((e, v) => setSCampprice(v / 1e6));
         } catch {setSCampprice(undefined)}
 
-        try {await state.SCAMPContract.methods
-          .CAMP_Price()
+        try {await state.OracleContract.methods
+          .getAssetPrice(state.CAMPContract._address)
           .call((e, v) => setCampprice(v / 1e6));
         } catch {setCampprice(undefined)}
         

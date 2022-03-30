@@ -15,9 +15,9 @@ const main = async () => {
     let CAMP = await CAMPFactory.deploy(owner.address);
     console.log("CAMP address is:", await CAMP.address);
 
-    const oracleFactory = await ethers.getContractFactory("AssetOracle");
-    const oracle = await oracleFactory.deploy();
-    console.log("oracle address:", oracle.address);
+    const assetOracleFactory = await ethers.getContractFactory("AssetOracle");
+    const assetOracle = await assetOracleFactory.deploy();
+    console.log("assetOracle:", assetOracle.address);
 
     mockFactory = await ethers.getContractFactory("MockUSDC");
     let mock = await mockFactory.deploy();
@@ -33,8 +33,12 @@ const main = async () => {
             SCAMPPoolLibrary: SCAMPPoolLibrary.address,
         },
     });
-    let Bank = await BankFactory.deploy(SCAMP.address, CAMP.address, mock.address, owner.address, oracle.address);
+    let Bank = await BankFactory.deploy(SCAMP.address, CAMP.address, mock.address, owner.address, assetOracle.address);
     console.log("Bank address is:", Bank.address);
+
+    // approve
+    await SCAMP.approve(Bank.address, toBn("10000"));
+    await CAMP.approve(Bank.address, toBn("10000"));
 
     // Set controller
     await SCAMP.setController("0x91Add885cdF83Ba62578eF7de912067f52aB3130");
@@ -140,14 +144,18 @@ const main = async () => {
         await campPairOracle.update();
     }
 
-    const assetOracleFactory = await ethers.getContractFactory("AssetOracle");
-    const assetOracle = await assetOracleFactory.deploy();
-    console.log("assetOracle:", assetOracle.address);
+    // const assetOracleFactory = await ethers.getContractFactory("AssetOracle");
+    // const assetOracle = await assetOracleFactory.deploy();
+    // console.log("assetOracle:", assetOracle.address);
     await assetOracle.setAssetOracle([scampPairOracle.address, campPairOracle.address]);
     // console.log(await assetOracle.priceOracle(0));
     // console.log(await assetOracle.priceOracle(1));
 
-    console.log((await assetOracle.getAssetPrice(SCAMP.address)).toString());
+    console.log((await assetOracle.getAssetPrice(CAMP.address)).toString());
+
+    // console.log(await Bank._CAMP());
+    // console.log(await SCAMP.SCAMPBank());
+    await Bank.mintAlgorithmicSCAMP(toBn("5"), toBn("0.1"));
 
     /////////////////////////////////////////////////////
     // Deploy to Bond
@@ -194,10 +202,11 @@ const main = async () => {
     // deposit
     console.log("bond price:", (await ClaimSwapCampUSDTLpDepository.bondPrice() / 1e6).toString());
     console.log("CAMP, LP balance:", (await CAMP.balanceOf(owner.address)).toString(), (await pairContract_CAMP.balanceOf(owner.address)).toString());
-    await ClaimSwapCampUSDTLpDepository.deposit(toBn("10"), await ClaimSwapCampUSDTLpDepository.bondPrice(), owner.address);
+    // await ClaimSwapCampUSDTLpDepository.deposit(toBn("10"), await ClaimSwapCampUSDTLpDepository.bondPrice(), owner.address);
     console.log("CAMP, LP balance:", (await CAMP.balanceOf(owner.address)).toString(), (await pairContract_CAMP.balanceOf(owner.address)).toString());
-    await ClaimSwapCampUSDTLpDepository.redeem(owner.address, false);
+    // await ClaimSwapCampUSDTLpDepository.redeem(owner.address, false);
     console.log("CAMP, LP balance:", (await CAMP.balanceOf(owner.address)).toString(), (await pairContract_CAMP.balanceOf(owner.address)).toString());
+
 }
   
   const runMain = async () => {

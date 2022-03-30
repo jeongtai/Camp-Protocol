@@ -1,83 +1,125 @@
 import Button from "./Button";
 import InputForm from "./InputForm";
 import Caver from "caver-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
+
+const Content = styled.div`
+    font-size: 14px;
+
+    div:first-child {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-items: space-between;
+    }
+`;
+const BondInfos = styled.div`
+    height: 187px;
+    padding: 10px;
+
+    background-color: ${(props) => props.theme.backBlue};
+    border-radius: 15px;
+`;
+const Approve = styled.div`
+    text-align: center;
+    color: ${(props) => props.theme.textGray};
+
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+`;
+
+const Info = styled.div`
+    margin: 3px;
+    padding: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    p:first-child {
+        text-align: left;
+        color: ${(props) => props.theme.textGray};
+    }
+
+    p {
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        text-align: right;
+        color: ${(props) => props.theme.textBlack};
+    }
+
+`;
 
 const caver = new Caver(window.klaytn)
+
 function Bondingtool() {
+  //
+  const bondInfos = [
+    {name : "SCAMP-USDT LP", },
+    {name : "CAMP-USDT LP", }
+  ]
+
   let state = useSelector((state) => state)
-  const [amount, setAmount] = useState()
-  const [toggleBond, settoggleBond] = useState(true)
-  const [toggleZap, settoggleZap] = useState(false)
-  const bool_stake = true
-  const maxPrice = 1000
-  const onChange = (event) => setAmount(event.target.value)
-  const toggle = () => settoggleBond((prev) => !prev)
+  const [lpamount, setLPAmount] = useState()
+  const [lpbal, setLPbal] = useState()
 
-  function Bond() {
+  const onLPChange = (event) => setLPAmount(event.target.value)
+  
+  async function getInfo() {
+    try {
+      await state.OracleContract.methods
+            .getAssetPrice(state.CampContract._address).call((e, v) => setLPbal(v))
+    } catch (e) {setLPbal(undefined)}
+  }
 
-    if (toggleZap === false) {
-      //LP Contract로 바꿔야해
-    state.CAMPContract.methods.approve(
-      state.BondContract._address,
-      caver.utils.toPeb(amount, "KLAY")
-    ).send({
-      from : window.klaytn.selectedAddress,
-      gas : 3000000
-    })
-    .on('receipt', function () {
-      state.StakingContract.methods.Bond(
-        caver.utils.toPeb(amount, "KLAY"),
-        maxPrice, //이거 정보 불러와야해
-        state.BondContract._address
-      ).send({
-        from: window.klaytn.selectedAddress,
-        gas : '3000000'
-      })
-    })} else {
-      state.USDCContract.methods.approve(
-        state.BondContract._address,
-        caver.utils.toPeb(amount, "KLAY")
-      ).send({
-        from : window.klaytn.selectedAddress,
-        gas : 3000000
-      })
-      .on('receipt', function () {
-        state.StakingContract.methods.ZaptoBond(
-          caver.utils.toPeb(amount, "KLAY"),
-          maxPrice, //이거 정보 불러와야해
-          state.BondContract._address
-        ).send({
-          from: window.klaytn.selectedAddress,
-          gas : '3000000'
-        })
-      })
-    }
-  }
-  
-  function Redeem() {
-    state.BondContract.methods.redeem(
-      window.klaytn.selectedAddress,
-      bool_stake, //이거 정보 불러와야해
-    ).send({
-      from : window.klaytn.selectedAddress,
-      gas : 3000000
-    })
-  }
-  
-  
+    useEffect(() => {
+      getInfo()
+    }, [])
+
   return (
     <div>
-      <Button text = "toggleBond" onClick={toggle}/>
-      <InputForm
-        onChange={onChange}
-        value ={amount}
-        type = 'text'
-        text = "amount to Bond"
-      />
-      {toggleBond ? <Button text = "Bond!" onClick={Bond}/> : <Button text = "Redeem!" onClick={Redeem}/> }
+      <Content>
+       <div>
+            <span>Bond</span>
+            <span>
+               
+            </span>
+        </div>
+        <InputForm
+          token = "CAMP"
+          onChange={onLPChange}
+          value ={lpamount}
+          setValueFn = {setLPAmount}
+          haveBal = {true}
+          balance={lpbal}
+          haveMax = {true}
+          type = 'text'
+          text = "amount to Bond"
+          isVisible ={true}
+        />
+        <BondInfos>
+          {bondInfos.map((mintInfo, index) => (
+            <Info>
+                <p>{bondInfos.name}</p>
+            </Info>
+          ))}
+        </BondInfos>
 
+        <Approve>
+          <p>
+            First time Mint SCAMP?
+            <br />
+            Please approve USDC,CAMP to use your
+            <br />
+            SCAMP for Minting.
+          </p>
+          <Button text = "Bond!"/>
+          </Approve>        
+      </Content>
     </div>
   )
 }

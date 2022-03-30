@@ -57,15 +57,6 @@ const Approve = styled.div`
     line-height: 18px;
 `;
 
-const Btn = styled.button`
-    margin-top: 20px;
-    background-color: ${(props) => props.theme.getBtnColor};
-    color: white;
-    padding: 8px;
-    border-radius: 6px;
-    width: 100%;
-`;
-
 const caver = new Caver(window.klaytn)
 
 function Redeemtool() {
@@ -114,8 +105,8 @@ function Redeemtool() {
     } catch (e) { setSCAMPBalance(undefined) }
 
     try {
-      await state.SCAMPContract.methods
-        .SCAMP_Price()
+      await state.OracleContract.methods
+      .getAssetPrice(state.SCAMPContract._address)
         .call((e, v) => setSCampprice(v / 1e6));
     } catch (e) { setSCampprice(undefined) }
 
@@ -128,8 +119,8 @@ function Redeemtool() {
     } catch (e) { setCAMPBalance(undefined) }
 
     try {
-      await state.SCAMPContract.methods
-        .CAMP_Price()
+      await state.OracleContract.methods
+        .getAssetPrice(state.CAMPContract._address)
         .call((e, v) => setCampprice(v / 1e6));
     } catch (e) { setCampprice(undefined) }
 
@@ -373,13 +364,13 @@ function Redeemtool() {
             </p>
 
             {isapproved ? (
-              <Btn text="Redeem" onClick={onClick}>
+              <Button text="Redeem" onClick={onClick}>
                 Redeem
-              </Btn>
+              </Button>
             ) : (
-              <Btn text="Approve" onClick={onClick2}>
+              <Button text="Approve" onClick={onClick2}>
                 Approve
-              </Btn>
+              </Button>
             )}
           </Approve>
         </Content>

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import InputForm from "./InputForm";
 import { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
+import Button from "./Button";
 
 const caver = new Caver(window.klaytn)
 
@@ -16,15 +17,6 @@ const Approve = styled.div`
     line-height: 18px;
 `;
 
-const Btn = styled.button`
-    margin-top: 20px;
-    background-color: ${(props) => props.theme.getBtnColor};
-    color: white;
-    padding: 8px;
-    border-radius: 6px;
-    width: 100%;
-`;
-
 function Buybacktool () {
   let state = useSelector((state) => state)
 
@@ -35,8 +27,8 @@ function Buybacktool () {
 
 
   async function getInfo() {
-    await state.SCAMPContract.methods
-    .CAMP_Price()
+    await state.OracleContract.methods
+    .getAssetPrice(state.CAMPContract._address)
     .call((e, v) => setCampprice(v / 1e6));
 
     await state.CAMPContract.methods
@@ -106,13 +98,13 @@ function Buybacktool () {
           </p>
 
             {isapproved ? (
-              <Btn text="Buyback!" onClick={Buyback}>
+              <Button text="Buyback!" onClick={Buyback}>
                 Buyback!!
-              </Btn>
+              </Button>
               ) : (
-              <Btn text="Approve" onClick={ApproveUSDC}>
+              <Button text="Approve" onClick={ApproveUSDC}>
                 Approve
-              </Btn>
+              </Button>
             )}
         </Approve>
     </div>

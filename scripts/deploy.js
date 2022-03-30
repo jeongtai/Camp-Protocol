@@ -164,7 +164,7 @@ const main = async () => {
     await CAMP.Bond_mint(bondTreasury.address, BOND_GENESIS_AMOUNT);
 
     // initiailize depository
-    console.log(await ClaimSwapCampUSDTLpDepository.owner());
+    console.log(await ClaimSwapCampUSDTLpDepository.CAMP());
     await ClaimSwapCampUSDTLpDepository.__initialize(
         CAMP.address, dao.address, CAMPPair, CAMP.address, mock.address, bondTreasury.address, mock.address, assetOracle.address
     );
@@ -179,6 +179,7 @@ const main = async () => {
     );
     // register
     await bondTreasury.register(CAMPPair, ClaimSwapCampUSDTLpDepository.address);
+    console.log("register", (await bondTreasury.isReserveToken(CAMPPair)).toString());
     
     console.log("max payout", (await ClaimSwapCampUSDTLpDepository.maxPayout() / 1e18).toString());
 

@@ -21,8 +21,8 @@ const main = async () => {
   await CAMPPairOracle.update();
 
   // console.log("is here?");
-  // await SCAMPPairOracle.setPeriod(30000);
-  // await CAMPPairOracle.setPeriod(30000);
+  await SCAMPPairOracle.setPeriod(3000000);
+  await CAMPPairOracle.setPeriod(3000000);
 
 
   //const amountOut = await SCAMPPairOracle.consult(SCAMP, 1e6);

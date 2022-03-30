@@ -68,6 +68,14 @@ const Btn = styled.button`
 
 const caver = new Caver(window.klaytn);
 
+
+// TO DO
+// 1. bank Rounddown 으로 revert 안나게 (Mint, Redeem, Fund 동일)
+// 2. Fund 계산 틀린 것 수정
+// 3. figma UI 수정된 것에 맞게 재배치
+// 4. 다크모드
+// 5. 기타 잔 버그들 (지갑연결시 새로고침 등)
+
 function Mintingtool() {
     let state = useSelector((state) => state);
 
@@ -170,21 +178,23 @@ function Mintingtool() {
                 .call((e, v) => setCollatbal(v / 1e18));
         } catch (e) { setCollatbal(undefined) }
         
-        await state.CAMPContract.methods
+        try { await state.CAMPContract.methods
             .allowance(window.klaytn.selectedAddress, state.BankContract._address)
             .call((e,v) => {
               if (v>1e18) {
                 setCAMPapprove(true)
               }
             })
+        } catch (e) {setCAMPapprove(false)}
         
-        await state.USDCContract.methods
+        try { await state.USDCContract.methods
             .allowance(window.klaytn.selectedAddress, state.BankContract._address)
             .call((e,v) => {
               if (v>1e18) {
                 setUSDCapprove(true)
               }
             })
+        } catch (e) {setCAMPapprove(false)}
 
         setIsLoading(false);
     }

@@ -6,6 +6,7 @@ import "./module/Common/Context.sol";
 import "../bond/library/kip/KIP7.sol";
 import "./Owned.sol";
 import "./SCAMP.sol";
+import "hardhat/console.sol";
 
 contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Context {
     using SafeMath for uint256;
@@ -53,6 +54,7 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Cont
         require(SCAMP_contract_address != address(0), "Zero address detected");
 
         SCAMPAddress = SCAMP_contract_address;
+        _SCAMP = SCAMP(SCAMPAddress);
         emit SCAMPAddressSet(SCAMP_contract_address);
     }
     

@@ -15,6 +15,9 @@ const Content = styled.div`
         align-items: center;
         justify-items: space-between;
     }
+    img:hover {
+        cursor:pointer;
+    }
 `;
 
 const MintInfos = styled.div`

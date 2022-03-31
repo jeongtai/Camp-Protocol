@@ -55,15 +55,7 @@ const Info = styled.div`
 
 const caver = new Caver(window.klaytn)
 
-function Bondingtool(props) {
-  //LP이름
-  const bondInfos = [
-    {name : "SCAMP-USDT LP", },
-    {name : "CAMP-USDT LP", }
-  ]
-
-  
-
+function Bondingtool() {
   let state = useSelector((state) => state)
   const [lpamount, setLPAmount] = useState()
   const [lpbal, setLPbal] = useState()

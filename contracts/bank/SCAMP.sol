@@ -8,6 +8,7 @@ import "./Owned.sol";
 import "./CAMP.sol";
 // import "./Pools/SCAMPBank.sol";
 import "./Oracle/AssetOracle.sol";
+import "hardhat/console.sol";
 
 contract SCAMP is KIP7("stableCAMP", "sCAMP", 18), Owned, Context {
   using SafeMath for uint256;

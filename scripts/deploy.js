@@ -46,6 +46,7 @@ const main = async () => {
     await SCAMP.setBankAddress(Bank.address);
     await CAMP.setSCAMPAddress(SCAMP.address);
     await SCAMP.setMintingFee(3000);
+    await SCAMP.setOracleAddress(assetOracle.address);
 
     // ADD LIQUIDITY
     const uniConFactory = await ethers.getContractFactory("UniswapV2Factory");
@@ -156,6 +157,9 @@ const main = async () => {
     // console.log(await Bank._CAMP());
     // console.log(await SCAMP.SCAMPBank());
     await Bank.mintAlgorithmicSCAMP(toBn("5"), toBn("0.1"));
+    await SCAMP.setRefreshCooldown(1);
+    console.log("imalive");
+    await SCAMP.refreshCollateralRatio();
 
     /////////////////////////////////////////////////////
     // Deploy to Bond

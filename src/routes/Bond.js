@@ -1,120 +1,140 @@
 import Bondingtool from "../Components/Bondingtool";
 import styled from "styled-components";
-import LPInfoDiv from "../Components/LPinfos";
+import LPinfos from "../Components/LPinfos";
 import LoadingSVG from "../assets/LoadingSVG";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const Bond = () => {
+const Overview = styled.div`
+// flex
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
 
-  const Overview = styled.div`
-    // flex
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+padding: 24px;
 
-    padding: 24px;
+stroke: Solid #ededed 1px;
+background-color: white;
+border-radius: 15px;
 
-    stroke: Solid #ededed 1px;
-    background-color: white;
-    border-radius: 15px;
+border: 2px solid ${(props) => props.theme.borderColor};
 
-    border: 2px solid ${(props) => props.theme.borderColor};
-
-    span {
-        margin: 0 20px;
-        font-weight: 400;
-        font-size: 20px;
-        width: 100%;
-        margin-bottom: 20px;
-    }
+span {
+    margin: 0 20px;
+    font-weight: 400;
+    font-size: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+}
 `;
 
-  const OverviewItem = styled.div`
-    flex: 1 1 20%;
-    margin: 15px 10px;
-    padding: 0px 10px;
+const OverviewItem = styled.div`
+flex: 1 1 20%;
+margin: 15px 10px;
+padding: 0px 10px;
 
-    width: 23%;
-    min-width: 120px;
-    p:first-child {
-        font-size: 14px;
-        color: ${(props) => props.theme.textGray};
-    }
-    p:last-child {
-        margin-top: 10px;
-        font-size: 18px;
-    }
-`;
-
-  const LPToken = styled.div`
-    // flex
-    flex-direction: column;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    
-    padding: 24px;
-
-    stroke: Solid #ededed 1px;
-    background-color: white;
-    border-radius: 15px;
-
-    border: 2px solid ${(props) => props.theme.borderColor};
-    span {
-        margin: 0 20px;
-        font-weight: 400;
-        font-size: 20px;
-        width: 100%;
-        margin-bottom: 20px;
-    }
-`
-const Title = styled.div`
-    display: flex;
-    flex-direction : row;
-    justify-content: space-between;
-
-    width : 100%;
-
-    padding : 15px 10px;
+width: 23%;
+min-width: 120px;
+p:first-child {
     font-size: 14px;
     color: ${(props) => props.theme.textGray};
+}
+p:last-child {
+    margin-top: 10px;
+    font-size: 18px;
+}
+`;
+
+const LPToken = styled.div`
+// flex
+flex-direction: column;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+
+padding: 24px;
+
+stroke: Solid #ededed 1px;
+background-color: white;
+border-radius: 15px;
+
+border: 2px solid ${(props) => props.theme.borderColor};
+span {
+    margin: 0 20px;
+    font-weight: 400;
+    font-size: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+`
+const Title = styled.div`
+  width : 100%;
+  display: flex;
+  flex-direction : row;
+  justify-content: space-between;
+  color : ${props => props.theme.textDarkGray};
 `
 
-  const Section = styled.div`
-    // flex
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    flex-direction: column;
-    padding: 24px;
+const Section = styled.div`
+// flex
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+flex-direction: column;
+padding: 24px;
 
-    width: 50%;
-    min-width: 360px;
-    margin: 0 auto;
-    stroke: Solid #ededed 1px;
-    background-color: white;
-    border-radius: 15px;
-    border: 2px solid ${(props) => props.theme.borderColor};
+width: 50%;
+min-width: 360px;
+margin: 0 auto;
+stroke: Solid #ededed 1px;
+background-color: white;
+border-radius: 15px;
+border: 2px solid ${(props) => props.theme.borderColor};
 
-    span {
-        font-weight: 400;
-        font-size: 20px;
-        width: 100%;
-    }
+span {
+    font-weight: 400;
+    font-size: 20px;
+    width: 100%;
+}
 `;
 
 
-
+const Bond = () => {
   let state = useSelector((state) => state)
   const [campprice, setCampprice] = useState()
   const [treasurybal, setTreasurybal] = useState()
+  const [lpamount, setLPAmount] = useState()
+  const [lpbal, setLPbal] = useState()
+  const [bondprice, setBondPrice] = useState()
+  const [pendingCAMP, setPendingCamp] = useState()
+  const [percentBond, setPecentBond] = useState()
+
+  //LP이름
+  const bondLPInfos = [
+    {name : "CAMP-USDT", contract : state.CAMP_USDT_BondContract},
+    {name : "SCAMP-USDT", contract : state.CAMP_USDT_BondContract},
+    {name : "HI-SCAMP", contract : state.CAMP_USDT_BondContract}
+  ]
+
 
   async function getInfo() {
     try {
       await state.OracleContract.methods
         .getAssetPrice(state.CampContract._address).call((e, v) => setCampprice(v))
     } catch (e) { setCampprice(undefined) }
+
+    try {
+      await state.CAMP_USDT_BondContract.methods.bondPrice()
+        .call((e, v) => setBondPrice(v))
+    } catch (e) { setBondPrice(undefined) }
+    try {
+      await state.CAMP_USDT_BondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
+        .call((e, v) => setPendingCamp(v / 1e18))
+    } catch (e) { setBondPrice(undefined) }
+    try {
+      await state.CAMP_USDT_BondContract.methods.percentVestedFor(window.klaytn.selectedAddress)
+        .call((e, v) => setPecentBond(v / 1e2))
+    } catch (e) { setBondPrice(undefined) }
 
     // try {
     //   await state.BondContract.methods
@@ -172,6 +192,12 @@ const Title = styled.div`
           <p>Purchased</p>
           <p>Vesting Term End</p>
         </Title>
+
+        <div>
+          {bondLPInfos.map((bondLPInfo, index) => (
+            <LPinfos props={bondLPInfo}/>
+          ))}
+        </div>
       </LPToken>
       {/* 
       <LPToken>

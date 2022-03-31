@@ -18,7 +18,9 @@ z-index: 2;
 box-shadow: 0px 4px 20px 0px #00000033;
 
 font-size: 14px;
-
+&:hover {
+    cursor:pointer;
+}
 transform-origin: 80% 0;
 animation: ${keyframes`
               0% { transform:scale(0) }

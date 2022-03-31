@@ -3,6 +3,8 @@
 //     name : "", 
 //   }]
 
+import { useState, useEffect } from "react";
+
 //   useEffect(()=>{
 //     poolInfo.name= props
 //     poolInfo.bal= state.lp풀정보컨트랙.methods.lpBalanceOf()
@@ -28,3 +30,30 @@
 // }
 
 // export default LPInfoDiv;
+
+function LPInfos({ props }) {
+  const [bondprice, setBondPrice] = useState()
+  useEffect(async () => {
+    try {
+      await props.contract.methods.bondPrice()
+        .call((e, v) => setBondPrice(v))
+    } catch (e) { setBondPrice(undefined) }
+  }, [])
+
+
+  const route =()=>{
+    console.log("route");
+  }
+  
+  return (    
+    <div>
+      <span>{console.log(props)}
+        {bondprice}
+        {props.name}</span>
+      <button onClick={()=>route()}>bond</button>
+    </div>
+  )
+
+}
+
+export default LPInfos;

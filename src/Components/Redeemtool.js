@@ -8,14 +8,7 @@ import SlippageSetting from "./SlippageSetting";
 import LoadingSVG from "../assets/LoadingSVG.js";
 import SetIcon from "../assets/SetIcon.svg";
 
-const Content = styled.div`
-    font-size: 14px;
-    div:first-child {
-        display: flex;
-        align-items: center;
-        justify-items: space-between;
-    }
-`;
+const Content = styled.div``;
 
 const RedeemInfos = styled.div`
     height: 187px;

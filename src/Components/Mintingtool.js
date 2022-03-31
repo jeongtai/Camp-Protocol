@@ -9,12 +9,6 @@ import LoadingSVG from "../assets/LoadingSVG.js";
 import SetIcon from "../assets/SetIcon.svg";
 
 const Content = styled.div`
-    font-size: 14px;
-    div:first-child {
-        display: flex;
-        align-items: center;
-        justify-items: space-between;
-    }
     img:hover {
         cursor:pointer;
     }

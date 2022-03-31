@@ -18,7 +18,7 @@ const Section = styled.div`
     padding: 24px;
 
     width: 50%;
-    min-width: 360px;
+    min-width: 380px;
     margin: 0 auto;
     stroke: Solid #ededed 1px;
     background-color: white;
@@ -63,8 +63,6 @@ const Tab = styled.div`
     border-bottom: ${(props) =>
         props.isActive ? "2px solid" + props.theme.connectBtnColor : null};
 `;
-
-const caver = new Caver(window.klaytn);
 
 const Bank = () => {
     // toggle true=mint false=redeem

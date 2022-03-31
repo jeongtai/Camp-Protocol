@@ -23,8 +23,8 @@ const Overview = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-
-    padding: 24px;
+    
+    padding : 10px;
 
     stroke: Solid #ededed 1px;
     background-color: white;
@@ -32,23 +32,28 @@ const Overview = styled.div`
 
     border: 2px solid ${(props) => props.theme.borderColor};
 
-    span {
-        margin: 0 20px;
+    div:first-child {
+        width: 100%;
+
+        margin : 10px;
+        margin-bottom: 20px;
+        
         font-weight: 400;
         font-size: 20px;
-        width: 100%;
-        margin-bottom: 20px;
     }
 `;
 
 const OverviewItem = styled.div`
+    display:flex;
+    flex-direction: column;
     flex: 1 1 20%;
-
+    align-items : flex-start;
+    
     margin: 15px 10px;
-    padding: 0px 10px;
 
-    width: 23%;
-    min-width: 120px;
+    width : 23%;
+    min-width: 125px;
+    
     p:first-child {
         font-size: 14px;
         color: ${(props) => props.theme.textGray};
@@ -254,7 +259,7 @@ function Home() {
             ) : (
                 <Dashboard>
                     <Overview>
-                        <span>Overview</span>
+                        <div><p>Overview</p></div>
 
                         {infos.map((info, index) => (
                             <OverviewItem key={info.name}>

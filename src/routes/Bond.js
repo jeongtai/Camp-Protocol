@@ -1,4 +1,4 @@
-import Bondingtool from "../Components/Bondingtool";
+import Bondingtool from "./Bondingtool";
 import styled from "styled-components";
 import LPinfos from "../Components/LPinfos";
 import LoadingSVG from "../assets/LoadingSVG";
@@ -6,46 +6,52 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const Overview = styled.div`
-// flex
-display: flex;
-flex-wrap: wrap;
-justify-content: space-between;
+  // flex
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  
+  padding : 10px;
 
-padding: 24px;
+  stroke: Solid #ededed 1px;
+  background-color: white;
+  border-radius: 15px;
 
-stroke: Solid #ededed 1px;
-background-color: white;
-border-radius: 15px;
+  border: 2px solid ${(props) => props.theme.borderColor};
 
-border: 2px solid ${(props) => props.theme.borderColor};
+  div:first-child {
+      width: 100%;
 
-span {
-    margin: 0 20px;
-    font-weight: 400;
-    font-size: 20px;
-    width: 100%;
-    margin-bottom: 20px;
-}
+      margin : 10px;
+      margin-bottom: 20px;
+      
+      font-weight: 400;
+      font-size: 20px;
+  }
 `;
 
 const OverviewItem = styled.div`
-flex: 1 1 20%;
-margin: 15px 10px;
-padding: 0px 10px;
+  display:flex;
+  flex-direction: column;
+  flex: 1 1 20%;
+  align-items : flex-start;
+  
+  margin: 15px 10px;
 
-width: 23%;
-min-width: 120px;
-p:first-child {
-    font-size: 14px;
-    color: ${(props) => props.theme.textGray};
-}
-p:last-child {
-    margin-top: 10px;
-    font-size: 18px;
-}
+  width : 23%;
+  min-width: 125px;
+  
+  p:first-child {
+      font-size: 14px;
+      color: ${(props) => props.theme.textGray};
+  }
+  p:last-child {
+      margin-top: 10px;
+      font-size: 18px;
+  }
 `;
 
-const LPToken = styled.div`
+const LPTokenItems = styled.div`
 // flex
 flex-direction: column;
 display: flex;
@@ -53,6 +59,7 @@ flex-wrap: wrap;
 justify-content: space-between;
 
 padding: 24px;
+margin : 16px 0 0 0; 
 
 stroke: Solid #ededed 1px;
 background-color: white;
@@ -60,7 +67,6 @@ border-radius: 15px;
 
 border: 2px solid ${(props) => props.theme.borderColor};
 span {
-    margin: 0 20px;
     font-weight: 400;
     font-size: 20px;
     width: 100%;
@@ -68,11 +74,18 @@ span {
 }
 `
 const Title = styled.div`
-  width : 100%;
-  display: flex;
-  flex-direction : row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr repeat(5, 1fr);
+
+  padding : 0 0 20px 0;
+  
+  border-bottom: 2px solid ${(props) => props.theme.borderColor};
+
+  font-size : 12px;
   color : ${props => props.theme.textDarkGray};
+  p{
+    padding : 0 10px;
+  }
 `
 
 const Section = styled.div`
@@ -111,9 +124,9 @@ const Bond = () => {
 
   //LP이름
   const bondLPInfos = [
-    {name : "CAMP-USDT", contract : state.CAMP_USDT_BondContract},
-    {name : "SCAMP-USDT", contract : state.CAMP_USDT_BondContract},
-    {name : "HI-SCAMP", contract : state.CAMP_USDT_BondContract}
+    { name: "CAMP-USDT", contract: state.CAMP_USDT_BondContract },
+    { name: "SCAMP-USDT", contract: state.CAMP_USDT_BondContract },
+    { name: "CAMP-SCAMP", contract: state.CAMP_USDT_BondContract }
   ]
 
 
@@ -135,16 +148,6 @@ const Bond = () => {
       await state.CAMP_USDT_BondContract.methods.percentVestedFor(window.klaytn.selectedAddress)
         .call((e, v) => setPecentBond(v / 1e2))
     } catch (e) { setBondPrice(undefined) }
-
-    // try {
-    //   await state.BondContract.methods
-    //   .assetPrice()
-    // }
-
-    // try{
-    //   await state.TreasuryContract.methods
-    //         .
-    // }
   }
 
   // initialize hook----------------------------
@@ -170,7 +173,7 @@ const Bond = () => {
   return (
     <div>
       <Overview>
-        <span>Overview</span>
+        <div>Overview</div>
 
         {Bondinfos.map((info, index) => (
           <OverviewItem key={info.name}>
@@ -183,22 +186,22 @@ const Bond = () => {
           </OverviewItem>
         ))}
       </Overview>
-      <LPToken>
-        <span>LP Token</span>
+      <LPTokenItems>
+        <span>LP Tokens</span>
         <Title>
           <p>Name</p>
           <p>Market Price</p>
           <p>ROI(Discount)</p>
           <p>Purchased</p>
           <p>Vesting Term End</p>
+          <p></p>
         </Title>
+        
+        {bondLPInfos.map((bondLPInfo, index) => (
+          <LPinfos props={bondLPInfo} />
+        ))}
 
-        <div>
-          {bondLPInfos.map((bondLPInfo, index) => (
-            <LPinfos props={bondLPInfo}/>
-          ))}
-        </div>
-      </LPToken>
+      </LPTokenItems>
       {/* 
       <LPToken>
         <p>LP Token</p>
@@ -210,12 +213,6 @@ const Bond = () => {
           ))}
 
       </LPToken> */}
-
-      <Section>
-
-        <Bondingtool />
-
-      </Section>
 
     </div>
 

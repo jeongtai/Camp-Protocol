@@ -5,8 +5,6 @@ import TokenLogo from "./TokenLogo";
 import { useState } from "react";
 import LoadingSVG from "../assets/LoadingSVG.js";
 
-
-
 const Section = styled.div`
     margin: 14px 0px;
     padding: 14px 20px;
@@ -25,20 +23,16 @@ const Section = styled.div`
         font-size: 12px;
         font-weight: 400;
     }
-
-    
 `;
 
 const Top = styled.div`
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 90% 10%;
+    align-items: center;
     justify-items: space-between;
-    align-content : center;
     
     height: 20px;
-    p{
-        
-    }
+
 `;
 
 const Bottom = styled.div`
@@ -88,7 +82,8 @@ function InputForm(props) {
                                                 width="15px"
                                                 height="15px"
                                             /> : props.balance}
-                </p> : null}
+                </p> : <p></p>}
+                <p>
                 <MaxBtn
                     onClick={props.haveMax
                         ? async (e) => {
@@ -103,6 +98,7 @@ function InputForm(props) {
                 >
                     MAX
                 </MaxBtn>
+                </p>
             </Top>
             <Bottom>
                 <input

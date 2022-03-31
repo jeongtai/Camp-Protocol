@@ -1,19 +1,35 @@
-import Button from "./Button";
-import InputForm from "./InputForm";
+import Button from "../Components/Button";
+import InputForm from "../Components/InputForm";
 import Caver from "caver-js";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const Content = styled.div`
+    // flex
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    padding: 24px;
+    margin: 0 auto;
+
+    width: 50%;
+    min-width: 380px;
+
+    stroke: Solid #ededed 1px;
+    background-color: white;
+    border-radius: 15px;
+    border: 2px solid ${(props) => props.theme.borderColor};
+
+    span {
+        font-weight: 400;
+        font-size: 20px;
+        width: 100%;
+    }
+    
     font-size: 14px;
 
-    div:first-child {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-items: space-between;
-    }
 `;
 const BondInfos = styled.div`
     height: 187px;
@@ -124,12 +140,9 @@ function Bondingtool() {
       })
     }
   return (
-    <div>
-      <Button text = "toggle!" onClick={() => setIsBond((state) => !state)}/>
+      
       <Content>
-       <div>
-            <span>Bond</span>
-        </div>
+            <span>Input</span>
         <InputForm
           token = "CAMP"
           onChange={onLPChange}
@@ -178,7 +191,6 @@ function Bondingtool() {
           
           </Approve>        
       </Content>
-    </div>
   )
 }
 export default Bondingtool;

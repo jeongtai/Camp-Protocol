@@ -117,7 +117,7 @@ contract SCAMPBank is Owned {
         uint256 cur_collateral_ratio = _SCAMP.current_collateral_ratio();
         uint256 collat_value = collatDollarBalance();
 
-        if (collat_value > COLLATERAL_RATIO_PRECISION) cur_collateral_ratio = COLLATERAL_RATIO_PRECISION; // Handles an overcollateralized contract with CR > 1
+        if (cur_collateral_ratio > COLLATERAL_RATIO_PRECISION) cur_collateral_ratio = COLLATERAL_RATIO_PRECISION; // Handles an overcollateralized contract with CR > 1
         uint256 required_collat_dollar_value_d18 = (total_supply.mul(cur_collateral_ratio)).div(COLLATERAL_RATIO_PRECISION); // Calculates collateral needed to back each 1 SCAMP with $1 of collateral at current collat ratio
         if (collat_value > required_collat_dollar_value_d18) return collat_value.sub(required_collat_dollar_value_d18);
         else return 0;

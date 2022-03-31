@@ -21,6 +21,7 @@ function Recollattool () {
   const [USDCBalance, setUSDCBalance] = useState();
   const [isapproved, setIsApproved] = useState(false);
   const [CAMPprice, setCampprice] = useState();
+  const [campInputAmount, setCAMPInputAmount] = useState(0);
   const [CAMPBalance, setCAMPBalance] = useState();
 
   async function getInfo() {
@@ -52,7 +53,8 @@ function Recollattool () {
   }
 
   function recollat() {
-    state.BankContract.methods.recollateralizeSCAMP(caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"), caver.utils.toPeb(usdcInputAmount / CAMPprice * 1000, "mKLAY"))
+    const decimal = 1e6;
+    state.BankContract.methods.recollateralizeSCAMP(caver.utils.toPeb(usdcInputAmount * decimal, "uKLAY"), caver.utils.toPeb(campInputAmount * decimal /* * (100 - slippage) / 100 */, "uKLAY"))
     .send({
       from : window.klaytn.selectedAddress,
       gas : 3000000
@@ -69,9 +71,18 @@ function Recollattool () {
     }
 }, []);
 
+  const inputdecimal = 1000
+  const USDCamt = (event) => {
+    const usdc = event.target.value
+    setUSDCInputAmount(Math.round(usdc * inputdecimal) / inputdecimal)
+    setCAMPInputAmount(Math.round(usdc / CAMPprice * inputdecimal) / inputdecimal)
+  }
 
-  const USDCamt = (event) => setUSDCInputAmount(event.target.value)
-  
+  const CAMPamt = (event) => {
+    const camp = event.target.value
+    setUSDCInputAmount(Math.round(camp * CAMPprice * inputdecimal) / inputdecimal)
+    setCAMPInputAmount(Math.round(camp * inputdecimal) / inputdecimal)
+  }
   return (
     <div>
       <p>Input</p>
@@ -88,12 +99,12 @@ function Recollattool () {
           haveBal={true}
         />
         <p>Output</p>
-<InputForm
+        <InputForm
           token="CAMP"
           balance={CAMPBalance}
-          onChange={USDCamt}
-          value={usdcInputAmount}
-          setValueFn={setUSDCInputAmount}
+          onChange={CAMPamt}
+          value={campInputAmount}
+          setValueFn={setCAMPInputAmount}
           type="number"
           isVisible={true}
           haveMax={true}
@@ -109,7 +120,7 @@ function Recollattool () {
           </p>
 
             {isapproved ? (
-              <Button text="Mint" onClick={recollat}>
+              <Button text="recollat" onClick={recollat}>
                 recollat!!
               </Button>
               ) : (

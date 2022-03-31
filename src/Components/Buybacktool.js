@@ -24,6 +24,9 @@ function Buybacktool () {
   const [CAMPBalance, setCAMPBalance] = useState();
   const [isapproved, setIsApproved] = useState(false);
   const [CAMPprice, setCampprice] = useState();
+  const [usdcInputAmount, setUSDCInputAmount] = useState(0);
+  const [USDCBalance, setUSDCBalance] = useState();
+  const [availableUSDC, setavailableUSDC] = useState();
 
 
   async function getInfo() {
@@ -41,7 +44,14 @@ function Buybacktool () {
         setIsApproved(true)
       }
     })
+    await state.USDCContract.methods.balanceOf(window.klaytn.selectedAddress)
+    .call((e,v) => setUSDCBalance(v))
+
+    await state.BankContract.methods.availableExcessCollatDV()
+    .call((e,v) => setavailableUSDC(v))
   }
+
+
   function ApproveUSDC() {
     state.CAMPContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "mKLAY"))
     .send({
@@ -53,7 +63,8 @@ function Buybacktool () {
   }
 
   function Buyback() {
-    state.BankContract.methods.buyBackCAMP(caver.utils.toPeb(campInputAmount * 1000, "mKLAY"), caver.utils.toPeb(campInputAmount * CAMPprice * 1000, "mKLAY"))
+    const decimal = 1e6;
+    state.BankContract.methods.buyBackCAMP(caver.utils.toPeb(campInputAmount * 1000, "mKLAY"), caver.utils.toPeb(campInputAmount * CAMPprice * decimal /* * (100 - slippage) / 100 */, "mKLAY"))
     .send({
       from : window.klaytn.selectedAddress,
       gas : 3000000
@@ -72,16 +83,40 @@ function Buybacktool () {
   }, []);
 
 
-  const CAMPamt = (event) => setCAMPInputAmount(event.target.value)
+  const inputdecimal = 1000
+  const USDCamt = (event) => {
+    const usdc = event.target.value
+    setUSDCInputAmount(Math.round(usdc * inputdecimal) / inputdecimal)
+    setCAMPInputAmount(Math.round(usdc / CAMPprice * inputdecimal) / inputdecimal)
+  }
+
+  const CAMPamt = (event) => {
+    const camp = event.target.value
+    setUSDCInputAmount(Math.round(camp * CAMPprice * inputdecimal) / inputdecimal)
+    setCAMPInputAmount(Math.round(camp * inputdecimal) / inputdecimal)
+  }
   
   return (
     <div>
+      <p>Input</p>
         <InputForm
           token="CAMP"
           balance={CAMPBalance}
           onChange={CAMPamt}
           value={campInputAmount}
           setValueFn={setCAMPInputAmount}
+          type="number"
+          isVisible={true}
+          haveMax={true}
+          haveBal={true}
+        />
+      <p>Output</p>
+        <InputForm
+          token="USDC"
+          balance={USDCBalance}
+          onChange={USDCamt}
+          value={usdcInputAmount}
+          setValueFn={setUSDCInputAmount}
           type="number"
           isVisible={true}
           haveMax={true}
@@ -95,6 +130,8 @@ function Buybacktool () {
             Please approve USDC,CAMP to use your
             <br />
             SCAMP for Minting.
+            <br />
+            availableUSDC : {availableUSDC}
           </p>
 
             {isapproved ? (

@@ -287,7 +287,7 @@ function Mintingtool() {
             state.BankContract.methods
                 .mintFractionalSCAMP(
                     caver.utils.toPeb(usdcInputAmount * decimal, "uKLAY"),
-                    caver.utils.toPeb(campInputAmount * decimal, "uKLAY"),
+                    caver.utils.toPeb(campInputAmount * decimal * (100 + slippage) / 100, "uKLAY"),
                     caver.utils.toPeb(scampInputAmount * decimal * (100 - slippage) / 100, "uKLAY")
                 )
                 .send({

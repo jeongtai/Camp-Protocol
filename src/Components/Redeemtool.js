@@ -242,7 +242,7 @@ function Redeemtool() {
 
     else {
       state.BankContract.methods
-      .redeemFractionalSCAMP(caver.utils.toPeb(scampInputAmount * decimal, 'uKLAY'), caver.utils.toPeb(campInputAmount * decimal * (100 + slippage) / 100, "uKLAY"), caver.utils.toPeb(usdcInputAmount * decimal * (100 - slippage) / 100, "uKLAY"))
+      .redeemFractionalSCAMP(caver.utils.toPeb(scampInputAmount * decimal, 'uKLAY'), caver.utils.toPeb(campInputAmount * decimal * (100 - slippage) / 100, "uKLAY"), caver.utils.toPeb(usdcInputAmount * decimal * (100 - slippage) / 100, "uKLAY"))
       .send({
         from : window.klaytn.selectedAddress,
         gas : 3000000

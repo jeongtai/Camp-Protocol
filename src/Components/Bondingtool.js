@@ -51,17 +51,17 @@ const Info = styled.div`
         text-align: right;
         color: ${(props) => props.theme.textBlack};
     }
-
 `;
 
 const caver = new Caver(window.klaytn)
 
 function Bondingtool() {
-  //
   const bondInfos = [
     {name : "SCAMP-USDT LP", },
     {name : "CAMP-USDT LP", }
   ]
+
+  
 
   let state = useSelector((state) => state)
   const [lpamount, setLPAmount] = useState()

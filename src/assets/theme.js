@@ -1,11 +1,11 @@
 export const theme = {
    // theme
    navColor : "#FDFDFD",
-   bgColor : "#E5E5E5",
+   bgColor : "#f8f8f8",
    borderColor : "#EDEDED",
    activeColor : "#282828",
    unActiveColor : "#B2B2B2",
-   backGray: "#F8F8F8",
+   backGray: "#f8f8f8",
    backBlue : "#F0F7FF",
 
    // Btn
@@ -16,6 +16,7 @@ export const theme = {
    // text
    textBlack : "#282828",
    textGray : "#B2B2B2",
+   textDarkGray : "#7D7D7D",
 
    // navbar
    navWidth: 260,

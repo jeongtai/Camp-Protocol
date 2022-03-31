@@ -200,7 +200,7 @@ function Mintingtool() {
             mintDecimal
         );
         setScampInputAmount(
-            Math.round((usdc / CCR / SCAMPprice) * mintDecimal) / mintDecimal
+            Math.round((usdc / CCR) * mintDecimal) / mintDecimal
         );
     };
 
@@ -215,7 +215,7 @@ function Mintingtool() {
         setCampInputAmount(Math.round(camp * mintDecimal) / mintDecimal);
         setScampInputAmount(
             Math.round(
-                ((camp * CAMPprice) / (1 - CCR) / SCAMPprice) * mintDecimal
+                ((camp * CAMPprice) / (1 - CCR)) * mintDecimal
             ) / mintDecimal
         );
     };
@@ -224,11 +224,11 @@ function Mintingtool() {
         console.log(CCR);
         const scamp = event.target.value;
         setUSDCInputAmount(
-            Math.round(scamp * SCAMPprice * CCR * mintDecimal) / mintDecimal
+           Math.round(scamp * CCR * mintDecimal) / mintDecimal
         );
         setCampInputAmount(
             Math.round(
-                ((scamp * SCAMPprice * (1 - CCR)) / CAMPprice) * mintDecimal
+                ((scamp * (1 - CCR)) / CAMPprice) * mintDecimal
             ) / mintDecimal
         );
         setScampInputAmount(Math.round(scamp * mintDecimal) / mintDecimal);
@@ -271,10 +271,14 @@ function Mintingtool() {
                     gas: "3000000",
                 });
         } else {
+          console.log(usdcInputAmount * decimal)
+          console.log(campInputAmount * decimal)
+          console.log(scampInputAmount * decimal * (100 - slippage) / 100)
+          console.log(slippage)
             state.BankContract.methods
                 .mintFractionalSCAMP(
                     caver.utils.toPeb(usdcInputAmount * decimal, "uKLAY"),
-                    caver.utils.toPeb(campInputAmount * decimal * (100 - slippage) / 100, "uKLAY"),
+                    caver.utils.toPeb(campInputAmount * decimal, "uKLAY"),
                     caver.utils.toPeb(scampInputAmount * decimal * (100 - slippage) / 100, "uKLAY")
                 )
                 .send({

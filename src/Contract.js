@@ -9,14 +9,14 @@ import Bondjs from "./abis/Bond.json"
 import Treasuryjs from "./abis/BondTreasury.json"
 
 const caver = new Caver(window.klaytn)
-const BankContract = new caver.klay.Contract(Bankjs.abi, "0xacf51f865a44FA4409f0cb506D3c9977049E0120")
-const SCAMPContract = new caver.klay.Contract(SCAMPjs.abi, "0x02dd4220425AAC67b1c8E2A80c4D228C926C8972")
-const CAMPContract = new caver.klay.Contract(CAMPjs.abi, "0x140Fe6e0f360D959c25D905042EfC78927990460")
-const USDCContract = new caver.klay.Contract(USDCjs.abi, "0x054a15A61EE57eABfd92c493A0A9Ea186c0aa6E6")
+const BankContract = new caver.klay.Contract(Bankjs.abi, "0x029a9364Dd15c58c4383353B3Edac4E196eD5CB9")
+const SCAMPContract = new caver.klay.Contract(SCAMPjs.abi, "0xbcb51E0C1fF0Cf95176Ee5EA08b7da3832AD377d")
+const CAMPContract = new caver.klay.Contract(CAMPjs.abi, "0x870D2f6dc98bc3365421DBEe36c97dAf11D1E128")
+const USDCContract = new caver.klay.Contract(USDCjs.abi, "0x8d4DFc6586F70e6F1F08d3FaA96Afa297A1CA060")
 const StakingContract = new caver.klay.Contract(Stakejs.abi, "0xC0C40B7bD1B9Dfec77FECcF43451f61550c6090a")
-const OracleContract = new caver.klay.Contract(Oraclejs.abi, "0xEE2a8e4B50c225c8cb4996904Eb80F91013a24Dd")
-const CAMP_USDT_BondContract = new caver.klay.Contract(Bondjs.abi, "0xa0fee2DD524a531EC217C430f7D4F07fb1838782")
-const TreasuryContract = new caver.klay.Contract(Treasuryjs.abi, "0x43c48162032cFA4E3b75B46627f42B8e76116468")
+const OracleContract = new caver.klay.Contract(Oraclejs.abi, "0x3dB66FBD72DEF0Db5d7e725c8Fa3D03810999CE8")
+const CAMP_USDT_BondContract = new caver.klay.Contract(Bondjs.abi, "0x103e3Fed7ED92ff97594439ACB59B59E0FE5b80E")
+const TreasuryContract = new caver.klay.Contract(Treasuryjs.abi, "0xa8604E038C9A02D1dad0ecA7fC07e6A0bc9C2f30")
 
 const initialstate = {BankContract, SCAMPContract, CAMPContract, USDCContract, StakingContract, OracleContract,CAMP_USDT_BondContract, TreasuryContract}
 

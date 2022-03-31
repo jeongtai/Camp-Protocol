@@ -1,4 +1,4 @@
-import Bondingtool from "./Bondingtool";
+import Bondingtool from "../Components/Bondingtool";
 import styled from "styled-components";
 import LPinfos from "../Components/LPinfos";
 import LoadingSVG from "../assets/LoadingSVG";
@@ -19,7 +19,7 @@ const Overview = styled.div`
 
   border: 2px solid ${(props) => props.theme.borderColor};
 
-  div:first-child {
+  & .Title {
       width: 100%;
 
       margin : 10px;
@@ -41,11 +41,11 @@ const OverviewItem = styled.div`
   width : 23%;
   min-width: 125px;
   
-  p:first-child {
-      font-size: 14px;
-      color: ${(props) => props.theme.textGray};
-  }
-  p:last-child {
+  & .name {
+        font-size: 14px;
+        color: ${(props) => props.theme.textGray};
+    }
+  & .value {
       margin-top: 10px;
       font-size: 18px;
   }
@@ -66,14 +66,14 @@ background-color: white;
 border-radius: 15px;
 
 border: 2px solid ${(props) => props.theme.borderColor};
-span {
+& .Title {
     font-weight: 400;
     font-size: 20px;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom : 20px;
 }
 `
-const Title = styled.div`
+const Header = styled.div`
   display: grid;
   grid-template-columns: 2fr repeat(5, 1fr);
 
@@ -84,7 +84,7 @@ const Title = styled.div`
   font-size : 12px;
   color : ${props => props.theme.textDarkGray};
   p{
-    padding : 0 10px;
+    padding : 0 10px 0 0;
   }
 `
 
@@ -103,12 +103,6 @@ stroke: Solid #ededed 1px;
 background-color: white;
 border-radius: 15px;
 border: 2px solid ${(props) => props.theme.borderColor};
-
-span {
-    font-weight: 400;
-    font-size: 20px;
-    width: 100%;
-}
 `;
 
 
@@ -163,7 +157,7 @@ const Bond = () => {
 
 
 
-  const Bondinfos = [
+  const OverviewInfos = [
     { name: "Total market Cap", amt: 100000000 },
     { name: "CAMP Price", amt: campprice },
     { name: "TVL", amt: 10000000 },
@@ -171,14 +165,14 @@ const Bond = () => {
   ]
 
   return (
-    <div>
+    <>
       <Overview>
-        <div>Overview</div>
+        <p className="Title">Overview</p>
 
-        {Bondinfos.map((info, index) => (
+        {OverviewInfos.map((info, index) => (
           <OverviewItem key={info.name}>
-            <p>{info.name}</p>
-            <p>
+            <p className="name">{info.name}</p>
+            <p className="value">
               {info.amt === "undefiend"
                 ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
                 : info.amt}
@@ -187,18 +181,18 @@ const Bond = () => {
         ))}
       </Overview>
       <LPTokenItems>
-        <span>LP Tokens</span>
-        <Title>
+        <p className="Title">LP Tokens</p>
+        <Header>
           <p>Name</p>
           <p>Market Price</p>
           <p>ROI(Discount)</p>
           <p>Purchased</p>
           <p>Vesting Term End</p>
           <p></p>
-        </Title>
-        
+        </Header>
+
         {bondLPInfos.map((bondLPInfo, index) => (
-          <LPinfos props={bondLPInfo} />
+          <LPinfos key={index} props={bondLPInfo} />
         ))}
 
       </LPTokenItems>
@@ -214,7 +208,7 @@ const Bond = () => {
 
       </LPToken> */}
 
-    </div>
+    </>
 
   )
 }

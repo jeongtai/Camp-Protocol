@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import styles from "./css/Input.module.css";
 import styled from "styled-components";
-import TokenLogo from "./TokenLogo";
+import TokenLogo from "../assets/TokenLogo";
 import { useState } from "react";
 import LoadingSVG from "../assets/LoadingSVG.js";
 
@@ -44,7 +44,7 @@ const Bottom = styled.div`
         display: flex;
         flex-direction: row;
     }
-    p {
+    & .name{
         padding: 4px;
         font-size: 16px;
         font-weight: 400;
@@ -111,7 +111,7 @@ function InputForm(props) {
                 ></input>
                 <div>
                     <TokenLogo name={props.token} />
-                    <p>{props.token}</p>
+                    <p className="name">{props.token}</p>
                 </div>
             </Bottom>
         </Section>

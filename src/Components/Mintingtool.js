@@ -8,16 +8,8 @@ import SlippageSetting from "./SlippageSetting";
 import LoadingSVG from "../assets/LoadingSVG.js";
 import SetIcon from "../assets/SetIcon.svg";
 
-const Content = styled.div`
-    img:hover {
-        cursor:pointer;
-    }
-`;
-
 const MintInfos = styled.div`
-    height: 187px;
     padding: 10px;
-
     background-color: ${(props) => props.theme.backBlue};
     border-radius: 15px;
 `;
@@ -27,9 +19,9 @@ const Info = styled.div`
     padding: 6px;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-content: flex-start;
 
-    p:first-child {
+    & .infoName {
         text-align: left;
         color: ${(props) => props.theme.textGray};
     }
@@ -97,7 +89,7 @@ function Mintingtool() {
     // initialize hook----------------------------
     useEffect(() => {
         getInfo();
-        if (window.klaytn) {            
+        if (window.klaytn) {
             window.klaytn.on("accountsChanged", async function (accounts) {
                 getInfo();
                 console.log("account change listen in bank");
@@ -166,24 +158,26 @@ function Mintingtool() {
                 .collatDollarBalance()
                 .call((e, v) => setCollatbal(v / 1e18));
         } catch (e) { setCollatbal(undefined) }
-        
-        try { await state.CAMPContract.methods
-            .allowance(window.klaytn.selectedAddress, state.BankContract._address)
-            .call((e,v) => {
-              if (v>1e18) {
-                setCAMPapprove(true)
-              }
-            })
-        } catch (e) {setCAMPapprove(false)}
-        
-        try { await state.USDCContract.methods
-            .allowance(window.klaytn.selectedAddress, state.BankContract._address)
-            .call((e,v) => {
-              if (v>1e18) {
-                setUSDCapprove(true)
-              }
-            })
-        } catch (e) {setCAMPapprove(false)}
+
+        try {
+            await state.CAMPContract.methods
+                .allowance(window.klaytn.selectedAddress, state.BankContract._address)
+                .call((e, v) => {
+                    if (v > 1e18) {
+                        setCAMPapprove(true)
+                    }
+                })
+        } catch (e) { setCAMPapprove(false) }
+
+        try {
+            await state.USDCContract.methods
+                .allowance(window.klaytn.selectedAddress, state.BankContract._address)
+                .call((e, v) => {
+                    if (v > 1e18) {
+                        setUSDCapprove(true)
+                    }
+                })
+        } catch (e) { setCAMPapprove(false) }
 
         setIsLoading(false);
     }
@@ -221,7 +215,7 @@ function Mintingtool() {
         console.log(CCR);
         const scamp = event.target.value;
         setUSDCInputAmount(
-           Math.round(scamp * CCR * mintDecimal) / mintDecimal
+            Math.round(scamp * CCR * mintDecimal) / mintDecimal
         );
         setCampInputAmount(
             Math.round(
@@ -240,7 +234,7 @@ function Mintingtool() {
     };
 
     function onClick() {
-      const decimal = 1e6
+        const decimal = 1e6
         if (CCR >= 1) {
             state.BankContract.methods
                 .mint1t1SCAMP(
@@ -259,7 +253,7 @@ function Mintingtool() {
                 .mintAlgorithmicSCAMP(
                     caver.utils.toPeb(campInputAmount * decimal, "uKLAY"),
                     caver.utils.toPeb(
-                        (scampInputAmount * decimal * (100 - slippage)) / 100 ,
+                        (scampInputAmount * decimal * (100 - slippage)) / 100,
                         "uKLAY"
                     )
                 )
@@ -268,10 +262,10 @@ function Mintingtool() {
                     gas: "3000000",
                 });
         } else {
-          console.log(usdcInputAmount * decimal)
-          console.log(campInputAmount * decimal)
-          console.log(scampInputAmount * decimal * (100 - slippage) / 100)
-          console.log(slippage)
+            console.log(usdcInputAmount * decimal)
+            console.log(campInputAmount * decimal)
+            console.log(scampInputAmount * decimal * (100 - slippage) / 100)
+            console.log(slippage)
             state.BankContract.methods
                 .mintFractionalSCAMP(
                     caver.utils.toPeb(usdcInputAmount * decimal, "uKLAY"),
@@ -286,54 +280,54 @@ function Mintingtool() {
     }
 
     function onClick2() {
-    console.log(CAMPapprove, USDCapprove)
-      if (CAMPapprove === false && USDCapprove === false) {
-        state.CAMPContract.methods
-            .approve(
-                state.BankContract._address,
-                caver.utils.toPeb(1e18, "mKLAY")
-            )
-            .send({
-                from: window.klaytn.selectedAddress,
-                gas: "3000000",
-            })
-            .on("receipt", function () {
-                setCAMPapprove(true)
-                state.USDCContract.methods
-                    .approve(
-                        state.BankContract._address,
-                        caver.utils.toPeb(1e18, "mKLAY")
-                    )
-                    .send({
-                        from: window.klaytn.selectedAddress,
-                        gas: "3000000",
-                    })
-                    .on("receipt", function () {
-                        setUSDCapprove(true)
-                    });
-            });
-      } else if (CAMPapprove === false && USDCapprove === true) {
-        state.CAMPContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "KLAY"))
-        .send({
-          from : window.klaytn.selectedAddress,
-          gas : 3000000
-        }).on('receipt', () => {
-          setCAMPapprove(true)
-        })
-      } else if (USDCapprove === false && CAMPapprove === true) {
-        state.USDCContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "KLAY"))
-        .send({
-          from : window.klaytn.selectedAddress,
-          gas : 3000000
-        }).on('receipt', ()=> {
-          setUSDCapprove(true)
-        })
-      }
+        console.log(CAMPapprove, USDCapprove)
+        if (CAMPapprove === false && USDCapprove === false) {
+            state.CAMPContract.methods
+                .approve(
+                    state.BankContract._address,
+                    caver.utils.toPeb(1e18, "mKLAY")
+                )
+                .send({
+                    from: window.klaytn.selectedAddress,
+                    gas: "3000000",
+                })
+                .on("receipt", function () {
+                    setCAMPapprove(true)
+                    state.USDCContract.methods
+                        .approve(
+                            state.BankContract._address,
+                            caver.utils.toPeb(1e18, "mKLAY")
+                        )
+                        .send({
+                            from: window.klaytn.selectedAddress,
+                            gas: "3000000",
+                        })
+                        .on("receipt", function () {
+                            setUSDCapprove(true)
+                        });
+                });
+        } else if (CAMPapprove === false && USDCapprove === true) {
+            state.CAMPContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "KLAY"))
+                .send({
+                    from: window.klaytn.selectedAddress,
+                    gas: 3000000
+                }).on('receipt', () => {
+                    setCAMPapprove(true)
+                })
+        } else if (USDCapprove === false && CAMPapprove === true) {
+            state.USDCContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "KLAY"))
+                .send({
+                    from: window.klaytn.selectedAddress,
+                    gas: 3000000
+                }).on('receipt', () => {
+                    setUSDCapprove(true)
+                })
+        }
     }
     useEffect(() => {
-      if (USDCapprove === true && CAMPapprove === true) {
-        setIsApproved(true)
-      }
+        if (USDCapprove === true && CAMPapprove === true) {
+            setIsApproved(true)
+        }
     }, [USDCapprove, CAMPapprove])
 
     // initialize hook----------------------------
@@ -360,7 +354,7 @@ function Mintingtool() {
     return (
         <>
             {isLoading ? (
-                <p align-items="center">
+                <p margin="0 auto">
                     <LoadingSVG
                         type="circle"
                         color="#000"
@@ -370,11 +364,12 @@ function Mintingtool() {
                     />
                 </p>
             ) : (
-                <Content>
+                <>
                     <div>
                         <span>Input</span>
                         <span>
                             <img
+                                className="slippageImg"
                                 align="right"
                                 onClick={() => setIsSetOpen((prev) => !prev)}
                                 src={SetIcon}
@@ -429,7 +424,7 @@ function Mintingtool() {
                     <MintInfos>
                         {mintInfos.map((mintInfo, index) => (
                             <Info key={mintInfo.name}>
-                                <p>{mintInfo.name}</p>
+                                <p className="infoName">{mintInfo.name}</p>
                                 <p>{mintInfo.val == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : mintInfo.expression}</p>
                             </Info>
                         ))}
@@ -454,7 +449,7 @@ function Mintingtool() {
                             </Button>
                         )}
                     </Approve>
-                </Content>
+                </>
             )}
         </>
     );

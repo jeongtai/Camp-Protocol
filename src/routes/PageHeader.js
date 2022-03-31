@@ -6,13 +6,14 @@ import { useLocation } from "react-router-dom";
 
 const Content = styled.div`
     display: flex;
-    align-items: center;
+    align-content: center;
     justify-content: space-between;
     font-size: 24px;
     font-weight: 600;
 
     margin-top: 70px;
     margin-bottom: 38px;
+    
 
     p:last-child {
         font-size: 14px;
@@ -25,7 +26,7 @@ const ConnectWallet = styled.button`
 
     width: 154px;
     height: 34px;
-    background-color: ${(props) => props.theme.connectBtnColor};
+    background-color: ${(props) => props.theme.btnBlue};
     border: 0;
     border-radius: 6px;
 
@@ -47,8 +48,9 @@ function PageHeader() {
     
     // initialize hook----------------------------
     useEffect(() => {
+        
         const onLoad = async () => {
-            console.log("1 onLoad cur : ", currentAddress);
+            console.log("1 onLoad current Address : ", currentAddress);
             if (currentAddress) {
                 setIsWalletConnected(true);
                 setCurrentAddress(currentAddress);
@@ -64,7 +66,7 @@ function PageHeader() {
         if (window.klaytn) {
             window.klaytn.on("accountsChanged", async function (accounts) {
                 console.log(
-                    "2 account change : ",
+                    "2 account change listned in header : ",
                     currentAddress,
                     " -> ",
                     accounts[0]
@@ -89,7 +91,7 @@ function PageHeader() {
 
     return (
         <Content>
-            {pathname === "/" ? <p>Dashboard</p> : <p>{pathname.slice(1)}</p>}
+            {pathname === "/" ? <p>Dashboard</p> : <p>{pathname.split("/")[1]}</p>}
             <p>
                 {/* 나중에 tokenB 부분 tokenAddress로 바꾸기 */}
                 <a

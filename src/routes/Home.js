@@ -2,8 +2,7 @@ import react, { useState, useEffect } from "react";
 import Caver from "caver-js";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import CAMPColor from "../assets/CAMP-color.svg";
-import SCAMPColor from "../assets/SCAMP-color.svg";
+import TokenLogo from "../assets/TokenLogo";
 import LoadingSVG from "../assets/LoadingSVG.js";
 import { isNullOrUndefined } from "url/util";
 
@@ -12,8 +11,7 @@ const Dashboard = styled.div`
     // grid
     display: grid;
     grid-template-columns: 60% 40%;
-
-    div:nth-child(1) {
+    & .overview{
         grid-column: 1/3;
     }
 `;
@@ -32,7 +30,7 @@ const Overview = styled.div`
 
     border: 2px solid ${(props) => props.theme.borderColor};
 
-    div:first-child {
+    & .title {
         width: 100%;
 
         margin : 10px;
@@ -54,11 +52,11 @@ const OverviewItem = styled.div`
     width : 23%;
     min-width: 125px;
     
-    p:first-child {
+    & .name {
         font-size: 14px;
         color: ${(props) => props.theme.textGray};
     }
-    p:last-child {
+    & .value {
         margin-top: 10px;
         font-size: 18px;
     }
@@ -94,21 +92,23 @@ const TokenItem = styled.div`
     flex-direction: column;
 
     margin: 16px 0px 0px 16px;
+    
     background-color: white;
     border-radius: 15px;
     padding: 20px;
     border: 2px solid ${(props) => props.theme.borderColor};
 
-    p:first-child {
+    & .tokenName {
         font-size: 20px;
         font-weight: 400;
         display: flex;
         align-items: center;
     }
-    p:nth-child(2) {
+    & .tokenPrice {
         padding: 14px 0px;
         font-weight: 600;
     }
+
     img {
         width: 28px;
         margin-right: 10px;
@@ -120,12 +120,13 @@ const TokenItemInfo = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: baseline;
+    padding : 7px 0px;
 `;
 
 const AddWallet = styled.button`
     width: 154px;
     height: 34px;
-    background-color: ${(props) => props.theme.addBtnColor};
+    background-color: ${(props) => props.theme.btnGray};
     border: 0;
     border-radius: 6px;
     margin-right: 8px;
@@ -134,7 +135,7 @@ const AddWallet = styled.button`
 const GetScamp = styled.button`
     width: 154px;
     height: 34px;
-    background-color: ${(props) => props.theme.getBtnColor};
+    background-color: ${(props) => props.theme.btnBlack};
     border: 0;
     border-radius: 6px;
     color: white;
@@ -247,10 +248,10 @@ function Home() {
     return (
         <>
             {isLoading ? (
-                <p align-items="center">
+                <p margin="0 auto">
                     <LoadingSVG
                         type="circle"
-                        color="#fff"
+                        color="#000"
                         width="80px"
                         height="80px"
                         strokeWidth="6"
@@ -258,13 +259,13 @@ function Home() {
                 </p>
             ) : (
                 <Dashboard>
-                    <Overview>
-                        <div><p>Overview</p></div>
+                    <Overview className="overview">
+                        <div className="title">Overview</div>
 
                         {infos.map((info, index) => (
                             <OverviewItem key={info.name}>
-                                <p>{info.name}</p>
-                                <p>
+                                <p className="name">{info.name}</p>
+                                <p className="value">
                                     {info.amt==="undefined"
                                     ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
                                     : info.amt}
@@ -279,17 +280,11 @@ function Home() {
                     <TokensList>
                         {Tokens.map((token, index) => (
                             <TokenItem key={token.name}>
-                                <p>
-                                    <img
-                                        src={
-                                            token.name === "CAMP"
-                                                ? CAMPColor
-                                                : SCAMPColor
-                                        }
-                                    />{" "}
+                                <p className="tokenName">
+                                    <TokenLogo name={token.name} />{" "}
                                     {token.name}
                                 </p>
-                                <p>$ {token.price}</p>
+                                <p className="tokenPrice">$ {token.price}</p>
                                 <TokenItemInfo>
                                     <p>Supply</p>
                                     <p>

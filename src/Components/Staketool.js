@@ -45,11 +45,12 @@ function Staketool () {
     return (
         <div>
             <InputForm
-              onChange={onChange}
-              value={amount}
-              type="text"
-              text="Staking amount">
-            </InputForm>
+                token="CAMP"
+                type="number"
+                isVisible={true}
+                haveMax={true}
+                haveBal={true}
+            />
             <Button text = "Stake!" onClick={Stake}/>
             <Button text = "Unstake!" onClick={Unstake}/>
         </div>

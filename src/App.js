@@ -8,7 +8,7 @@ import PageHeader from "./routes/PageHeader";
 import Home from "./routes/Home";
 import Stake from "./routes/Stake";
 import Bond from "./routes/Bond";
-import Bondingtool from "./routes/Bondingtool";
+import Bondingtool from "./Components/Bondingtool";
 import Bank from "./routes/Bank";
 import Fund from "./routes/Fund";
 import Calculator from "./routes/Calculator";
@@ -17,9 +17,9 @@ import Calculator from "./routes/Calculator";
 
 const Main = styled.div`
     padding : 0 15px 0 ${(props) => props.theme.navWidth+15}px;
-    margin : 0 auto;
+    margin : 0px auto 50px auto;
     max-width: 1200px;
-    min-width: 750px;
+    min-width: 1000px;
     display: flex;
     flex-direction: column;
 `;

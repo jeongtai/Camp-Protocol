@@ -37,6 +37,7 @@ const Content = styled.div`
     display: flex;
     justify-content: center;
     align-content: center;
+
 `;
 
 const Tabs = styled.div`
@@ -61,7 +62,7 @@ const Tab = styled.div`
         props.isActive ? props.theme.textBlack : props.theme.textGray};
 
     border-bottom: ${(props) =>
-        props.isActive ? "2px solid" + props.theme.connectBtnColor : null};
+        props.isActive ? "2px solid" + props.theme.btnBlue : null};
 `;
 
 const Bank = () => {

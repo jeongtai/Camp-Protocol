@@ -9,14 +9,15 @@ export const theme = {
    backBlue : "#F0F7FF",
 
    // Btn
-   addBtnColor : "#EDEDED",
-   getBtnColor : "#282828",
-   connectBtnColor : "#3E97FF",
+   btnGray : "#EDEDED",
+   btnBlack : "#282828",
+   btnBlue : "#3E97FF",
 
    // text
    textBlack : "#282828",
    textGray : "#B2B2B2",
    textDarkGray : "#7D7D7D",
+   textBlue : "#3E97FF",
 
    // navbar
    navWidth: 260,

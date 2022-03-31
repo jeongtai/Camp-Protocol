@@ -8,8 +8,6 @@ import SlippageSetting from "./SlippageSetting";
 import LoadingSVG from "../assets/LoadingSVG.js";
 import SetIcon from "../assets/SetIcon.svg";
 
-const Content = styled.div``;
-
 const RedeemInfos = styled.div`
     height: 187px;
     padding: 10px;
@@ -25,7 +23,7 @@ const Info = styled.div`
     justify-content: space-between;
     align-items: flex-start;
 
-    p:first-child {
+    & .infoName {
         text-align: left;
         color: ${(props) => props.theme.textGray};
     }
@@ -99,7 +97,7 @@ function Redeemtool() {
 
     try {
       await state.OracleContract.methods
-      .getAssetPrice(state.SCAMPContract._address)
+        .getAssetPrice(state.SCAMPContract._address)
         .call((e, v) => setSCampprice(v / 1e6));
     } catch (e) { setSCampprice(undefined) }
 
@@ -152,12 +150,12 @@ function Redeemtool() {
     } catch (e) { setCollatbal(undefined) }
 
     await state.SCAMPContract.methods
-    .allowance(window.klaytn.selectedAddress, state.BankContract._address)
-    .call((e,v) => {
-      if (v>1e18) {
-        setIsApproved(true)
-      }
-    })
+      .allowance(window.klaytn.selectedAddress, state.BankContract._address)
+      .call((e, v) => {
+        if (v > 1e18) {
+          setIsApproved(true)
+        }
+      })
 
     setIsLoading(false);
   }
@@ -222,43 +220,46 @@ function Redeemtool() {
       state.BankContract.methods
         .redeem1t1SCAMP(caver.utils.toPeb(scampInputAmount * decimal, 'uKLAY'), caver.utils.toPeb(usdcInputAmount * decimal * (100 - slippage) / 100, "uKLAY"))
         .send({
-          from : window.klaytn.selectedAddress,
-          gas : 3000000
-        })}
-    else if (CCR === 0){
+          from: window.klaytn.selectedAddress,
+          gas: 3000000
+        })
+    }
+    else if (CCR === 0) {
       state.BankContract.methods
         .redeemAlgorithmicSCAMP(caver.utils.toPeb(scampInputAmount * decimal, 'uKLAY'), caver.utils.toPeb(campInputAmount * decimal * (100 - slippage) / 100, "uKLAY"))
         .send({
-          from : window.klaytn.selectedAddress,
-          gas : 3000000
-        })}
+          from: window.klaytn.selectedAddress,
+          gas: 3000000
+        })
+    }
 
     else {
       state.BankContract.methods
-      .redeemFractionalSCAMP(caver.utils.toPeb(scampInputAmount * decimal, 'uKLAY'), caver.utils.toPeb(campInputAmount * decimal * (100 - slippage) / 100, "uKLAY"), caver.utils.toPeb(usdcInputAmount * decimal * (100 - slippage) / 100, "uKLAY"))
-      .send({
-        from : window.klaytn.selectedAddress,
-        gas : 3000000
-      }).on('receipt', () => {
-        state.BankContract.methods
-          .collectRedemption()
-          .send({
-            from : window.klaytn.selectedAddress,
-            gas : 3000000
-          })
-      })}
-      //COllectRedemption 구현 필요!
+        .redeemFractionalSCAMP(caver.utils.toPeb(scampInputAmount * decimal, 'uKLAY'), caver.utils.toPeb(campInputAmount * decimal * (100 - slippage) / 100, "uKLAY"), caver.utils.toPeb(usdcInputAmount * decimal * (100 - slippage) / 100, "uKLAY"))
+        .send({
+          from: window.klaytn.selectedAddress,
+          gas: 3000000
+        }).on('receipt', () => {
+          state.BankContract.methods
+            .collectRedemption()
+            .send({
+              from: window.klaytn.selectedAddress,
+              gas: 3000000
+            })
+        })
+    }
+    //COllectRedemption 구현 필요!
   }
 
 
   function onClick2() {
     state.SCAMPContract.methods.approve(state.BankContract._address, caver.utils.toPeb(1e18, "KLAY"))
-    .send({
-      from : window.klaytn.selectedAddress,
-      gas : 3000000
-    }).on('receipt', () => {
-      setIsApproved(true)
-    })
+      .send({
+        from: window.klaytn.selectedAddress,
+        gas: 3000000
+      }).on('receipt', () => {
+        setIsApproved(true)
+      })
   }
 
   const redeemInfos = [
@@ -268,7 +269,7 @@ function Redeemtool() {
     { name: "Slippage", val: slippage, expression: `${slippage} %` },
     { name: "SCAMP price", val: SCAMPprice, expression: `${SCAMPprice} USDC` },
     { name: "CAMP price", val: CAMPprice, expression: `${CAMPprice} USDC` },
-];
+  ];
 
   return (
     <>
@@ -283,11 +284,12 @@ function Redeemtool() {
           />
         </p>
       ) : (
-        <Content>
+        <>
           <div>
             <span>Input</span>
             <span>
               <img
+                className="slippageImg"
                 align="right"
                 onClick={() => setIsSetOpen((prev) => !prev)}
                 src={SetIcon}
@@ -342,12 +344,12 @@ function Redeemtool() {
           />
 
           <RedeemInfos>
-          {redeemInfos.map((redeemInfo, index) => (
-                            <Info key={redeemInfos.name}>
-                                <p>{redeemInfo.name}</p>
-                                <p>{redeemInfo.val == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : redeemInfo.expression}</p>
-                            </Info>
-                        ))}
+            {redeemInfos.map((redeemInfo, index) => (
+              <Info key={redeemInfos.name}>
+                <p className="infoName">{redeemInfo.name}</p>
+                <p>{redeemInfo.val == undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : redeemInfo.expression}</p>
+              </Info>
+            ))}
           </RedeemInfos>
 
           <Approve>
@@ -367,7 +369,7 @@ function Redeemtool() {
               </Button>
             )}
           </Approve>
-        </Content>
+        </>
       )}
     </>
   );

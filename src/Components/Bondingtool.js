@@ -57,7 +57,7 @@ const Info = styled.div`
 const caver = new Caver(window.klaytn)
 
 function Bondingtool() {
-  //
+  //LP이름
   const bondInfos = [
     {name : "SCAMP-USDT LP", },
     {name : "CAMP-USDT LP", }
@@ -66,6 +66,9 @@ function Bondingtool() {
   let state = useSelector((state) => state)
   const [lpamount, setLPAmount] = useState()
   const [lpbal, setLPbal] = useState()
+  const [bondprice, setBondPrice] = useState()
+  const [pendingCAMP, setPendingCamp] =useState()
+  const [percentBond, setPecentBond] = useState()
 
   const onLPChange = (event) => setLPAmount(event.target.value)
   
@@ -74,12 +77,40 @@ function Bondingtool() {
       await state.OracleContract.methods
             .getAssetPrice(state.CampContract._address).call((e, v) => setLPbal(v))
     } catch (e) {setLPbal(undefined)}
+
+    try {
+      await state.CAMP_USDT_BondContract.methods.bondPrice()
+      .call((e, v) => setBondPrice(v))
+    } catch (e) {setBondPrice(undefined)}
+    try {
+      await state.CAMP_USDT_BondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
+      .call((e, v) => setPendingCamp(v/1e18))
+    } catch (e) {setBondPrice(undefined)}
+    try {
+      await state.CAMP_USDT_BondContract.methods.percentVestedFor(window.klaytn.selectedAddress)
+      .call((e, v) => setPecentBond(v/1e2))
+    } catch (e) {setBondPrice(undefined)}
   }
 
     useEffect(() => {
       getInfo()
     }, [])
 
+    function onClick() {
+        state.CAMP_USDT_BondContract.methods.deposit(caver.utils.toPeb(lpamount, "mKLAY"), bondprice, window.klaytn.selectedAddress)
+        .send({
+          from : window.klaytn.selectedAddress,
+          gas : 3000000
+        })
+    }
+
+    function onClick2() {
+      state.CAMP_USDT_BondContract.methods.redeem(window.klaytn.selectedAddress, false)
+      .send({
+        from : window.klaytn.selectedAddress,
+        gas : 3000000
+      })
+    }
   return (
     <div>
       <Content>
@@ -116,8 +147,13 @@ function Bondingtool() {
             Please approve USDC,CAMP to use your
             <br />
             SCAMP for Minting.
+            <br />
+            CAMP amount to claim : {pendingCAMP}
+            <br />
+            PercentVested : {percentBond}
           </p>
-          <Button text = "Bond!"/>
+          <Button text = "Bond!" onClick={onClick}/>
+          <Button text = "Redeem!!" onClick={onClick2}/>
           </Approve>        
       </Content>
     </div>

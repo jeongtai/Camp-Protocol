@@ -64,7 +64,7 @@ function Buybacktool () {
 
   function Buyback() {
     const decimal = 1e6;
-    state.BankContract.methods.buyBackCAMP(caver.utils.toPeb(campInputAmount * 1000, "mKLAY"), caver.utils.toPeb(campInputAmount * CAMPprice * decimal /* * (100 - slippage) / 100 */, "mKLAY"))
+    state.BankContract.methods.buyBackCAMP(caver.utils.toPeb(campInputAmount * decimal, "uKLAY"), caver.utils.toPeb(campInputAmount * CAMPprice * decimal * 0.5 /* * (100 - slippage) / 100 */, "uKLAY"))
     .send({
       from : window.klaytn.selectedAddress,
       gas : 3000000

@@ -9,7 +9,7 @@ import Bondjs from "./abis/Bond.json"
 import Treasuryjs from "./abis/BondTreasury.json"
 
 const caver = new Caver(window.klaytn)
-const BankContract = new caver.klay.Contract(Bankjs.abi, "0x029a9364Dd15c58c4383353B3Edac4E196eD5CB9")
+const BankContract = new caver.klay.Contract(Bankjs.abi, "0x427Da2f75D986e985994d186b5bCE7d00A8db380")
 const SCAMPContract = new caver.klay.Contract(SCAMPjs.abi, "0xbcb51E0C1fF0Cf95176Ee5EA08b7da3832AD377d")
 const CAMPContract = new caver.klay.Contract(CAMPjs.abi, "0x870D2f6dc98bc3365421DBEe36c97dAf11D1E128")
 const USDCContract = new caver.klay.Contract(USDCjs.abi, "0x8d4DFc6586F70e6F1F08d3FaA96Afa297A1CA060")

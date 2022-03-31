@@ -155,7 +155,7 @@ function Redeemtool() {
     try {
       await state.BankContract.methods
         .collatDollarBalance()
-        .call((e, v) => setCollatbal(v / 1e12));
+        .call((e, v) => setCollatbal(v / 1e18));
     } catch (e) { setCollatbal(undefined) }
 
     await state.SCAMPContract.methods
@@ -175,11 +175,11 @@ function Redeemtool() {
     console.log(CCR);
     const scamp = event.target.value;
     setUSDCInputAmount(
-      Math.round(scamp * SCAMPprice * CCR * RedeemDecimal) / RedeemDecimal
+      Math.round(scamp * CCR * RedeemDecimal) / RedeemDecimal
     );
     setCampInputAmount(
       Math.round(
-        ((scamp * SCAMPprice * (1 - CCR)) / CAMPprice) * RedeemDecimal
+        ((scamp * (1 - CCR)) / CAMPprice) * RedeemDecimal
       ) / RedeemDecimal
     );
     setScampInputAmount(Math.round(scamp * RedeemDecimal) / RedeemDecimal);
@@ -193,7 +193,7 @@ function Redeemtool() {
       RedeemDecimal
     );
     setScampInputAmount(
-      Math.round((usdc / CCR / SCAMPprice) * RedeemDecimal) / RedeemDecimal
+      Math.round((usdc / CCR) * RedeemDecimal) / RedeemDecimal
     );
   };
 
@@ -208,7 +208,7 @@ function Redeemtool() {
     setCampInputAmount(Math.round(camp * RedeemDecimal) / RedeemDecimal);
     setScampInputAmount(
       Math.round(
-        ((camp * CAMPprice) / (1 - CCR) / SCAMPprice) * RedeemDecimal
+        ((camp * CAMPprice) / (1 - CCR)) * RedeemDecimal
       ) / RedeemDecimal
     );
   };
@@ -224,16 +224,17 @@ function Redeemtool() {
 
 
   function onClick() {
+    const decimal = 1e6
     if (CCR >= 1) {
       state.BankContract.methods
-        .redeem1t1SCAMP(caver.utils.toPeb(scampInputAmount * 1000, 'mKLAY'), caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"))
+        .redeem1t1SCAMP(caver.utils.toPeb(scampInputAmount * decimal, 'uKLAY'), caver.utils.toPeb(usdcInputAmount * decimal * (100 - slippage) / 100, "uKLAY"))
         .send({
           from : window.klaytn.selectedAddress,
           gas : 3000000
         })}
     else if (CCR === 0){
       state.BankContract.methods
-        .redeemAlgorithmicSCAMP(caver.utils.toPeb(scampInputAmount * 1000, 'mKLAY'), caver.utils.toPeb(campInputAmount * 1000, "mKLAY"))
+        .redeemAlgorithmicSCAMP(caver.utils.toPeb(scampInputAmount * decimal, 'uKLAY'), caver.utils.toPeb(campInputAmount * decimal * (100 - slippage) / 100, "uKLAY"))
         .send({
           from : window.klaytn.selectedAddress,
           gas : 3000000
@@ -241,7 +242,7 @@ function Redeemtool() {
 
     else {
       state.BankContract.methods
-      .redeemFractionalSCAMP(caver.utils.toPeb(scampInputAmount * 1000, 'mKLAY'), caver.utils.toPeb(campInputAmount * 1000, "mKLAY"), caver.utils.toPeb(usdcInputAmount * 1000, "mKLAY"))
+      .redeemFractionalSCAMP(caver.utils.toPeb(scampInputAmount * decimal, 'uKLAY'), caver.utils.toPeb(campInputAmount * decimal * (100 - slippage) / 100, "uKLAY"), caver.utils.toPeb(usdcInputAmount * decimal * (100 - slippage) / 100, "uKLAY"))
       .send({
         from : window.klaytn.selectedAddress,
         gas : 3000000

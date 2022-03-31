@@ -74,7 +74,7 @@ const Bank = () => {
         <Section>
             <Tabs>
                 <Tab onClick={() => setIsNowMint(true)} isActive={isNowMint}>
-                    Reocollat
+                    Recollat
                 </Tab>
                 <Tab onClick={() => setIsNowMint(false)} isActive={!isNowMint}>
                     Buyback

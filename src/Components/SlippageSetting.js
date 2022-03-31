@@ -24,6 +24,7 @@ animation: ${keyframes`
               0% { transform:scale(0) }
               100% { transform:scale(1) }
               `} 0.2s linear;
+
 `;
 
 const InputSlippage = styled.input.attrs({ required: true })`
@@ -44,6 +45,7 @@ border-radius: 5px;
 background-color: ${(props) =>
     props.isMatch ? props.theme.connectBtnColor : props.theme.addBtnColor};
 color: ${(props) => (props.isMatch ? "white" : "black")};
+
 `;
 
 

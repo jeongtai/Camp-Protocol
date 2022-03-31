@@ -25,21 +25,28 @@ function Recollattool () {
   const [CAMPBalance, setCAMPBalance] = useState();
 
   async function getInfo() {
-    await state.OracleContract.methods
-    .getAssetPrice(state.CAMPContract._address)
-    .call((e, v) => setCampprice(v / 1e6));
-
-    await state.USDCContract.methods
-    .balanceOf(window.klaytn.selectedAddress)
-    .call((e, v) =>
-        setUSDCBalance(caver.utils.fromPeb(v, "KLAY"))
-    );
-
-    await state.USDCContract.methods.allowance(window.klaytn.selectedAddress, state.BankContract._address).call((e, v) => {
-      if (v > 100000000) {
-        setIsApproved(true)
-      }
-    })
+    try {
+      await state.OracleContract.methods
+      .getAssetPrice(state.CAMPContract._address)
+      .call((e, v) => setCampprice(v / 1e6));
+    } catch (e) {setCampprice(undefined)}
+    try {
+      await state.USDCContract.methods
+      .balanceOf(window.klaytn.selectedAddress)
+      .call((e, v) =>
+          setUSDCBalance(caver.utils.fromPeb(v, "KLAY"))
+      );
+    } catch (e) {setUSDCBalance(undefined)}
+    try {
+      await state.USDCContract.methods.allowance(window.klaytn.selectedAddress, state.BankContract._address).call((e, v) => {
+        if (v > 100000000) {
+          setIsApproved(true)
+        }
+    })} catch(e) {setIsApproved(false)}
+    try {
+      await state.CAMPContract.methods
+            .balanceOf(window.klaytn.selectedAddress).call((e, v) => setCAMPBalance(v/1e18))
+    } catch (e) {setCAMPBalance(undefined)}
   }
   
   function ApproveUSDC() {

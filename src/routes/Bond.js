@@ -5,7 +5,7 @@ import LoadingSVG from "../assets/LoadingSVG";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const Bond = () => {
+
 
   const Overview = styled.div`
     // flex
@@ -104,7 +104,7 @@ const Title = styled.div`
     }
 `;
 
-
+const Bond = () => {
 
   let state = useSelector((state) => state)
   const [campprice, setCampprice] = useState()

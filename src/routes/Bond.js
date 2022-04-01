@@ -21,7 +21,7 @@ const Overview = styled.div`
 
   & .Title {
       width: 100%;
-
+      height : 10%;
       margin : 10px;
       margin-bottom: 20px;
       

@@ -48,7 +48,7 @@ function Buybacktool () {
     .call((e,v) => setUSDCBalance(v))
 
     await state.BankContract.methods.availableExcessCollatDV()
-    .call((e,v) => setavailableUSDC(v))
+    .call((e,v) => setavailableUSDC(v/1e18))
   }
 
 

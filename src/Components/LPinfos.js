@@ -73,6 +73,7 @@ const BondingtoolBtn = styled.button`
 function LPInfos({ props }) {
   const [bondprice, setBondPrice] = useState()
   const [poolState, setPoolState] = useState("")
+  
   const contract = props.contract;
 
   useEffect(async () => {
@@ -80,7 +81,9 @@ function LPInfos({ props }) {
       await contract.methods.bondPrice()
         .call((e, v) => setBondPrice(v))
     } catch (e) { setBondPrice(undefined) }
+    try {
 
+    } catch(e) {}
     setPoolState("Bond"); // Bond || Sold-out || Claim
   }, [])
 

@@ -118,9 +118,9 @@ const Bond = () => {
 
   //LP이름
   const bondLPInfos = [
-    { name: "CAMP-USDT", contract: state.CAMP_USDT_BondContract },
-    { name: "SCAMP-USDT", contract: state.CAMP_USDT_BondContract },
-    { name: "CAMP-SCAMP", contract: state.CAMP_USDT_BondContract }
+    { name: "CAMP-USDT", contract: state.CAMP_USDT_BondContract},
+    { name: "SCAMP-USDT", contract: state.CAMP_USDT_BondContract},
+    { name: "CAMP-SCAMP", contract: state.CAMP_USDT_BondContract}
   ]
 
 
@@ -186,7 +186,7 @@ const Bond = () => {
           <p>Name</p>
           <p>Market Price</p>
           <p>ROI(Discount)</p>
-          <p>Purchased</p>
+          <p>Remained</p>
           <p>Vesting Term End</p>
           <p></p>
         </Header>

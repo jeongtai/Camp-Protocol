@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import LinkImg from "../assets/ExternalLink.svg";
 import TokenLogo from "../assets/TokenLogo";
 import { reducer } from "../Contract";
+import { useSelector } from "react-redux";
 
 
 const LPInfoItem = styled.div`
@@ -70,21 +71,68 @@ const BondingtoolBtn = styled.button`
   }
 `
 
+function timeConversion(millisec) {
+
+  var seconds = (millisec / 1000).toFixed(1);
+
+  var minutes = (millisec / (1000 * 60)).toFixed(1);
+
+  var hours = (millisec / (1000 * 60 * 60)).toFixed(1);
+
+  var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
+
+  if (seconds < 60) {
+      return seconds + " Sec";
+  } else if (minutes < 60) {
+      return minutes + " Min";
+  } else if (hours < 24) {
+      return hours + " Hrs";
+  } else {
+      return days + " Days"
+  }
+}
+
 function LPInfos({ props }) {
+  let state = useSelector((state) => state)
   const [bondprice, setBondPrice] = useState()
+  const [priceRate, setPriceRate] = useState()
+  const [campbalance, setCAMPBalance] = useState()
+  const [vestingterm, setVestingTerm] = useState()
   const [poolState, setPoolState] = useState("")
-  
+
   const contract = props.contract;
 
   useEffect(async () => {
     try {
       await contract.methods.bondPrice()
-        .call((e, v) => setBondPrice(v))
+        .call((e, v) => setBondPrice((v/1e6).toFixed(2)))
     } catch (e) { setBondPrice(undefined) }
-    try {
 
-    } catch(e) {}
-    setPoolState("Bond"); // Bond || Sold-out || Claim
+    try {
+      await contract.methods.priceRate()
+        .call((e, v) => setPriceRate(Math.round((1 - v / 1e9) * 100 * 1000) /1000))
+    } catch (e) { setPriceRate(undefined) }
+
+    try {
+      await state.CAMPContract.methods.balanceOf(contract._address)
+        .call((e, v) => setCAMPBalance((v/1e18).toFixed(2)))
+    } catch (e) { setPriceRate(undefined) }
+
+    try {
+      await contract.methods.terms()
+        .call((e, v) => setVestingTerm(v[1]))
+    } catch (e) { setVestingTerm(undefined) }
+    
+    try {
+      await contract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
+      .call((e,v) => {
+        if (v[0] === 0) {
+          setPoolState("Bond")
+        } else {
+          setPoolState("Claim")
+        }
+      })
+    } catch(e) {console.log("Something wrong!")}
   }, [])
 
   return (
@@ -96,10 +144,10 @@ function LPInfos({ props }) {
           <img src={LinkImg} />
         </a>
       </p>
-      <p> $ {parseInt(bondprice).toLocaleString()}</p>
-      <p> -30%</p>
-      <p>$ 30</p>
-      <p>2 Days</p>
+      <p> $ {bondprice}</p>
+      <p> {priceRate}%</p>
+      <p>$ {(campbalance * bondprice)}</p>
+      <p>{timeConversion(vestingterm*1000)}</p>
 
       <p className="btnSection">
         {poolState === "Sold-out"

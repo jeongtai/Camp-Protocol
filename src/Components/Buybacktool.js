@@ -32,12 +32,12 @@ function Buybacktool () {
   async function getInfo() {
     await state.OracleContract.methods
     .getAssetPrice(state.CAMPContract._address)
-    .call((e, v) => setCampprice(v / 1e6));
+    .call((e, v) => setCampprice((v / 1e6).toFixed(2)));
 
     await state.CAMPContract.methods
     .balanceOf(window.klaytn.selectedAddress)
     .call((e, v) =>
-        setCAMPBalance(caver.utils.fromPeb(v, "KLAY"))
+        setCAMPBalance((v/1e18).toFixed(2))
     );
     await state.CAMPContract.methods.allowance(window.klaytn.selectedAddress, state.BankContract._address).call((e, v) => {
       if (v > 100000000) {
@@ -45,10 +45,10 @@ function Buybacktool () {
       }
     })
     await state.USDCContract.methods.balanceOf(window.klaytn.selectedAddress)
-    .call((e,v) => setUSDCBalance(v))
+    .call((e,v) => setUSDCBalance((v/1e18).toFixed(2)))
 
     await state.BankContract.methods.availableExcessCollatDV()
-    .call((e,v) => setavailableUSDC(v/1e18))
+    .call((e,v) => setavailableUSDC((v/1e18).toFixed(2)))
   }
 
 

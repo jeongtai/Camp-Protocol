@@ -72,15 +72,45 @@ const caver = new Caver(window.klaytn)
 
 const Bank = () => {
     // toggle true=mint false=redeem
+    let state = useSelector((state) => state)
     const [isNowMint, setIsNowMint] = useState(true);
     const [isCollect, setIsCollect] = useState(false);
-
+    const [unclaimedUSDT, setUnclaimedUSDT] = useState()
+    const [unclaimedCAMP, setUnclaimedCAMP] = useState()
 
     async function getInfo() {
         try {
             setIsCollect(true);
         } catch (e) { console.log(e) }
+        try {
+          state.BankContract.methods
+          .redeemCAMPBalances(window.klaytn.selectedAddress)
+          .call((e , v) => setUnclaimedCAMP((v/1e18).toFixed(2)))
+        } catch(e) {setUnclaimedCAMP(undefined)}
 
+        try {
+          state.BankContract.methods
+          .redeemCollateralBalances(window.klaytn.selectedAddress)
+          .call((e, v) => setUnclaimedUSDT((v/1e18).toFixed(2)))
+        } catch(e) {setUnclaimedUSDT(undefined)}
+
+        try {
+          state.SCAMPContract.methods
+          .SCAMPBank()
+          .call((e, v) => console.log(v))
+        } catch(e) {console.log(e)}
+
+    }
+
+    function Collect() {
+      try {
+        state.BankContract.methods
+        .collectRedemption()
+        .send({
+          from : window.klaytn.selectedAddress,
+          gas : 3000000
+        })
+      } catch(e) {console.log(e)}
     }
 
     useEffect(() => {
@@ -90,15 +120,12 @@ const Bank = () => {
     return (
         <>
             <Section>
-
-
                 <div>
                     <span>Collectable Redemption</span>
-
                 </div>
                 <InputForm
                     token="USDC"
-                    balance={0}
+                    balance={unclaimedUSDT}
                     onChange={() => console.log("USDC Change")}
                     value={undefined}
                     setValueFn={undefined}
@@ -110,7 +137,7 @@ const Bank = () => {
 
                 <InputForm
                     token="CAMP"
-                    balance={0}
+                    balance={unclaimedCAMP}
                     onChange={() => console.log("USDC Change")}
                     value={undefined}
                     setValueFn={undefined}
@@ -120,7 +147,7 @@ const Bank = () => {
                     haveBal={true}
                 />
 
-                <Button text="Collect" onClick={()=> console.log("collect click")}>
+                <Button text="Collect" onClick={Collect}>
                     Collect
                 </Button>
             </Section>

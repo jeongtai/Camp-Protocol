@@ -32,13 +32,13 @@ function Recollattool() {
     try {
       await state.OracleContract.methods
         .getAssetPrice(state.CAMPContract._address)
-        .call((e, v) => setCampprice(v / 1e6));
+        .call((e, v) => setCampprice((v / 1e6).toFixed(2)));
     } catch (e) { setCampprice(undefined) }
     try {
       await state.USDCContract.methods
         .balanceOf(window.klaytn.selectedAddress)
         .call((e, v) =>
-          setUSDCBalance(caver.utils.fromPeb(v, "KLAY"))
+          setUSDCBalance((v/1e18).toFixed(2))
         );
     } catch (e) { setUSDCBalance(undefined) }
     try {
@@ -50,7 +50,7 @@ function Recollattool() {
     } catch (e) { setIsApproved(false) }
     try {
       await state.CAMPContract.methods
-        .balanceOf(window.klaytn.selectedAddress).call((e, v) => setCAMPBalance(v / 1e18))
+        .balanceOf(window.klaytn.selectedAddress).call((e, v) => setCAMPBalance((v / 1e18).toFixed(2)))
     } catch (e) { setCAMPBalance(undefined) }
     setIsLoading(false);
 

@@ -144,19 +144,19 @@ function Mintingtool() {
         try {
             await state.SCAMPContract.methods
                 .minting_fee()
-                .call((e, v) => setMintingFee(v / 1e6));
+                .call((e, v) => setMintingFee((v / 1e6).toFixed(2)));
         } catch (e) { setMintingFee(undefined) }
 
         try {
             await state.SCAMPContract.methods
                 .redemption_fee()
-                .call((e, v) => setRedemptionFee(v / 1e6));
+                .call((e, v) => setRedemptionFee((v / 1e6).toFixed(2)));
         } catch (e) { setRedemptionFee(undefined) }
 
         try {
             await state.BankContract.methods
                 .collatDollarBalance()
-                .call((e, v) => setCollatbal(v / 1e18));
+                .call((e, v) => setCollatbal((v / 1e18).toFixed(2)));
         } catch (e) { setCollatbal(undefined) }
 
         try {

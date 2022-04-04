@@ -81,7 +81,7 @@ border: 2px solid ${(props) => props.theme.borderColor};
 `
 const Header = styled.div`
   display: grid;
-  grid-template-columns: 2fr repeat(5, 1fr);
+  grid-template-columns: 2fr repeat(4, 1fr);
 
   padding : 0 0 20px 0;
   
@@ -97,19 +97,18 @@ const Header = styled.div`
 const Bond = () => {
   let state = useSelector((state) => state)
   const [campprice, setCampprice] = useState()
-
   const [isBondingtoolOpen, setIsBondingtoolOpen] = useState(false)
-  const [totalbalance, setTotalBalance] = useState()
+  const [totalbalance, setTotalBalance] = useState(0)
 
   //LP이름
   const bondLPInfos = [
-    { name: "CAMP-USDT", bondContract: state.CAMP_USDT_BondContract, lpContract : state.CAMP_USDT_LPContract, TreasuryContract : state.CAMP_USDT_TreasuryContract},
-    { name: "SCAMP-USDT", bondContract: state.SCAMP_USDT_BondContract, lpContract : state.SCAMP_USDT_LPContract, TreasuryContract : state.SCAMP_USDT_TreasuryContract},
-    { name: "CAMP-SCAMP", bondContract: state.CAMP_SCAMP_BondContract, lpContract : state.CAMP_SCAMP_LPContract, TreasuryContract : state.SCAMP_CAMP_TreasuryContract}
+    { name: "CAMP-USDT", bondContract: state.CAMP_USDT_BondContract, lpContract : state.CAMP_USDT_LPContract},
+    { name: "SCAMP-USDT", bondContract: state.SCAMP_USDT_BondContract, lpContract : state.SCAMP_USDT_LPContract},
   ]
 
 
   async function getInfo() {
+     
     try {await state.OracleContract.methods
       .getAssetPrice(state.CAMPContract._address)
       .call((e, v) => setCampprice(v / 1e6));
@@ -125,13 +124,23 @@ const Bond = () => {
         console.log("account change listen in bank");
       });
     }
+    
   }, []);
+
+  useEffect(() => {
+      bondLPInfos.map(async (bondLPInfo, index) => {
+        await bondLPInfo.bondContract.methods
+        .assetPrice().call(async (e,price) => {
+          await bondLPInfo.lpContract.methods
+          .balanceOf(state.TreasuryContract._address).call(async (e,balance) => {
+            await setTotalBalance((prev) => prev + (price * balance /1e18/1e6))
+          })
+         })})
+  }, [])
 
 
   const OverviewInfos = [
-    { name: "TVL", amt: 1000000 },
     { name: "CAMP Price", amt: campprice },
-    { name: "ㅁㄴㄴㅁ", amt: 10000000 },
     { name: "Treasury Balance", amt : totalbalance },
   ]
 
@@ -157,7 +166,6 @@ const Bond = () => {
           <p>Name</p>
           <p>Market Price</p>
           <p>ROI(Discount)</p>
-          <p>Remained</p>
           <p>Vesting Term End</p>
           <p></p>
         </Header>

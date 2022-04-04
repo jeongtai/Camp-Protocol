@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 const LPInfoItem = styled.div`
   display: grid;
-  grid-template-columns: 2fr repeat(5, 1fr);
+  grid-template-columns: 2fr repeat(4, 1fr);
   
   height : 80px;
   padding: 23px 0px;
@@ -98,7 +98,6 @@ function LPInfos(props) {
   let state = useSelector((state) => state)
   const [bondprice, setBondPrice] = useState()
   const [priceRate, setPriceRate] = useState()
-  const [campbalance, setCAMPBalance] = useState()
   const [vestingterm, setVestingTerm] = useState()
   const [poolState, setPoolState] = useState("Bond")
 
@@ -124,13 +123,9 @@ function LPInfos(props) {
     } catch (e) { setPriceRate(undefined) }
 
     try {
-      await state.CAMPContract.methods.balanceOf(TreasuryContract._address)
-        .call((e, v) => setCAMPBalance((v / 1e18).toFixed(2)))
-    } catch (e) { setCAMPBalance(undefined) }
-
-    try {
       await bondContract.methods.terms()
         .call((e, v) => setVestingTerm(v[1]))
+      console.log(vestingterm)
     } catch (e) { setVestingTerm(undefined) }
 
     try {
@@ -142,7 +137,7 @@ function LPInfos(props) {
             setPoolState("Claim")
           }
         })
-    } catch (e) { console.log("Something wrong!") }
+    } catch (e) { console.log(e) }
   }, [])
 
   return (
@@ -156,7 +151,6 @@ function LPInfos(props) {
       </p>
       <p> $ {bondprice}</p>
       <p> {priceRate}%</p>
-      <p>$ {(campbalance * bondprice)}</p>
       <p>{timeConversion(vestingterm * 1000)}</p>
 
       <p className="btnSection">

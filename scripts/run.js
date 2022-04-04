@@ -137,25 +137,25 @@ const main = async () => {
   //   // console.log("swap ratio:", await swapamounts[0].toString(), await swapamounts[1].toString());
   //   // await router.swapExactTokensForTokens((swapamounts[0]*100000000000000000).toString(), swapamounts[1].toString(), [SCAMP.address, mock.address], owner.address, Math.floor(Date.now()) + 10);
 
-  //   const uniOracleFactory = await ethers.getContractFactory("UniswapPairOracle");
-  //   // const scampPairOracle = await uniOracleFactory.deploy(factory.address, SCAMP.address, mock.address, owner.address);
-  //   const scampPairOracle = uniOracleFactory.attach("0x24FED6B2FA9080519ea6DEf8DB0B0ad495C7a5F7");
-  //   console.log("scampPairOracle:", scampPairOracle.address);
-  //   await scampPairOracle.setPeriod(100000);
-  //   console.log(await scampPairOracle.canUpdate());
-  //   if (await scampPairOracle.canUpdate()) {
-  //       console.log("scamp oracle is updated");
-  //       await scampPairOracle.update();
-  //   }
+    const uniOracleFactory = await ethers.getContractFactory("UniswapPairOracle");
+    // const scampPairOracle = await uniOracleFactory.deploy(factory.address, SCAMP.address, mock.address, owner.address);
+    const scampPairOracle = uniOracleFactory.attach("0x24FED6B2FA9080519ea6DEf8DB0B0ad495C7a5F7");
+    console.log("scampPairOracle:", scampPairOracle.address);
+    await scampPairOracle.setPeriod(100000);
+    console.log(await scampPairOracle.canUpdate());
+    if (await scampPairOracle.canUpdate()) {
+        console.log("scamp oracle is updated");
+        await scampPairOracle.update();
+    }
 
-  //   // const campPairOracle = await uniOracleFactory.deploy(factory.address, CAMP.address, mock.address, owner.address);
-  //   const campPairOracle = uniOracleFactory.attach("0x9C41e45701bE7f96422B75A4D83b8874C83F445d");
-  //   console.log("campPairOracle:", campPairOracle.address);
-  //   await campPairOracle.setPeriod(100000);
-  //   if (await campPairOracle.canUpdate()) {
-  //     console.log("camp oracle is updated");
-  //     await campPairOracle.update();
-  // }
+    // const campPairOracle = await uniOracleFactory.deploy(factory.address, CAMP.address, mock.address, owner.address);
+    const campPairOracle = uniOracleFactory.attach("0x9C41e45701bE7f96422B75A4D83b8874C83F445d");
+    console.log("campPairOracle:", campPairOracle.address);
+    await campPairOracle.setPeriod(100000);
+    if (await campPairOracle.canUpdate()) {
+      console.log("camp oracle is updated");
+      await campPairOracle.update();
+  }
 
   //   // await assetOracle.setAssetOracle([scampPairOracle.address, campPairOracle.address]);
   //   // console.log(await assetOracle.priceOracle(0));

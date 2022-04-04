@@ -176,14 +176,15 @@ const main = async () => {
     // Deploy to Bond : CAMP
     const ClaimSwapCampUSDTLpDepositoryFactory = await ethers.getContractFactory("ClaimSwapCampUSDTLpDepository");
     // const ClaimSwapCampUSDTLpDepository = await ClaimSwapCampUSDTLpDepositoryFactory.deploy();
-    const ClaimSwapCampUSDTLpDepository = ClaimSwapCampUSDTLpDepositoryFactory.attach("0x103e3Fed7ED92ff97594439ACB59B59E0FE5b80E");
+    const ClaimSwapCampUSDTLpDepository = ClaimSwapCampUSDTLpDepositoryFactory.attach("0xD9941eECa917704E054E0d63ADA6031F98401e4B");
     console.log("ClaimSwapCampUSDTLpDepository address:", ClaimSwapCampUSDTLpDepository.address);
-
+    
     // Deploy bond treasury
     const BondTreasuryFactory = await ethers.getContractFactory("BondTreasury");
     // const bondTreasury = await BondTreasuryFactory.deploy();
     const bondTreasury = BondTreasuryFactory.attach("0xa8604E038C9A02D1dad0ecA7fC07e6A0bc9C2f30");
     console.log("bondTreasury address:", bondTreasury.address);
+    await ClaimSwapCampUSDTLpDepository.setTreasury(bondTreasury.address);
 
     // initialize - bond mint
     // await bondTreasury.__initialize(daoAddress, CAMP.address);
@@ -193,7 +194,7 @@ const main = async () => {
 
     // initiailize depository
     // await ClaimSwapCampUSDTLpDepository.__initialize(
-    //     CAMP.address, daoAddress, CAMPPair, CAMP.address, mock.address, bondTreasury.address, mock.address, assetOracle.address
+    //     CAMP.address, daoAddress, CAMPPair, CAMP.address, mock.address, mock.address, assetOracle.address
     // );
     console.log("totaldebt", (await ClaimSwapCampUSDTLpDepository.totalDebt() / 1e18).toString());
     // await ClaimSwapCampUSDTLpDepository.initializeBondTerms(
@@ -224,9 +225,9 @@ const main = async () => {
     // deposit
     console.log("bond price:", (await ClaimSwapCampUSDTLpDepository.bondPrice() / 1e6).toString());
     console.log("CAMP, LP balance:", (await CAMP.balanceOf(owner.address)).toString(), (await pairContract_CAMP.balanceOf(owner.address)).toString());
-    // await ClaimSwapCampUSDTLpDepository.deposit(toBn("0.1"), await ClaimSwapCampUSDTLpDepository.bondPrice(), owner.address);
+    await ClaimSwapCampUSDTLpDepository.deposit(toBn("0.1"), await ClaimSwapCampUSDTLpDepository.bondPrice(), owner.address);
     console.log("CAMP, LP balance:", (await CAMP.balanceOf(owner.address)).toString(), (await pairContract_CAMP.balanceOf(owner.address)).toString());
-    // await ClaimSwapCampUSDTLpDepository.redeem(owner.address, false);
+    await ClaimSwapCampUSDTLpDepository.redeem(owner.address, false);
     console.log("CAMP, LP balance:", (await CAMP.balanceOf(owner.address)).toString(), (await pairContract_CAMP.balanceOf(owner.address)).toString());
 
     await ClaimSwapCampUSDTLpDepository.setBondTerms("0", 60);
@@ -234,25 +235,33 @@ const main = async () => {
     // Deploy to Bond : SCAMP
     const ClaimSwapSCampUSDTLpDepositoryFactory = await ethers.getContractFactory("ClaimSwapSCampUSDTLpDepository");
     // const ClaimSwapSCampUSDTLpDepository = await ClaimSwapSCampUSDTLpDepositoryFactory.deploy();
-    const ClaimSwapSCampUSDTLpDepository = ClaimSwapSCampUSDTLpDepositoryFactory.attach("0x1D11B9dc98AE736277d0C82F7F2e85b6C884fE29");
+    const ClaimSwapSCampUSDTLpDepository = ClaimSwapSCampUSDTLpDepositoryFactory.attach("0xE64a11F6Bc3c3EDbef9ff099cD1FEFc6A8C7214E");
     console.log("ClaimSwapSCampUSDTLpDepository address:", ClaimSwapSCampUSDTLpDepository.address);
+    await ClaimSwapSCampUSDTLpDepository.setTreasury(bondTreasury.address);
 
     // Deploy bond treasury
     // const bondTreasury_SCAMP = await BondTreasuryFactory.deploy();
-    const bondTreasury_SCAMP = BondTreasuryFactory.attach("0xdc859778faC057E33224E06cf9070eafD053c351");
-    console.log("bondTreasury_SCAMP address:", bondTreasury_SCAMP.address);
+    // const bondTreasury_SCAMP = BondTreasuryFactory.attach("0xdc859778faC057E33224E06cf9070eafD053c351");
+    // console.log("bondTreasury_SCAMP address:", bondTreasury_SCAMP.address);
 
     // initialize - bond mint
     // await bondTreasury_SCAMP.__initialize(daoAddress, SCAMP.address);
     // await SCAMP.Bond_mint(bondTreasury_SCAMP.address, BOND_GENESIS_AMOUNT);
     // await SCAMP.approve(owner.address, BOND_GENESIS_AMOUNT);
     // await SCAMP.transferFrom(owner.address, bondTreasury_SCAMP, BOND_GENESIS_AMOUNT);
-    console.log("scamp bond mint", (await SCAMP.balanceOf(bondTreasury_SCAMP.address) / 1e18).toString());
+    console.log("scamp bond mint", (await SCAMP.balanceOf(bondTreasury.address) / 1e18).toString());
 
     // initiailize depository
     // await ClaimSwapSCampUSDTLpDepository.__initialize(
-    //     SCAMP.address, daoAddress, SCAMPPair, SCAMP.address, mock.address, bondTreasury_SCAMP.address, mock.address, assetOracle.address
+    //     CAMP.address, // _CAMP
+    //     daoAddress, // _DAO
+    //     SCAMPPair, // _principle
+    //     SCAMP.address, // _Token0address
+    //     mock.address, // _Token1address
+    //     mock.address, // _usdt_address
+    //     assetOracle.address // _oracle
     // );
+
     console.log("totaldebt", (await ClaimSwapSCampUSDTLpDepository.totalDebt() / 1e18).toString());
     // await ClaimSwapSCampUSDTLpDepository.initializeBondTerms(
     //     100, //_controlVariable 상수
@@ -264,25 +273,25 @@ const main = async () => {
     //     toBn("1e4") //_initialDebt 초기 빚(다른 곳에서 쓴?)
     // );
     
-    console.log("register", (await bondTreasury_SCAMP.isReserveToken(SCAMPPair)));
+    console.log("register", (await bondTreasury.isReserveToken(SCAMPPair)));
     // register
-    // await bondTreasury.register(CAMPPair, ClaimSwapSCampUSDTLpDepository.address);
+    // await bondTreasury.unregisterDepositor(ClaimSwapSCampUSDTLpDepository.address);
+    // await bondTreasury.register(SCAMPPair, ClaimSwapSCampUSDTLpDepository.address);
     
     console.log("max payout", (await ClaimSwapSCampUSDTLpDepository.maxPayout() / 1e18).toString());
     console.log("pricepaid", (await ClaimSwapSCampUSDTLpDepository.bondInfo(owner.address).pricePaid));
 
     // approve
     // Approve and addLiquidity
-    console.log("SCAMPPair is alive?", await pairContract.symbol());
     bondAllowance = await pairContract.allowance(owner.address, ClaimSwapSCampUSDTLpDepository.address);
     if (bondAllowance == 0) {
       await pairContract.approve(ClaimSwapSCampUSDTLpDepository.address, toBn("10000"));
     }
-    console.log("bond allowance:", (await pairContract.allowance(owner.address, ClaimSwapSCampUSDTLpDepository.address)).toString());
+    console.log("bond allowance:", (await pairContract_CAMP.allowance(owner.address, ClaimSwapSCampUSDTLpDepository.address)).toString());
     // deposit
     console.log("bond price:", (await ClaimSwapSCampUSDTLpDepository.bondPrice() / 1e6).toString());
     console.log("SCAMP, LP balance:", (await SCAMP.balanceOf(owner.address)).toString(), (await pairContract.balanceOf(owner.address)).toString());
-    await ClaimSwapSCampUSDTLpDepository.deposit(toBn("0.1"), await ClaimSwapSCampUSDTLpDepository.bondPrice(), owner.address);
+    await ClaimSwapSCampUSDTLpDepository.deposit(toBn("1"), await ClaimSwapSCampUSDTLpDepository.bondPrice(), owner.address);
     console.log("SCAMP, LP balance:", (await SCAMP.balanceOf(owner.address)).toString(), (await pairContract.balanceOf(owner.address)).toString());
     await ClaimSwapSCampUSDTLpDepository.redeem(owner.address, false);
     console.log("SCAMP, LP balance:", (await SCAMP.balanceOf(owner.address)).toString(), (await pairContract.balanceOf(owner.address)).toString());

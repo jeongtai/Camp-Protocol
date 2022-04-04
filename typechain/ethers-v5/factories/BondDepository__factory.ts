@@ -228,11 +228,6 @@ const _abi = [
       },
       {
         internalType: "address",
-        name: "_treasury",
-        type: "address",
-      },
-      {
-        internalType: "address",
         name: "_usdt_address",
         type: "address",
       },
@@ -698,6 +693,19 @@ const _abi = [
       },
     ],
     name: "setStaking",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_treasury",
+        type: "address",
+      },
+    ],
+    name: "setTreasury",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -91,7 +91,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         address _principle,
         address _Token0address,
         address _Token1address,
-        address _treasury,
+        // address _treasury, // set으로 변경
         address _usdt_address,
         address _oracle
     ) external initializer {
@@ -110,8 +110,8 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         principle = _principle;
         // require(_staking != address(0));
         // staking = _staking;
-        require(_treasury != address(0));
-        treasury = _treasury;
+        // require(_treasury != address(0));
+        // treasury = _treasury;
         require(_usdt_address != address(0));
         usdt_address = _usdt_address;
         _assetOracle = AssetOracle(_oracle);
@@ -214,7 +214,10 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         staking = _staking;
     }
 
-
+    function setTreasury(address _treasury) external onlyOwner() {
+        require(_treasury != address(0));
+        treasury = _treasury;
+    }
 
 
     /* ======== USER FUNCTIONS ======== */
@@ -408,7 +411,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      *  @return price_ uint256 in 10**6 precision in usd
      */
     function bondPrice() public view returns (uint256 price_) {
-        uint256 _CAMPPrice = _assetOracle.getAssetPrice(CAMP); // 1e6
+        uint256 _CAMPPrice = _assetOracle.getAssetPrice(Token0address); // 1e6
         uint256 _priceRate = priceRate(); // 1e9
         price_ = _CAMPPrice.mul(_priceRate).div(10**9);
     }

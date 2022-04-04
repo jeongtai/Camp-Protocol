@@ -411,7 +411,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      *  @return price_ uint256 in 10**6 precision in usd
      */
     function bondPrice() public view returns (uint256 price_) {
-        uint256 _CAMPPrice = _assetOracle.getAssetPrice(Token0address); // 1e6
+        uint256 _CAMPPrice = _assetOracle.getAssetPrice(CAMP); // 1e6
         uint256 _priceRate = priceRate(); // 1e9
         price_ = _CAMPPrice.mul(_priceRate).div(10**9);
     }

@@ -176,7 +176,7 @@ const main = async () => {
     // Deploy to Bond : CAMP
     const ClaimSwapCampUSDTLpDepositoryFactory = await ethers.getContractFactory("ClaimSwapCampUSDTLpDepository");
     // const ClaimSwapCampUSDTLpDepository = await ClaimSwapCampUSDTLpDepositoryFactory.deploy();
-    const ClaimSwapCampUSDTLpDepository = ClaimSwapCampUSDTLpDepositoryFactory.attach("0xD9941eECa917704E054E0d63ADA6031F98401e4B");
+    const ClaimSwapCampUSDTLpDepository = ClaimSwapCampUSDTLpDepositoryFactory.attach("0x946Dad84E6d604ba70294fCFf7A49B06bf0D0659");
     console.log("ClaimSwapCampUSDTLpDepository address:", ClaimSwapCampUSDTLpDepository.address);
     
     // Deploy bond treasury
@@ -199,7 +199,7 @@ const main = async () => {
     console.log("totaldebt", (await ClaimSwapCampUSDTLpDepository.totalDebt() / 1e18).toString());
     // await ClaimSwapCampUSDTLpDepository.initializeBondTerms(
     //     100, //_controlVariable 상수
-    //     432000, //_vestingTerm in blokcs
+    //     1500, //432000, //_vestingTerm in blokcs
     //     0.8e9, //_minimumPriceRate 할인된가격최저 1e9
     //     10000, //_maxPayout 1e4 10000=1%
     //     100, //_fee 100=1%
@@ -227,7 +227,7 @@ const main = async () => {
     console.log("CAMP, LP balance:", (await CAMP.balanceOf(owner.address)).toString(), (await pairContract_CAMP.balanceOf(owner.address)).toString());
     await ClaimSwapCampUSDTLpDepository.deposit(toBn("0.1"), await ClaimSwapCampUSDTLpDepository.bondPrice(), owner.address);
     console.log("CAMP, LP balance:", (await CAMP.balanceOf(owner.address)).toString(), (await pairContract_CAMP.balanceOf(owner.address)).toString());
-    await ClaimSwapCampUSDTLpDepository.redeem(owner.address, false);
+    // await ClaimSwapCampUSDTLpDepository.redeem(owner.address, false);
     console.log("CAMP, LP balance:", (await CAMP.balanceOf(owner.address)).toString(), (await pairContract_CAMP.balanceOf(owner.address)).toString());
 
     await ClaimSwapCampUSDTLpDepository.setBondTerms("0", 60);
@@ -235,7 +235,7 @@ const main = async () => {
     // Deploy to Bond : SCAMP
     const ClaimSwapSCampUSDTLpDepositoryFactory = await ethers.getContractFactory("ClaimSwapSCampUSDTLpDepository");
     // const ClaimSwapSCampUSDTLpDepository = await ClaimSwapSCampUSDTLpDepositoryFactory.deploy();
-    const ClaimSwapSCampUSDTLpDepository = ClaimSwapSCampUSDTLpDepositoryFactory.attach("0xE64a11F6Bc3c3EDbef9ff099cD1FEFc6A8C7214E");
+    const ClaimSwapSCampUSDTLpDepository = ClaimSwapSCampUSDTLpDepositoryFactory.attach("0x40D21487A039d7d7aD4Acd86d3Bc7561EB03626d");
     console.log("ClaimSwapSCampUSDTLpDepository address:", ClaimSwapSCampUSDTLpDepository.address);
     await ClaimSwapSCampUSDTLpDepository.setTreasury(bondTreasury.address);
 
@@ -265,7 +265,7 @@ const main = async () => {
     console.log("totaldebt", (await ClaimSwapSCampUSDTLpDepository.totalDebt() / 1e18).toString());
     // await ClaimSwapSCampUSDTLpDepository.initializeBondTerms(
     //     100, //_controlVariable 상수
-    //     432000, //_vestingTerm in blokcs
+    //     1500, //_vestingTerm in blokcs
     //     0.8e9, //_minimumPriceRate 할인된가격최저 1e9
     //     10000, //_maxPayout 1e4 10000=1%
     //     100, //_fee 100=1%
@@ -293,10 +293,11 @@ const main = async () => {
     console.log("SCAMP, LP balance:", (await SCAMP.balanceOf(owner.address)).toString(), (await pairContract.balanceOf(owner.address)).toString());
     await ClaimSwapSCampUSDTLpDepository.deposit(toBn("1"), await ClaimSwapSCampUSDTLpDepository.bondPrice(), owner.address);
     console.log("SCAMP, LP balance:", (await SCAMP.balanceOf(owner.address)).toString(), (await pairContract.balanceOf(owner.address)).toString());
-    await ClaimSwapSCampUSDTLpDepository.redeem(owner.address, false);
+    // await ClaimSwapSCampUSDTLpDepository.redeem(owner.address, false);
     console.log("SCAMP, LP balance:", (await SCAMP.balanceOf(owner.address)).toString(), (await pairContract.balanceOf(owner.address)).toString());
 
-    // await ClaimSwapCampUSDTLpDepository.setBondTerms("0", 60);
+    // await ClaimSwapCampUSDTLpDepository.setBondTerms("0", 432000);
+    // await ClaimSwapSCampUSDTLpDepository.setBondTerms("0", 432000);
   };
   
   const runMain = async () => {

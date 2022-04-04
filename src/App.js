@@ -19,7 +19,7 @@ const Main = styled.div`
     padding : 0 15px 0 ${(props) => props.theme.navWidth+15}px;
     margin : 0px auto 50px auto;
     max-width: 1200px;
-    min-width: 1000px;
+    min-width: 800px;
     display: flex;
     flex-direction: column;
 `;

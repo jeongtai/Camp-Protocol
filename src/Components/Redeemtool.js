@@ -73,6 +73,8 @@ function Redeemtool() {
   const [mintingfee, setMintingFee] = useState();
   const [collatbal, setCollatbal] = useState();
 
+  const [isCollect, setIsCollect] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
 
 
@@ -149,13 +151,19 @@ function Redeemtool() {
         .call((e, v) => setCollatbal(v / 1e18));
     } catch (e) { setCollatbal(undefined) }
 
-    await state.SCAMPContract.methods
-      .allowance(window.klaytn.selectedAddress, state.BankContract._address)
-      .call((e, v) => {
-        if (v > 1e18) {
-          setIsApproved(true)
-        }
-      })
+    try {
+      await state.SCAMPContract.methods
+        .allowance(window.klaytn.selectedAddress, state.BankContract._address)
+        .call((e, v) => {
+          if (v > 1e18) {
+            setIsApproved(true)
+          }
+        })
+    } catch (e) { setCollatbal(false) }
+
+    try {
+      setIsCollect(true);
+    } catch (e) { console.log(e) }
 
     setIsLoading(false);
   }
@@ -283,7 +291,7 @@ function Redeemtool() {
             strokeWidth="1"
           />
         </p>
-      ) : (
+      ) : isCollect === false ? (
         <>
           <div>
             <span>Input</span>
@@ -370,7 +378,42 @@ function Redeemtool() {
             )}
           </Approve>
         </>
-      )}
+      )
+        :
+        <>
+          <div>
+            <span>Collectable Redemption</span>
+
+          </div>
+          <InputForm
+            token="USDC"
+            balance={USDCBalance}
+            onChange={USDCamt}
+            value={usdcInputAmount}
+            setValueFn={setUSDCInputAmount}
+            type="number"
+            isVisible={true}
+            haveMax={false}
+            haveBal={true}
+          />
+
+          <InputForm
+            token="CAMP"
+            balance={CAMPBalance}
+            onChange={CAMPamt}
+            value={campInputAmount}
+            setValueFn={setCampInputAmount}
+            type="number"
+            isVisible={true}
+            haveMax={false}
+            haveBal={true}
+          />
+          <Button text="Collect" onClick={onClick}>
+            Collect
+          </Button>
+        </>
+
+      }
     </>
   );
 }

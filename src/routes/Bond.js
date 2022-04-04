@@ -97,6 +97,7 @@ const Header = styled.div`
 const Bond = () => {
   let state = useSelector((state) => state)
   const [campprice, setCampprice] = useState()
+
   const [isBondingtoolOpen, setIsBondingtoolOpen] = useState(false)
   const [totalbalance, setTotalBalance] = useState()
 

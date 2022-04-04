@@ -94,13 +94,13 @@ function Redeemtool() {
     try {
       await state.SCAMPContract.methods
         .balanceOf(window.klaytn.selectedAddress)
-        .call((e, v) => setSCAMPBalance(caver.utils.fromPeb(v, "KLAY")));
+        .call((e, v) => setSCAMPBalance((v/1e18).toFixed(2)));
     } catch (e) { setSCAMPBalance(undefined) }
 
     try {
       await state.OracleContract.methods
         .getAssetPrice(state.SCAMPContract._address)
-        .call((e, v) => setSCampprice(v / 1e6));
+        .call((e, v) => setSCampprice((v / 1e6).toFixed(2)));
     } catch (e) { setSCampprice(undefined) }
 
 

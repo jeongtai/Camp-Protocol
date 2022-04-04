@@ -237,16 +237,12 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         require(totalDebt <= terms.maxDebt, "BondDepository: Max capacity reached");
 
         uint256 priceInUSD = bondPrice();
-        console.log("priceInUSD", priceInUSD);
+        // console.log("priceInUSD", priceInUSD);
 
         require(_maxPrice >= priceInUSD, "BondDepository: Slippage limit: more than max price"); // slippage protection
 
         uint256 principleValue = assetPrice().mul(_amount).div(10**6); // returns principle value, in USD, 10**18
         uint256 payout = payoutFor(principleValue); // payout to bonder is computed, bond amount
-        console.log("_amount", _amount / 1e18);
-        console.log("_maxPrice", _maxPrice);
-        console.log("principleValue", principleValue / 1e18);
-        console.log("payout", payout / 1e18);
 
         require(payout >= 10 ** 16, "BondDepository: Bond too small"); // must be > 0.01 CAMP (underflow protection)
         require(payout <= maxPayout(), "BondDepository: Bond too large"); // size protection because there is no slippage
@@ -258,7 +254,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
             asset carries risk and is not minted against
             asset transferred to treasury and rewards minted as payout
          */
-        console.log("IKIP7(principle)", IKIP7(principle).balanceOf(msg.sender)/1e18);
+        // console.log("IKIP7(principle)", IKIP7(principle).balanceOf(msg.sender)/1e18);
         // IKIP7(principle).approve(address(this), _amount);
         // console.log("allowance", IKIP7(principle).allowance(msg.sender, address(this)));
         IKIP7(principle).safeTransferFrom(msg.sender, address(this), _amount);

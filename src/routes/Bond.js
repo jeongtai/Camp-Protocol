@@ -118,9 +118,9 @@ const Bond = () => {
 
   //LP이름
   const bondLPInfos = [
-    { name: "CAMP-USDT", contract: state.CAMP_USDT_BondContract},
-    { name: "SCAMP-USDT", contract: state.CAMP_USDT_BondContract},
-    { name: "CAMP-SCAMP", contract: state.CAMP_USDT_BondContract}
+    { name: "CAMP-USDT", Bondcontract: state.CAMP_USDT_BondContract, LPContract : state.CAMP_USDT_LPContract},
+    { name: "SCAMP-USDT", Bondcontract: state.CAMP_USDT_BondContract, LPContract : state.CAMP_USDT_LPContract},
+    { name: "CAMP-SCAMP", Bondcontract: state.CAMP_USDT_BondContract, LPContract : state.CAMP_USDT_LPContract}
   ]
 
 
@@ -129,19 +129,6 @@ const Bond = () => {
       await state.OracleContract.methods
         .getAssetPrice(state.CampContract._address).call((e, v) => setCampprice(v))
     } catch (e) { setCampprice(undefined) }
-
-    try {
-      await state.CAMP_USDT_BondContract.methods.bondPrice()
-        .call((e, v) => setBondPrice(v))
-    } catch (e) { setBondPrice(undefined) }
-    try {
-      await state.CAMP_USDT_BondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
-        .call((e, v) => setPendingCamp(v / 1e18))
-    } catch (e) { setBondPrice(undefined) }
-    try {
-      await state.CAMP_USDT_BondContract.methods.percentVestedFor(window.klaytn.selectedAddress)
-        .call((e, v) => setPecentBond(v / 1e2))
-    } catch (e) { setBondPrice(undefined) }
   }
 
   // initialize hook----------------------------

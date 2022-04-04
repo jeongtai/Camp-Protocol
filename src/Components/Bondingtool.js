@@ -94,10 +94,10 @@ function timeConversion(millisec) {
   }
 }
 
-function Bondingtool() {
+function Bondingtool({lpProps}) {
   let state = useSelector((state) => state)
   const lpProps = useLocation();
-
+  const [btnInfo, setBtnInfo] = useState(lpProps.state.poolState)
   const [lpamount, setLPAmount] = useState()
   const [lpbal, setLPbal] = useState()
   const [bondprice, setBondPrice] = useState()
@@ -109,36 +109,41 @@ function Bondingtool() {
   const [vestingterm, setVestingTerm] = useState()
   const [maxdebt, setMaxDebt] = useState()
   const [autostake, setAutoStake] = useState(false)
-  const [isBond, setIsBond] = useState(true)
+  const [remaintime, setRemainTime] = useState()
+  const [remaincamp, setRemainCamp] = useState()
+  const [isapproved, setIsApproved] = useState(false)
 
   const onLPChange = (event) => setLPAmount(event.target.value)
 
+  const Bondcontract = lpProps.state.Bondcontract;
+  const LPContract = lpProps.state.LPContract;
+  
   async function getInfo() {
     try {
-      await state.CAMP_USDT_LPContract.methods
-        .balanceOf(window.klaytn.selectedAddress).call((e, v) => setLPbal(v / 1e18))
+      await LPContract.methods
+        .balanceOf(window.klaytn.selectedAddress).call((e, v) => setLPbal((v/1e18).toFixed(2)))
     } catch (e) { setLPbal(undefined) }
 
     try {
-      await state.CAMP_USDT_BondContract.methods.bondPrice()
-        .call((e, v) => setBondPrice(v / 1e6))
+      await Bondcontract.methods.bondPrice()
+        .call((e, v) => setBondPrice((v / 1e6).toFixed(4)))
     } catch (e) { setBondPrice(undefined) }
     try {
-      await state.CAMP_USDT_BondContract.methods.assetPrice()
-        .call((e, v) => setAssetPrice(v / 1e6))
+      await Bondcontract.methods.assetPrice()
+        .call((e, v) => setAssetPrice((v / 1e6).toFixed(4)))
     } catch (e) { setAssetPrice(undefined) }
 
     try {
-      await state.CAMP_USDT_BondContract.methods.priceRate()
-        .call((e, v) => setPriceRate((1 - v / 1e9) * 100))
+      await Bondcontract.methods.priceRate()
+        .call((e, v) => setPriceRate(((1 - v / 1e9) * 100).toFixed(2)))
     } catch (e) { setPriceRate(undefined) }
 
     try {
-      await state.CAMP_USDT_BondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
+      await Bondcontract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
         .call((e, v) => setPendingCamp(v / 1e18))
     } catch (e) { setBondPrice(undefined) }
     try {
-      await state.CAMP_USDT_BondContract.methods.percentVestedFor(window.klaytn.selectedAddress)
+      await Bondcontract.methods.percentVestedFor(window.klaytn.selectedAddress)
         .call((e, v) => {
           if (v >= 10000) {
             setPecentBond(100)
@@ -149,7 +154,7 @@ function Bondingtool() {
     } catch (e) { setBondPrice(undefined) }
 
     try {
-      await state.CAMP_USDT_BondContract.methods.terms()
+      await Bondcontract.methods.terms()
         .call((e, v) => {
           setVestingTerm(v[1])
           setMaxDebt(v[3])
@@ -158,6 +163,32 @@ function Bondingtool() {
       setVestingTerm(undefined)
       setMaxDebt(undefined)
      }
+
+     try {
+      await Bondcontract.methods.bondInfo(window.klaytn.selectedAddress)
+        .call((e, v) => {
+          setRemainTime(v[1])
+          setRemainCamp(v[0]/1e18)
+        })
+    } catch (e) { 
+      setRemainTime(undefined)
+      setRemainCamp(undefined)
+     }
+
+     try {
+      await LPContract.methods
+      .allowance(window.klaytn.selectedAddress, Bondcontract._address)
+      .call((e, v) => {
+        if (v > 1e18) {
+          setIsApproved(true)
+        } else {
+          if (lpProps.state.poolState==="Bond") {
+            setBtnInfo("Approve")
+          }
+        }
+      })
+     } catch (e) {setIsApproved(undefined)}
+
 
   }
 
@@ -172,19 +203,26 @@ function Bondingtool() {
     }
   }, []);
 
+
    async function CalCamp() {
      try {
-        await state.CAMP_USDT_BondContract.methods
+        await Bondcontract.methods
         .payoutFor(caver.utils.toPeb(lpamount, "KLAY"))
-        .call((e,v) => setCAMPamt(v/1e18 * assetprice))
+        .call((e,v) => setCAMPamt((v/1e18 * assetprice).toFixed(3)))
      } catch(e) { setCAMPamt(0)}
    }
   useEffect(() => {
     CalCamp()
   },[lpamount])
 
+  // useEffect(() => {
+    // if (isapproved === false && lpProps.state.poolState==="Bond") {
+    //   setBtnInfo("Approve")
+    // }
+  // }, [isapproved])
+
   function onClick() {
-    state.CAMP_USDT_BondContract.methods.deposit(caver.utils.toPeb(lpamount, "mKLAY"), bondprice * 1e6, window.klaytn.selectedAddress)
+    Bondcontract.methods.deposit(caver.utils.toPeb(lpamount, "KLAY"), bondprice * 1e6, window.klaytn.selectedAddress)
       .send({
         from: window.klaytn.selectedAddress,
         gas: 3000000
@@ -192,10 +230,21 @@ function Bondingtool() {
   }
 
   function onClick2() {
-    state.CAMP_USDT_BondContract.methods.redeem(window.klaytn.selectedAddress, autostake)
+    Bondcontract.methods.redeem(window.klaytn.selectedAddress, autostake)
       .send({
         from: window.klaytn.selectedAddress,
         gas: 3000000
+      })
+  }
+
+  function onClick3() {
+    LPContract.methods.approve(Bondcontract._address, caver.utils.toPeb(1e18, "KLAY"))
+      .send({
+        from: window.klaytn.selectedAddress,
+        gas: 3000000
+      }).on('receipt', () => {
+        setIsApproved(true)
+        setBtnInfo("Bond")
       })
   }
 
@@ -206,10 +255,18 @@ function Bondingtool() {
     { name: "ROI", val: pricerate, expression: `${pricerate} %` },
     { name: "Vesting term end", val: vestingterm, expression: timeConversion(vestingterm*1000) },
     { name: "Minimum Puchase", val: "0.01CAMP", expression: "0.01 CAMP" },
-    { name: "PercentVested", val: percentBond, expression: `${percentBond} %` },
     { name: "Bond price", val: bondprice, expression: bondprice },
     { name: "asset Price", val: assetprice, expression: assetprice },
+  ];
+
+  const claimInfos = [
+
+    { name: "Pending reward", val: remaincamp, expression: remaincamp },
     { name: "Claimable reward", val: pendingCAMP, expression: pendingCAMP },
+    { name: "Time until Fully Vested", val: remaintime, expression: timeConversion(remaintime*1000) },
+    { name: "ROI", val: pricerate, expression: `${pricerate} %` },
+    { name: "Vesting term end", val: vestingterm, expression: timeConversion(vestingterm*1000) },
+    { name: "PercentVested", val: percentBond, expression: `${percentBond} %` },
   ];
   
 
@@ -231,22 +288,32 @@ function Bondingtool() {
             isVisible={true}
           />
           <BondInfos>
-            {bondInfos.map((bondInfo, index) => (
+            {lpProps.state.poolState === "Bond" ? (
+            bondInfos.map((bondInfo, index) => (
               <Info key={bondInfo.name}>
                 <p className="infoName">{bondInfo.name}</p>
                 <p>{bondInfo.val === undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : bondInfo.expression}</p>
-              </Info>
-            ))}
+              </Info>)))
+            :
+            (
+            claimInfos.map((claimInfos, index) => (
+              <Info key={claimInfos.name}>
+                <p className="infoName">{claimInfos.name}</p>
+                <p>{claimInfos.val === undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : claimInfos.expression}</p>
+              </Info>            
+            )))}
           </BondInfos>
 
           <Approve>
             <Button
-            text = {lpProps.state.poolState}
+            text = {btnInfo}
               onClick={() => {
-                if (lpProps.state.poolState === "Bond") {
+                if (btnInfo === "Bond") {
                   return onClick()
-                } else if (lpProps.state.poolState === "Claim") {
+                } else if (btnInfo === "Claim") {
                   return onClick2()
+                } else {
+                  return onClick3()
                 }
               }}/>
               

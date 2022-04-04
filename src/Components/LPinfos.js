@@ -100,39 +100,41 @@ function LPInfos({ props }) {
   const [vestingterm, setVestingTerm] = useState()
   const [poolState, setPoolState] = useState("")
 
-  const contract = props.contract;
+  const Bondcontract = props.Bondcontract;
+  const LPcontract = props.LPcontract;
 
   useEffect(async () => {
     try {
-      await contract.methods.bondPrice()
+      await Bondcontract.methods.bondPrice()
         .call((e, v) => setBondPrice((v/1e6).toFixed(2)))
     } catch (e) { setBondPrice(undefined) }
 
     try {
-      await contract.methods.priceRate()
+      await Bondcontract.methods.priceRate()
         .call((e, v) => setPriceRate(Math.round((1 - v / 1e9) * 100 * 1000) /1000))
     } catch (e) { setPriceRate(undefined) }
 
     try {
-      await state.CAMPContract.methods.balanceOf(contract._address)
+      await state.CAMPContract.methods.balanceOf(Bondcontract._address)
         .call((e, v) => setCAMPBalance((v/1e18).toFixed(2)))
     } catch (e) { setPriceRate(undefined) }
 
     try {
-      await contract.methods.terms()
+      await Bondcontract.methods.terms()
         .call((e, v) => setVestingTerm(v[1]))
     } catch (e) { setVestingTerm(undefined) }
     
     try {
-      await contract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
+      await Bondcontract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
       .call((e,v) => {
-        if (v[0] === 0) {
+        if (v.toString() === "0") {
           setPoolState("Bond")
         } else {
           setPoolState("Claim")
         }
       })
     } catch(e) {console.log("Something wrong!")}
+    console.log(poolState)
   }, [])
 
   return (
@@ -155,7 +157,7 @@ function LPInfos({ props }) {
             {poolState}
           </BondingtoolBtn>
           : 
-          <Link to={`${props.name}`} state={{ name: props.name, poolState: poolState }}>
+          <Link to={`${props.name}`} state={{ name: props.name, poolState: poolState, Bondcontract : Bondcontract, LPcontract : LPcontract }}>
             <BondingtoolBtn btnState={poolState} props={props}>
               {poolState}
             </BondingtoolBtn>

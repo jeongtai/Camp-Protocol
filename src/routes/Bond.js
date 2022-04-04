@@ -105,25 +105,19 @@ const Bond = () => {
   const [percentBond, setPecentBond] = useState()
   const [isBondingtoolOpen, setIsBondingtoolOpen] = useState(false)
 
+  //LP이름
+  const bondLPInfos = [
+    { name: "CAMP-USDT", bondContract: state.CAMP_USDT_BondContract, lpContract : state.CAMP_USDT_LPContract},
+    { name: "SCAMP-USDT", bondContract: state.CAMP_USDT_BondContract, lpContract : state.CAMP_USDT_LPContract},
+    { name: "CAMP-SCAMP", bondContract: state.CAMP_USDT_BondContract, lpContract : state.CAMP_USDT_LPContract}
+  ]
+
 
   async function getInfo() {
     try {
       await state.OracleContract.methods
         .getAssetPrice(state.CampContract._address).call((e, v) => setCampprice(v))
     } catch (e) { setCampprice(undefined) }
-
-    try {
-      await state.CAMP_USDT_BondContract.methods.bondPrice()
-        .call((e, v) => setBondPrice(v))
-    } catch (e) { setBondPrice(undefined) }
-    try {
-      await state.CAMP_USDT_BondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
-        .call((e, v) => setPendingCamp(v / 1e18))
-    } catch (e) { setBondPrice(undefined) }
-    try {
-      await state.CAMP_USDT_BondContract.methods.percentVestedFor(window.klaytn.selectedAddress)
-        .call((e, v) => setPecentBond(v / 1e2))
-    } catch (e) { setBondPrice(undefined) }
   }
 
   // initialize hook----------------------------
@@ -144,14 +138,6 @@ const Bond = () => {
     { name: "TVL", amt: 10000000 },
     { name: "Treasury Balance" },
   ]
-
-  //LP이름
-  const bondLPInfos = [
-    { name: "CAMP-USDT", contract: state.CAMP_USDT_BondContract },
-    { name: "SCAMP-USDT", contract: state.CAMP_USDT_BondContract },
-    { name: "CAMP-SCAMP", contract: state.CAMP_USDT_BondContract }
-  ]
-
 
   return (
     <Content isBondingtoolOpen={isBondingtoolOpen}>
@@ -175,13 +161,13 @@ const Bond = () => {
           <p>Name</p>
           <p>Market Price</p>
           <p>ROI(Discount)</p>
-          <p>Purchased</p>
+          <p>Remained</p>
           <p>Vesting Term End</p>
           <p></p>
         </Header>
 
         {bondLPInfos.map((bondLPInfo, index) => (
-          <LPinfos key={index} bondLPInfo={bondLPInfo} isBondingtoolOpen={isBondingtoolOpen} setBondOpen={setIsBondingtoolOpen} />
+          <LPinfos key={index} bondLPInfo={bondLPInfo} isBondingtoolOpenCtrl={{isBondingtoolOpen,setIsBondingtoolOpen}} />
         ))}
       </LPTokenItems>
 

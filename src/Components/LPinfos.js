@@ -5,6 +5,8 @@ import LinkImg from "../assets/ExternalLink.svg";
 import TokenLogo from "../assets/TokenLogo";
 import { reducer } from "../Contract";
 import Bondingtool from "./Bondingtool";
+import { useSelector } from "react-redux";
+
 
 const LPInfoItem = styled.div`
   display: grid;
@@ -66,29 +68,81 @@ const BondingtoolBtn = styled.button`
   };
 
   &:hover {
-      cursor: ${(props)=>props.btnState==="Sold-out"? "" : "pointer"};
+      cursor: ${(props) => props.btnState === "Sold-out" ? "" : "pointer"};
   }
 `
 
+function timeConversion(millisec) {
+
+  var seconds = (millisec / 1000).toFixed(1);
+
+  var minutes = (millisec / (1000 * 60)).toFixed(1);
+
+  var hours = (millisec / (1000 * 60 * 60)).toFixed(1);
+
+  var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
+
+  if (seconds < 60) {
+    return seconds + " Sec";
+  } else if (minutes < 60) {
+    return minutes + " Min";
+  } else if (hours < 24) {
+    return hours + " Hrs";
+  } else {
+    return days + " Days"
+  }
+}
+
 function LPInfos(props) {
+
+  let state = useSelector((state) => state)
   const [bondprice, setBondPrice] = useState()
-  const [poolState, setPoolState] = useState("")
-  
-  const contract = props.bondLPInfo.contract;
+  const [priceRate, setPriceRate] = useState()
+  const [campbalance, setCAMPBalance] = useState()
+  const [vestingterm, setVestingTerm] = useState()
+  const [poolState, setPoolState] = useState("Bond")
+
+  const [clickedBtn, setClickBtn] = useState("")
+
   const lpName = props.bondLPInfo.name;
-
+  const bondContract = props.bondLPInfo.bondContract;
+  const lpContract = props.bondLPInfo.lpContract;
+  const ClickBondingtoolBtn = () => {
+    props.isBondingtoolOpenCtrl.setIsBondingtoolOpen(true)
+    setClickBtn(lpName)
+    
+  }
   useEffect(async () => {
-    console.log(props)
-    console.log(props.bondLPInfo)
-    console.log(props.isBondingtoolOpen)
     try {
-      await contract.methods.bondPrice()
-        .call((e, v) => setBondPrice(v))
+      await bondContract.methods.bondPrice()
+        .call((e, v) => setBondPrice((v / 1e6).toFixed(2)))
     } catch (e) { setBondPrice(undefined) }
-    try {
 
-    } catch(e) {}
-    setPoolState("Bond"); // Bond || Sold-out || Claim
+    try {
+      await bondContract.methods.priceRate()
+        .call((e, v) => setPriceRate(Math.round((1 - v / 1e9) * 100 * 1000) / 1000))
+    } catch (e) { setPriceRate(undefined) }
+
+    try {
+      await state.CAMPContract.methods.balanceOf(bondContract._address)
+        .call((e, v) => setCAMPBalance((v / 1e18).toFixed(2)))
+    } catch (e) { setPriceRate(undefined) }
+
+    try {
+      await bondContract.methods.terms()
+        .call((e, v) => setVestingTerm(v[1]))
+    } catch (e) { setVestingTerm(undefined) }
+
+    try {
+      await bondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
+        .call((e, v) => {
+          if (v.toString() === "0") {
+            setPoolState("Bond")
+          } else {
+            setPoolState("Claim")
+          }
+        })
+    } catch (e) { console.log("Something wrong!") }
   }, [])
 
   return (
@@ -100,24 +154,29 @@ function LPInfos(props) {
           <img src={LinkImg} />
         </a>
       </p>
-      <p> $ {parseInt(bondprice).toLocaleString()}</p>
-      <p> -30%</p>
-      <p>$ 30</p>
-      <p>2 Days</p>
+      <p> $ {bondprice}</p>
+      <p> {priceRate}%</p>
+      <p>$ {(campbalance * bondprice)}</p>
+      <p>{timeConversion(vestingterm * 1000)}</p>
 
       <p className="btnSection">
         {poolState === "Sold-out"
           ? <BondingtoolBtn btnState={poolState}>
-              {poolState}
-            </BondingtoolBtn>
-          : 
-          //<Link to={`${lpName}`} state={{ name: lpName, poolState: poolState }}>
-            <BondingtoolBtn onClick={()=>props.setBondOpen(prev=>!prev)} btnState={poolState}>
-              {props.isBondingtoolOpen?<Bondingtool isBongdingtoolOpen={props.isBondingtoolOpen} contract={contract} name={lpName} poolState={poolState}/>:null}
-              {poolState}
-            </BondingtoolBtn>
-          //</Link>
-          }
+            {poolState}
+          </BondingtoolBtn>
+          :
+          <BondingtoolBtn onClick={ClickBondingtoolBtn} btnState={poolState}>
+            { clickedBtn===lpName && props.isBondingtoolOpenCtrl.isBondingtoolOpen ?
+              <Bondingtool
+                bondLPInfo={props.bondLPInfo}
+                btnState={poolState}
+                isBondingtoolOpenCtrl={props.isBondingtoolOpenCtrl}
+              />
+
+              : null}
+            {poolState}
+          </BondingtoolBtn>
+        }
       </p>
     </LPInfoItem>
   )

@@ -106,7 +106,7 @@ function LPInfos(props) {
 
   const lpName = props.bondLPInfo.name;
   const bondContract = props.bondLPInfo.bondContract;
-  const TreasuryContract = props.bondLPInfo.lpContract;
+  const TreasuryContract = props.bondLPInfo.TreasuryContract;
   const ClickBondingtoolBtn = () => {
     props.isBondingtoolOpenCtrl.setIsBondingtoolOpen(true)
     setClickBtn(lpName)
@@ -124,9 +124,9 @@ function LPInfos(props) {
     } catch (e) { setPriceRate(undefined) }
 
     try {
-      await state.CAMPContract.methods.balanceOf(bondContract._address)
+      await state.CAMPContract.methods.balanceOf(TreasuryContract._address)
         .call((e, v) => setCAMPBalance((v / 1e18).toFixed(2)))
-    } catch (e) { setPriceRate(undefined) }
+    } catch (e) { setCAMPBalance(undefined) }
 
     try {
       await bondContract.methods.terms()

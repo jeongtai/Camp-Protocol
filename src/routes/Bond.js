@@ -97,13 +97,8 @@ const Header = styled.div`
 const Bond = () => {
   let state = useSelector((state) => state)
   const [campprice, setCampprice] = useState()
-  const [treasurybal, setTreasurybal] = useState()
-  const [lpamount, setLPAmount] = useState()
-  const [lpbal, setLPbal] = useState()
-  const [bondprice, setBondPrice] = useState()
-  const [pendingCAMP, setPendingCamp] = useState()
-  const [percentBond, setPecentBond] = useState()
   const [isBondingtoolOpen, setIsBondingtoolOpen] = useState(false)
+  const [totalbalance, setTotalBalance] = useState()
 
   //LP이름
   const bondLPInfos = [
@@ -136,7 +131,7 @@ const Bond = () => {
     { name: "TVL", amt: 1000000 },
     { name: "CAMP Price", amt: campprice },
     { name: "ㅁㄴㄴㅁ", amt: 10000000 },
-    { name: "Treasury Balance" },
+    { name: "Treasury Balance", amt : totalbalance },
   ]
 
   return (

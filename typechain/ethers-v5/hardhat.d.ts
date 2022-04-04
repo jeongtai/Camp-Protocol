@@ -89,6 +89,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ClaimSwapKlayKbtLpDepository__factory>;
     getContractFactory(
+      name: "ClaimSwapSCampUSDTLpDepository",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ClaimSwapSCampUSDTLpDepository__factory>;
+    getContractFactory(
       name: "IBondDepository",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IBondDepository__factory>;
@@ -388,6 +392,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ClaimSwapKlayKbtLpDepository>;
+    getContractAt(
+      name: "ClaimSwapSCampUSDTLpDepository",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ClaimSwapSCampUSDTLpDepository>;
     getContractAt(
       name: "IBondDepository",
       address: string,

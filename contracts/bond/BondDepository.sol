@@ -28,7 +28,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     address public CAMP; // token given as payment for bond
 
     AssetOracle private _assetOracle;
-    address public oracle;
+    // address public oracle;
     address private Token0address;
     address private Token1address;  
     // UniswapPairOracle private Token0USDTOracle;
@@ -59,7 +59,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         uint256 vestingTerm; // in blocks
         uint256 minimumPriceRate; // when calculate payout in 10**9
         uint256 maxPayout; // in ten thousandths of a %. i.e. 5000 = 0.5%
-        uint256 fee; // as % of bond payout, in hundreths. (500 = 5% = 0.05 for every 1 paid)
+        uint256 fee; // as % of bond payout, in hundreths. (500 = 5% = 0.05 for every 1 paid) 1e4
         uint256 maxDebt; // 10**18 max debt amount
     }
 
@@ -91,11 +91,11 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         address _principle,
         address _Token0address,
         address _Token1address,
-        // address _staking,
         address _treasury,
-        address _usdt_address
+        address _usdt_address,
+        address _oracle
     ) external initializer {
-        _setInitialOwner();
+        // _setInitialOwner();
         require(_CAMP != address(0));
         CAMP = _CAMP;
         // require(_SCAMP != address(0));
@@ -114,7 +114,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         treasury = _treasury;
         require(_usdt_address != address(0));
         usdt_address = _usdt_address;
-        _assetOracle = AssetOracle(oracle);
+        _assetOracle = AssetOracle(_oracle);
     }
 
     /**
@@ -237,6 +237,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         require(totalDebt <= terms.maxDebt, "BondDepository: Max capacity reached");
 
         uint256 priceInUSD = bondPrice();
+        // console.log("priceInUSD", priceInUSD);
 
         require(_maxPrice >= priceInUSD, "BondDepository: Slippage limit: more than max price"); // slippage protection
 
@@ -253,6 +254,9 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
             asset carries risk and is not minted against
             asset transferred to treasury and rewards minted as payout
          */
+        // console.log("IKIP7(principle)", IKIP7(principle).balanceOf(msg.sender)/1e18);
+        // IKIP7(principle).approve(address(this), _amount);
+        // console.log("allowance", IKIP7(principle).allowance(msg.sender, address(this)));
         IKIP7(principle).safeTransferFrom(msg.sender, address(this), _amount);
         IKIP7(principle).approve(address(treasury), _amount);
         IBondTreasury(treasury).deposit(_amount, principle, payout.add(fee));
@@ -271,6 +275,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
             lastBlock: block.number,
             pricePaid: priceInUSD
         });
+        console.log("BondInfo", bondInfo[_depositor].payout, _depositor);
 
         // indexed events are emitted
         emit BondCreated(_depositor, _amount, payout, block.number.add(terms.vestingTerm), priceInUSD);
@@ -298,6 +303,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         } else { // if unfinished
             // calculate payout vested
             uint256 payout = info.payout.mul(percentVested).div(10000);
+            // console.log("here?", info.payout, percentVested);
 
             // store updated deposit info
             bondInfo[_recipient] = Bond({
@@ -325,6 +331,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      */
     function stakeOrSend(address _recipient, bool _stake, uint256 _amount) internal returns (uint256) {
         if (!_stake) { // if user does not want to stake
+            // console.log("amount", _amount, _recipient);
             IKIP7(CAMP).transfer(_recipient, _amount); // send payout
         } else { // if user wants to stake
             IKIP7(CAMP).approve(staking, _amount);
@@ -401,8 +408,8 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      *  @return price_ uint256 in 10**6 precision in usd
      */
     function bondPrice() public view returns (uint256 price_) {
-        uint256 _CAMPPrice = _assetOracle.getAssetPrice(CAMP);
-        uint256 _priceRate = priceRate();
+        uint256 _CAMPPrice = _assetOracle.getAssetPrice(CAMP); // 1e6
+        uint256 _priceRate = priceRate(); // 1e9
         price_ = _CAMPPrice.mul(_priceRate).div(10**9);
     }
 
@@ -450,7 +457,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         uint256 balance1 = IKIP7(Token1address).balanceOf(address(IUniswapV2Pair(principle)));
         uint256 lpValue = balance0.mul(_assetOracle.getAssetPrice(Token0address)) + balance1.mul(_assetOracle.getAssetPrice(Token1address));
 
-        return lpValue.mul(1e18); //자릿수 맞추기..?!
+        return lpValue.div(lpSupply); //자릿수 맞추기..?!
     }
 
     // function assetPrice() public view returns (uint256) {

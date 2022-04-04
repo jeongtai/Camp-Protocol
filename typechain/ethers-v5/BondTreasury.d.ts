@@ -21,8 +21,8 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface BondTreasuryInterface extends ethers.utils.Interface {
   functions: {
+    "CAMP()": FunctionFragment;
     "DAO()": FunctionFragment;
-    "KBT()": FunctionFragment;
     "REVISION()": FunctionFragment;
     "__initialize(address,address)": FunctionFragment;
     "deposit(uint256,address,uint256)": FunctionFragment;
@@ -41,8 +41,8 @@ interface BondTreasuryInterface extends ethers.utils.Interface {
     "unregisterDepositor(address)": FunctionFragment;
   };
 
+  encodeFunctionData(functionFragment: "CAMP", values?: undefined): string;
   encodeFunctionData(functionFragment: "DAO", values?: undefined): string;
-  encodeFunctionData(functionFragment: "KBT", values?: undefined): string;
   encodeFunctionData(functionFragment: "REVISION", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "__initialize",
@@ -102,8 +102,8 @@ interface BondTreasuryInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
 
+  decodeFunctionResult(functionFragment: "CAMP", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "DAO", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "KBT", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "REVISION", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "__initialize",
@@ -231,15 +231,15 @@ export class BondTreasury extends BaseContract {
   interface: BondTreasuryInterface;
 
   functions: {
-    DAO(overrides?: CallOverrides): Promise<[string]>;
+    CAMP(overrides?: CallOverrides): Promise<[string]>;
 
-    KBT(overrides?: CallOverrides): Promise<[string]>;
+    DAO(overrides?: CallOverrides): Promise<[string]>;
 
     REVISION(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     __initialize(
       DAO_: string,
-      KBT_: string,
+      CAMP_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -300,15 +300,15 @@ export class BondTreasury extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  DAO(overrides?: CallOverrides): Promise<string>;
+  CAMP(overrides?: CallOverrides): Promise<string>;
 
-  KBT(overrides?: CallOverrides): Promise<string>;
+  DAO(overrides?: CallOverrides): Promise<string>;
 
   REVISION(overrides?: CallOverrides): Promise<BigNumber>;
 
   __initialize(
     DAO_: string,
-    KBT_: string,
+    CAMP_: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -363,15 +363,15 @@ export class BondTreasury extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    DAO(overrides?: CallOverrides): Promise<string>;
+    CAMP(overrides?: CallOverrides): Promise<string>;
 
-    KBT(overrides?: CallOverrides): Promise<string>;
+    DAO(overrides?: CallOverrides): Promise<string>;
 
     REVISION(overrides?: CallOverrides): Promise<BigNumber>;
 
     __initialize(
       DAO_: string,
-      KBT_: string,
+      CAMP_: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -486,15 +486,15 @@ export class BondTreasury extends BaseContract {
   };
 
   estimateGas: {
-    DAO(overrides?: CallOverrides): Promise<BigNumber>;
+    CAMP(overrides?: CallOverrides): Promise<BigNumber>;
 
-    KBT(overrides?: CallOverrides): Promise<BigNumber>;
+    DAO(overrides?: CallOverrides): Promise<BigNumber>;
 
     REVISION(overrides?: CallOverrides): Promise<BigNumber>;
 
     __initialize(
       DAO_: string,
-      KBT_: string,
+      CAMP_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -556,15 +556,15 @@ export class BondTreasury extends BaseContract {
   };
 
   populateTransaction: {
-    DAO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    CAMP(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    KBT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    DAO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     REVISION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     __initialize(
       DAO_: string,
-      KBT_: string,
+      CAMP_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

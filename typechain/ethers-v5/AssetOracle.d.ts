@@ -22,7 +22,6 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 interface AssetOracleInterface extends ethers.utils.Interface {
   functions: {
     "acceptOwnership()": FunctionFragment;
-    "assetPrice(address)": FunctionFragment;
     "getAssetPrice(address)": FunctionFragment;
     "nominateNewOwner(address)": FunctionFragment;
     "nominatedOwner()": FunctionFragment;
@@ -35,7 +34,6 @@ interface AssetOracleInterface extends ethers.utils.Interface {
     functionFragment: "acceptOwnership",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "assetPrice", values: [string]): string;
   encodeFunctionData(
     functionFragment: "getAssetPrice",
     values: [string]
@@ -62,7 +60,6 @@ interface AssetOracleInterface extends ethers.utils.Interface {
     functionFragment: "acceptOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "assetPrice", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getAssetPrice",
     data: BytesLike
@@ -154,11 +151,6 @@ export class AssetOracle extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    assetPrice(
-      _principle: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     getAssetPrice(
       asset: string,
       overrides?: CallOverrides
@@ -188,8 +180,6 @@ export class AssetOracle extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  assetPrice(_principle: string, overrides?: CallOverrides): Promise<BigNumber>;
-
   getAssetPrice(asset: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   nominateNewOwner(
@@ -210,11 +200,6 @@ export class AssetOracle extends BaseContract {
 
   callStatic: {
     acceptOwnership(overrides?: CallOverrides): Promise<void>;
-
-    assetPrice(
-      _principle: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     getAssetPrice(asset: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -276,11 +261,6 @@ export class AssetOracle extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    assetPrice(
-      _principle: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     getAssetPrice(asset: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     nominateNewOwner(
@@ -306,11 +286,6 @@ export class AssetOracle extends BaseContract {
   populateTransaction: {
     acceptOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    assetPrice(
-      _principle: string,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getAssetPrice(

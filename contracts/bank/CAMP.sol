@@ -6,6 +6,7 @@ import "./module/Common/Context.sol";
 import "../bond/library/kip/KIP7.sol";
 import "./Owned.sol";
 import "./SCAMP.sol";
+import "hardhat/console.sol";
 
 contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Context {
     using SafeMath for uint256;
@@ -53,6 +54,7 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Cont
         require(SCAMP_contract_address != address(0), "Zero address detected");
 
         SCAMPAddress = SCAMP_contract_address;
+        _SCAMP = SCAMP(SCAMPAddress);
         emit SCAMPAddressSet(SCAMP_contract_address);
     }
     
@@ -83,12 +85,12 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Cont
         emit BankBurned(b_address, address(this), b_amount);
     }
 
-    function Bond_mint(address m_address, uint256 m_amount) external onlyBond {        
+    function Bond_mint(address m_address, uint256 m_amount) external onlyByOwnOrcontroller {        
         super._mint(m_address, m_amount);
         emit BondMinted(address(this), m_address, m_amount);
     }
   
-    function Staking_mint(address m_address, uint256 m_amount) external onlyStake {        
+    function Staking_mint(address m_address, uint256 m_amount) external onlyByOwnOrcontroller {        
         super._mint(m_address, m_amount);
         emit StakeMinted(address(this), m_address, m_amount);
     }

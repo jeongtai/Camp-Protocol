@@ -21,12 +21,17 @@ const OracleContract = new caver.klay.Contract(Oraclejs.abi, "0x3dB66FBD72DEF0Db
 
 const CAMP_USDT_BondContract = new caver.klay.Contract(Bondjs.abi, "0x103e3fed7ed92ff97594439acb59b59e0fe5b80e")
 const CAMP_USDT_LPContract = new caver.klay.Contract(Pairjs.abi, "0x2c4b103d43f7932ea4A1DBd0d1Ab46E090b667F4")
-const TreasuryContract = new caver.klay.Contract(Treasuryjs.abi, "0xa8604E038C9A02D1dad0ecA7fC07e6A0bc9C2f30")
+const CAMP_USDT_TreasuryContract = new caver.klay.Contract(Treasuryjs.abi, "0xa8604E038C9A02D1dad0ecA7fC07e6A0bc9C2f30")
+const SCAMP_USDT_BondContract = new caver.klay.Contract(Bondjs.abi, "0x1D11B9dc98AE736277d0C82F7F2e85b6C884fE29")
+const SCAMP_USDT_LPContract = new caver.klay.Contract(Pairjs.abi, "0x7641e2619929eb2C90D4FEf000024D5AF74A1e74")
+const SCAMP_USDT_TreasuryContract = new caver.klay.Contract(Treasuryjs.abi, "0xdc859778faC057E33224E06cf9070eafD053c351")
+
 
 const StakingContract = new caver.klay.Contract(Stakejs.abi, "0xC0C40B7bD1B9Dfec77FECcF43451f61550c6090a")
 
 
-const initialstate = {BankContract, SCAMPContract, CAMPContract, USDCContract, StakingContract, OracleContract, CAMP_USDT_BondContract, TreasuryContract, CAMP_USDT_LPContract}
+const initialstate = {BankContract, SCAMPContract, CAMPContract, USDCContract, StakingContract, OracleContract,
+  CAMP_USDT_BondContract, CAMP_USDT_TreasuryContract, CAMP_USDT_LPContract, SCAMP_USDT_BondContract, SCAMP_USDT_LPContract, SCAMP_USDT_TreasuryContract}
 
 export function reducer (state = initialstate, action) {
   switch(action.type) {

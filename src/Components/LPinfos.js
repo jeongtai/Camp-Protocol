@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import LinkImg from "../assets/ExternalLink.svg";
 import TokenLogo from "../assets/TokenLogo";
 import { reducer } from "../Contract";
+import Bondingtool from "./Bondingtool";
 import { useSelector } from "react-redux";
 
 
@@ -67,7 +68,7 @@ const BondingtoolBtn = styled.button`
   };
 
   &:hover {
-      cursor: ${(props)=>props.btnState==="Sold-out"? "" : "pointer"};
+      cursor: ${(props) => props.btnState === "Sold-out" ? "" : "pointer"};
   }
 `
 
@@ -82,66 +83,73 @@ function timeConversion(millisec) {
   var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
 
   if (seconds < 60) {
-      return seconds + " Sec";
+    return seconds + " Sec";
   } else if (minutes < 60) {
-      return minutes + " Min";
+    return minutes + " Min";
   } else if (hours < 24) {
-      return hours + " Hrs";
+    return hours + " Hrs";
   } else {
-      return days + " Days"
+    return days + " Days"
   }
 }
 
-function LPInfos({ props }) {
+function LPInfos(props) {
+
   let state = useSelector((state) => state)
   const [bondprice, setBondPrice] = useState()
   const [priceRate, setPriceRate] = useState()
   const [campbalance, setCAMPBalance] = useState()
   const [vestingterm, setVestingTerm] = useState()
-  const [poolState, setPoolState] = useState("")
+  const [poolState, setPoolState] = useState("Bond")
 
-  const Bondcontract = props.Bondcontract;
-  const LPcontract = props.LPcontract;
+  const [clickedBtn, setClickBtn] = useState("")
 
+  const lpName = props.bondLPInfo.name;
+  const bondContract = props.bondLPInfo.bondContract;
+  const TreasuryContract = props.bondLPInfo.lpContract;
+  const ClickBondingtoolBtn = () => {
+    props.isBondingtoolOpenCtrl.setIsBondingtoolOpen(true)
+    setClickBtn(lpName)
+    
+  }
   useEffect(async () => {
     try {
-      await Bondcontract.methods.bondPrice()
-        .call((e, v) => setBondPrice((v/1e6).toFixed(2)))
+      await bondContract.methods.bondPrice()
+        .call((e, v) => setBondPrice((v / 1e6).toFixed(2)))
     } catch (e) { setBondPrice(undefined) }
 
     try {
-      await Bondcontract.methods.priceRate()
-        .call((e, v) => setPriceRate(Math.round((1 - v / 1e9) * 100 * 1000) /1000))
+      await bondContract.methods.priceRate()
+        .call((e, v) => setPriceRate(Math.round((1 - v / 1e9) * 100 * 1000) / 1000))
     } catch (e) { setPriceRate(undefined) }
 
     try {
-      await state.CAMPContract.methods.balanceOf(Bondcontract._address)
-        .call((e, v) => setCAMPBalance((v/1e18).toFixed(2)))
+      await state.CAMPContract.methods.balanceOf(bondContract._address)
+        .call((e, v) => setCAMPBalance((v / 1e18).toFixed(2)))
     } catch (e) { setPriceRate(undefined) }
 
     try {
-      await Bondcontract.methods.terms()
+      await bondContract.methods.terms()
         .call((e, v) => setVestingTerm(v[1]))
     } catch (e) { setVestingTerm(undefined) }
-    
+
     try {
-      await Bondcontract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
-      .call((e,v) => {
-        if (v.toString() === "0") {
-          setPoolState("Bond")
-        } else {
-          setPoolState("Claim")
-        }
-      })
-    } catch(e) {console.log("Something wrong!")}
-    console.log(poolState)
+      await bondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
+        .call((e, v) => {
+          if (v.toString() === "0") {
+            setPoolState("Bond")
+          } else {
+            setPoolState("Claim")
+          }
+        })
+    } catch (e) { console.log("Something wrong!") }
   }, [])
 
   return (
     <LPInfoItem>
       <p>
-        <TokenLogo name={props.name} />
-        {" "}{props.name}{" "}
+        <TokenLogo name={lpName} />
+        {" "}{lpName}{" "}
         <a href="https://app.claimswap.org/liquidity/add" target="_blank">
           <img src={LinkImg} />
         </a>
@@ -149,20 +157,26 @@ function LPInfos({ props }) {
       <p> $ {bondprice}</p>
       <p> {priceRate}%</p>
       <p>$ {(campbalance * bondprice)}</p>
-      <p>{timeConversion(vestingterm*1000)}</p>
+      <p>{timeConversion(vestingterm * 1000)}</p>
 
       <p className="btnSection">
         {poolState === "Sold-out"
-          ? <BondingtoolBtn btnState={poolState} props={props}>
+          ? <BondingtoolBtn btnState={poolState}>
             {poolState}
           </BondingtoolBtn>
-          : 
-          <Link to={`${props.name}`} state={{ name: props.name, poolState: poolState, Bondcontract : Bondcontract, LPcontract : LPcontract }}>
-            <BondingtoolBtn btnState={poolState} props={props}>
-              {poolState}
-            </BondingtoolBtn>
-          </Link>
-          }
+          :
+          <BondingtoolBtn onClick={ClickBondingtoolBtn} btnState={poolState}>
+            { clickedBtn===lpName && props.isBondingtoolOpenCtrl.isBondingtoolOpen ?
+              <Bondingtool
+                bondLPInfo={props.bondLPInfo}
+                btnState={poolState}
+                isBondingtoolOpenCtrl={props.isBondingtoolOpenCtrl}
+              />
+
+              : null}
+            {poolState}
+          </BondingtoolBtn>
+        }
       </p>
     </LPInfoItem>
   )

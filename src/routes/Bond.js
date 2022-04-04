@@ -5,6 +5,10 @@ import LoadingSVG from "../assets/LoadingSVG";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
+const Content = styled.div`
+    visibility: ${props => props.isBondingtoolOpen ? "hidden" : "visible"};
+    
+`
 const Overview = styled.div`
   // flex
   display: flex;
@@ -28,6 +32,7 @@ const Overview = styled.div`
       font-weight: 400;
       font-size: 20px;
   }
+
 `;
 
 const OverviewItem = styled.div`
@@ -52,6 +57,7 @@ const OverviewItem = styled.div`
 `;
 
 const LPTokenItems = styled.div`
+
 // flex
 flex-direction: column;
 display: flex;
@@ -88,24 +94,6 @@ const Header = styled.div`
   }
 `
 
-const Section = styled.div`
-// flex
-display: flex;
-flex-wrap: wrap;
-justify-content: space-between;
-flex-direction: column;
-padding: 24px;
-
-width: 50%;
-min-width: 360px;
-margin: 0 auto;
-stroke: Solid #ededed 1px;
-background-color: white;
-border-radius: 15px;
-border: 2px solid ${(props) => props.theme.borderColor};
-`;
-
-
 const Bond = () => {
   let state = useSelector((state) => state)
   const [campprice, setCampprice] = useState()
@@ -115,20 +103,21 @@ const Bond = () => {
   const [bondprice, setBondPrice] = useState()
   const [pendingCAMP, setPendingCamp] = useState()
   const [percentBond, setPecentBond] = useState()
+  const [isBondingtoolOpen, setIsBondingtoolOpen] = useState(false)
 
   //LP이름
   const bondLPInfos = [
-    { name: "CAMP-USDT", Bondcontract: state.CAMP_USDT_BondContract, LPContract : state.CAMP_USDT_LPContract},
-    { name: "SCAMP-USDT", Bondcontract: state.CAMP_USDT_BondContract, LPContract : state.CAMP_USDT_LPContract},
-    { name: "CAMP-SCAMP", Bondcontract: state.CAMP_USDT_BondContract, LPContract : state.CAMP_USDT_LPContract}
+    { name: "CAMP-USDT", bondContract: state.CAMP_USDT_BondContract, lpContract : state.CAMP_USDT_LPContract, TreasuryContract : state.CAMP_USDT_TreasuryContract},
+    { name: "SCAMP-USDT", bondContract: state.SCAMP_USDT_BondContract, lpContract : state.SCAMP_USDT_LPContract, TreasuryContract : state.SCAMP_USDT_TreasuryContract},
+    { name: "CAMP-SCAMP", bondContract: state.CAMP_SCAMP_BondContract, lpContract : state.CAMP_SCAMP_LPContract, TreasuryContract : state.SCAMP_CAMP_TreasuryContract}
   ]
 
 
   async function getInfo() {
-    try {
-      await state.OracleContract.methods
-        .getAssetPrice(state.CampContract._address).call((e, v) => setCampprice(v))
-    } catch (e) { setCampprice(undefined) }
+    try {await state.OracleContract.methods
+      .getAssetPrice(state.CAMPContract._address)
+      .call((e, v) => setCampprice(v / 1e6));
+    } catch {setCampprice(undefined)}
   }
 
   // initialize hook----------------------------
@@ -143,16 +132,15 @@ const Bond = () => {
   }, []);
 
 
-
   const OverviewInfos = [
-    { name: "Total market Cap", amt: 100000000 },
+    { name: "TVL", amt: 1000000 },
     { name: "CAMP Price", amt: campprice },
-    { name: "TVL", amt: 10000000 },
+    { name: "ㅁㄴㄴㅁ", amt: 10000000 },
     { name: "Treasury Balance" },
   ]
 
   return (
-    <>
+    <Content isBondingtoolOpen={isBondingtoolOpen}>
       <Overview>
         <p className="Title">Overview</p>
 
@@ -179,23 +167,11 @@ const Bond = () => {
         </Header>
 
         {bondLPInfos.map((bondLPInfo, index) => (
-          <LPinfos key={index} props={bondLPInfo} />
+          <LPinfos key={index} bondLPInfo={bondLPInfo} isBondingtoolOpenCtrl={{isBondingtoolOpen,setIsBondingtoolOpen}} />
         ))}
-
       </LPTokenItems>
-      {/* 
-      <LPToken>
-        <p>LP Token</p>
-        <p> Name</p>
-        <p> Market price</p>
 
-           {lpNameArray.map((LPName, index) => (
-              <LPInfoDiv key={LPName} props={name}  />
-          ))}
-
-      </LPToken> */}
-
-    </>
+    </Content>
 
   )
 }

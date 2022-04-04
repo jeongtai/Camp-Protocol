@@ -25,7 +25,7 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
     "DAO()": FunctionFragment;
     "NAME()": FunctionFragment;
     "REVISION()": FunctionFragment;
-    "__initialize(address,address,address,address,address,address,address,address)": FunctionFragment;
+    "__initialize(address,address,address,address,address,address,address)": FunctionFragment;
     "adjustment()": FunctionFragment;
     "assetPrice()": FunctionFragment;
     "bondInfo(address)": FunctionFragment;
@@ -51,6 +51,7 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
     "setAdjustment(bool,uint256,uint256,uint256)": FunctionFragment;
     "setBondTerms(uint8,uint256)": FunctionFragment;
     "setStaking(address)": FunctionFragment;
+    "setTreasury(address)": FunctionFragment;
     "staking()": FunctionFragment;
     "terms()": FunctionFragment;
     "totalDebt()": FunctionFragment;
@@ -64,7 +65,7 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "REVISION", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "__initialize",
-    values: [string, string, string, string, string, string, string, string]
+    values: [string, string, string, string, string, string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "adjustment",
@@ -144,6 +145,7 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
     values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "setStaking", values: [string]): string;
+  encodeFunctionData(functionFragment: "setTreasury", values: [string]): string;
   encodeFunctionData(functionFragment: "staking", values?: undefined): string;
   encodeFunctionData(functionFragment: "terms", values?: undefined): string;
   encodeFunctionData(functionFragment: "totalDebt", values?: undefined): string;
@@ -216,6 +218,10 @@ interface ClaimSwapKlayKbtLpDepositoryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setStaking", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setTreasury",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "staking", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "terms", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "totalDebt", data: BytesLike): Result;
@@ -339,7 +345,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _principle: string,
       _Token0address: string,
       _Token1address: string,
-      _treasury: string,
       _usdt_address: string,
       _oracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -473,6 +478,11 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setTreasury(
+      _treasury: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     staking(overrides?: CallOverrides): Promise<[string]>;
 
     terms(
@@ -509,7 +519,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     _principle: string,
     _Token0address: string,
     _Token1address: string,
-    _treasury: string,
     _usdt_address: string,
     _oracle: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -635,6 +644,11 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setTreasury(
+    _treasury: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   staking(overrides?: CallOverrides): Promise<string>;
 
   terms(
@@ -671,7 +685,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _principle: string,
       _Token0address: string,
       _Token1address: string,
-      _treasury: string,
       _usdt_address: string,
       _oracle: string,
       overrides?: CallOverrides
@@ -786,6 +799,8 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
     ): Promise<void>;
 
     setStaking(_staking: string, overrides?: CallOverrides): Promise<void>;
+
+    setTreasury(_treasury: string, overrides?: CallOverrides): Promise<void>;
 
     staking(overrides?: CallOverrides): Promise<string>;
 
@@ -956,7 +971,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _principle: string,
       _Token0address: string,
       _Token1address: string,
-      _treasury: string,
       _usdt_address: string,
       _oracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1062,6 +1076,11 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    setTreasury(
+      _treasury: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     staking(overrides?: CallOverrides): Promise<BigNumber>;
 
     terms(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1088,7 +1107,6 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
       _principle: string,
       _Token0address: string,
       _Token1address: string,
-      _treasury: string,
       _usdt_address: string,
       _oracle: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1194,6 +1212,11 @@ export class ClaimSwapKlayKbtLpDepository extends BaseContract {
 
     setStaking(
       _staking: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setTreasury(
+      _treasury: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

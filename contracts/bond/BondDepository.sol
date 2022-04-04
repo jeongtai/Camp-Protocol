@@ -91,7 +91,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         address _principle,
         address _Token0address,
         address _Token1address,
-        address _treasury,
+        // address _treasury, // set으로 변경
         address _usdt_address,
         address _oracle
     ) external initializer {
@@ -110,8 +110,8 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         principle = _principle;
         // require(_staking != address(0));
         // staking = _staking;
-        require(_treasury != address(0));
-        treasury = _treasury;
+        // require(_treasury != address(0));
+        // treasury = _treasury;
         require(_usdt_address != address(0));
         usdt_address = _usdt_address;
         _assetOracle = AssetOracle(_oracle);
@@ -214,7 +214,10 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         staking = _staking;
     }
 
-
+    function setTreasury(address _treasury) external onlyOwner() {
+        require(_treasury != address(0));
+        treasury = _treasury;
+    }
 
 
     /* ======== USER FUNCTIONS ======== */

@@ -18,7 +18,7 @@ const Section = styled.div`
     padding: 24px;
 
     width: 50%;
-    min-width: 360px;
+    min-width: 380px;
     margin: 0 auto;
     stroke: Solid #ededed 1px;
     background-color: white;
@@ -37,6 +37,7 @@ const Content = styled.div`
     display: flex;
     justify-content: center;
     align-content: center;
+
 `;
 
 const Tabs = styled.div`
@@ -68,19 +69,19 @@ const caver = new Caver(window.klaytn);
 
 const Bank = () => {
     // toggle true=mint false=redeem
-    const [isNowMint, setIsNowMint] = useState(true);
+    const [isNowRecollat, setIsNowRecollat] = useState(true);
 
     return (
         <Section>
             <Tabs>
-                <Tab onClick={() => setIsNowMint(true)} isActive={isNowMint}>
+                <Tab onClick={() => setIsNowRecollat(true)} isActive={isNowRecollat}>
                     Recollat
                 </Tab>
-                <Tab onClick={() => setIsNowMint(false)} isActive={!isNowMint}>
+                <Tab onClick={() => setIsNowRecollat(false)} isActive={!isNowRecollat}>
                     Buyback
                 </Tab>
             </Tabs>
-            <Content>{isNowMint ? <Recollattool /> : <Buybacktool />}</Content>
+            <Content>{isNowRecollat ? <Recollattool /> : <Buybacktool />}</Content>
 
 
         </Section>

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import LinkImg from "../assets/ExternalLink.svg";
 import TokenLogo from "../assets/TokenLogo";
 import { reducer } from "../Contract";
-
+import Bondingtool from "./Bondingtool";
 
 const LPInfoItem = styled.div`
   display: grid;
@@ -70,13 +70,17 @@ const BondingtoolBtn = styled.button`
   }
 `
 
-function LPInfos({ props }) {
+function LPInfos(props) {
   const [bondprice, setBondPrice] = useState()
   const [poolState, setPoolState] = useState("")
   
-  const contract = props.contract;
+  const contract = props.bondLPInfo.contract;
+  const lpName = props.bondLPInfo.name;
 
   useEffect(async () => {
+    console.log(props)
+    console.log(props.bondLPInfo)
+    console.log(props.isBondingtoolOpen)
     try {
       await contract.methods.bondPrice()
         .call((e, v) => setBondPrice(v))
@@ -90,8 +94,8 @@ function LPInfos({ props }) {
   return (
     <LPInfoItem>
       <p>
-        <TokenLogo name={props.name} />
-        {" "}{props.name}{" "}
+        <TokenLogo name={lpName} />
+        {" "}{lpName}{" "}
         <a href="https://app.claimswap.org/liquidity/add" target="_blank">
           <img src={LinkImg} />
         </a>
@@ -103,15 +107,16 @@ function LPInfos({ props }) {
 
       <p className="btnSection">
         {poolState === "Sold-out"
-          ? <BondingtoolBtn btnState={poolState} props={props}>
-            {poolState}
-          </BondingtoolBtn>
-          : 
-          <Link to={`${props.name}`} state={{ name: props.name, poolState: poolState }}>
-            <BondingtoolBtn btnState={poolState} props={props}>
+          ? <BondingtoolBtn btnState={poolState}>
               {poolState}
             </BondingtoolBtn>
-          </Link>
+          : 
+          //<Link to={`${lpName}`} state={{ name: lpName, poolState: poolState }}>
+            <BondingtoolBtn onClick={()=>props.setBondOpen(prev=>!prev)} btnState={poolState}>
+              {props.isBondingtoolOpen?<Bondingtool isBongdingtoolOpen={props.isBondingtoolOpen} contract={contract} name={lpName} poolState={poolState}/>:null}
+              {poolState}
+            </BondingtoolBtn>
+          //</Link>
           }
       </p>
     </LPInfoItem>

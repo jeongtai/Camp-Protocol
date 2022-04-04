@@ -9,15 +9,24 @@ import { useLocation } from "react-router-dom";
 import LoadingSVG from "../assets/LoadingSVG.js";
 
 const Content = styled.div`
+    visibility: ${props=>props.isBondingtoolOpen?"visible" :  "hidden" };
+    
+
     // flex
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+    
+    position : absolute;
+    z-index : 2;
+    left : 40%;
+    top : 20%;
+
 
     padding: 24px;
     margin: 0 auto;
 
-    width: 50%;
+    width : 450px;
     min-width: 380px;
 
     stroke: Solid #ededed 1px;
@@ -30,7 +39,7 @@ const Content = styled.div`
         font-size: 20px;
         width: 100%;
     }
-    
+    cursor : default;
     font-size: 14px;
 
 `;
@@ -94,7 +103,8 @@ function timeConversion(millisec) {
   }
 }
 
-function Bondingtool() {
+function Bondingtool(lpInfosProps) {
+  console.log("bongdingtool lpInfosProps" ,lpInfosProps)
   let state = useSelector((state) => state)
   const lpProps = useLocation();
 
@@ -163,7 +173,6 @@ function Bondingtool() {
 
   // initialize hook----------------------------
   useEffect(() => {
-    console.log(lpProps)
     getInfo();
     if (window.klaytn) {
       window.klaytn.on("accountsChanged", async function (accounts) {
@@ -215,11 +224,12 @@ function Bondingtool() {
 
   return (
     <>
-      {lpProps.state ?
-        <Content>
-          <span>{lpProps.state.name + " // " + lpProps.state.poolState}</span>
+      {lpInfosProps ?
+        <Content isBondingtoolOpen={lpInfosProps.isBongdingtoolOpen}>
+          {console.log(lpInfosProps.isBongdingtoolOpen)}
+          <span>{lpInfosProps.name + " // " + lpInfosProps.poolState}</span>
           <InputForm
-            token={lpProps.state.name}
+            token={lpInfosProps.name}
             onChange={onLPChange}
             value={lpamount}
             setValueFn={setLPAmount}
@@ -241,11 +251,11 @@ function Bondingtool() {
 
           <Approve>
             <Button
-            text = {lpProps.state.poolState}
+            text = {lpInfosProps.poolState}
               onClick={() => {
-                if (lpProps.state.poolState === "Bond") {
+                if (lpInfosProps.poolState === "Bond") {
                   return onClick()
-                } else if (lpProps.state.poolState === "Claim") {
+                } else if (lpInfosProps.poolState === "Claim") {
                   return onClick2()
                 }
               }}/>

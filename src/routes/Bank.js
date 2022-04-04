@@ -6,6 +6,8 @@ import { Routes, Route, Link, useMatch } from "react-router-dom";
 
 import Mint from "../Components/Mintingtool";
 import Redeem from "../Components/Redeemtool";
+import InputForm from "../Components/InputForm";
+import Button from "../Components/Button";
 
 import Loading from "../assets/Loading.svg";
 
@@ -19,7 +21,7 @@ const Section = styled.div`
 
     width: 50%;
     min-width: 380px;
-    margin: 0 auto;
+    margin: 8px auto;
     stroke: Solid #ededed 1px;
     background-color: white;
     border-radius: 15px;
@@ -65,24 +67,77 @@ const Tab = styled.div`
         props.isActive ? "2px solid" + props.theme.btnBlue : null};
 `;
 
+
+const caver = new Caver(window.klaytn)
+
 const Bank = () => {
     // toggle true=mint false=redeem
     const [isNowMint, setIsNowMint] = useState(true);
+    const [isCollect, setIsCollect] = useState(false);
+
+
+    async function getInfo() {
+        try {
+            setIsCollect(true);
+        } catch (e) { console.log(e) }
+
+    }
+
+    useEffect(() => {
+        getInfo();
+    }, []);
 
     return (
-        <Section>
-            <Tabs>
-                <Tab onClick={() => setIsNowMint(true)} isActive={isNowMint}>
-                    Mint
-                </Tab>
-                <Tab onClick={() => setIsNowMint(false)} isActive={!isNowMint}>
-                    Redeem
-                </Tab>
-            </Tabs>
-            <Content>{isNowMint ? <Mint /> : <Redeem />}</Content>
+        <>
+            <Section>
 
 
-        </Section>
+                <div>
+                    <span>Collectable Redemption</span>
+
+                </div>
+                <InputForm
+                    token="USDC"
+                    balance={0}
+                    onChange={() => console.log("USDC Change")}
+                    value={undefined}
+                    setValueFn={undefined}
+                    type="number"
+                    isVisible={true}
+                    haveMax={true}
+                    haveBal={true}
+                />
+
+                <InputForm
+                    token="CAMP"
+                    balance={0}
+                    onChange={() => console.log("USDC Change")}
+                    value={undefined}
+                    setValueFn={undefined}
+                    type="number"
+                    isVisible={true}
+                    haveMax={true}
+                    haveBal={true}
+                />
+
+                <Button text="Collect" onClick={()=> console.log("collect click")}>
+                    Collect
+                </Button>
+            </Section>
+            <Section>
+                <Tabs>
+                    <Tab onClick={() => setIsNowMint(true)} isActive={isNowMint}>
+                        Mint
+                    </Tab>
+                    <Tab onClick={() => setIsNowMint(false)} isActive={!isNowMint}>
+                        Redeem
+                    </Tab>
+                </Tabs>
+                <Content>{isNowMint ? <Mint /> : <Redeem />}</Content>
+
+
+            </Section>
+        </>
     );
 };
 

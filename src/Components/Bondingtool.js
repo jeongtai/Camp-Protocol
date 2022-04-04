@@ -96,7 +96,6 @@ function timeConversion(millisec) {
 
 function Bondingtool({lpProps}) {
   let state = useSelector((state) => state)
-  const lpProps = useLocation();
   const [btnInfo, setBtnInfo] = useState(lpProps.state.poolState)
   const [lpamount, setLPAmount] = useState()
   const [lpbal, setLPbal] = useState()
@@ -117,7 +116,7 @@ function Bondingtool({lpProps}) {
 
   const Bondcontract = lpProps.state.Bondcontract;
   const LPContract = lpProps.state.LPContract;
-  
+
   async function getInfo() {
     try {
       await LPContract.methods

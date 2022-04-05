@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import TokenLogo from "../assets/TokenLogo";
 import LoadingSVG from "../assets/LoadingSVG.js";
-import { isNullOrUndefined } from "url/util";
+import ApexCharts from "react-apexcharts";
 
 const Dashboard = styled.div`
     justify-content: center;
@@ -184,7 +184,7 @@ function Home() {
         { name: "Owned Liquidity", amt: "$ 12667.3552" },
         { name: "Rented Liquidity", amt: "$ 16891.8558" },
     ];
-    
+
     const Tokens = [
         {
             name: "CAMP",
@@ -203,41 +203,47 @@ function Home() {
     ];
 
     async function getInfo() {
-        try {await state.SCAMPContract.methods
+        try {
+            await state.SCAMPContract.methods
                 .totalSupply()
                 .call((e, v) => setScampSupply(caver.utils.fromPeb(v, "KLAY")));
-        } catch {setScampSupply(undefined)}
+        } catch { setScampSupply(undefined) }
 
-        try {await state.CAMPContract.methods
+        try {
+            await state.CAMPContract.methods
                 .totalSupply()
                 .call((e, v) => setCampSupply(caver.utils.fromPeb(v, "KLAY")));
-        } catch {setCampSupply(undefined)}
+        } catch { setCampSupply(undefined) }
 
-        try {await state.SCAMPContract.methods
+        try {
+            await state.SCAMPContract.methods
                 .price_target()
                 .call((e, v) => setPriceTarget(v / 1e6));
-        } catch {setPriceTarget(undefined)}
+        } catch { setPriceTarget(undefined) }
 
-        try {await state.SCAMPContract.methods
+        try {
+            await state.SCAMPContract.methods
                 .current_collateral_ratio()
                 .call((e, v) => setCur_Ratio(v / 1e6));
-        } catch {setCur_Ratio(undefined)}
+        } catch { setCur_Ratio(undefined) }
 
-        try {await state.OracleContract.methods
+        try {
+            await state.OracleContract.methods
                 .getAssetPrice(state.SCAMPContract._address)
                 .call((e, v) => setSCampprice(v / 1e6));
-        } catch {setSCampprice(undefined)}
+        } catch { setSCampprice(undefined) }
 
-        try {await state.OracleContract.methods
-          .getAssetPrice(state.CAMPContract._address)
-          .call((e, v) => setCampprice(v / 1e6));
-        } catch {setCampprice(undefined)}
-        
+        try {
+            await state.OracleContract.methods
+                .getAssetPrice(state.CAMPContract._address)
+                .call((e, v) => setCampprice(v / 1e6));
+        } catch { setCampprice(undefined) }
+
         setIsLoading(false);
     }
     useEffect(() => {
         getInfo();
-        if (window.klaytn) {            
+        if (window.klaytn) {
             window.klaytn.on("accountsChanged", async function (accounts) {
                 getInfo();
                 console.log("account change listen in home");
@@ -266,9 +272,9 @@ function Home() {
                             <OverviewItem key={info.name}>
                                 <p className="name">{info.name}</p>
                                 <p className="value">
-                                    {info.amt==="undefined"
-                                    ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
-                                    : info.amt}
+                                    {info.amt === "undefined"
+                                        ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
+                                        : info.amt}
                                 </p>
                             </OverviewItem>
                         ))}
@@ -276,6 +282,41 @@ function Home() {
                     <TVL>
                         <span>TVL</span>
                         <p>{infos[2].amt}</p>
+                        <div>
+                            <ApexCharts
+                                type="area"
+                                series={[
+                                    {
+                                        name: "sales",
+                                        data: [21, 3, 45, 4, 3, 5, 8, 6, 24],
+                                    },
+                                ]}
+                                options={{
+                                    chart: {
+                                        height: 300,
+                                        width: 300,
+                                        toolbar: { show: false },
+                                        background: "transparent",
+                                    },
+                                    tooltip: { show: false },
+                                    stroke: { curve: "smooth", width: 3 },
+                                    grid: { show: false },
+                                    xaxis: {
+                                        labels: {
+                                            show: false,
+                                            format: 'MM-dd'
+                                        },
+                                        axisTicks: { show: false },
+                                    },
+                                    yaxis: {
+                                        labels: {
+                                            show: false
+                                        }
+                                    },
+                                    theme: { mode: "dark" }
+                                }}
+                            />
+                        </div>
                     </TVL>
                     <TokensList>
                         {Tokens.map((token, index) => (
@@ -283,6 +324,41 @@ function Home() {
                                 <p className="tokenName">
                                     <TokenLogo name={token.name} />{" "}
                                     {token.name}
+                                </p>
+                                <p>
+                                    <ApexCharts
+                                        type="area"
+                                        series={[
+                                            {
+                                                name: "sales",
+                                                data: [21, 3, 45, 4, 3, 5, 8, 6, 24],
+                                            },
+                                        ]}
+                                        options={{
+                                            chart: {
+                                                height: 300,
+                                                width: 300,
+                                                toolbar: { show: false },
+                                                background: "transparent",
+                                            },
+                                            tooltip: { show: false },
+                                            stroke: { curve: "smooth", width: 3 },
+                                            grid: { show: false },
+                                            xaxis: {
+                                                labels: {
+                                                    show: false,
+                                                    format: 'MM-dd'
+                                                },
+                                                axisTicks: { show: false },
+                                            },
+                                            yaxis: {
+                                                labels: {
+                                                    show: false
+                                                }
+                                            },
+                                            theme: { mode: "dark" }
+                                        }}
+                                    />
                                 </p>
                                 <p className="tokenPrice">$ {token.price}</p>
                                 <TokenItemInfo>

@@ -40,7 +40,7 @@ function TokenLogo({ name }) {
                 <span><img width="23px" src={lpTokenA} /></span>
                 <span className="secondTokenLogo"><img width="23px" src={lpTokenB} /></span>
               </LpLogo>
-        : <img width="23px" src={src} />
+        : <div><img width="23px" src={src} /></div>
     }
     </>
     )

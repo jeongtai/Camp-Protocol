@@ -4,7 +4,7 @@ import USDC from "../assets/LegacyStable-color.svg";
 import USDT from "../assets/LegacyStable-color.svg";
 import styled from "styled-components";
 
-const LpLogo = styled.p`
+const LpLogo = styled.div`
   width : 40px;
   display: flex;
   flex-direction: row;

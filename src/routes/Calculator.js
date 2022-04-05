@@ -72,27 +72,44 @@ const InputCalculator = styled.div`
 
 const Calculator = () => {
   let state = useSelector((state) => state)
-  const [canUpdate, setCanpUpdate] = useState()
-  const [apy, setAPY] = useState(0)
-  const [kpBondPrice, setKPBondPrice] = useState(0)
+  const [campprice, setCampprice] = useState()
+  const [usdcInputAmount, setUSDCInputAmount] = useState()
+  const [apy, setAPY] = useState(30)
+  const [kpbondprice, setKPBondPrice] = useState(0)
+  const [bondname, setBondName] = useState()
+  const [vestingterm, setVestingterm] = useState()
   const [kpFuturePrice, setKPFuturePrice] = useState(0)
   const [bondDay, setBondDay] = useState(0)
-  const [userReturn, setUserReturn] = useState(0)
+  const [bonduserreturn, setBondUserReturn] = useState(0)
+  const [stakeuserretrun, setStakeUserReturn] = useState()
 
   async function getInfo() {
-    await state.OracleContract.methods.canUpdate().call((e, v) => setCanpUpdate(v))
-    if (canUpdate == true) {
-      state.OracleContract.methods.update().send({
-        from: window.klaytn.selectedAddress,
-        gas: 3000000
-      }).on('receipt', function receipt() {
-        state.OracleContract.methods.consult("0xFC0e434Ff2fDdFb41b79B1d3b0342c80A8f6EFd3", 1000000).call((e, v) => console.log(v / 1000000))
+    try {await state.OracleContract.methods
+      .getAssetPrice(state.CAMPContract._address)
+      .call((e, v) => {
+        setCampprice((v / 1e6).toFixed(4))
+        setKPFuturePrice((v / 1e6).toFixed(4))
+    });
+    } catch {setCampprice(undefined)}
+
+    try {await state.CAMP_USDT_BondContract.methods
+    .bondPrice().call(async (e, camp_usdt_bond ) => {
+      await state.SCAMP_USDT_BondContract.methods
+      .bondPrice().call(async (e,scamp_usdt_bond) => {
+        if (camp_usdt_bond > scamp_usdt_bond) {
+          setKPBondPrice((scamp_usdt_bond/1e6).toFixed(2))
+          setBondName("SCAMP_USDT")
+          await state.SCAMP_USDT_BondContract.methods
+            .terms().call((e,v) => setVestingterm(v[1]/86400))
+        } else {
+          setKPBondPrice((camp_usdt_bond/1e6).toFixed(2))
+          setBondName("CAMP_USDT")
+          await state.CAMP_USDT_BondContract.methods
+            .terms().call((e, v) => setVestingterm(v[1]/86400))
+        }
       })
-    } else if (canUpdate == false) {
-      state.OracleContract.methods.consult("0xFC0e434Ff2fDdFb41b79B1d3b0342c80A8f6EFd3", 1000000).call((e, v) => console.log(v / 1000000))
-    } else {
-      console.log("Error!")
-    }
+    })
+    } catch(e) {console.log(e)}
   }
 
   // initialize hook----------------------------
@@ -106,14 +123,33 @@ const Calculator = () => {
     }
   }, []);
 
+
+  useEffect(() => {
+    function calc() {
+      let userprofit = (campprice - kpbondprice)*(usdcInputAmount)/(campprice)
+      if (bondDay > vestingterm) {setBondUserReturn(userprofit.toFixed(2))}
+      else {setBondUserReturn((userprofit*bondDay/vestingterm).toFixed(2))}
+    }
+    calc()
+  }, [kpbondprice, usdcInputAmount, bondDay])
+
+  useEffect(() => {
+    function calc() {
+      let usercamp = usdcInputAmount/campprice
+      let apytodailyapr = (1+apy/100)^(bondDay/365) -1
+      setStakeUserReturn((usercamp * kpFuturePrice *apytodailyapr).toFixed(2))
+    }
+    calc()
+  }, [usdcInputAmount, apy, bondDay])
+
+
   const OverviewInfos = [
-    { name: "CAMP Price", amt: "10000" },
-    { name: "Treasury Balance", amt: "20000" },
-    { name: "CAMP Price", amt: "10000" },
+    { name: "CAMP Price", amt: campprice },
     { name: "Treasury Balance", amt: "20000" },
   ]
 
 
+  
   return (
     <>
       <Overview>
@@ -137,7 +173,8 @@ const Calculator = () => {
           <InputForm
             token="USDC"
             balance={0}
-            onChange={() => console.log("on change")}
+            value = {usdcInputAmount}
+            onChange={(event) =>setUSDCInputAmount(event.target.value)}
             type="number"
             isVisible={true}
             haveMax={true}
@@ -145,24 +182,17 @@ const Calculator = () => {
           />
         </InputCalculator>
         
-        <InputCalculator>
-          <span>APY</span>
-          <input
-              className={styles.input}
-              value={apy}
-              onChange={(event)=>setAPY(event.target.value)}
-              placeholder="0"
-          />
-        </InputCalculator>
+
         
         <InputCalculator>
           <span>KP Bond Price</span>
           <input
               className={styles.input}
-              value={kpBondPrice}
+              value={kpbondprice}
               onChange={(event)=>setKPBondPrice(event.target.value)}
               placeholder="0"
           />
+          <span>{bondname} Price</span>
         </InputCalculator>
         
         <InputCalculator>
@@ -174,9 +204,19 @@ const Calculator = () => {
               placeholder="0"
           />
         </InputCalculator>
-        
+
         <InputCalculator>
-          <span>Day</span>
+          <span>Staking APY</span>
+          <input
+              className={styles.input}
+              value={apy}
+              onChange={(event)=>setAPY(event.target.value)}
+              placeholder="0"
+          />
+        </InputCalculator>
+
+        <InputCalculator>
+          <span>Duration(Days)</span>
           <input
               className={styles.input}
               value={bondDay}
@@ -186,10 +226,15 @@ const Calculator = () => {
         </InputCalculator>
 
         <InputCalculator>
-          <p>User Return</p>
-          <p>{userReturn}</p>
+          <p>Bond User Profit</p>
+          <p>{bonduserreturn} $</p>
         </InputCalculator>
 
+        <InputCalculator>
+          <p>Staking User Profit</p>
+          <p>{stakeuserretrun} $</p>
+        </InputCalculator>
+          <p>Staking || Bond is more useful for you!</p>
       </CalcOverview>
     </>
   )

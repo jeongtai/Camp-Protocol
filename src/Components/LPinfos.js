@@ -114,7 +114,7 @@ function LPInfos(props) {
   useEffect(async () => {
     try {
       await bondContract.methods.bondPrice()
-        .call((e, v) => setBondPrice((v / 1e6).toFixed(2)))
+        .call((e, v) => setBondPrice((v / 1e6).toFixed(3)))
     } catch (e) { setBondPrice(undefined) }
 
     try {

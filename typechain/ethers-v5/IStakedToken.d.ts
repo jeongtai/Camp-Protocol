@@ -21,42 +21,15 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface IStakedTokenInterface extends ethers.utils.Interface {
   functions: {
-    "claimRewards(address,uint256)": FunctionFragment;
-    "heatup()": FunctionFragment;
-    "redeem(address,uint256)": FunctionFragment;
     "stake(address,uint256)": FunctionFragment;
-    "stakeAndActivateHeatup(uint256)": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "claimRewards",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(functionFragment: "heatup", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "redeem",
-    values: [string, BigNumberish]
-  ): string;
   encodeFunctionData(
     functionFragment: "stake",
     values: [string, BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "stakeAndActivateHeatup",
-    values: [BigNumberish]
-  ): string;
 
-  decodeFunctionResult(
-    functionFragment: "claimRewards",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "heatup", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "stakeAndActivateHeatup",
-    data: BytesLike
-  ): Result;
 
   events: {};
 }
@@ -105,83 +78,22 @@ export class IStakedToken extends BaseContract {
   interface: IStakedTokenInterface;
 
   functions: {
-    claimRewards(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    heatup(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    redeem(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     stake(
-      onBehalfOf: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    stakeAndActivateHeatup(
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
-  claimRewards(
-    to: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  heatup(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  redeem(
-    to: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   stake(
-    onBehalfOf: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  stakeAndActivateHeatup(
+    to: string,
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    claimRewards(
-      to: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    heatup(overrides?: CallOverrides): Promise<void>;
-
-    redeem(
-      to: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     stake(
-      onBehalfOf: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    stakeAndActivateHeatup(
+      to: string,
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -190,58 +102,16 @@ export class IStakedToken extends BaseContract {
   filters: {};
 
   estimateGas: {
-    claimRewards(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    heatup(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    redeem(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     stake(
-      onBehalfOf: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    stakeAndActivateHeatup(
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    claimRewards(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    heatup(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    redeem(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     stake(
-      onBehalfOf: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    stakeAndActivateHeatup(
+      to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

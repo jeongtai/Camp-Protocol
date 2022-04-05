@@ -1,3 +1,14 @@
+node_modules
+.env
+coverage
+coverage.json
+typechain
+
+#Hardhat files
+cache
+artifacts
+*.json
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/solidity,node,yarn
 # Edit at https://www.toptal.com/developers/gitignore?templates=solidity,node,yarn
@@ -97,8 +108,8 @@ out
 dist
 
 # Gatsby files
-cache/
-# artifacts/
+.cache/
+.artifacts/
 # Comment in the public line in if your project uses Gatsby and not Next.js
 # https://nextjs.org/blog/next-9-1#public-directory-support
 # public
@@ -231,5 +242,8 @@ cache/
 
 # and uncomment the following lines
 # .pnp.*
+
+artifacts/
+
 
 # End of https://www.toptal.com/developers/gitignore/api/solidity,node,yarn

@@ -4,6 +4,8 @@ import Caver from "caver-js";
 import styled from "styled-components";
 import { Routes, Route, Link, useMatch } from "react-router-dom";
 
+import TokenLogo from "../assets/TokenLogo";
+
 import Mint from "../Components/Mintingtool";
 import Redeem from "../Components/Redeemtool";
 import InputForm from "../Components/InputForm";
@@ -33,6 +35,53 @@ const Section = styled.div`
         width: 100%;
     }
 `;
+
+
+const CollectInfo = styled.div`
+  // flex
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  
+  padding : 10px;
+
+  stroke: Solid #ededed 1px;
+  background-color: white;
+  border-radius: 15px;
+
+  border: 2px solid ${(props) => props.theme.borderColor};
+
+  & .Title {
+      width: 100%;
+      height : 10%;
+      margin : 10px;
+      margin-bottom: 20px;
+      
+      font-weight: 400;
+      font-size: 20px;
+  }
+`
+
+const CollectItem = styled.div`
+  display:flex;
+  flex-direction: row;
+  align-items : center;
+  flex: 1 1 auto;
+    
+  margin: 15px 0px;
+
+  width : 23%;
+  
+  & .name {
+        font-size: 14px;
+        color: ${(props) => props.theme.textGray};
+    }
+  & .value {
+      margin-top: 10px;
+      font-size: 18px;
+  }
+`;
+
 
 const Content = styled.div`
     flex-direction: column;
@@ -83,74 +132,72 @@ const Bank = () => {
             setIsCollect(true);
         } catch (e) { console.log(e) }
         try {
-          state.BankContract.methods
-          .redeemCAMPBalances(window.klaytn.selectedAddress)
-          .call((e , v) => setUnclaimedCAMP((v/1e18).toFixed(2)))
-        } catch(e) {setUnclaimedCAMP(undefined)}
+            state.BankContract.methods
+                .redeemCAMPBalances(window.klaytn.selectedAddress)
+                .call((e, v) => setUnclaimedCAMP((v / 1e18).toFixed(2)))
+        } catch (e) { setUnclaimedCAMP(undefined) }
 
         try {
-          state.BankContract.methods
-          .redeemCollateralBalances(window.klaytn.selectedAddress)
-          .call((e, v) => setUnclaimedUSDT((v/1e18).toFixed(2)))
-        } catch(e) {setUnclaimedUSDT(undefined)}
+            state.BankContract.methods
+                .redeemCollateralBalances(window.klaytn.selectedAddress)
+                .call((e, v) => setUnclaimedUSDT((v / 1e18).toFixed(2)))
+        } catch (e) { setUnclaimedUSDT(undefined) }
 
         try {
-          state.SCAMPContract.methods
-          .SCAMPBank()
-          .call((e, v) => console.log(v))
-        } catch(e) {console.log(e)}
+            state.SCAMPContract.methods
+                .SCAMPBank()
+                .call((e, v) => console.log(v))
+        } catch (e) { console.log(e) }
 
     }
 
     function Collect() {
-      try {
-        state.BankContract.methods
-        .collectRedemption()
-        .send({
-          from : window.klaytn.selectedAddress,
-          gas : 3000000
-        })
-      } catch(e) {console.log(e)}
+        try {
+            state.BankContract.methods
+                .collectRedemption()
+                .send({
+                    from: window.klaytn.selectedAddress,
+                    gas: 3000000
+                })
+        } catch (e) { console.log(e) }
     }
 
     useEffect(() => {
         getInfo();
+        if (window.klaytn) {
+            window.klaytn.on("accountsChanged", async function (accounts) {
+                getInfo();
+                console.log("account change listen in home");
+            });
+        }
     }, []);
 
     return (
         <>
             <Section>
-                <div>
+
+                <CollectInfo>
                     <span>Collectable Redemption</span>
-                </div>
-                <InputForm
-                    token="USDC"
-                    balance={unclaimedUSDT}
-                    onChange={() => console.log("USDC Change")}
-                    value={undefined}
-                    setValueFn={undefined}
-                    type="number"
-                    isVisible={true}
-                    haveMax={true}
-                    haveBal={true}
-                />
-
-                <InputForm
-                    token="CAMP"
-                    balance={unclaimedCAMP}
-                    onChange={() => console.log("USDC Change")}
-                    value={undefined}
-                    setValueFn={undefined}
-                    type="number"
-                    isVisible={true}
-                    haveMax={true}
-                    haveBal={true}
-                />
-
-                <Button text="Collect" onClick={Collect}>
-                    Collect
-                </Button>
+                    <CollectItem>
+                        <span>USDC<TokenLogo name={"USDC"} /></span>
+                        
+                        <p>balance : </p>
+                        <p>{unclaimedUSDT}</p>
+                    </CollectItem>
+                    <CollectItem>
+                        <span>CAMP <TokenLogo name={"CAMP"} /></span>
+                        
+                        <p>balance : </p>
+                        <p>{unclaimedCAMP}</p>
+                    </CollectItem>
+                    <CollectItem>
+                        <Button text="Collect" onClick={Collect}>
+                            Collect
+                        </Button>
+                    </CollectItem>
+                </CollectInfo>
             </Section>
+
             <Section>
                 <Tabs>
                     <Tab onClick={() => setIsNowMint(true)} isActive={isNowMint}>

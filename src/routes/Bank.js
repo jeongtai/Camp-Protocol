@@ -92,13 +92,7 @@ const Bank = () => {
           state.BankContract.methods
           .redeemCollateralBalances(window.klaytn.selectedAddress)
           .call((e, v) => setUnclaimedUSDT((v/1e18).toFixed(2)))
-        } catch(e) {setUnclaimedUSDT(undefined)}
-
-        try {
-          state.SCAMPContract.methods
-          .SCAMPBank()
-          .call((e, v) => console.log(v))
-        } catch(e) {console.log(e)}
+        } catch(e) {setUnclaimedCAMP(undefined)}
 
     }
 
@@ -114,8 +108,14 @@ const Bank = () => {
     }
 
     useEffect(() => {
-        getInfo();
-    }, []);
+      getInfo();
+      if (window.klaytn) {
+          window.klaytn.on("accountsChanged", async function (accounts) {
+              getInfo();
+              console.log("account change listen in bank");
+          });
+      }
+  }, []);
 
     return (
         <>

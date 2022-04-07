@@ -108,13 +108,11 @@ let store = createStore(reducer);
 
 
 ReactDOM.render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <ThemeProvider theme={theme}>
-                <GlobalStyle />
-                <App />
-            </ThemeProvider>
-        </Provider>
-    </React.StrictMode>,
+    <Provider store={store}>
+        <ThemeProvider theme={theme}>
+            <GlobalStyle />
+            <App />
+        </ThemeProvider>
+    </Provider>,
     document.getElementById("root")
 );

@@ -84,32 +84,34 @@ const Calculator = () => {
   const [stakeuserretrun, setStakeUserReturn] = useState()
 
   async function getInfo() {
-    try {await state.OracleContract.methods
-      .getAssetPrice(state.CAMPContract._address)
-      .call((e, v) => {
-        setCampprice((v / 1e6).toFixed(4))
-        setKPFuturePrice((v / 1e6).toFixed(4))
-    });
-    } catch {setCampprice(undefined)}
+    try {
+      await state.OracleContract.methods
+        .getAssetPrice(state.CAMPContract._address)
+        .call((e, v) => {
+          setCampprice((v / 1e6).toFixed(4))
+          setKPFuturePrice((v / 1e6).toFixed(4))
+        });
+    } catch { setCampprice(undefined) }
 
-    try {await state.CAMP_USDT_BondContract.methods
-    .bondPrice().call(async (e, camp_usdt_bond ) => {
-      await state.SCAMP_USDT_BondContract.methods
-      .bondPrice().call(async (e,scamp_usdt_bond) => {
-        if (camp_usdt_bond > scamp_usdt_bond) {
-          setKPBondPrice((scamp_usdt_bond/1e6).toFixed(2))
-          setBondName("SCAMP_USDT")
+    try {
+      await state.CAMP_USDT_BondContract.methods
+        .bondPrice().call(async (e, camp_usdt_bond) => {
           await state.SCAMP_USDT_BondContract.methods
-            .terms().call((e,v) => setVestingterm(v[1]/86400))
-        } else {
-          setKPBondPrice((camp_usdt_bond/1e6).toFixed(2))
-          setBondName("CAMP_USDT")
-          await state.CAMP_USDT_BondContract.methods
-            .terms().call((e, v) => setVestingterm(v[1]/86400))
-        }
-      })
-    })
-    } catch(e) {console.log(e)}
+            .bondPrice().call(async (e, scamp_usdt_bond) => {
+              if (camp_usdt_bond > scamp_usdt_bond) {
+                setKPBondPrice((scamp_usdt_bond / 1e6).toFixed(2))
+                setBondName("SCAMP_USDT")
+                await state.SCAMP_USDT_BondContract.methods
+                  .terms().call((e, v) => setVestingterm(v[1] / 86400))
+              } else {
+                setKPBondPrice((camp_usdt_bond / 1e6).toFixed(2))
+                setBondName("CAMP_USDT")
+                await state.CAMP_USDT_BondContract.methods
+                  .terms().call((e, v) => setVestingterm(v[1] / 86400))
+              }
+            })
+        })
+    } catch (e) { console.log(e) }
   }
 
   // initialize hook----------------------------
@@ -126,18 +128,18 @@ const Calculator = () => {
 
   useEffect(() => {
     function calc() {
-      let userprofit = (campprice - kpbondprice)*(usdcInputAmount)/(campprice)
-      if (bondDay > vestingterm) {setBondUserReturn(userprofit.toFixed(2))}
-      else {setBondUserReturn((userprofit*bondDay/vestingterm).toFixed(2))}
+      let userprofit = (campprice - kpbondprice) * (usdcInputAmount) / (campprice)
+      if (bondDay > vestingterm) { setBondUserReturn(userprofit.toFixed(2)) }
+      else { setBondUserReturn((userprofit * bondDay / vestingterm).toFixed(2)) }
     }
     calc()
   }, [kpbondprice, usdcInputAmount, bondDay])
 
   useEffect(() => {
     function calc() {
-      let usercamp = usdcInputAmount/campprice  
-      let dailyapr = 1+(apr/100)*(bondDay/365)
-      setStakeUserReturn((usercamp * (kpFuturePrice) *dailyapr - usercamp * campprice).toFixed(2))
+      let usercamp = usdcInputAmount / campprice
+      let dailyapr = 1 + (apr / 100) * (bondDay / 365)
+      setStakeUserReturn((usercamp * (kpFuturePrice) * dailyapr - usercamp * campprice).toFixed(2))
     }
     calc()
   }, [usdcInputAmount, apr, bondDay])
@@ -149,7 +151,7 @@ const Calculator = () => {
   ]
 
 
-  
+
   return (
     <>
       <Overview>
@@ -167,77 +169,79 @@ const Calculator = () => {
         ))}
       </Overview>
       <CalcOverview>
-        
+
         <InputCalculator>
           <span>USDC INPUT</span>
           <InputForm
             token="USDC"
             balance={0}
-            value = {usdcInputAmount}
-            onChange={(event) =>setUSDCInputAmount(event.target.value)}
+            value={usdcInputAmount}
+            onChange={(event) => setUSDCInputAmount(event.target.value)}
             type="number"
             isVisible={true}
             haveMax={true}
             haveBal={true}
           />
         </InputCalculator>
-        
 
-        
+
+
         <InputCalculator>
           <span>KP Bond Price</span>
           <input
-              className={styles.input}
-              value={kpbondprice}
-              onChange={(event)=>{
-                setKPBondPrice(event.target.value)
-                setBondName()
-              }}
-              placeholder="0"
+            className={styles.input}
+            value={kpbondprice}
+            onChange={(event) => {
+              setKPBondPrice(event.target.value)
+              setBondName()
+            }}
+            placeholder="0"
           />
           <span>{bondname}</span>
         </InputCalculator>
-        
+
         <InputCalculator>
           <span>KP Future Price</span>
           <input
-              className={styles.input}
-              value={kpFuturePrice}
-              onChange={(event)=>setKPFuturePrice(event.target.value)}
-              placeholder="0"
+            className={styles.input}
+            value={kpFuturePrice}
+            onChange={(event) => setKPFuturePrice(event.target.value)}
+            placeholder="0"
           />
         </InputCalculator>
 
         <InputCalculator>
           <span>Staking APR</span>
           <input
-              className={styles.input}
-              value={apr}
-              onChange={(event)=>setAPR(event.target.value)}
-              placeholder="0"
+            className={styles.input}
+            value={apr}
+            onChange={(event) => setAPR(event.target.value)}
+            placeholder="0"
           />
         </InputCalculator>
 
         <InputCalculator>
           <span>Duration(Days)</span>
           <input
-              className={styles.input}
-              value={bondDay}
-              onChange={(event)=>setBondDay(event.target.value)}
-              placeholder="0"
+            className={styles.input}
+            value={bondDay}
+            onChange={(event) => setBondDay(event.target.value)}
+            placeholder="0"
           />
         </InputCalculator>
 
         <InputCalculator>
           <p>Bond User Profit</p>
-          <p>{bonduserreturn} $</p>
+          <p>{parseFloat(bonduserreturn)} $</p>
+          <p>Staking User Profit</p>
+          <p>{parseFloat(stakeuserretrun)} $</p>
+          <p>{parseFloat(bonduserreturn) > parseFloat(stakeuserretrun) ?
+            <a href="http://localhost:3000/Bond">"Bond" </a>
+            : <a href="http://localhost:3000/Stake">"Staking" </a>}</p>
         </InputCalculator>
 
-        <InputCalculator>
-          <p>Staking User Profit</p>
-          <p>{stakeuserretrun} $</p>
-        </InputCalculator>
-          <p>Staking || Bond is more useful for you!</p>
+
+
       </CalcOverview>
     </>
   )

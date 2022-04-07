@@ -1,7 +1,7 @@
-import Bondingtool from "../Components/Bondingtool";
+import Bondingtool from "./../../Components/Bondingtool";
 import styled from "styled-components";
-import LPinfos from "../Components/LPinfos";
-import LoadingSVG from "../assets/LoadingSVG";
+import LPinfos from "./../../Components/LPinfos";
+import LoadingSVG from "./../../assets/LoadingSVG";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
@@ -81,7 +81,7 @@ border: 2px solid ${(props) => props.theme.borderColor};
 `
 const Header = styled.div`
   display: grid;
-  grid-template-columns: 2fr repeat(5, 1fr);
+  grid-template-columns: 2fr repeat(4, 1fr);
 
   padding : 0 0 20px 0;
   
@@ -161,7 +161,6 @@ const Bond = () => {
           <p>Market Price</p>
           <p>ROI(Discount)</p>
           <p>Remained</p>
-          <p>Vesting Term End</p>
           <p></p>
         </Header>
 

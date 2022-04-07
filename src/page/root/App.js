@@ -2,16 +2,17 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 
-import Navbar from "./routes/Navbar";
-import PageHeader from "./routes/PageHeader";
+import Navbar from "../routes/Navbar";
+import PageHeader from "../routes/PageHeader";
 
-import Home from "./routes/Home";
-import Stake from "./routes/Stake";
-import Bond from "./routes/Bond";
-import Bondingtool from "./Components/Bondingtool";
-import Bank from "./routes/Bank";
-import Fund from "./routes/Fund";
-import Calculator from "./routes/Calculator";
+import Home from "../routes/Home";
+import Stake from "../routes/Stake";
+import Bond from "../routes/Bond";
+import Bondingtool from "../../Components/Bondingtool";
+import Bank from "../routes/Bank";
+import Fund from "../routes/Fund";
+import Calculator from "../routes/Calculator";
+import Landing from "./Landing";
 
 {/* margin: 0px 10px 0px ${(props) => props.theme.navWidth + 100}px; */}
 

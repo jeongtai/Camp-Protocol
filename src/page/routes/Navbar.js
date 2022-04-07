@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
-import LogoImg from "../assets/Logo-header.svg";
-import LogoTxt from "../assets/Logo-text.svg";
-import Dashboard from "../assets/Dashboard.svg";
-import Bank from "../assets/Bank.svg";
-import Bond from "../assets/Bond.svg";
-import Stake from "../assets/Stake.svg";
-import Calculator from "../assets/Calculator.svg";
-import Fund from "../assets/Fund.svg";
+import LogoImg from "./../../assets/Logo-header.svg";
+import LogoTxt from "./../../assets/Logo-text.svg";
+import Dashboard from "./../../assets/Dashboard.svg";
+import Bank from "./../../assets/Bank.svg";
+import Bond from "./../../assets/Bond.svg";
+import Stake from "./../../assets/Stake.svg";
+import Calculator from "./../../assets/Calculator.svg";
+import Fund from "./../../assets/Fund.svg";
 
 const Nav = styled.div`
     width: ${(props) => props.theme.navWidth}px;

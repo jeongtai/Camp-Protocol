@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import Root from "./page/root/Root";
 import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
 import { reducer, Sendreducer, Viewreducer } from "./Contract";
@@ -106,12 +106,11 @@ const GlobalStyle = createGlobalStyle`
 let store = createStore(reducer);
 
 
-
 ReactDOM.render(
     <Provider store={store}>
         <ThemeProvider theme={theme}>
             <GlobalStyle />
-            <App />
+            <Root />
         </ThemeProvider>
     </Provider>,
     document.getElementById("root")

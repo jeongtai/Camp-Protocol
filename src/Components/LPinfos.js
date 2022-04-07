@@ -19,7 +19,7 @@ const LPInfoItem = styled.div`
   
   font-size:14px;
   
-  p {
+  div {
     display: flex;
     align-items: center;
     justify-items: center;
@@ -125,7 +125,6 @@ function LPInfos(props) {
     try {
       await bondContract.methods.terms()
         .call((e, v) => setVestingTerm(v[1]))
-      console.log(vestingterm)
     } catch (e) { setVestingTerm(undefined) }
 
     try {
@@ -137,18 +136,18 @@ function LPInfos(props) {
             setPoolState("Claim")
           }
         })
-    } catch (e) { console.log(e) }
+    } catch (e) { setPoolState(undefined) }
   }, [])
 
   return (
     <LPInfoItem>
-      <p>
+      <div>
         <TokenLogo name={lpName} />
         {" "}{lpName}{" "}
         <a href="https://app.claimswap.org/liquidity/add" target="_blank">
           <img src={LinkImg} />
         </a>
-      </p>
+      </div>
       <p> $ {bondprice}</p>
       <p> {priceRate}%</p>
       <p>{timeConversion(vestingterm * 1000)}</p>

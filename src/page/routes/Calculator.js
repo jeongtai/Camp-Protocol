@@ -1,10 +1,10 @@
 import Caver from "caver-js";
-import styles from "../Components/css/Input.module.css";
+import styles from "./../../Components/css/Input.module.css";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import LoadingSVG from "../assets/LoadingSVG";
-import InputForm from "../Components/InputForm";
+import LoadingSVG from "./.././../assets/LoadingSVG";
+import InputForm from "./.././../Components/InputForm";
 
 const caver = new Caver(window.klaytn)
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import Staketool from "../Components/Staketool"
+import Staketool from "../../Components/Staketool"
 import Caver from "caver-js"
 import styled from "styled-components";
 

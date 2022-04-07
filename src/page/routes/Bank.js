@@ -4,14 +4,14 @@ import Caver from "caver-js";
 import styled from "styled-components";
 import { Routes, Route, Link, useMatch } from "react-router-dom";
 
-import TokenLogo from "../assets/TokenLogo";
+import TokenLogo from "./../../assets/TokenLogo";
 
-import Mint from "../Components/Mintingtool";
-import Redeem from "../Components/Redeemtool";
-import InputForm from "../Components/InputForm";
-import Button from "../Components/Button";
+import Mint from "./../../Components/Mintingtool";
+import Redeem from "./../../Components/Redeemtool";
+import InputForm from "./../../Components/InputForm";
+import Button from "./../../Components/Button";
 
-import Loading from "../assets/Loading.svg";
+import Loading from "./../../assets/Loading.svg";
 
 const Section = styled.div`
     // flex

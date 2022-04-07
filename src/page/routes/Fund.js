@@ -4,10 +4,10 @@ import Caver from "caver-js";
 import styled from "styled-components";
 import { Routes, Route, Link, useMatch } from "react-router-dom";
 
-import Recollattool from "../Components/Recollattool";
-import Buybacktool from "../Components/Buybacktool";
+import Recollattool from "./../../Components/Recollattool";
+import Buybacktool from "./../../Components/Buybacktool";
 
-import Loading from "../assets/Loading.svg";
+import Loading from "./../../assets/Loading.svg";
 
 const Section = styled.div`
     // flex

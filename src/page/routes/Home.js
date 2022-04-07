@@ -2,8 +2,8 @@ import react, { useState, useEffect } from "react";
 import Caver from "caver-js";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import TokenLogo from "../assets/TokenLogo";
-import LoadingSVG from "../assets/LoadingSVG.js";
+import TokenLogo from "../../assets/TokenLogo";
+import LoadingSVG from "../../assets/LoadingSVG.js";
 import ApexCharts from "react-apexcharts";
 
 const Dashboard = styled.div`

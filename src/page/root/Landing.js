@@ -14,18 +14,25 @@ const Header = styled.div`
     width: 100%;
     height: 100px; /* Full-height: remove this if you want "auto" height */
 
-    padding : 30px 100px;
+    padding : 30px 10%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     
     & .LogoText{
         width : 150%;
     }
+
+    & .TeamInfo{
+        margin : 0 20% 0 0;
+        span{
+            margin : 0 30px;            
+        }
+    }
 `;
 
 const ConnectWallet = styled.button`
-
     width: 154px;
     height: 34px;
     background-color: ${(props) => props.theme.btnBlue};
@@ -56,7 +63,6 @@ const Content1 = styled.div`
 
     & .title {
         margin-top: 50px;
-
         font-family: Montserrat;
         font-size: 6rem;
         font-weight: 700;
@@ -71,11 +77,9 @@ const Content1 = styled.div`
         font-weight: 400;
         line-height:30px;
     }
-
-
 `;
+
 const AppBtn = styled.button`
-    margin: 30px;
 
     width: 154px;
     height: 34px;
@@ -141,6 +145,11 @@ function Landing() {
                 <div>
                 <img className="LogoText" src={LogoText} />
                 </div>
+                <div className="TeamInfo">
+                    <span>DOCS</span>
+                    <span>GITHUB</span>
+                    <span>TWITTER</span>
+                </div>
                 <ConnectWallet onClick={() => connectKaikas()}>
                     {isWalletConnected
                         ? currentAddress.slice(0, 10) +
@@ -166,14 +175,14 @@ function Landing() {
 
                     {/* real  */}
 
-                    <a href={`${window.location.href.replace(window.location.host, `app.${window.location.host}`)}`}>
+                    {/* <a href={`${window.location.href.replace(window.location.host, `app.${window.location.host}`)}`}>
                     <AppBtn>Launch App</AppBtn>
-                    </a>
+                    </a> */}
 
                     {/* test  */}
-                    {/* <a href={`${window.location.href.replace("landing.", "")}`}>
+                    <a href={`${window.location.href.replace("landing.", "")}`}>
                         <AppBtn>Launch App</AppBtn>
-                    </a> */}
+                    </a>
                 </Content1>
 
                 <p></p>

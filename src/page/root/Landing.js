@@ -10,14 +10,14 @@ function Landing() {
             <p>
                 {/* real  */}
                 
-                {/* <a href={`${window.location.href.replace(window.location.host, `app.${window.location.host}`)}`}>
-                    <button>app</button>
-                </a> */}
-
-                {/* test  */}
-                <a href={`${window.location.href.replace("landing", "")}`}>
+                <a href={`${window.location.href.replace(window.location.host, `app.${window.location.host}`)}`}>
                     <button>app</button>
                 </a>
+
+                {/* test 
+                <a href={`${window.location.href.replace("landing", "")}`}>
+                    <button>app</button>
+                </a> */}
             </p>
         </div>
 

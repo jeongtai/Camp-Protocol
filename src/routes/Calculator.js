@@ -74,7 +74,7 @@ const Calculator = () => {
   let state = useSelector((state) => state)
   const [campprice, setCampprice] = useState()
   const [usdcInputAmount, setUSDCInputAmount] = useState()
-  const [apy, setAPY] = useState(30)
+  const [apr, setAPR] = useState(30)
   const [kpbondprice, setKPBondPrice] = useState(0)
   const [bondname, setBondName] = useState()
   const [vestingterm, setVestingterm] = useState()
@@ -135,12 +135,12 @@ const Calculator = () => {
 
   useEffect(() => {
     function calc() {
-      let usercamp = usdcInputAmount/campprice
-      let apytodailyapr = (1+apy/100)^(bondDay/365) -1
-      setStakeUserReturn((usercamp * kpFuturePrice *apytodailyapr).toFixed(2))
+      let usercamp = usdcInputAmount/campprice  
+      let dailyapr = 1+(apr/100)*(bondDay/365)
+      setStakeUserReturn((usercamp * (kpFuturePrice) *dailyapr - usercamp * campprice).toFixed(2))
     }
     calc()
-  }, [usdcInputAmount, apy, bondDay])
+  }, [usdcInputAmount, apr, bondDay])
 
 
   const OverviewInfos = [
@@ -189,10 +189,13 @@ const Calculator = () => {
           <input
               className={styles.input}
               value={kpbondprice}
-              onChange={(event)=>setKPBondPrice(event.target.value)}
+              onChange={(event)=>{
+                setKPBondPrice(event.target.value)
+                setBondName()
+              }}
               placeholder="0"
           />
-          <span>{bondname} Price</span>
+          <span>{bondname}</span>
         </InputCalculator>
         
         <InputCalculator>
@@ -206,11 +209,11 @@ const Calculator = () => {
         </InputCalculator>
 
         <InputCalculator>
-          <span>Staking APY</span>
+          <span>Staking APR</span>
           <input
               className={styles.input}
-              value={apy}
-              onChange={(event)=>setAPY(event.target.value)}
+              value={apr}
+              onChange={(event)=>setAPR(event.target.value)}
               placeholder="0"
           />
         </InputCalculator>

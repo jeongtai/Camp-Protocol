@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
-import LogoImg from "./../../assets/Logo-header.svg";
-import LogoTxt from "./../../assets/Logo-text.svg";
+import LogoText from "./../../assets/Logo-text.svg";
 import Dashboard from "./../../assets/Dashboard.svg";
 import Bank from "./../../assets/Bank.svg";
 import Bond from "./../../assets/Bond.svg";
@@ -33,8 +32,8 @@ const Logo = styled.div`
     margin-top: 20%;
     width:100%;
     text-align: center;
-    .LogoImg {
-        width : 50px;
+    .LogoText {
+        width : 170px;
         margin : 0px 10px;
     }
 `;
@@ -99,8 +98,7 @@ function Navbar() {
     return (
         <Nav>
             <Logo>
-                <img className="LogoImg" src={LogoImg} />
-                <img className="LogoTxt" src={LogoTxt} />
+                <img className="LogoText" src={LogoText} />
             </Logo>
 
             <Items>

@@ -19,7 +19,7 @@ const LPInfoItem = styled.div`
   
   font-size:14px;
   
-  div {
+  & .tokenName {
     display: flex;
     align-items: center;
     justify-items: center;
@@ -141,13 +141,13 @@ function LPInfos(props) {
 
   return (
     <LPInfoItem>
-      <div>
+      <p className="tokenName">
         <TokenLogo name={lpName} />
         {" "}{lpName}{" "}
         <a href="https://app.claimswap.org/liquidity/add" target="_blank">
           <img src={LinkImg} />
         </a>
-      </div>
+      </p>
       <p> $ {bondprice}</p>
       <p> {priceRate}%</p>
       <p>{timeConversion(vestingterm * 1000)}</p>

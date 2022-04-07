@@ -160,7 +160,7 @@ const Bond = () => {
           <p>Name</p>
           <p>Market Price</p>
           <p>ROI(Discount)</p>
-          <p>Remained</p>
+          <p>Vesting Term End</p>
           <p></p>
         </Header>
 

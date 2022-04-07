@@ -38,6 +38,20 @@ const GlobalStyle = createGlobalStyle`
       unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
     }
 
+    /* latin 'Montserrat' */
+    @font-face {
+      font-family: 'Montserrat';
+      font-style: normal;
+      font-weight: 400;
+      src: url('../fonts/montserrat-v23-vietnamese_latin-ext_latin-regular.eot'); /* IE9 Compat Modes */
+      src: local(''),
+          url('../fonts/montserrat-v23-vietnamese_latin-ext_latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+          url('../fonts/montserrat-v23-vietnamese_latin-ext_latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+          url('../fonts/montserrat-v23-vietnamese_latin-ext_latin-regular.woff') format('woff'), /* Modern Browsers */
+          url('../fonts/montserrat-v23-vietnamese_latin-ext_latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+          url('../fonts/montserrat-v23-vietnamese_latin-ext_latin-regular.svg#Montserrat') format('svg'); /* Legacy iOS */
+    }
+    
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
     a, abbr, acronym, address, big, cite, code,
@@ -104,7 +118,6 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 let store = createStore(reducer);
-
 
 ReactDOM.render(
     <Provider store={store}>

@@ -29,10 +29,9 @@ const Top = styled.div`
     display: grid;
     grid-template-columns: 90% 10%;
     align-items: center;
-    justify-items: space-between;
+    justify-items: flex-start;
     
     height: 20px;
-
 `;
 
 const Bottom = styled.div`

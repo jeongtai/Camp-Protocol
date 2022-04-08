@@ -24,7 +24,7 @@ const main = async () => {
     mockFactory = await ethers.getContractFactory("MockUSDC");
     // let mock = await mockFactory.deploy();
     const mock = await mockFactory.attach("0x8d4DFc6586F70e6F1F08d3FaA96Afa297A1CA060");
-    // await mock.setBalance("0x91Add885cdF83Ba62578eF7de912067f52aB3130", toBn("10000"))
+    // await mock.setBalance("0x91Add885cdF83Ba62578eF7de912067f52aB3130", toBn("10000")) // a한테 10000만큼 보냄
     // await mock.setBalance(owner.address, toBn("1000000"))
     console.log("mock address is:", await mock.address);
 
@@ -52,7 +52,7 @@ const main = async () => {
     // await SCAMP.setCAMPAddress(CAMP.address);
     // await SCAMP.setBankAddress(Bank.address);
     // await CAMP.setSCAMPAddress(SCAMP.address);
-    // await SCAMP.setMintingFee(3000);
+    // await SCAMP.setMintingFee(3000); //3% 오픈시 0%
     // await SCAMP.setOracleAddress(assetOracle.address);
 
     // ADD LIQUIDITY
@@ -66,18 +66,18 @@ const main = async () => {
     // create SCAMP, mock pair
     let SCAMPPair = await factory.getPair(SCAMP.address, mock.address);
     if (SCAMPPair == ethers.constants.AddressZero) {
-      console.log("create scamp pair");
-      await factory.createPair(SCAMP.address, mock.address);
-      SCAMPPair = await factory.getPair(SCAMP.address, mock.address);
+        console.log("create scamp pair");
+        await factory.createPair(SCAMP.address, mock.address);
+        SCAMPPair = await factory.getPair(SCAMP.address, mock.address);
     }
     console.log("SCAMP pair:", SCAMPPair);
 
     // create CAMP, mock pair
     let CAMPPair = await factory.getPair(CAMP.address, mock.address);
     if (CAMPPair == ethers.constants.AddressZero) {
-      console.log("create camp pair");
-      await factory.createPair(CAMP.address, mock.address);
-      CAMPPair = await factory.getPair(CAMP.address, mock.address);
+        console.log("create camp pair");
+        await factory.createPair(CAMP.address, mock.address);
+        CAMPPair = await factory.getPair(CAMP.address, mock.address);
     }
     console.log("CAMP pair:", CAMPPair);
 
@@ -94,12 +94,12 @@ const main = async () => {
     // Approve and addLiquidity
     const SCAMPAllowance = await SCAMP.allowance(owner.address, router.address);
     if (SCAMPAllowance == 0) {
-      await SCAMP.approve(router.address, toBn("10000"));
+        await SCAMP.approve(router.address, toBn("10000"));
     }
     console.log("SCAMPAllowance:", SCAMPAllowance.toString());
     const mockAllowance = await mock.allowance(owner.address, router.address);
     if (mockAllowance == 0) {
-      await mock.approve(router.address, toBn("10000"));
+        await mock.approve(router.address, toBn("10000"));
     }
     console.log("mockCollatAllowance:", mockAllowance.toString());
 
@@ -109,27 +109,27 @@ const main = async () => {
     let reserve = await pairContract.getReserves();
     console.log("SCAMP pair", reserve[0].toString(), reserve[1].toString(), reserve[2])
     if (reserve[0] == 0) {
-      console.log("add to liquidity to scamp pair");
-      const tx = await router.addLiquidity(SCAMP.address, mock.address, toBn("100"), toBn("100"), 1e3, 1e3, owner.address, Math.floor(Date.now()) + 100);
-      SCAMPPair = await factory.getPair(SCAMP.address, mock.address);
-      pairContract = PairFactory.attach(SCAMPPair);
-      console.log("SCAMP pair:", SCAMPPair);
-      reserve = await pairContract.getReserves();
-      console.log(reserve[0].toString(), reserve[1].toString(), reserve[2])
+        console.log("add to liquidity to scamp pair");
+        const tx = await router.addLiquidity(SCAMP.address, mock.address, toBn("100"), toBn("100"), 1e3, 1e3, owner.address, Math.floor(Date.now()) + 100);
+        SCAMPPair = await factory.getPair(SCAMP.address, mock.address);
+        pairContract = PairFactory.attach(SCAMPPair);
+        console.log("SCAMP pair:", SCAMPPair);
+        reserve = await pairContract.getReserves();
+        console.log(reserve[0].toString(), reserve[1].toString(), reserve[2])
     }
-    
+
     let pairContract_CAMP = PairFactory.attach(CAMPPair);
     let reserve_CAMP = await pairContract_CAMP.getReserves();
     console.log("CAMP pair", reserve_CAMP[0].toString(), reserve_CAMP[1].toString(), reserve_CAMP[2])
     if (reserve_CAMP[0] == 0) {
-      console.log("add to liquidity to camp pair");
-      await CAMP.approve(router.address, toBn("10000000"));
-      await router.addLiquidity(CAMP.address, mock.address, toBn("10000"), toBn("1000"), 1e3, 1e3, owner.address, Math.floor(Date.now()) + 100);
-      CAMPPair = await factory.getPair(CAMP.address, mock.address);
-      pairContract_CAMP = PairFactory.attach(CAMPPair);
-      console.log("CAMP pair:", CAMPPair);
-      reserve_CAMP = await pairContract_CAMP.getReserves();
-      console.log(reserve_CAMP[0].toString(), reserve_CAMP[1].toString(), reserve_CAMP[2])
+        console.log("add to liquidity to camp pair");
+        await CAMP.approve(router.address, toBn("10000000"));
+        await router.addLiquidity(CAMP.address, mock.address, toBn("10000"), toBn("1000"), 1e3, 1e3, owner.address, Math.floor(Date.now()) + 100);
+        CAMPPair = await factory.getPair(CAMP.address, mock.address);
+        pairContract_CAMP = PairFactory.attach(CAMPPair);
+        console.log("CAMP pair:", CAMPPair);
+        reserve_CAMP = await pairContract_CAMP.getReserves();
+        console.log(reserve_CAMP[0].toString(), reserve_CAMP[1].toString(), reserve_CAMP[2])
     }
 
     // swap
@@ -141,7 +141,7 @@ const main = async () => {
     // const scampPairOracle = await uniOracleFactory.deploy(factory.address, SCAMP.address, mock.address, owner.address);
     const scampPairOracle = uniOracleFactory.attach("0x24FED6B2FA9080519ea6DEf8DB0B0ad495C7a5F7");
     console.log("scampPairOracle:", scampPairOracle.address);
-    await scampPairOracle.setPeriod(100000);
+    await scampPairOracle.setPeriod(100000); // 1 = 1초
     console.log(await scampPairOracle.canUpdate());
     if (await scampPairOracle.canUpdate()) {
         console.log("scamp oracle is updated");
@@ -153,9 +153,9 @@ const main = async () => {
     console.log("campPairOracle:", campPairOracle.address);
     await campPairOracle.setPeriod(100000);
     if (await campPairOracle.canUpdate()) {
-      console.log("camp oracle is updated");
-      await campPairOracle.update();
-  }
+        console.log("camp oracle is updated");
+        await campPairOracle.update();
+    }
 
     // await assetOracle.setAssetOracle([scampPairOracle.address, campPairOracle.address]);
     // console.log(await assetOracle.priceOracle(0));
@@ -172,13 +172,13 @@ const main = async () => {
     let scamp_info = await SCAMP.SCAMP_info();
     console.log(scamp_info[0].toString(), scamp_info[1].toString(), scamp_info[2].toString(), scamp_info[3].toString());
 
-  //   /////////////////////////////////////////////////////
+    //   /////////////////////////////////////////////////////
     // Deploy to Bond : CAMP
     const ClaimSwapCampUSDTLpDepositoryFactory = await ethers.getContractFactory("ClaimSwapCampUSDTLpDepository");
     // const ClaimSwapCampUSDTLpDepository = await ClaimSwapCampUSDTLpDepositoryFactory.deploy();
     const ClaimSwapCampUSDTLpDepository = ClaimSwapCampUSDTLpDepositoryFactory.attach("0x946Dad84E6d604ba70294fCFf7A49B06bf0D0659");
     console.log("ClaimSwapCampUSDTLpDepository address:", ClaimSwapCampUSDTLpDepository.address);
-    
+
     // Deploy bond treasury
     const BondTreasuryFactory = await ethers.getContractFactory("BondTreasury");
     // const bondTreasury = await BondTreasuryFactory.deploy();
@@ -198,19 +198,19 @@ const main = async () => {
     // );
     console.log("totaldebt", (await ClaimSwapCampUSDTLpDepository.totalDebt() / 1e18).toString());
     // await ClaimSwapCampUSDTLpDepository.initializeBondTerms(
-    //     100, //_controlVariable 상수
+    //     100, //_controlVariable 상수 본딩 할인율에 얼마나 가중치를 둘건지
     //     1500, //432000, //_vestingTerm in blokcs
     //     0.8e9, //_minimumPriceRate 할인된가격최저 1e9
-    //     10000, //_maxPayout 1e4 10000=1%
+    //     10000, //_maxPayout 1e4 10000=1% 본딩으로 팔 수 있는 물량 대비
     //     100, //_fee 100=1%
     //     toBn("1e6"), //_maxDebt 10e18 bond에서 만들 빚의 최대값
     //     toBn("1e4") //_initialDebt 초기 빚(다른 곳에서 쓴?)
     // );
-    
+
     console.log("register", (await bondTreasury.isReserveToken(CAMPPair)));
     // register
     // await bondTreasury.register(CAMPPair, ClaimSwapCampUSDTLpDepository.address);
-    
+
     console.log("max payout", (await ClaimSwapCampUSDTLpDepository.maxPayout() / 1e18).toString());
     console.log("pricepaid", (await ClaimSwapCampUSDTLpDepository.bondInfo(owner.address).pricePaid));
 
@@ -219,7 +219,7 @@ const main = async () => {
     console.log("CAMPPair is alive?", await pairContract_CAMP.symbol());
     let bondAllowance = await pairContract_CAMP.allowance(owner.address, ClaimSwapCampUSDTLpDepository.address);
     if (bondAllowance == 0) {
-      await pairContract_CAMP.approve(ClaimSwapCampUSDTLpDepository.address, toBn("10000"));
+        await pairContract_CAMP.approve(ClaimSwapCampUSDTLpDepository.address, toBn("10000"));
     }
     console.log("bond allowance:", (await pairContract_CAMP.allowance(owner.address, ClaimSwapCampUSDTLpDepository.address)).toString());
     // deposit
@@ -272,12 +272,12 @@ const main = async () => {
     //     toBn("1e6"), //_maxDebt 10e18 bond에서 만들 빚의 최대값
     //     toBn("1e4") //_initialDebt 초기 빚(다른 곳에서 쓴?)
     // );
-    
+
     console.log("register", (await bondTreasury.isReserveToken(SCAMPPair)));
     // register
     // await bondTreasury.unregisterDepositor(ClaimSwapSCampUSDTLpDepository.address);
     // await bondTreasury.register(SCAMPPair, ClaimSwapSCampUSDTLpDepository.address);
-    
+
     console.log("max payout", (await ClaimSwapSCampUSDTLpDepository.maxPayout() / 1e18).toString());
     console.log("pricepaid", (await ClaimSwapSCampUSDTLpDepository.bondInfo(owner.address).pricePaid));
 
@@ -285,7 +285,7 @@ const main = async () => {
     // Approve and addLiquidity
     bondAllowance = await pairContract.allowance(owner.address, ClaimSwapSCampUSDTLpDepository.address);
     if (bondAllowance == 0) {
-      await pairContract.approve(ClaimSwapSCampUSDTLpDepository.address, toBn("10000"));
+        await pairContract.approve(ClaimSwapSCampUSDTLpDepository.address, toBn("10000"));
     }
     console.log("bond allowance:", (await pairContract_CAMP.allowance(owner.address, ClaimSwapSCampUSDTLpDepository.address)).toString());
     // deposit
@@ -297,17 +297,17 @@ const main = async () => {
     console.log("SCAMP, LP balance:", (await SCAMP.balanceOf(owner.address)).toString(), (await pairContract.balanceOf(owner.address)).toString());
 
     // await ClaimSwapCampUSDTLpDepository.setBondTerms("0", 432000);
-    await ClaimSwapSCampUSDTLpDepository.setBondTerms("4", 0.95e9);
-  };
-  
-  const runMain = async () => {
+    // await ClaimSwapSCampUSDTLpDepository.setBondTerms("0", 432000);
+};
+
+const runMain = async () => {
     try {
-      await main();
-      process.exit(0);
+        await main();
+        process.exit(0);
     } catch (error) {
-      console.log(error);
-      process.exit(1);
+        console.log(error);
+        process.exit(1);
     }
-  };
-  
-  runMain();
+};
+
+runMain();

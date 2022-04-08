@@ -81,13 +81,11 @@ contract KP_PreSale is Ownable {
     function setvestingperiod(uint256 _vestingperiod) external onlyOwner {
         vestingperiod = _vestingperiod;
         console.log("vestingperiod : %s",  vestingperiod);
-
     }
 
     function setPresaletime(uint256 startTime) external onlyOwner {
         presaletime = startTime;
         console.log("presaletime : %s",  presaletime);
-
     }
 
     function purchaseByKlay(uint _klayAmount) public {
@@ -95,9 +93,9 @@ contract KP_PreSale is Ownable {
         // uint256 klayTokenBalance = klayToken.balanceOf(msg.sender);
         // require(_klayAmount <= klayTokenBalance,
         //     "KP PreSale: The tokens' balance is insufficient.");        //balance보다 더 많이 사려고 하는지 확인
-        require(getKlayTotalAmount.add(_klayAmount) <= vestingAmount);  //klayAmount가 vestingAmount를 초과하는지 확인
-        require(vestingAmount.div(addressInfo[msg.sender].payout.add(_klayAmount)) <= RatioBuyAmount, //?
-            "KP PreSale: The purchase amount exceeds the purchase amount per person..");// 한 사람당 구매 비율보다 높은지 확인
+        require(getKlayTotalAmount.add(_klayAmount) <= vestingAmount, "Exceed total vesting amount");  //klayAmount가 vestingAmount를 초과하는지 확인
+        require(((addressInfo[msg.sender].payout.add(_klayAmount)).div(vestingAmount)).mul(1e4) <= RatioBuyAmount, //?
+            "KP PreSale: The purchase amount exceeds the purchase amount per person!!!!!");// 한 사람당 구매 비율보다 높은지 확인
 
         getKlayTotalAmount += _klayAmount; // vesting 물량에서 구매한만큼 빼기
 
@@ -107,7 +105,6 @@ contract KP_PreSale is Ownable {
         lastBlock: startBlockNumber
         //        pricePaid: info.pricePaid
         });  // 이 부분이 조금 확신이 안섦
-//        console.log("addressInfo[msg.sender] : ", addressInfo[msg.sender]);
         klayToken.safeTransferFrom(msg.sender, address(this), _klayAmount);
 
         emit Purchase(_klayAmount, msg.sender);

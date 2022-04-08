@@ -297,7 +297,7 @@ const main = async () => {
     console.log("SCAMP, LP balance:", (await SCAMP.balanceOf(owner.address)).toString(), (await pairContract.balanceOf(owner.address)).toString());
 
     // await ClaimSwapCampUSDTLpDepository.setBondTerms("0", 432000);
-    // await ClaimSwapSCampUSDTLpDepository.setBondTerms("0", 432000);
+    await ClaimSwapSCampUSDTLpDepository.setBondTerms("4", 0.95e9);
   };
   
   const runMain = async () => {

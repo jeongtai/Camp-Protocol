@@ -134,10 +134,10 @@ const Time = styled.div`
     grid-template-columns: repeat(5, 7vw);
     font-size: 4vw;
     font-weight: 700;
-    
-    @media (max-width : 500px){
-        font-size : 10vw;
-        grid-template-columns : repeat(5, 20vw);
+
+    @media (max-width: 500px) {
+        font-size: 10vw;
+        grid-template-columns: repeat(5, 20vw);
     }
 
     p {
@@ -157,8 +157,8 @@ const CapInfo = styled.div`
     /* Rectangle 368 */
 
     width: 30vw;
-    min-width:360px;
-    
+    min-width: 360px;
+
     height: 344px;
 
     margin: 80px 0;
@@ -186,14 +186,15 @@ const Page3 = styled.div`
     height: 600px;
     box-shadow: 0px -4px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
-    padding: 60px;
 
     & .page3-title {
+        padding-top: 60px;
         font-size: 36px;
         font-weight: 700;
         margin-bottom: 8px;
     }
     & .page3-content {
+        margin: 60px;
         font-family: Lexend;
         font-size: 16px;
         font-weight: 400;
@@ -210,9 +211,9 @@ const SaleContent = styled.div`
     margin: 40px auto;
 
     width: 35%;
-    min-width: 380px;
+    min-width: 360px;
 
-    stroke: Solid #ededed 1px;
+    stroke: Solid ${(props) => props.theme.borderColor} 1px;
     background-color: ${(props) => props.theme.textWhite};
     border-radius: 15px;
     border: 2px solid ${(props) => props.theme.borderColor};
@@ -423,9 +424,9 @@ function Landing() {
                 <Page3>
                     <div className="page3-title">KProtocol Purchase</div>
                     <p className="page3-content">
-                        Fractional Algorithmic Stablecoin
+                        PRE SALE : 0.2 KLAY
                         <br />
-                        and the Decentralized Reserve Currency
+                        PUBLIC SALE : N KLAY
                     </p>
 
                     <SaleContent>

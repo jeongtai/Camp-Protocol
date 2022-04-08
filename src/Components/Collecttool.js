@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import InputForm from "./InputForm";
-import Button from "./Button";
+import Button from "../assets/Button";
 
 import LoadingSVG from "../assets/LoadingSVG.js";
 

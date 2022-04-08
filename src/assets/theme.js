@@ -7,7 +7,9 @@ export const theme = {
    unActiveColor : "#B2B2B2",
    backGray: "#f8f8f8",
    backBlue : "#F0F7FF",
-
+   backBlack : "#262A31",
+   backYellow : "#FFDE30",
+   
    // Btn
    btnGray : "#EDEDED",
    btnBlack : "#282828",
@@ -18,6 +20,7 @@ export const theme = {
    textGray : "#B2B2B2",
    textDarkGray : "#7D7D7D",
    textBlue : "#3E97FF",
+   textWhite : "#FDFDFD",
 
    // navbar
    navWidth: 260,

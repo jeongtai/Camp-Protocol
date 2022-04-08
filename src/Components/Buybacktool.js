@@ -1,9 +1,9 @@
 import Caver from "caver-js";
 import { useSelector } from "react-redux";
-import InputForm from "./InputForm";
+import InputForm from "../assets/InputForm";
 import { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import Button from "./Button";
+import Button from "../assets/Button";
 
 const caver = new Caver(window.klaytn)
 

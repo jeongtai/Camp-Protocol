@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import styles from "./css/Input.module.css";
 import styled from "styled-components";
-import TokenLogo from "../assets/TokenLogo";
+import TokenLogo from "./TokenLogo";
 import { useState } from "react";
-import LoadingSVG from "../assets/LoadingSVG.js";
+import LoadingSVG from "./LoadingSVG.js";
 
 const Section = styled.div`
     margin: 14px 0px;

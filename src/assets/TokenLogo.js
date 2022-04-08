@@ -1,8 +1,9 @@
-import CAMP from "../assets/CAMP-color.svg";
-import SCAMP from "../assets/SCAMP-color.svg";
-import USDC from "../assets/LegacyStable-color.svg";
-import USDT from "../assets/LegacyStable-color.svg";
+import CAMP from "./CAMP-color.svg";
+import SCAMP from "./SCAMP-color.svg";
+import USDC from "./LegacyStable-color.svg";
+import USDT from "./LegacyStable-color.svg";
 import styled from "styled-components";
+import KLAY from "./KLAY.svg"
 
 const LpLogo = styled.div`
   width : 40px;
@@ -19,7 +20,8 @@ const arrTokenLogo = {
     'CAMP': CAMP,
     'SCAMP': SCAMP,
     'USDC': USDC,
-    'USDT': USDC
+    'USDT': USDC,
+    'KLAY': KLAY,
 }
 
 function TokenLogo({ name }) {

@@ -1,5 +1,5 @@
-import Button from "./Button";
-import InputForm from "./InputForm";
+import Button from "../assets/Button";
+import InputForm from "../assets/InputForm";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Caver from "caver-js";

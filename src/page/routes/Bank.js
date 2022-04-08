@@ -8,8 +8,8 @@ import TokenLogo from "./../../assets/TokenLogo";
 
 import Mint from "./../../Components/Mintingtool";
 import Redeem from "./../../Components/Redeemtool";
-import InputForm from "./../../Components/InputForm";
-import Button from "./../../Components/Button";
+import InputForm from "../../assets/InputForm";
+import Button from "./../../assets/Button";
 
 import Loading from "./../../assets/Loading.svg";
 

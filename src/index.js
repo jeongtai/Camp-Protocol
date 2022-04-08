@@ -17,17 +17,6 @@ const GlobalStyle = createGlobalStyle`
       src: url(https://fonts.gstatic.com/s/lexend/v14/wlptgwvFAVdoq2_F94zlCfv0bz1WCwkWzLhnepKu.woff2) format('woff2');
       unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
     }
-
-    /* latin-ext */
-    @font-face {
-      font-family: 'Lexend';
-      font-style: normal;
-      font-weight: 500;
-      font-display: swap;
-      src: url(https://fonts.gstatic.com/s/lexend/v14/wlptgwvFAVdoq2_F94zlCfv0bz1WCwkWzLlnepKu.woff2) format('woff2');
-      unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-    }
-    
     /* latin */
     @font-face {
       font-family: 'Lexend';
@@ -46,11 +35,22 @@ const GlobalStyle = createGlobalStyle`
       src: url('../fonts/montserrat-v23-vietnamese_latin-ext_latin-regular.eot'); /* IE9 Compat Modes */
       src: local(''),
           url('../fonts/montserrat-v23-vietnamese_latin-ext_latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-          url('../fonts/montserrat-v23-vietnamese_latin-ext_latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-          url('../fonts/montserrat-v23-vietnamese_latin-ext_latin-regular.woff') format('woff'), /* Modern Browsers */
-          url('../fonts/montserrat-v23-vietnamese_latin-ext_latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
           url('../fonts/montserrat-v23-vietnamese_latin-ext_latin-regular.svg#Montserrat') format('svg'); /* Legacy iOS */
     }
+
+    @font-face {
+      font-family: 'Montserrat';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Montserrat-Regular'), url(http://fonts.gstatic.com/s/montserrat/v6/zhcz-_WihjSQC0oHJ9TCYC3USBnSvpkopQaUR-2r7iU.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Montserrat-Bold'), url(http://fonts.gstatic.com/s/montserrat/v6/IQHow_FEYlDC4Gzy_m8fcvEr6Hm6RMS0v1dtXsGir4g.ttf) format('truetype');
+    }
+
     
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,

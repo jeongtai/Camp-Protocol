@@ -197,11 +197,12 @@ const config: HardhatUserConfig = {
       // gas: 8500000,
       tags: ["test"]
     },
-    baobabDev: {
-      url: 'https://kaikas.baobab.klaytn.net:8651',
-      chainId: 1001,
+    cypress: {
+      url: 'https://public-node-api.klaytnapi.com/v1/cypress',
+      chainId: 8217,
       accounts: [process.env.PRIVATE_KEY!],
       saveDeployments: true,
+      gasPrice: 750000000000,
       tags: ["staging"]
     },
   },

@@ -145,6 +145,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Ownable__factory>;
     getContractFactory(
+      name: "KPPreSale",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.KPPreSale__factory>;
+    getContractFactory(
       name: "IGovernancePowerDelegationToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IGovernancePowerDelegationToken__factory>;
@@ -462,6 +466,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Ownable>;
+    getContractAt(
+      name: "KPPreSale",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.KPPreSale>;
     getContractAt(
       name: "IGovernancePowerDelegationToken",
       address: string,

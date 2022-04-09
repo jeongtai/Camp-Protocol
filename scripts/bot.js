@@ -15,6 +15,9 @@ const main = async () => {
     SCAMP = "0xbcb51E0C1fF0Cf95176Ee5EA08b7da3832AD377d";
     mock = "0x8d4DFc6586F70e6F1F08d3FaA96Afa297A1CA060";
 
+    SCAMP = "0xbcb51E0C1fF0Cf95176Ee5EA08b7da3832AD377d";
+    mock = "0x8d4DFc6586F70e6F1F08d3FaA96Afa297A1CA060";
+
 
     const RouterFactory = await ethers.getContractFactory("UniswapV2Router02");
     const router = RouterFactory.attach("0xEf71750C100f7918d6Ded239Ff1CF09E81dEA92D"); // cypress
@@ -35,10 +38,17 @@ const main = async () => {
     while (i < 30) {
         try {
             // const swapamounts = await router.getAmountsOut(toBn("1"), [KLAY, KROME]);
+<<<<<<< HEAD
             const swapamounts = await router.getAmountsOut(toBn("618"), [KLAY, Blood]);
             console.log("swap ratio:", await swapamounts[0].toString(), await swapamounts[1].toString(), await swapamounts[0].toString()/await swapamounts[1].toString());
             if (( await swapamounts[0].toString() /await swapamounts[1].toString()) < 7 ) {
               await router.swapExactTokensForTokens(swapamounts[0].toString(), (swapamounts[1]*0.9).toString(), [KLAY, Blood], owner.address, Math.floor(Date.now()) + 10);
+=======
+            const swapamounts = await router.getAmountsOut(10000, [KUSDT, USDK]);
+            console.log("swap ratio:", await swapamounts[0].toString(), await swapamounts[1].toString(), await swapamounts[0].toString()/await swapamounts[1].toString());
+            if (( await swapamounts[0].toString() /await swapamounts[1].toString()) < 7 ) {
+              await router.swapExactTokensForTokens(swapamounts[0].toString(), (swapamounts[1]*0.9).toString(), [KUSDT, USDK], owner.address, Math.floor(Date.now()) + 10);
+>>>>>>> 64937f330676c925aec93e8a8a07c338023deb5b
             } else {
               console.log("Swap finished!")
               break;

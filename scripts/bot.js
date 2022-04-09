@@ -38,17 +38,10 @@ const main = async () => {
     while (i < 30) {
         try {
             // const swapamounts = await router.getAmountsOut(toBn("1"), [KLAY, KROME]);
-<<<<<<< HEAD
-            const swapamounts = await router.getAmountsOut(toBn("618"), [KLAY, Blood]);
-            console.log("swap ratio:", await swapamounts[0].toString(), await swapamounts[1].toString(), await swapamounts[0].toString()/await swapamounts[1].toString());
-            if (( await swapamounts[0].toString() /await swapamounts[1].toString()) < 7 ) {
-              await router.swapExactTokensForTokens(swapamounts[0].toString(), (swapamounts[1]*0.9).toString(), [KLAY, Blood], owner.address, Math.floor(Date.now()) + 10);
-=======
             const swapamounts = await router.getAmountsOut(10000, [KUSDT, USDK]);
             console.log("swap ratio:", await swapamounts[0].toString(), await swapamounts[1].toString(), await swapamounts[0].toString()/await swapamounts[1].toString());
             if (( await swapamounts[0].toString() /await swapamounts[1].toString()) < 7 ) {
               await router.swapExactTokensForTokens(swapamounts[0].toString(), (swapamounts[1]*0.9).toString(), [KUSDT, USDK], owner.address, Math.floor(Date.now()) + 10);
->>>>>>> 64937f330676c925aec93e8a8a07c338023deb5b
             } else {
               console.log("Swap finished!")
               break;

@@ -165,6 +165,18 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IFeeClaim__factory>;
     getContractFactory(
+      name: "IConvexRewards",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IConvexRewards__factory>;
+    getContractFactory(
+      name: "IKPLocker",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IKPLocker__factory>;
+    getContractFactory(
+      name: "KpStakingProxyV2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.KpStakingProxyV2__factory>;
+    getContractFactory(
       name: "EKLDepositor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.EKLDepositor__factory>;
@@ -268,6 +280,10 @@ declare module "hardhat/types/runtime" {
       name: "IStakingProxy",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IStakingProxy__factory>;
+    getContractFactory(
+      name: "IVotingEligibility",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IVotingEligibility__factory>;
     getContractFactory(
       name: "KpEKL",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -432,6 +448,22 @@ declare module "hardhat/types/runtime" {
       name: "VoteDelegateExtension",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.VoteDelegateExtension__factory>;
+    getContractFactory(
+      name: "VotingBalance",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VotingBalance__factory>;
+    getContractFactory(
+      name: "VotingBalanceMax",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VotingBalanceMax__factory>;
+    getContractFactory(
+      name: "VotingBalanceV2Gauges",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VotingBalanceV2Gauges__factory>;
+    getContractFactory(
+      name: "VotingEligibility",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VotingEligibility__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -624,6 +656,21 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IFeeClaim>;
     getContractAt(
+      name: "IConvexRewards",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IConvexRewards>;
+    getContractAt(
+      name: "IKPLocker",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IKPLocker>;
+    getContractAt(
+      name: "KpStakingProxyV2",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.KpStakingProxyV2>;
+    getContractAt(
       name: "EKLDepositor",
       address: string,
       signer?: ethers.Signer
@@ -753,6 +800,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IStakingProxy>;
+    getContractAt(
+      name: "IVotingEligibility",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IVotingEligibility>;
     getContractAt(
       name: "KpEKL",
       address: string,
@@ -958,6 +1010,26 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.VoteDelegateExtension>;
+    getContractAt(
+      name: "VotingBalance",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VotingBalance>;
+    getContractAt(
+      name: "VotingBalanceMax",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VotingBalanceMax>;
+    getContractAt(
+      name: "VotingBalanceV2Gauges",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VotingBalanceV2Gauges>;
+    getContractAt(
+      name: "VotingEligibility",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VotingEligibility>;
 
     // default types
     getContractFactory(

@@ -13,6 +13,18 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "Ownable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Ownable__factory>;
+    getContractFactory(
+      name: "ERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20__factory>;
+    getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
       name: "IUniswapV2Callee",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IUniswapV2Callee__factory>;
@@ -144,6 +156,106 @@ declare module "hardhat/types/runtime" {
       name: "Ownable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Ownable__factory>;
+    getContractFactory(
+      name: "CvxCrvToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.CvxCrvToken__factory>;
+    getContractFactory(
+      name: "CrvDepositor",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.CrvDepositor__factory>;
+    getContractFactory(
+      name: "ICrvDeposit",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ICrvDeposit__factory>;
+    getContractFactory(
+      name: "ICurveGauge",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ICurveGauge__factory>;
+    getContractFactory(
+      name: "ICurveVoteEscrow",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ICurveVoteEscrow__factory>;
+    getContractFactory(
+      name: "IDeposit",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IDeposit__factory>;
+    getContractFactory(
+      name: "IFeeDistro",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IFeeDistro__factory>;
+    getContractFactory(
+      name: "IMinter",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IMinter__factory>;
+    getContractFactory(
+      name: "IPools",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IPools__factory>;
+    getContractFactory(
+      name: "IRegistry",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IRegistry__factory>;
+    getContractFactory(
+      name: "IRewardFactory",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IRewardFactory__factory>;
+    getContractFactory(
+      name: "IRewards",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IRewards__factory>;
+    getContractFactory(
+      name: "IStaker",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IStaker__factory>;
+    getContractFactory(
+      name: "IStash",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IStash__factory>;
+    getContractFactory(
+      name: "IStashFactory",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IStashFactory__factory>;
+    getContractFactory(
+      name: "ITokenFactory",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ITokenFactory__factory>;
+    getContractFactory(
+      name: "ITokenMinter",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ITokenMinter__factory>;
+    getContractFactory(
+      name: "IVestedEscrow",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IVestedEscrow__factory>;
+    getContractFactory(
+      name: "IVoting",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IVoting__factory>;
+    getContractFactory(
+      name: "IWalletChecker",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IWalletChecker__factory>;
+    getContractFactory(
+      name: "IRewardStaking",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IRewardStaking__factory>;
+    getContractFactory(
+      name: "IStakingProxy",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IStakingProxy__factory>;
+    getContractFactory(
+      name: "CvxLockerV2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.CvxLockerV2__factory>;
+    getContractFactory(
+      name: "MerkleAirdrop",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MerkleAirdrop__factory>;
+    getContractFactory(
+      name: "MerkleAirdropFactory",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MerkleAirdropFactory__factory>;
     getContractFactory(
       name: "PVSale",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -304,7 +416,26 @@ declare module "hardhat/types/runtime" {
       name: "WKLAY",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.WKLAY__factory>;
+    getContractFactory(
+      name: "VestedEscrow",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VestedEscrow__factory>;
 
+    getContractAt(
+      name: "Ownable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Ownable>;
+    getContractAt(
+      name: "ERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20>;
+    getContractAt(
+      name: "IERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
     getContractAt(
       name: "IUniswapV2Callee",
       address: string,
@@ -470,6 +601,131 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Ownable>;
+    getContractAt(
+      name: "CvxCrvToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.CvxCrvToken>;
+    getContractAt(
+      name: "CrvDepositor",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.CrvDepositor>;
+    getContractAt(
+      name: "ICrvDeposit",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ICrvDeposit>;
+    getContractAt(
+      name: "ICurveGauge",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ICurveGauge>;
+    getContractAt(
+      name: "ICurveVoteEscrow",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ICurveVoteEscrow>;
+    getContractAt(
+      name: "IDeposit",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IDeposit>;
+    getContractAt(
+      name: "IFeeDistro",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IFeeDistro>;
+    getContractAt(
+      name: "IMinter",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IMinter>;
+    getContractAt(
+      name: "IPools",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IPools>;
+    getContractAt(
+      name: "IRegistry",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IRegistry>;
+    getContractAt(
+      name: "IRewardFactory",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IRewardFactory>;
+    getContractAt(
+      name: "IRewards",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IRewards>;
+    getContractAt(
+      name: "IStaker",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IStaker>;
+    getContractAt(
+      name: "IStash",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IStash>;
+    getContractAt(
+      name: "IStashFactory",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IStashFactory>;
+    getContractAt(
+      name: "ITokenFactory",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ITokenFactory>;
+    getContractAt(
+      name: "ITokenMinter",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ITokenMinter>;
+    getContractAt(
+      name: "IVestedEscrow",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IVestedEscrow>;
+    getContractAt(
+      name: "IVoting",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IVoting>;
+    getContractAt(
+      name: "IWalletChecker",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IWalletChecker>;
+    getContractAt(
+      name: "IRewardStaking",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IRewardStaking>;
+    getContractAt(
+      name: "IStakingProxy",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IStakingProxy>;
+    getContractAt(
+      name: "CvxLockerV2",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.CvxLockerV2>;
+    getContractAt(
+      name: "MerkleAirdrop",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MerkleAirdrop>;
+    getContractAt(
+      name: "MerkleAirdropFactory",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MerkleAirdropFactory>;
     getContractAt(
       name: "PVSale",
       address: string,
@@ -670,6 +926,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.WKLAY>;
+    getContractAt(
+      name: "VestedEscrow",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VestedEscrow>;
 
     // default types
     getContractFactory(

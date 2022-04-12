@@ -64,6 +64,10 @@ contract SCAMPBank is Owned {
     bool public mintPaused = false;
     bool public redeemPaused = false;
 
+    //reserve ratio which can be used to lend or single=stake
+    uint256 public reserveratio;
+    uint256 public collatcirculation;
+
     /* ========== MODIFIERS ========== */
 
 
@@ -386,6 +390,7 @@ contract SCAMPBank is Owned {
 
         emit RedeemingToggled(redeemPaused);
     }
+
     
     // Combined into one function due to 24KiB contract memory limit
     function setPoolParameters(uint256 new_ceiling, uint256 new_bonus_rate, uint256 new_redemption_delay, uint256 new_mint_fee, uint256 new_redeem_fee, uint256 new_buyback_fee, uint256 new_recollat_fee) external onlyOwner {
@@ -405,5 +410,5 @@ contract SCAMPBank is Owned {
     event PoolParametersSet(uint256 new_ceiling, uint256 new_bonus_rate, uint256 new_redemption_delay, uint256 new_mint_fee, uint256 new_redeem_fee, uint256 new_buyback_fee, uint256 new_recollat_fee);
     event MintingToggled(bool toggled);
     event RedeemingToggled(bool toggled);
-
+    event ReserveRatioset(uint256 ratio);
 }

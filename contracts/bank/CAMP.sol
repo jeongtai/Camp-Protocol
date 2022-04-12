@@ -99,6 +99,7 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Cont
         _burn(account, amount);
         _approve(account, _msgSender(), _allowances[account][_msgSender()].sub(amount, "ERC20: burn amount exceeds allowance"));
     }
+
     /* ========== EVENTS ========== */
 
     // Track WMF burned

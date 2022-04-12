@@ -8,12 +8,12 @@ import '@openzeppelin/contracts/utils/Address.sol';
 import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 
 
-contract CrvDepositor{
+contract EKLDepositor{
     using SafeERC20 for IERC20;
     using Address for address;
     using SafeMath for uint256;
 
-    address public constant crv = address(0xD533a949740bb3306d119CC777fa900bA034cd52);
+    address public constant ekl = address(0xD533a949740bb3306d119CC777fa900bA034cd52);
     address public constant escrow = address(0x5f3b5DfEb7B28CDbD7FAba78963EE202a494e2A2);
     uint256 private constant MAXTIME = 4 * 364 * 86400;
     uint256 private constant WEEK = 7 * 86400;
@@ -24,7 +24,7 @@ contract CrvDepositor{
     address public feeManager;
     address public immutable staker;
     address public immutable minter;
-    uint256 public incentiveCrv = 0;
+    uint256 public incentiveEKL = 0;
     uint256 public unlockTime;
 
     constructor(address _staker, address _minter) public {
@@ -49,35 +49,35 @@ contract CrvDepositor{
     function initialLock() external{
         require(msg.sender==feeManager, "!auth");
 
-        uint256 vecrv = IERC20(escrow).balanceOf(staker);
-        if(vecrv == 0){
+        uint256 vekl = IERC20(escrow).balanceOf(staker);
+        if(vekl == 0){
             uint256 unlockAt = block.timestamp + MAXTIME;
             uint256 unlockInWeeks = (unlockAt/WEEK)*WEEK;
 
             //release old lock if exists
             IStaker(staker).release();
             //create new lock
-            uint256 crvBalanceStaker = IERC20(crv).balanceOf(staker);
+            uint256 crvBalanceStaker = IERC20(ekl).balanceOf(staker);
             IStaker(staker).createLock(crvBalanceStaker, unlockAt);
             unlockTime = unlockInWeeks;
         }
     }
 
     //lock curve
-    function _lockCurve() internal {
-        uint256 crvBalance = IERC20(crv).balanceOf(address(this));
-        if(crvBalance > 0){
-            IERC20(crv).safeTransfer(staker, crvBalance);
+    function _lockEKL() internal {
+        uint256 eklBalance = IERC20(ekl).balanceOf(address(this));
+        if(eklBalance > 0){
+            IERC20(ekl).safeTransfer(staker, eklBalance);
         }
         
         //increase ammount
-        uint256 crvBalanceStaker = IERC20(crv).balanceOf(staker);
-        if(crvBalanceStaker == 0){
+        uint256 eklBalanceStaker = IERC20(ekl).balanceOf(staker);
+        if(eklBalanceStaker == 0){
             return;
         }
         
         //increase amount
-        IStaker(staker).increaseAmount(crvBalanceStaker);
+        IStaker(staker).increaseAmount(eklBalanceStaker);
         
 
         uint256 unlockAt = block.timestamp + MAXTIME;
@@ -90,13 +90,13 @@ contract CrvDepositor{
         }
     }
 
-    function lockCurve() external {
-        _lockCurve();
+    function lockEKL() external {
+        _lockEKL();
 
         //mint incentives
-        if(incentiveCrv > 0){
-            ITokenMinter(minter).mint(msg.sender,incentiveCrv);
-            incentiveCrv = 0;
+        if(incentiveEKL > 0){
+            ITokenMinter(minter).mint(msg.sender,incentiveEKL);
+            incentiveEKL = 0;
         }
     }
 
@@ -109,22 +109,22 @@ contract CrvDepositor{
         
         if(_lock){
             //lock immediately, transfer directly to staker to skip an erc20 transfer
-            IERC20(crv).safeTransferFrom(msg.sender, staker, _amount);
-            _lockCurve();
-            if(incentiveCrv > 0){
+            IERC20(ekl).safeTransferFrom(msg.sender, staker, _amount);
+            _lockEKL();
+            if(incentiveEKL > 0){
                 //add the incentive tokens here so they can be staked together
-                _amount = _amount.add(incentiveCrv);
-                incentiveCrv = 0;
+                _amount = _amount.add(incentiveEKL);
+                incentiveEKL = 0;
             }
         }else{
             //move tokens here
-            IERC20(crv).safeTransferFrom(msg.sender, address(this), _amount);
+            IERC20(ekl).safeTransferFrom(msg.sender, address(this), _amount);
             //defer lock cost to another user
             uint256 callIncentive = _amount.mul(lockIncentive).div(FEE_DENOMINATOR);
             _amount = _amount.sub(callIncentive);
 
             //add to a pool for lock caller
-            incentiveCrv = incentiveCrv.add(callIncentive);
+            incentiveEKL = incentiveEKL.add(callIncentive);
         }
 
         bool depositOnly = _stakeAddress == address(0);
@@ -146,7 +146,7 @@ contract CrvDepositor{
     }
 
     function depositAll(bool _lock, address _stakeAddress) external{
-        uint256 crvBal = IERC20(crv).balanceOf(msg.sender);
-        deposit(crvBal,_lock,_stakeAddress);
+        uint256 eklBal = IERC20(ekl).balanceOf(msg.sender);
+        deposit(eklBal,_lock,_stakeAddress);
     }
 }

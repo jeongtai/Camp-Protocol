@@ -16,6 +16,8 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
 
     address public DAO;
     address public CAMP;
+    address public operator;
+
     address[] internal _reserveTokens;
     mapping(address => bool) public isReserveToken;
     mapping(address => uint256) public tokenPaidAmounts;
@@ -24,13 +26,15 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
 
     function __initialize(
         address DAO_,
-        address CAMP_
+        address CAMP_,
+        address op_
     ) external initializer {
         // _setInitialOwner();
         require(CAMP_ != address(0), "BondTreasury: 0 address");
         DAO = DAO_;
         require(DAO_ != address(0), "BondTreasury: 0 address");
         CAMP = CAMP_;
+        operator = op_;
     }
 
     function getBalance() external view returns (uint256) {
@@ -91,6 +95,56 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
         isReserveDepositor[_depositor] = false;
     }
 
+
+
+//For Convex
+
+    function setApprovals() external {
+      for (uint256 i = 0; i < _reserveTokens.length; i ++) {
+        IERC20(reserveTokens[i]).safeApprove(booster, 0);
+        IERC20(reserveTokens[i]).safeApprove(booster, uint256(-1));
+      }
+    }
+
+    function depositLP(uint256 _amount, address _gauge) external {
+      require(msg.sender == operator, "!auth");
+      IStaker(staker).deposit(lptoken, gauge);
+
+      emit LPDeposited(gauge, _amount);
+      return true;
+    }
+
+    function depositAll(address lptoken, address gauge) external returns(bool){
+        uint256 balance = IERC20(lptoken).balanceOf(msg.sender);
+        depositLP(balance, gauge);
+        return true;
+    }
+
+    function _withdraw(address lptoken, uint256 _amount, address _from, address _to, address gauge) internal {
+      IStaker(staker).withdraw(lptoken, gauge, _amount);
+      IERC20(lptoken).safeTransfer(_to, _amount);
+    }
+
+    function withdraw(uint256 lptoken, uint256 _amount, address gauge) public returns(bool){
+      require(msg.sender == operator, "!auth");
+      _withdraw(lptoken,_amount,msg.sender,msg.sender, address gauge);
+      return true;
+    }
+
+    function withdrawAll(address lptoken, address gauge) public returns(bool){
+      require(msg.sender == operator, "!auth");
+      uint256 userBal = IERC20(token).balanceOf(msg.sender);
+      withdraw(lptoken, userBal, address gauge);
+      return true;
+    }
+
+    function claimRewards(address _gauge) external returns(bool){
+      require(msg.sender == operator, "!auth");
+
+      IStaker(staker).claimRewards(_gauge);
+      return true;
+    }
+
     /* ======= AUXILLIARY ======= */
 
     /**
@@ -102,5 +156,11 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
         require(!isReserveToken[_token], "BondTreasury: cannot withdraw reserve tokens");
         IKIP7(_token).safeTransfer(DAO, IKIP7(_token).balanceOf(address(this)));
         return true;
+    }
+    //EKL은 EKLdepositor로 PostEKL은 다른 Address로, Fee는 lockFees로
+    function transferRewards(address _token, address _to) external {
+      require(msg.sender == operator, "!auth");
+      uint256 userBal = IERC20(_token).balanceOf(msg.sender);
+      IERC20(_token).safeTransfer(_to, userBal);
     }
 }

@@ -13,9 +13,10 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Cont
 
     /* ========== STATE VARIABLES ========== */
     address public SCAMPAddress;
-    address public Bonding_contract_address;
-    address public Staking_contract_address;
+    address public operator;
+
     uint256 public constant genesis_supply = 100000000e18; // 100M is printed upon genesis
+    uint256 public constant maxSupply = 1000000000e18;
     SCAMP private _SCAMP;
 
 
@@ -31,24 +32,23 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Cont
     _;
   }
 
-    modifier onlyBond() {
-      require(msg.sender == Bonding_contract_address, "You are not Bond");
-      _;
-    }
-
-    modifier onlyStake() {
-      require(msg.sender == Staking_contract_address, "You are not Staking Contract");
-      _;
-    }
-
     /* ========== CONSTRUCTOR ========== */
 
     constructor (
-        address _creator_address
+        address _creator_address,
+        address _proxy
     ) Owned(_creator_address){
         _mint(_creator_address, genesis_supply);
+        vecrvProxy = _proxy;
+        reductionPerCliff = maxSupply.div(totalCliffs);
     }
+    
     /* ========== RESTRICTED FUNCTIONS ========== */
+    function updateOperator() public {
+        operator = IStaker(vecrvProxy).operator();
+    }
+
+    function 
 
     function setSCAMPAddress(address SCAMP_contract_address) external onlyByOwnOrcontroller {
         require(SCAMP_contract_address != address(0), "Zero address detected");
@@ -56,20 +56,6 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Cont
         SCAMPAddress = SCAMP_contract_address;
         _SCAMP = SCAMP(SCAMPAddress);
         emit SCAMPAddressSet(SCAMP_contract_address);
-    }
-    
-    function setBondAddress(address _Bonding_contract_address) external onlyByOwnOrcontroller {
-      require(_Bonding_contract_address != address(0), "Zero address detected");
-
-      Bonding_contract_address = _Bonding_contract_address;
-      emit BondAddressSet(_Bonding_contract_address);
-    }
-
-    function setStakeAddress(address _Staking_contract_address) external onlyByOwnOrcontroller {
-      require(_Staking_contract_address != address(0), "Zero address detected");
-
-      Staking_contract_address = _Staking_contract_address;
-      emit StakeAddressSet(_Staking_contract_address);
     }
     
     // This function is what other WUSD pools will call to mint new WMF (similar to the WUSD mint) 
@@ -89,16 +75,51 @@ contract CAMP is KIP7("Camp Protocol Governance Token", "CAMP", 18), Owned, Cont
         super._mint(m_address, m_amount);
         emit BondMinted(address(this), m_address, m_amount);
     }
-  
-    function Staking_mint(address m_address, uint256 m_amount) external onlyByOwnOrcontroller {        
-        super._mint(m_address, m_amount);
-        emit StakeMinted(address(this), m_address, m_amount);
+
+    function mint(address _to, uint256 _amount) external {
+          if(msg.sender != operator){
+              //dont error just return. if a shutdown happens, rewards on old system
+              //can still be claimed, just wont mint cvx
+              return;
+          }
+
+          uint256 supply = totalSupply();
+          if(supply == 0){
+              //premine, one time only
+              _mint(_to,_amount);
+              //automatically switch operators
+              updateOperator();
+              return;
+          }
+          
+          //use current supply to gauge cliff
+          //this will cause a bit of overflow into the next cliff range
+          //but should be within reasonable levels.
+          //requires a max supply check though
+          uint256 cliff = supply.div(reductionPerCliff);
+          //mint if below total cliffs
+          if(cliff < totalCliffs){
+              //for reduction% take inverse of current cliff
+              uint256 reduction = totalCliffs.sub(cliff);
+              //reduce
+              _amount = _amount.mul(reduction).div(totalCliffs);
+
+              //supply cap check
+              uint256 amtTillMax = maxSupply.sub(supply);
+              if(_amount > amtTillMax){
+                  _amount = amtTillMax;
+              }
+
+              //mint
+              _mint(_to, _amount);
+          }
     }
 
     function _burnFrom(address account, uint256 amount) internal {
         _burn(account, amount);
         _approve(account, _msgSender(), _allowances[account][_msgSender()].sub(amount, "ERC20: burn amount exceeds allowance"));
     }
+
 
     /* ========== EVENTS ========== */
 

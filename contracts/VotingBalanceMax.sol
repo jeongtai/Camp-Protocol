@@ -3,7 +3,7 @@ pragma solidity 0.7.5;
 pragma experimental ABIEncoderV2;
 
 
-import "./Interfaces/ILockedCvx.sol";
+import "./Interfaces/ILockedKP.sol";
 import "./Interfaces/IVotingEligibility.sol";
 import '@openzeppelin/contracts/math/SafeMath.sol';
 
@@ -28,15 +28,15 @@ contract VotingBalanceMax{
 
         //compute to find previous epoch
         uint256 currentEpoch = block.timestamp.div(rewardsDuration).mul(rewardsDuration);
-        uint256 epochindex = ILockedCvx(locker).epochCount() - 1;
-        (, uint32 _enddate) = ILockedCvx(locker).epochs(epochindex);
+        uint256 epochindex = ILockedKP(locker).epochCount() - 1;
+        (, uint32 _enddate) = ILockedKP(locker).epochs(epochindex);
         if(_enddate >= currentEpoch){
             //if end date is already the current epoch,  minus 1 to get the previous
             epochindex -= 1;
         }
         //get balances of current and previous
-        uint256 balanceAtPrev = ILockedCvx(locker).balanceAtEpochOf(epochindex, _account);
-        uint256 currentBalance = ILockedCvx(locker).balanceOf(_account);
+        uint256 balanceAtPrev = ILockedKP(locker).balanceAtEpochOf(epochindex, _account);
+        uint256 currentBalance = ILockedKP(locker).balanceOf(_account);
 
         //return greater balance
         return max(balanceAtPrev, currentBalance);
@@ -53,7 +53,7 @@ contract VotingBalanceMax{
         uint256 currentEpochUnlock = block.timestamp.div(rewardsDuration).mul(rewardsDuration).add(lockDuration);
 
         //grab account lock list
-        (,,,ILockedCvx.LockedBalance[] memory balances) = ILockedCvx(locker).lockedBalances(_account);
+        (,,,ILockedKP.LockedBalance[] memory balances) = ILockedKP(locker).lockedBalances(_account);
         
         //if most recent lock is current epoch, then lock amount is pending balance
         uint256 pending;
@@ -69,6 +69,6 @@ contract VotingBalanceMax{
     }
 
     function totalSupply() view external returns(uint256){
-        return ILockedCvx(locker).totalSupply();
+        return ILockedKP(locker).totalSupply();
     }
 }

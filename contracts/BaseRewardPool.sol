@@ -52,12 +52,12 @@ contract BaseRewardPool {
      using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
-    IERC20 public rewardToken;
-    IERC20 public stakingToken;
+    IERC20 public rewardToken; //EKL
+    IERC20 public stakingToken; //kpEKL
     uint256 public constant duration = 7 days;
 
-    address public operator;
-    address public rewardManager;
+    address public operator; //Booster
+    address public rewardManager; //RewardFactory
 
     uint256 public pid;
     uint256 public periodFinish = 0;
@@ -233,31 +233,6 @@ contract BaseRewardPool {
 
     function withdrawAll(bool claim) external{
         withdraw(_balances[msg.sender],claim);
-    }
-
-    function withdrawAndUnwrap(uint256 amount, bool claim) public updateReward(msg.sender) returns(bool){
-
-        //also withdraw from linked rewards
-        for(uint i=0; i < extraRewards.length; i++){
-            IRewards(extraRewards[i]).withdraw(msg.sender, amount);
-        }
-        
-        _totalSupply = _totalSupply.sub(amount);
-        _balances[msg.sender] = _balances[msg.sender].sub(amount);
-
-        //tell operator to withdraw from here directly to user
-        IDeposit(operator).withdrawTo(pid,amount,msg.sender);
-        emit Withdrawn(msg.sender, amount);
-
-        //get rewards too
-        if(claim){
-            getReward(msg.sender,true);
-        }
-        return true;
-    }
-
-    function withdrawAllAndUnwrap(bool claim) external{
-        withdrawAndUnwrap(_balances[msg.sender],claim);
     }
 
     function getReward(address _account, bool _claimExtras) public updateReward(_account) returns(bool){

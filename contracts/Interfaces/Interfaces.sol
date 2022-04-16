@@ -3,7 +3,7 @@ pragma solidity 0.7.5;
 
 
 
-interface ICurveGauge {
+interface IEklipseGauge {
     function deposit(uint256) external;
     function balanceOf(address) external view returns (uint256);
     function withdraw(uint256) external;
@@ -13,7 +13,7 @@ interface ICurveGauge {
     function lp_token() external view returns(address);
 }
 
-interface ICurveVoteEscrow {
+interface IEklipseVoteEscrow {
     function create_lock(uint256, uint256) external;
     function increase_amount(uint256) external;
     function increase_unlock_time(uint256) external;
@@ -52,7 +52,7 @@ interface IStaker{
     function increaseAmount(uint256) external;
     function increaseTime(uint256) external;
     function release() external;
-    function claimCrv(address) external returns (uint256);
+    function claimEKL(address) external returns (uint256);
     function claimRewards(address) external;
     function claimFees(address,address) external;
     function setStashAccess(address, bool) external;
@@ -107,7 +107,7 @@ interface IDeposit{
     function owner() external returns(address);
 }
 
-interface ICrvDeposit{
+interface IEKLDeposit{
     function deposit(uint256, bool) external;
     function lockIncentive() external view returns(uint256);
 }

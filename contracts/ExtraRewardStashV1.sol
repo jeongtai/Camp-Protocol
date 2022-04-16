@@ -16,11 +16,11 @@ contract ExtraRewardStashV1 {
     uint256 private constant WEEK = 7 * 86400;
     uint256 private constant maxRewards = 8;
 
-    uint256 public pid;
-    address public operator;
-    address public staker;
-    address public gauge;
-    address public rewardFactory;
+    uint256 public pid; //lpid
+    address public operator; //Booster
+    address public staker; //Voterproxy
+    address public gauge; //EKLgauge
+    address public rewardFactory; //rewardFactory
    
     uint256 public historicalRewards = 0;
 
@@ -45,7 +45,7 @@ contract ExtraRewardStashV1 {
     }
 
     function setToken() internal {
-        address token = ICurveGauge(gauge).rewarded_token();
+        address token = IEklipseGauge(gauge).rewarded_token();
 
         if(token != address(0)){
             //set token address

@@ -2,7 +2,7 @@
 pragma solidity 0.7.5;
 
 
-import "./Interfaces/ILockedCvx.sol";
+import "./Interfaces/ILockedKP.sol";
 import '@openzeppelin/contracts/utils/Address.sol';
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -52,10 +52,10 @@ contract VotingBalance is Ownable{
             }
         }
 
-        return ILockedCvx(locker).balanceOf(_account);
+        return ILockedKP(locker).balanceOf(_account);
     }
 
     function totalSupply() view external returns(uint256){
-        return ILockedCvx(locker).totalSupply();
+        return ILockedKP(locker).totalSupply();
     }
 }

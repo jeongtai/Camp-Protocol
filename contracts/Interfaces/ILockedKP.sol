@@ -2,7 +2,7 @@
 pragma solidity 0.7.5;
 pragma experimental ABIEncoderV2;
 
-interface ILockedCvx{
+interface ILockedKP{
      struct LockedBalance {
         uint112 amount;
         uint112 boosted;

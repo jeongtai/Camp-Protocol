@@ -19,7 +19,7 @@ contract ExtraRewardStashV3 {
     using Address for address;
     using SafeMath for uint256;
 
-    address public constant crv = address(0xD533a949740bb3306d119CC777fa900bA034cd52);
+    address public constant ekl = address(0xD533a949740bb3306d119CC777fa900bA034cd52);
     uint256 private constant maxRewards = 8;
 
     uint256 public pid;
@@ -92,7 +92,7 @@ contract ExtraRewardStashV3 {
     //check if gauge rewards have changed
     function checkForNewRewardTokens() internal {
         for(uint256 i = 0; i < maxRewards; i++){
-            address token = ICurveGauge(gauge).reward_tokens(i);
+            address token = IEklipseGauge(gauge).reward_tokens(i);
             if (token == address(0)) {
                 break;
             }
@@ -126,9 +126,9 @@ contract ExtraRewardStashV3 {
             //set token address
             t.token = _token;
 
-            //check if crv
-            if(_token != crv){
-                //create new reward contract (for NON-crv tokens only)
+            //check if ekl
+            if(_token != ekl){
+                //create new reward contract (for NON-ekl tokens only)
                 (,,,address mainRewardContract,,) = IDeposit(operator).poolInfo(pid);
                 address rewardContract = IRewardFactory(rewardFactory).CreateTokenRewards(
                     _token,
@@ -164,8 +164,8 @@ contract ExtraRewardStashV3 {
             uint256 amount = IERC20(token).balanceOf(address(this));
             if (amount > 0) {
                 historicalRewards[token] = historicalRewards[token].add(amount);
-                if(token == crv){
-                    //if crv, send back to booster to distribute
+                if(token == ekl){
+                    //if ekl, send back to booster to distribute
                     IERC20(token).safeTransfer(operator, amount);
                     continue;
                 }

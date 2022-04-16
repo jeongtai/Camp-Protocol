@@ -13,7 +13,7 @@ contract ExtraRewardStashV2 {
     using Address for address;
     using SafeMath for uint256;
 
-    address public constant crv = address(0xD533a949740bb3306d119CC777fa900bA034cd52);
+    address public constant ekl = address(0xD533a949740bb3306d119CC777fa900bA034cd52);
     uint256 private constant maxRewards = 8;
     uint256 private constant WEEK = 7 * 86400;
 
@@ -124,7 +124,7 @@ contract ExtraRewardStashV2 {
     //check if gauge rewards have changed
     function checkForNewRewardTokens() internal {
         for(uint256 i = 0; i < maxRewards; i++){
-            address token = ICurveGauge(gauge).reward_tokens(i);
+            address token = IEklipseGauge(gauge).reward_tokens(i);
             if (token == address(0)) {
                 for (uint256 x = i; x < tokenCount; x++) {
                     IRewardFactory(rewardFactory).removeActiveReward(tokenInfo[x].token,pid);
@@ -208,8 +208,8 @@ contract ExtraRewardStashV2 {
             uint256 amount = IERC20(token).balanceOf(address(this));
             if (amount > 0) {
                 historicalRewards[token] = historicalRewards[token].add(amount);
-                if(token == crv){
-                    //if crv, send back to booster to distribute
+                if(token == ekl){
+                    //if ekl, send back to booster to distribute
                     IERC20(token).safeTransfer(operator, amount);
                     continue;
                 }

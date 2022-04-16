@@ -16,8 +16,8 @@ contract ArbitratorVault{
     using Address for address;
     using SafeMath for uint256;
 
-    address public operator;
-    address public depositor;
+    address public operator;  // admin
+    address public depositor; // Booster
 
 
     constructor(address _depositor)public

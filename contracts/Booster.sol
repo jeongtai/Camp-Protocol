@@ -13,7 +13,7 @@ contract Booster{
     using Address for address;
     using SafeMath for uint256;
 
-    address public constant crv = address(0xD533a949740bb3306d119CC777fa900bA034cd52); //EKL
+    address public constant kp = address(0xD533a949740bb3306d119CC777fa900bA034cd52); //EKL
     address public constant registry = address(0x0000000022D53366457F9d5E68Ec105046FC4383); //EKL Registry
     uint256 public constant distributionAddressId = 4;
     address public constant voteOwnership = address(0xE478de485ad2fe566d49342Cbd03E49ed7DB3356); //EKL VOteOwnership
@@ -36,10 +36,10 @@ contract Booster{
     address public tokenFactory;
     address public rewardArbitrator;
     address public voteDelegate;
-    address public treasury;
+    address public treasury; //StakingProxy
     address public stakerRewards; //KP stake 주소
     address public lockRewards; //kpEKL stake 주소
-    address public lockFees; //cvxCrv vecrv fees
+    address public lockFees; //kpekl veekl fees
     address public feeDistro;
     address public feeToken;
 
@@ -49,7 +49,7 @@ contract Booster{
         address lptoken;
         address token;
         address gauge;
-        address crvRewards;
+        address kpRewards;
         address stash;
         bool shutdown;
     }
@@ -70,7 +70,7 @@ contract Booster{
         poolManager = msg.sender;
         feeDistro = address(0); //address(0xA464e6DCda8AC41e03616F95f4BC98a13b8922Dc); //EKLfeeDistributor
         feeToken = address(0); //address(0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490); //3Moon
-        treasury = address(0); //StakingProxy(Locker에게 줄 CRV, 3Moon)
+        treasury = address(0); //StakingProxy(Locker에게 줄 ekl, 3Moon)
         minter = _minter; //KP
     }
 
@@ -117,7 +117,7 @@ contract Booster{
         require(msg.sender == owner, "!auth");
         
         //reward contracts are immutable or else the owner
-        //has a means to redeploy and mint cvx via rewardClaimed()
+        //has a means to redeploy and mint kp via rewardClaimed()
         if(lockRewards == address(0)){
             lockRewards = _rewards;
             stakerRewards = _stakerRewards;
@@ -189,7 +189,7 @@ contract Booster{
                 lptoken: _lptoken,
                 token: token,
                 gauge: _gauge,
-                crvRewards: treasury,
+                kpRewards: treasury,
                 stash: stash,
                 shutdown: false
             })
@@ -322,7 +322,7 @@ contract Booster{
 
     //allow reward contracts to send here and withdraw to user
     // function withdrawTo(uint256 _pid, uint256 _amount, address _to) external returns(bool){
-    //     address rewardContract = poolInfo[_pid].crvRewards;
+    //     address rewardContract = poolInfo[_pid].eklRewards;
     //     require(msg.sender == rewardContract,"!auth");
 
     //     _withdraw(_pid,_amount,msg.sender,_to);
@@ -364,15 +364,15 @@ contract Booster{
         return true;
     }
 
-    //claim crv and extra rewards and disperse to reward contracts
+    //claim ekl and extra rewards and disperse to reward contracts
     function _earmarkRewards(uint256 _pid) internal {
         PoolInfo storage pool = poolInfo[_pid];
         require(pool.shutdown == false, "pool is closed");
 
         address gauge = pool.gauge;
 
-        //claim crv
-        IStaker(staker).claimCrv(gauge);
+        //claim ekl
+        IStaker(staker).claimEKL(gauge);
 
         //check if there are extra rewards
         address stash = pool.stash;
@@ -383,35 +383,29 @@ contract Booster{
             IStash(stash).processStash();
         }
 
-        //crv balance
-        uint256 crvBal = IERC20(crv).balanceOf(address(this));
+        //ekl balance
+        uint256 kpBal = IERC20(kp).balanceOf(address(this));
 
-        if (crvBal > 0) {
-            uint256 _lockIncentive = crvBal.mul(lockIncentive).div(FEE_DENOMINATOR);
-            uint256 _stakerIncentive = crvBal.mul(stakerIncentive).div(FEE_DENOMINATOR);
-            uint256 _callIncentive = crvBal.mul(earmarkIncentive).div(FEE_DENOMINATOR);
+        if (kpBal > 0) {
+            uint256 _lockIncentive = kpBal.mul(lockIncentive).div(FEE_DENOMINATOR);
+            uint256 _stakerIncentive = kpBal.mul(stakerIncentive).div(FEE_DENOMINATOR);
+            uint256 _callIncentive = kpBal.mul(earmarkIncentive).div(FEE_DENOMINATOR);
             
             //send treasury
             if(treasury != address(0) && treasury != address(this) && platformFee > 0){
                 //only subtract after address condition check
-                uint256 _platform = crvBal.mul(platformFee).div(FEE_DENOMINATOR);
-                crvBal = crvBal.sub(_platform);
-                IERC20(crv).safeTransfer(treasury, _platform);
+                uint256 _platform = kpBal.mul(platformFee).div(FEE_DENOMINATOR);
+                IERC20(kp).safeTransfer(treasury, _platform);
             }
-
-            //remove incentives from balance
-            crvBal = crvBal.sub(_lockIncentive).sub(_callIncentive).sub(_stakerIncentive);
-            
-
             //send incentives for calling
-            IERC20(crv).safeTransfer(msg.sender, _callIncentive);          
+            IERC20(kp).safeTransfer(msg.sender, _callIncentive);          
 
-            //send lockers' share of crv to reward contract
-            IERC20(crv).safeTransfer(lockRewards, _lockIncentive);
+            //send lockers' share of ekl to reward contract
+            IERC20(kp).safeTransfer(lockRewards, _lockIncentive);
             IRewards(lockRewards).queueNewRewards(_lockIncentive);
 
-            //send stakers's share of crv to reward contract
-            IERC20(crv).safeTransfer(stakerRewards, _stakerIncentive);
+            //send stakers's share of ekl to reward contract
+            IERC20(kp).safeTransfer(stakerRewards, _stakerIncentive);
             IRewards(stakerRewards).queueNewRewards(_stakerIncentive);
         }
     }
@@ -433,7 +427,7 @@ contract Booster{
         return true;
     }
 
-    //callback from reward contract when crv is received.
+    //callback from reward contract when ekl is received.
     function rewardClaimed(address _address, uint256 _amount) external returns(bool){
         require(msg.sender == lockRewards, "!auth");
 

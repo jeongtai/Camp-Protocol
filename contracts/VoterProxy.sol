@@ -8,13 +8,13 @@ import '@openzeppelin/contracts/utils/Address.sol';
 import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 
 
-contract CurveVoterProxy {
+contract EklipseVoterProxy {
     using SafeERC20 for IERC20;
     using Address for address;
     using SafeMath for uint256;
 
     address public constant mintr = address(0xd061D61a4d941c39E5453435B6345Dc261C2fcE0);
-    address public constant crv = address(0xD533a949740bb3306d119CC777fa900bA034cd52);
+    address public constant ekl = address(0xD533a949740bb3306d119CC777fa900bA034cd52);
 
     address public constant escrow = address(0x5f3b5DfEb7B28CDbD7FAba78963EE202a494e2A2);
     address public constant gaugeController = address(0x2F50D538606Fa9EDD2B11E2446BEb18C9D5846bB);
@@ -31,7 +31,7 @@ contract CurveVoterProxy {
     }
 
     function getName() external pure returns (string memory) {
-        return "CurveVoterProxy";
+        return "EklipseVoterProxy";
     }
 
     function setOwner(address _owner) external {
@@ -73,7 +73,7 @@ contract CurveVoterProxy {
         if (balance > 0) {
             IERC20(_token).safeApprove(_gauge, 0);
             IERC20(_token).safeApprove(_gauge, balance);
-            ICurveGauge(_gauge).deposit(balance);
+            IEklipseGauge(_gauge).deposit(balance);
         }
         return true;
     }
@@ -112,35 +112,35 @@ contract CurveVoterProxy {
     }
 
     function _withdrawSome(address _gauge, uint256 _amount) internal returns (uint256) {
-        ICurveGauge(_gauge).withdraw(_amount);
+        IEklipseGauge(_gauge).withdraw(_amount);
         return _amount;
     }
 
     function createLock(uint256 _value, uint256 _unlockTime) external returns(bool){
         require(msg.sender == depositor, "!auth");
-        IERC20(crv).safeApprove(escrow, 0);
-        IERC20(crv).safeApprove(escrow, _value);
-        ICurveVoteEscrow(escrow).create_lock(_value, _unlockTime);
+        IERC20(ekl).safeApprove(escrow, 0);
+        IERC20(ekl).safeApprove(escrow, _value);
+        IEklipseVoteEscrow(escrow).create_lock(_value, _unlockTime);
         return true;
     }
 
     function increaseAmount(uint256 _value) external returns(bool){
         require(msg.sender == depositor, "!auth");
-        IERC20(crv).safeApprove(escrow, 0);
-        IERC20(crv).safeApprove(escrow, _value);
-        ICurveVoteEscrow(escrow).increase_amount(_value);
+        IERC20(ekl).safeApprove(escrow, 0);
+        IERC20(ekl).safeApprove(escrow, _value);
+        IEklipseVoteEscrow(escrow).increase_amount(_value);
         return true;
     }
 
     function increaseTime(uint256 _value) external returns(bool){
         require(msg.sender == depositor, "!auth");
-        ICurveVoteEscrow(escrow).increase_unlock_time(_value);
+        IEklipseVoteEscrow(escrow).increase_unlock_time(_value);
         return true;
     }
 
     function release() external returns(bool){
         require(msg.sender == depositor, "!auth");
-        ICurveVoteEscrow(escrow).withdraw();
+        IEklipseVoteEscrow(escrow).withdraw();
         return true;
     }
 
@@ -158,13 +158,13 @@ contract CurveVoterProxy {
         return true;
     }
 
-    function claimCrv(address _gauge) external returns (uint256){
+    function claimEKL(address _gauge) external returns (uint256){
         require(msg.sender == operator, "!auth");
         
         uint256 _balance = 0;
         try IMinter(mintr).mint(_gauge){
-            _balance = IERC20(crv).balanceOf(address(this));
-            IERC20(crv).safeTransfer(operator, _balance);
+            _balance = IERC20(ekl).balanceOf(address(this));
+            IERC20(ekl).safeTransfer(operator, _balance);
         }catch{}
 
         return _balance;
@@ -172,7 +172,7 @@ contract CurveVoterProxy {
 
     function claimRewards(address _gauge) external returns(bool){
         require(msg.sender == operator, "!auth");
-        ICurveGauge(_gauge).claim_rewards();
+        IEklipseGauge(_gauge).claim_rewards();
         return true;
     }
 
@@ -185,7 +185,7 @@ contract CurveVoterProxy {
     }    
 
     function balanceOfPool(address _gauge) public view returns (uint256) {
-        return ICurveGauge(_gauge).balanceOf(address(this));
+        return IEklipseGauge(_gauge).balanceOf(address(this));
     }
 
     function execute(

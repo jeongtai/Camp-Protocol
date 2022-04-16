@@ -14,8 +14,8 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 
 /*
-CVX Locking contract for https://www.convexfinance.com/
-CVX locked in this contract will be entitled to voting rights for the Convex Finance platform
+kp Locking contract for https://www.convexfinance.com/
+kp locked in this contract will be entitled to voting rights for the Convex Finance platform
 Based on EPS Staking contract for http://ellipsis.finance/
 Based on SNX MultiRewards by iamdefinitelyahuman - https://github.com/iamdefinitelyahuman/multi-rewards
 
@@ -27,7 +27,7 @@ V2:
 - balanceAtEpoch and supplyAtEpoch return proper values for future epochs
 - do not allow relocking directly to a new address
 */
-contract CvxLockerV2 is ReentrancyGuard, Ownable {
+contract KPLockerV2 is ReentrancyGuard, Ownable {
 
     using BoringMath for uint256;
     using BoringMath224 for uint224;
@@ -65,8 +65,8 @@ contract CvxLockerV2 is ReentrancyGuard, Ownable {
     }
 
     //token constants
-    IERC20 public constant stakingToken = IERC20(0x4e3FBD56CD56c3e72c1403e103b45Db9da5B9D2B); //cvx
-    address public constant cvxCrv = address(0x62B9c7356A2Dc64a1969e19C23e4f579F9810Aa7);
+    IERC20 public constant stakingToken = IERC20(0x4e3FBD56CD56c3e72c1403e103b45Db9da5B9D2B); //kp
+    address public constant kpEKL = address(0x62B9c7356A2Dc64a1969e19C23e4f579F9810Aa7);
 
     //rewards
     address[] public rewardTokens;
@@ -106,7 +106,7 @@ contract CvxLockerV2 is ReentrancyGuard, Ownable {
     uint256 public minimumStake = 10000;
     uint256 public maximumStake = 10000;
     address public stakingProxy;
-    address public constant cvxcrvStaking = address(0x3Fe65692bfCD0e6CF84cB1E7d24108E434A7587e);
+    address public constant kpEKLStaking = address(0x3Fe65692bfCD0e6CF84cB1E7d24108E434A7587e);
     uint256 public constant stakeOffsetOnLock = 500; //allow broader range for staking when depositing
 
     //management
@@ -175,7 +175,7 @@ contract CvxLockerV2 is ReentrancyGuard, Ownable {
         rewardDistributors[_rewardsToken][_distributor] = _approved;
     }
 
-    //Set the staking contract for the underlying cvx
+    //Set the staking contract for the underlying kp
     function setStakingContract(address _staking) external onlyOwner {
         require(stakingProxy == address(0), "!assign");
 
@@ -219,10 +219,10 @@ contract CvxLockerV2 is ReentrancyGuard, Ownable {
         isShutdown = true;
     }
 
-    //set approvals for staking cvx and cvxcrv
+    //set approvals for staking kp and kpEKL
     function setApprovals() external {
-        IERC20(cvxCrv).safeApprove(cvxcrvStaking, 0);
-        IERC20(cvxCrv).safeApprove(cvxcrvStaking, uint256(-1));
+        IERC20(kpEKL).safeApprove(kpEKLStaking, 0);
+        IERC20(kpEKL).safeApprove(kpEKLStaking, uint256(-1));
 
         IERC20(stakingToken).safeApprove(stakingProxy, 0);
         IERC20(stakingToken).safeApprove(stakingProxy, uint256(-1));
@@ -703,26 +703,26 @@ contract CvxLockerV2 is ReentrancyGuard, Ownable {
         //send process incentive
         if (reward > 0) {
             //if theres a reward(kicked), it will always be a withdraw only
-            //preallocate enough cvx from stake contract to pay for both reward and withdraw
-            allocateCVXForTransfer(uint256(locked));
+            //preallocate enough kp from stake contract to pay for both reward and withdraw
+            allocateKPForTransfer(uint256(locked));
 
             //reduce return amount by the kick reward
             locked = locked.sub(reward.to112());
             
             //transfer reward
-            transferCVX(_rewardAddress, reward, false);
+            transferKP(_rewardAddress, reward, false);
 
             emit KickReward(_rewardAddress, _account, reward);
         }else if(_spendRatio > 0){
-            //preallocate enough cvx to transfer the boost cost
-            allocateCVXForTransfer( uint256(locked).mul(_spendRatio).div(denominator) );
+            //preallocate enough kp to transfer the boost cost
+            allocateKPForTransfer( uint256(locked).mul(_spendRatio).div(denominator) );
         }
 
         //relock or return to user
         if (_relock) {
             _lock(_withdrawTo, locked, _spendRatio, true);
         } else {
-            transferCVX(_withdrawTo, locked, true);
+            transferKP(_withdrawTo, locked, true);
         }
     }
 
@@ -741,8 +741,8 @@ contract CvxLockerV2 is ReentrancyGuard, Ownable {
         _processExpiredLocks(_account, false, 0, _account, msg.sender, rewardsDuration.mul(kickRewardEpochDelay));
     }
 
-    //pull required amount of cvx from staking for an upcoming transfer
-    function allocateCVXForTransfer(uint256 _amount) internal{
+    //pull required amount of kp from staking for an upcoming transfer
+    function allocateKPForTransfer(uint256 _amount) internal{
         uint256 balance = stakingToken.balanceOf(address(this));
         if (_amount > balance) {
             IStakingProxy(stakingProxy).withdraw(_amount.sub(balance));
@@ -750,9 +750,9 @@ contract CvxLockerV2 is ReentrancyGuard, Ownable {
     }
 
     //transfer helper: pull enough from staking, transfer, updating staking ratio
-    function transferCVX(address _account, uint256 _amount, bool _updateStake) internal {
-        //allocate enough cvx from staking for the transfer
-        allocateCVXForTransfer(_amount);
+    function transferKP(address _account, uint256 _amount, bool _updateStake) internal {
+        //allocate enough kp from staking for the transfer
+        allocateKPForTransfer(_amount);
         //transfer
         stakingToken.safeTransfer(_account, _amount);
 
@@ -762,7 +762,7 @@ contract CvxLockerV2 is ReentrancyGuard, Ownable {
         }
     }
 
-    //calculate how much cvx should be staked. update if needed
+    //calculate how much kp should be staked. update if needed
     function updateStakeRatio(uint256 _offset) internal {
         if (isShutdown) return;
 
@@ -798,8 +798,8 @@ contract CvxLockerV2 is ReentrancyGuard, Ownable {
             uint256 reward = rewards[_account][_rewardsToken];
             if (reward > 0) {
                 rewards[_account][_rewardsToken] = 0;
-                if (_rewardsToken == cvxCrv && _stake) {
-                    IRewardStaking(cvxcrvStaking).stakeFor(_account, reward);
+                if (_rewardsToken == kpEKL && _stake) {
+                    IRewardStaking(kpEKLStaking).stakeFor(_account, reward);
                 } else {
                     IERC20(_rewardsToken).safeTransfer(_account, reward);
                 }
@@ -843,7 +843,7 @@ contract CvxLockerV2 is ReentrancyGuard, Ownable {
         
         emit RewardAdded(_rewardsToken, _reward);
 
-        if(_rewardsToken == cvxCrv){
+        if(_rewardsToken == kpEKL){
             //update staking ratio if main reward
             updateStakeRatio(0);
         }

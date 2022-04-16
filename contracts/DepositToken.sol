@@ -14,7 +14,7 @@ contract DepositToken is ERC20 {
     using Address for address;
     using SafeMath for uint256;
 
-    address public operator;
+    address public operator; //Booster
 
     constructor(address _operator, address _lptoken)
         public

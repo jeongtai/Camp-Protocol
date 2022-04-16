@@ -11,7 +11,7 @@ pragma solidity 0.7.5;
 /___/ \_, //_//_/\__//_//_/\__/ \__//_/ /_\_\
      /___/
 
-* Synthetix: cvxRewardPool.sol
+* Synthetix: kpRewardPool.sol
 *
 * Docs: https://docs.synthetix.io/
 *
@@ -47,7 +47,7 @@ import '@openzeppelin/contracts/utils/Address.sol';
 import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 
 
-contract cvxRewardPool{
+contract kpRewardPool{
     using SafeERC20 for IERC20;
     using SafeMath for uint256;
 
@@ -57,9 +57,9 @@ contract cvxRewardPool{
     uint256 public constant FEE_DENOMINATOR = 10000;
 
     address public immutable operator;
-    address public immutable crvDeposits;
-    address public immutable cvxCrvRewards;
-    IERC20 public immutable cvxCrvToken;
+    address public immutable eklDeposits;
+    address public immutable kpEKLRewards;
+    IERC20 public immutable kpEKLToken;
     address public immutable rewardManager;
 
     uint256 public periodFinish = 0;
@@ -85,9 +85,9 @@ contract cvxRewardPool{
     constructor(
         address stakingToken_,
         address rewardToken_,
-        address crvDeposits_,
-        address cvxCrvRewards_,
-        address cvxCrvToken_,
+        address eklDeposits_,
+        address kpEKLRewards_,
+        address kpEKLToken_,
         address operator_,
         address rewardManager_
     ) public {
@@ -95,9 +95,9 @@ contract cvxRewardPool{
         rewardToken = IERC20(rewardToken_);
         operator = operator_;
         rewardManager = rewardManager_;
-        crvDeposits = crvDeposits_;
-        cvxCrvRewards = cvxCrvRewards_;
-        cvxCrvToken = IERC20(cvxCrvToken_);
+        eklDeposits = eklDeposits_;
+        kpEKLRewards = kpEKLRewards_;
+        kpEKLToken = IERC20(kpEKLToken_);
     }
 
     function totalSupply() public view returns (uint256) {
@@ -161,12 +161,12 @@ contract cvxRewardPool{
     }
 
     function earned(address account) external view returns (uint256) {
-        uint256 depositFeeRate = ICrvDeposit(crvDeposits).lockIncentive();
+        uint256 depositFeeRate = IEKLDeposit(eklDeposits).lockIncentive();
 
         uint256 r = earnedReward(account);
         uint256 fees = r.mul(depositFeeRate).div(FEE_DENOMINATOR);
         
-        //fees dont apply until whitelist+vecrv lock begins so will report
+        //fees dont apply until whitelist+veekl lock begins so will report
         //slightly less value than what is actually received.
         return r.sub(fees);
     }
@@ -250,19 +250,19 @@ contract cvxRewardPool{
         uint256 reward = earnedReward(_account);
         if (reward > 0) {
             rewards[_account] = 0;
-            rewardToken.safeApprove(crvDeposits,0);
-            rewardToken.safeApprove(crvDeposits,reward);
-            ICrvDeposit(crvDeposits).deposit(reward,false);
+            rewardToken.safeApprove(eklDeposits,0);
+            rewardToken.safeApprove(eklDeposits,reward);
+            IEKLDeposit(eklDeposits).deposit(reward,false);
 
-            uint256 cvxCrvBalance = cvxCrvToken.balanceOf(address(this));
+            uint256 kpEKLBalance = kpEKLToken.balanceOf(address(this));
             if(_stake){
-                IERC20(cvxCrvToken).safeApprove(cvxCrvRewards,0);
-                IERC20(cvxCrvToken).safeApprove(cvxCrvRewards,cvxCrvBalance);
-                IRewards(cvxCrvRewards).stakeFor(_account,cvxCrvBalance);
+                IERC20(kpEKLToken).safeApprove(kpEKLRewards,0);
+                IERC20(kpEKLToken).safeApprove(kpEKLRewards,kpEKLBalance);
+                IRewards(kpEKLRewards).stakeFor(_account,kpEKLBalance);
             }else{
-                cvxCrvToken.safeTransfer(_account, cvxCrvBalance);
+                kpEKLToken.safeTransfer(_account, kpEKLBalance);
             }
-            emit RewardPaid(_account, cvxCrvBalance);
+            emit RewardPaid(_account, kpEKLBalance);
         }
 
         //also get rewards from linked rewards

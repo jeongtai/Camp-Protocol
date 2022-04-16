@@ -2,18 +2,22 @@
 
 pragma solidity 0.7.5;
 
-import "./library/kip/SafeKIP7.sol";
-import "./library/SafeMath.sol";
-import "./library/Ownable.sol";
+import '@openzeppelin/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import '@openzeppelin/contracts/utils/Address.sol';
+import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
+import '@openzeppelin/contracts/access/Ownable.sol';
 import "./interface/IBondTreasury.sol";
 import "./interface/IStakedToken.sol";
 import "./library/upgradeable/VersionedInitializable.sol";
 import "./interface/IBondDepository.sol";
-import "../bank/Oracle/AssetOracle.sol";
+import "../Interfaces/IAssetOracle.sol";
+import "../bank/Uniswap/interfaces/IUniswapV2Pair.sol";
 
 abstract contract BondDepository is Ownable, VersionedInitializable, IBondDepository  {
-    using SafeKIP7 for IKIP7;
-    using SafeMath for uint;
+    using SafeERC20 for IERC20;
+    using Address for address;
+    using SafeMath for uint256;
 
     /* ======== EVENTS ======== */
 
@@ -25,9 +29,9 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     /* ======== STATE VARIABLES ======== */
 
     address public DAO;
-    address public CAMP; // token given as payment for bond
+    address public kp; // token given as payment for bond
 
-    AssetOracle private _assetOracle;
+    address public assetOracle;
     // address public oracle;
     address private Token0address;
     address private Token1address;  
@@ -36,7 +40,6 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     // IUniswapV2Pair private principle; // token used to create bond(아마도 lp)
     address public override principle; // token used to create bond??
     address public treasury; // mints OHM when receives principle
-    address public usdt_address;
 
     address public staking; // to auto-stake payout
 
@@ -65,7 +68,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
 
     // Info for bond holder
     struct Bond {
-        uint256 payout; // CAMP remaining to be paid
+        uint256 payout; // KP remaining to be paid
         uint256 vesting; // Blocks left to vest
         uint256 lastBlock; // Last interaction
         uint256 pricePaid; // In USDT, for front end viewing
@@ -86,20 +89,15 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     /* ======== INITIALIZATION ======== */
 
     function __initialize(
-        address _CAMP,
+        address _kp,
         address _DAO,
         address _principle,
         address _Token0address,
         address _Token1address,
-        // address _treasury, // set으로 변경
-        address _usdt_address,
         address _oracle
     ) external initializer {
-        // _setInitialOwner();
-        require(_CAMP != address(0));
-        CAMP = _CAMP;
-        // require(_SCAMP != address(0));
-        // SCAMP = _SCAMP;
+        require(_kp != address(0));
+        kp = _kp;
         require(_Token0address != address(0));
         Token0address = _Token0address;
         require(_Token1address != address(0));
@@ -108,13 +106,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         DAO = _DAO;
         require(_principle != address(0));
         principle = _principle;
-        // require(_staking != address(0));
-        // staking = _staking;
-        // require(_treasury != address(0));
-        // treasury = _treasury;
-        require(_usdt_address != address(0));
-        usdt_address = _usdt_address;
-        _assetOracle = AssetOracle(_oracle);
+        assetOracle = _oracle;
     }
 
     /**
@@ -205,15 +197,6 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         });
     }
 
-    /**
-     *  @notice set contract for auto stake
-     *  @param _staking address
-     */
-    function setStaking(address _staking) external onlyOwner() {
-        require(_staking != address(0));
-        staking = _staking;
-    }
-
     function setTreasury(address _treasury) external onlyOwner() {
         require(_treasury != address(0));
         treasury = _treasury;
@@ -247,7 +230,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
         uint256 principleValue = assetPrice().mul(_amount).div(10**6); // returns principle value, in USD, 10**18
         uint256 payout = payoutFor(principleValue); // payout to bonder is computed, bond amount
 
-        require(payout >= 10 ** 16, "BondDepository: Bond too small"); // must be > 0.01 CAMP (underflow protection)
+        require(payout >= 10 ** 16, "BondDepository: Bond too small"); // must be > 0.01 KP (underflow protection)
         require(payout <= maxPayout(), "BondDepository: Bond too large"); // size protection because there is no slippage
 
         // profits are calculated
@@ -257,15 +240,15 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
             asset carries risk and is not minted against
             asset transferred to treasury and rewards minted as payout
          */
-        // console.log("IKIP7(principle)", IKIP7(principle).balanceOf(msg.sender)/1e18);
-        // IKIP7(principle).approve(address(this), _amount);
-        // console.log("allowance", IKIP7(principle).allowance(msg.sender, address(this)));
-        IKIP7(principle).safeTransferFrom(msg.sender, address(this), _amount);
-        IKIP7(principle).approve(address(treasury), _amount);
+        // console.log("IERC20(principle)", IERC20(principle).balanceOf(msg.sender)/1e18);
+        // IERC20(principle).approve(address(this), _amount);
+        // console.log("allowance", IERC20(principle).allowance(msg.sender, address(this)));
+        IERC20(principle).safeTransferFrom(msg.sender, address(this), _amount);
+        IERC20(principle).approve(address(treasury), _amount);
         IBondTreasury(treasury).deposit(_amount, principle, payout.add(fee));
 
         if (fee != 0) { // fee is transferred to dao
-            IKIP7(CAMP).safeTransfer(DAO, fee);
+            IERC20(kp).safeTransfer(DAO, fee);
         }
 
         // total debt is increased
@@ -278,7 +261,6 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
             lastBlock: block.number,
             pricePaid: priceInUSD
         });
-        console.log("BondInfo", bondInfo[_depositor].payout, _depositor);
 
         // indexed events are emitted
         emit BondCreated(_depositor, _amount, payout, block.number.add(terms.vestingTerm), priceInUSD);
@@ -291,17 +273,16 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     /**
      *  @notice redeem bond for user
      *  @param _recipient address
-     *  @param _stake bool
      *  @return uint256
      */
-    function redeem(address _recipient, bool _stake) external returns (uint256) {
+    function redeem(address _recipient) external returns (uint256) {
         Bond memory info = bondInfo[_recipient];
         uint256 percentVested = percentVestedFor(_recipient); // (blocks since last interaction / vesting term remaining)
 
         if (percentVested >= 10000) { // if fully vested
             delete bondInfo[_recipient]; // delete user info
             emit BondRedeemed(_recipient, info.payout, 0); // emit bond data
-            return stakeOrSend(_recipient, _stake, info.payout); // pay user everything due
+            IERC20(kp).transfer(_recipient, info.payout);  // pay user everything due
 
         } else { // if unfinished
             // calculate payout vested
@@ -317,30 +298,8 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
             });
 
             emit BondRedeemed(_recipient, payout, bondInfo[_recipient].payout);
-            return stakeOrSend(_recipient, _stake, payout);
+            IERC20(kp).transfer(_recipient, payout); 
         }
-    }
-
-
-
-
-    /* ======== INTERNAL HELPER FUNCTIONS ======== */
-
-    /**
-     *  @notice allow user to stake payout automatically
-     *  @param _stake bool
-     *  @param _amount uint256
-     *  @return uint256
-     */
-    function stakeOrSend(address _recipient, bool _stake, uint256 _amount) internal returns (uint256) {
-        if (!_stake) { // if user does not want to stake
-            // console.log("amount", _amount, _recipient);
-            IKIP7(CAMP).transfer(_recipient, _amount); // send payout
-        } else { // if user wants to stake
-            IKIP7(CAMP).approve(staking, _amount);
-            IStakedToken(staking).stake(_recipient, _amount);
-        }
-        return _amount;
     }
 
     /**
@@ -386,7 +345,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
      *  @return uint256
      */
     function maxPayout() public view returns (uint256) {
-        return IKIP7(CAMP).totalSupply().mul(terms.maxPayout).div(1000000);
+        return IERC20(kp).totalSupply().mul(terms.maxPayout).div(1000000);
     }
 
     /**
@@ -399,21 +358,13 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     }
 
     /**
-     *  @notice returns CAMP price in usd
-     *  @return uint256 in 10**6 precision
-     */
-    // function CAMPPrice() public view returns (uint256) {
-    //     return SCAMP.CAMP_price();
-    // }
-
-    /**
      *  @notice calculate current bond premium
      *  @return price_ uint256 in 10**6 precision in usd
      */
     function bondPrice() public view returns (uint256 price_) {
-        uint256 _CAMPPrice = _assetOracle.getAssetPrice(CAMP); // 1e6
+        uint256 _KPPrice = IAssetOracle(assetOracle).getAssetPrice(kp); // 1e6
         uint256 _priceRate = priceRate(); // 1e9
-        price_ = _CAMPPrice.mul(_priceRate).div(10**9);
+        price_ = _KPPrice.mul(_priceRate).div(10**9);
     }
 
     /**
@@ -456,9 +407,9 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     function assetPrice() public view returns (uint256) {
         uint256 lpSupply = IUniswapV2Pair(principle).totalSupply();
         // uint112 reserve0, reserve1, blocktimestamp = IUniswapV2Pair(_principle).getReserves();
-        uint256 balance0 = IKIP7(Token0address).balanceOf(address(IUniswapV2Pair(principle)));
-        uint256 balance1 = IKIP7(Token1address).balanceOf(address(IUniswapV2Pair(principle)));
-        uint256 lpValue = balance0.mul(_assetOracle.getAssetPrice(Token0address)) + balance1.mul(_assetOracle.getAssetPrice(Token1address));
+        uint256 balance0 = IERC20(Token0address).balanceOf(address(IUniswapV2Pair(principle)));
+        uint256 balance1 = IERC20(Token1address).balanceOf(address(IUniswapV2Pair(principle)));
+        uint256 lpValue = balance0.mul(IAssetOracle(assetOracle).getAssetPrice(Token0address)) + balance1.mul(IAssetOracle(assetOracle).getAssetPrice(Token1address));
 
         return lpValue.div(lpSupply); //자릿수 맞추기..?!
     }
@@ -471,11 +422,11 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     // }
 
     /**
-     *  @notice calculate current ratio of debt to CAMP supply
+     *  @notice calculate current ratio of debt to KP supply
      *  @return debtRatio_ uint256 in 10 ** 9 precision
      */
     function debtRatio() public view returns (uint256 debtRatio_) {
-        debtRatio_ = currentDebt().mul(1e9).mul(1e18).div(IKIP7(CAMP).totalSupply()).div(1e18);
+        debtRatio_ = currentDebt().mul(1e9).mul(1e18).div(terms.maxDebt).div(1e18);
     }
 
     /**
@@ -517,7 +468,7 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     }
 
     /**
-     *  @notice calculate amount of CAMP available for claim by depositor
+     *  @notice calculate amount of KP available for claim by depositor
      *  @param _depositor address
      *  @return pendingPayout_ uint256
      */
@@ -538,13 +489,13 @@ abstract contract BondDepository is Ownable, VersionedInitializable, IBondDeposi
     /* ======= AUXILLIARY ======= */
 
     /**
-     *  @notice allow anyone to send lost tokens (excluding principle or CAMP) to the DAO
+     *  @notice allow anyone to send lost tokens (excluding principle or KP) to the DAO
      *  @return bool
      */
     function recoverLostToken(address _token) external returns (bool) {
-        require(_token != CAMP, "BondTreasury: cannot withdraw CAMP");
+        require(_token != kp, "BondTreasury: cannot withdraw KP");
         require(_token != principle, "BondTreasury: cannot withdraw principle");
-        IKIP7(_token).safeTransfer(DAO, IKIP7(_token).balanceOf(address(this)));
+        IERC20(_token).safeTransfer(DAO, IERC20(_token).balanceOf(address(this)));
         return true;
     }
 }

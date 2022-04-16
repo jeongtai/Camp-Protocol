@@ -2,10 +2,10 @@
 
 pragma solidity 0.7.5;
 
-import "../Owned.sol";
-import "../../bond/library/kip/KIP7.sol";
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
-contract MockUSDC is KIP7("MockERC20", "Mock", 18), Owned(msg.sender) {
+contract MockUSDC is ERC20("MockERC20", "Mock"), Ownable {
     uint256 public constant TOTAL_SUPPLY = 1000000e18;
 
     // @notice Must only be called by anyone! haha!

@@ -8,9 +8,6 @@ const main = async() => {
   // const CAMP = await CAMPFactory.attach("0x870D2f6dc98bc3365421DBEe36c97dAf11D1E128");
   console.log("CAMP address is:", await CAMP.address);
 
-  
-
-
 }
 
 const runMain = async () => {

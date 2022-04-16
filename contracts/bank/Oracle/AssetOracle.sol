@@ -1,29 +1,24 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.7.5;
 
-import "../../bond/library/SafeMath.sol";
-import "./UniswapPairOracle.sol";
-import "../Owned.sol";
-import "../Uniswap/interfaces/IUniswapV2Pair.sol";
-import "hardhat/console.sol";
+import '@openzeppelin/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts/access/Ownable.sol';
+import "./IUniswapPairOracle.sol";
 
-contract AssetOracle is Owned {
-    using SafeMath for uint;
+
+contract AssetOracle is Ownable {
+    using SafeMath for uint256;
 
     address[] public priceOracle;
     uint256 private constant PRICE_PRECISION = 1e6;
 
     event AssetOracleUpdated(uint indexed idx, address indexed newOracle);
 
-    constructor() Owned(msg.sender) {}
+    constructor() {}
 
-    function getAssetPrice(address asset) public view returns (uint256) {
-    // if (asset == WKLAY) {
-    //     return 1 ether;
-    // }
+    function getAssetPrice(address asset) external view returns (uint256) {
         for (uint i = 0; i < priceOracle.length; i++) {
-            UniswapPairOracle source = UniswapPairOracle(priceOracle[i]);
-            uint256 price = uint256(source.consult(asset, PRICE_PRECISION));
+            uint256 price = uint256(IUniswapPairOracle(priceOracle[i]).consult(asset, PRICE_PRECISION));
             if (price > 0) {
                 return price;
             }

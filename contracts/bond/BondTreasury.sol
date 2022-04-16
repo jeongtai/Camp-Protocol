@@ -2,21 +2,26 @@
 
 pragma solidity 0.7.5;
 
-import "./library/Ownable.sol";
-import "./library/SafeMath.sol";
-import "./library/kip/SafeKIP7.sol";
+
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
+import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import "./interface/IBondTreasury.sol";
+import "../Interfaces/IBooster.sol";
 import "./library/upgradeable/VersionedInitializable.sol";
 
 contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
+    using SafeERC20 for IERC20;
+    using Address for address;
     using SafeMath for uint256;
-    using SafeKIP7 for IKIP7;
 
     uint256 public constant REVISION = 1;
 
     address public DAO;
-    address public CAMP;
+    address public kp;
     address public operator;
+    address public booster;
 
     address[] internal _reserveTokens;
     mapping(address => bool) public isReserveToken;
@@ -26,19 +31,25 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
 
     function __initialize(
         address DAO_,
-        address CAMP_,
-        address op_
+        address kp_
     ) external initializer {
         // _setInitialOwner();
-        require(CAMP_ != address(0), "BondTreasury: 0 address");
-        DAO = DAO_;
         require(DAO_ != address(0), "BondTreasury: 0 address");
-        CAMP = CAMP_;
-        operator = op_;
+        DAO = DAO_;
+        require(kp_ != address(0), "BondTreasury: 0 address");
+        kp = kp_;
+    }
+
+    function setOperator(address _op) external onlyOwner {
+      operator = _op;
+    }
+
+    function setBooster(address _booster) external onlyOwner {
+      booster = _booster;
     }
 
     function getBalance() external view returns (uint256) {
-        return IKIP7(CAMP).balanceOf(address(this));
+        return IERC20(kp).balanceOf(address(this));
     }
 
     function getRevision() internal pure override returns (uint256) {
@@ -57,10 +68,10 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
         require(isReserveToken[ _token ], "BondTreasury: not registered");
         require(isReserveDepositor[ msg.sender ], "BondTreasury: not authorized");
 
-        IKIP7(_token).safeTransferFrom(msg.sender, address(this), _amount);
+        IERC20(_token).safeTransferFrom(msg.sender, address(this), _amount);
 
-        // mint CAMP needed and store amount of rewards for distribution
-        IKIP7(CAMP).transfer(msg.sender, _pay);
+        // mint KP needed and store amount of rewards for distribution
+        IERC20(kp).transfer(msg.sender, _pay);
 
         tokenPaidAmounts[_token] = tokenPaidAmounts[_token].add(_pay);
         emit Deposit(_token, _amount, _pay);
@@ -97,70 +108,53 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
 
 
 
-//For Convex
+// //For Convex
 
     function setApprovals() external {
       for (uint256 i = 0; i < _reserveTokens.length; i ++) {
-        IERC20(reserveTokens[i]).safeApprove(booster, 0);
-        IERC20(reserveTokens[i]).safeApprove(booster, uint256(-1));
+        IERC20(_reserveTokens[i]).safeApprove(booster, 0);
+        IERC20(_reserveTokens[i]).safeApprove(booster, uint256(-1));
       }
     }
 
-    function depositLP(uint256 _amount, address _gauge) external {
-      require(msg.sender == operator, "!auth");
-      IStaker(staker).deposit(lptoken, gauge);
+    function depositLP(uint256 _pid, uint256 _amount) external onlyOwner returns(bool){
 
-      emit LPDeposited(gauge, _amount);
+      IBooster(booster).deposit(_pid, _amount);
+      emit LPDeposited(_pid, _amount);
       return true;
     }
 
-    function depositAll(address lptoken, address gauge) external returns(bool){
-        uint256 balance = IERC20(lptoken).balanceOf(msg.sender);
-        depositLP(balance, gauge);
-        return true;
-    }
+    function depositAll(uint256 _pid) external onlyOwner returns(bool){
 
-    function _withdraw(address lptoken, uint256 _amount, address _from, address _to, address gauge) internal {
-      IStaker(staker).withdraw(lptoken, gauge, _amount);
-      IERC20(lptoken).safeTransfer(_to, _amount);
-    }
-
-    function withdraw(uint256 lptoken, uint256 _amount, address gauge) public returns(bool){
-      require(msg.sender == operator, "!auth");
-      _withdraw(lptoken,_amount,msg.sender,msg.sender, address gauge);
+      IBooster(booster).depositAll(_pid);
+      emit LPDepositedAll(_pid);
       return true;
     }
 
-    function withdrawAll(address lptoken, address gauge) public returns(bool){
-      require(msg.sender == operator, "!auth");
-      uint256 userBal = IERC20(token).balanceOf(msg.sender);
-      withdraw(lptoken, userBal, address gauge);
+    function withdrawLP(uint256 _pid, uint256 _amount) external  onlyOwner returns(bool){
+
+      IBooster(booster).withdraw(_pid, _amount);
+      emit LPWithdrawed(_pid, _amount);
       return true;
     }
 
-    function claimRewards(address _gauge) external returns(bool){
-      require(msg.sender == operator, "!auth");
-
-      IStaker(staker).claimRewards(_gauge);
+    function withdrawAll(uint256 _pid) external onlyOwner returns(bool){
+      IBooster(booster).withdrawAll(_pid);
+      emit LPWithdrawedAll(_pid);
       return true;
     }
 
     /* ======= AUXILLIARY ======= */
 
     /**
-     *  @notice allow anyone to send lost tokens (excluding principle or CAMP) to the DAO
+     *  @notice allow anyone to send lost tokens (excluding principle or KP) to the DAO
      *  @return bool
      */
     function recoverLostToken(address _token) external returns (bool) {
-        require(_token != CAMP, "BondTreasury: cannot withdraw CAMP");
+        require(_token != kp, "BondTreasury: cannot withdraw KP");
         require(!isReserveToken[_token], "BondTreasury: cannot withdraw reserve tokens");
-        IKIP7(_token).safeTransfer(DAO, IKIP7(_token).balanceOf(address(this)));
+        IERC20(_token).safeTransfer(DAO, IERC20(_token).balanceOf(address(this)));
         return true;
     }
-    //EKL은 EKLdepositor로 PostEKL은 다른 Address로, Fee는 lockFees로
-    function transferRewards(address _token, address _to) external {
-      require(msg.sender == operator, "!auth");
-      uint256 userBal = IERC20(_token).balanceOf(msg.sender);
-      IERC20(_token).safeTransfer(_to, userBal);
-    }
+
 }

@@ -8,7 +8,6 @@ import '../module/Math/FixedPoint.sol';
 import '../Uniswap/UniswapV2OracleLibrary.sol';
 import '../Uniswap/UniswapV2Library.sol';
 import "../Owned.sol";
-import "hardhat/console.sol";
 
 
 // Fixed window oracle that recomputes the average price for the entire period once every period

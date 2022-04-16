@@ -69,6 +69,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BaseRewardPool__factory>;
     getContractFactory(
+      name: "BasicCvxHolder",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.BasicCvxHolder__factory>;
+    getContractFactory(
       name: "BondDepository",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BondDepository__factory>;
@@ -141,6 +145,30 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Booster__factory>;
     getContractFactory(
+      name: "CvxCrvToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.CvxCrvToken__factory>;
+    getContractFactory(
+      name: "CvxLockerV2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.CvxLockerV2__factory>;
+    getContractFactory(
+      name: "CvxRewardPool",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.CvxRewardPool__factory>;
+    getContractFactory(
+      name: "CvxStakingProxyV2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.CvxStakingProxyV2__factory>;
+    getContractFactory(
+      name: "IConvexRewards",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IConvexRewards__factory>;
+    getContractFactory(
+      name: "ICvxLocker",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ICvxLocker__factory>;
+    getContractFactory(
       name: "DepositToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.DepositToken__factory>;
@@ -169,6 +197,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IBooster__factory>;
     getContractFactory(
+      name: "ICrvDepositor",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ICrvDepositor__factory>;
+    getContractFactory(
+      name: "IDelegation",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IDelegation__factory>;
+    getContractFactory(
       name: "IKPtoken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IKPtoken__factory>;
@@ -176,6 +212,10 @@ declare module "hardhat/types/runtime" {
       name: "IKUSDtoken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IKUSDtoken__factory>;
+    getContractFactory(
+      name: "ILockedCvx",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ILockedCvx__factory>;
     getContractFactory(
       name: "ICrvDeposit",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -253,6 +293,18 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IRewardHook__factory>;
     getContractFactory(
+      name: "IRewardStaking",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IRewardStaking__factory>;
+    getContractFactory(
+      name: "IStakingProxy",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IStakingProxy__factory>;
+    getContractFactory(
+      name: "IVotingEligibility",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IVotingEligibility__factory>;
+    getContractFactory(
       name: "KPtoken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.KPtoken__factory>;
@@ -277,6 +329,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TokenFactory__factory>;
     getContractFactory(
+      name: "TreasuryFunds",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TreasuryFunds__factory>;
+    getContractFactory(
       name: "VirtualBalanceRewardPool",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.VirtualBalanceRewardPool__factory>;
@@ -285,9 +341,29 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.VirtualBalanceWrapper__factory>;
     getContractFactory(
+      name: "VoteDelegateExtension",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VoteDelegateExtension__factory>;
+    getContractFactory(
       name: "CurveVoterProxy",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.CurveVoterProxy__factory>;
+    getContractFactory(
+      name: "VotingBalance",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VotingBalance__factory>;
+    getContractFactory(
+      name: "VotingBalanceMax",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VotingBalanceMax__factory>;
+    getContractFactory(
+      name: "VotingBalanceV2Gauges",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VotingBalanceV2Gauges__factory>;
+    getContractFactory(
+      name: "VotingEligibility",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VotingEligibility__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -359,6 +435,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.BaseRewardPool>;
+    getContractAt(
+      name: "BasicCvxHolder",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.BasicCvxHolder>;
     getContractAt(
       name: "BondDepository",
       address: string,
@@ -450,6 +531,36 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Booster>;
     getContractAt(
+      name: "CvxCrvToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.CvxCrvToken>;
+    getContractAt(
+      name: "CvxLockerV2",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.CvxLockerV2>;
+    getContractAt(
+      name: "CvxRewardPool",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.CvxRewardPool>;
+    getContractAt(
+      name: "CvxStakingProxyV2",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.CvxStakingProxyV2>;
+    getContractAt(
+      name: "IConvexRewards",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IConvexRewards>;
+    getContractAt(
+      name: "ICvxLocker",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ICvxLocker>;
+    getContractAt(
       name: "DepositToken",
       address: string,
       signer?: ethers.Signer
@@ -485,6 +596,16 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IBooster>;
     getContractAt(
+      name: "ICrvDepositor",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ICrvDepositor>;
+    getContractAt(
+      name: "IDelegation",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IDelegation>;
+    getContractAt(
       name: "IKPtoken",
       address: string,
       signer?: ethers.Signer
@@ -494,6 +615,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IKUSDtoken>;
+    getContractAt(
+      name: "ILockedCvx",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ILockedCvx>;
     getContractAt(
       name: "ICrvDeposit",
       address: string,
@@ -590,6 +716,21 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IRewardHook>;
     getContractAt(
+      name: "IRewardStaking",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IRewardStaking>;
+    getContractAt(
+      name: "IStakingProxy",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IStakingProxy>;
+    getContractAt(
+      name: "IVotingEligibility",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IVotingEligibility>;
+    getContractAt(
       name: "KPtoken",
       address: string,
       signer?: ethers.Signer
@@ -620,6 +761,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.TokenFactory>;
     getContractAt(
+      name: "TreasuryFunds",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TreasuryFunds>;
+    getContractAt(
       name: "VirtualBalanceRewardPool",
       address: string,
       signer?: ethers.Signer
@@ -630,10 +776,35 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.VirtualBalanceWrapper>;
     getContractAt(
+      name: "VoteDelegateExtension",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VoteDelegateExtension>;
+    getContractAt(
       name: "CurveVoterProxy",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.CurveVoterProxy>;
+    getContractAt(
+      name: "VotingBalance",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VotingBalance>;
+    getContractAt(
+      name: "VotingBalanceMax",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VotingBalanceMax>;
+    getContractAt(
+      name: "VotingBalanceV2Gauges",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VotingBalanceV2Gauges>;
+    getContractAt(
+      name: "VotingEligibility",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VotingEligibility>;
 
     // default types
     getContractFactory(

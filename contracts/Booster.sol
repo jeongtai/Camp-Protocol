@@ -13,7 +13,7 @@ contract Booster{
     using Address for address;
     using SafeMath for uint256;
 
-    address public constant kp = address(0xD533a949740bb3306d119CC777fa900bA034cd52); //EKL
+    address public constant ekl = address(0xD533a949740bb3306d119CC777fa900bA034cd52); //EKL
     address public constant registry = address(0x0000000022D53366457F9d5E68Ec105046FC4383); //EKL Registry
     uint256 public constant distributionAddressId = 4;
     address public constant voteOwnership = address(0xE478de485ad2fe566d49342Cbd03E49ed7DB3356); //EKL VOteOwnership
@@ -384,28 +384,28 @@ contract Booster{
         }
 
         //ekl balance
-        uint256 kpBal = IERC20(kp).balanceOf(address(this));
+        uint256 eklBal = IERC20(ekl).balanceOf(address(this));
 
-        if (kpBal > 0) {
-            uint256 _lockIncentive = kpBal.mul(lockIncentive).div(FEE_DENOMINATOR);
-            uint256 _stakerIncentive = kpBal.mul(stakerIncentive).div(FEE_DENOMINATOR);
-            uint256 _callIncentive = kpBal.mul(earmarkIncentive).div(FEE_DENOMINATOR);
+        if (eklBal > 0) {
+            uint256 _lockIncentive = eklBal.mul(lockIncentive).div(FEE_DENOMINATOR);
+            uint256 _stakerIncentive = eklBal.mul(stakerIncentive).div(FEE_DENOMINATOR);
+            uint256 _callIncentive = eklBal.mul(earmarkIncentive).div(FEE_DENOMINATOR);
             
             //send treasury
             if(treasury != address(0) && treasury != address(this) && platformFee > 0){
                 //only subtract after address condition check
-                uint256 _platform = kpBal.mul(platformFee).div(FEE_DENOMINATOR);
-                IERC20(kp).safeTransfer(treasury, _platform);
+                uint256 _platform = eklBal.mul(platformFee).div(FEE_DENOMINATOR);
+                IERC20(ekl).safeTransfer(treasury, _platform);
             }
             //send incentives for calling
-            IERC20(kp).safeTransfer(msg.sender, _callIncentive);          
+            IERC20(ekl).safeTransfer(msg.sender, _callIncentive);          
 
             //send lockers' share of ekl to reward contract
-            IERC20(kp).safeTransfer(lockRewards, _lockIncentive);
+            IERC20(ekl).safeTransfer(lockRewards, _lockIncentive);
             IRewards(lockRewards).queueNewRewards(_lockIncentive);
 
             //send stakers's share of ekl to reward contract
-            IERC20(kp).safeTransfer(stakerRewards, _stakerIncentive);
+            IERC20(ekl).safeTransfer(stakerRewards, _stakerIncentive);
             IRewards(stakerRewards).queueNewRewards(_stakerIncentive);
         }
     }

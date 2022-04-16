@@ -147,8 +147,11 @@ contract KPStakingProxyV2 {
 
         //convert any ekl that was directly added
         uint256 eklBal = IERC20(ekl).balanceOf(address(this));
+        uint256 converteklBal = eklBal.div(2); //Change
+        eklBal = eklBal.sub(convertekl); //Change
+
         if (eklBal > 0) {
-            IEKLDepositor(eklDeposit).deposit(eklBal, true);
+            IEKLDepositor(eklDeposit).deposit(converteklBal, true); // 50%만 바꾸기.Change
         }
 
         //make sure nothing is in here
@@ -169,6 +172,7 @@ contract KPStakingProxyV2 {
 
             //update rewards
             IKPLocker(rewards).notifyRewardAmount(kpEKL, kpEKLBal);
+            IKPLocker(rewards).notifyRewardAmount(ekl, eklBal);  //Change
 
             emit RewardsDistributed(kpEKL, kpEKLBal);
         }

@@ -148,7 +148,7 @@ contract KPStakingProxyV2 {
         //convert any ekl that was directly added
         uint256 eklBal = IERC20(ekl).balanceOf(address(this));
         uint256 converteklBal = eklBal.div(2); //Change
-        eklBal = eklBal.sub(convertekl); //Change
+        eklBal = eklBal.sub(converteklBal); //Change
 
         if (eklBal > 0) {
             IEKLDepositor(eklDeposit).deposit(converteklBal, true); // 50%만 바꾸기.Change

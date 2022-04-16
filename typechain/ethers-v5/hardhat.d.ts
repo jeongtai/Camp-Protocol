@@ -69,10 +69,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BaseRewardPool__factory>;
     getContractFactory(
-      name: "BasicCvxHolder",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.BasicCvxHolder__factory>;
-    getContractFactory(
       name: "BasicEKLHolder",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BasicEKLHolder__factory>;
@@ -157,33 +153,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IOwner__factory>;
     getContractFactory(
-      name: "CvxCrvToken",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.CvxCrvToken__factory>;
-    getContractFactory(
-      name: "CvxLockerV2",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.CvxLockerV2__factory>;
-    getContractFactory(
-      name: "CvxRewardPool",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.CvxRewardPool__factory>;
-    getContractFactory(
-      name: "CvxStakingProxyV2",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.CvxStakingProxyV2__factory>;
-    getContractFactory(
-      name: "IConvexRewards",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IConvexRewards__factory>;
-    getContractFactory(
-      name: "ICvxLocker",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ICvxLocker__factory>;
-    getContractFactory(
       name: "DepositToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.DepositToken__factory>;
+    getContractFactory(
+      name: "EKLDepositor",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.EKLDepositor__factory>;
     getContractFactory(
       name: "ERC20Custom",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -209,10 +185,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IBooster__factory>;
     getContractFactory(
-      name: "ICrvDepositor",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ICrvDepositor__factory>;
-    getContractFactory(
       name: "IDelegation",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IDelegation__factory>;
@@ -229,25 +201,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IKUSDtoken__factory>;
     getContractFactory(
-      name: "ILockedCvx",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ILockedCvx__factory>;
-    getContractFactory(
       name: "ILockedKP",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ILockedKP__factory>;
-    getContractFactory(
-      name: "ICrvDeposit",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ICrvDeposit__factory>;
-    getContractFactory(
-      name: "ICurveGauge",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ICurveGauge__factory>;
-    getContractFactory(
-      name: "ICurveVoteEscrow",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ICurveVoteEscrow__factory>;
     getContractFactory(
       name: "IDeposit",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -405,10 +361,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.VoteDelegateExtension__factory>;
     getContractFactory(
-      name: "CurveVoterProxy",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.CurveVoterProxy__factory>;
-    getContractFactory(
       name: "EklipseVoterProxy",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.EklipseVoterProxy__factory>;
@@ -499,11 +451,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.BaseRewardPool>;
-    getContractAt(
-      name: "BasicCvxHolder",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.BasicCvxHolder>;
     getContractAt(
       name: "BasicEKLHolder",
       address: string,
@@ -610,40 +557,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IOwner>;
     getContractAt(
-      name: "CvxCrvToken",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.CvxCrvToken>;
-    getContractAt(
-      name: "CvxLockerV2",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.CvxLockerV2>;
-    getContractAt(
-      name: "CvxRewardPool",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.CvxRewardPool>;
-    getContractAt(
-      name: "CvxStakingProxyV2",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.CvxStakingProxyV2>;
-    getContractAt(
-      name: "IConvexRewards",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IConvexRewards>;
-    getContractAt(
-      name: "ICvxLocker",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ICvxLocker>;
-    getContractAt(
       name: "DepositToken",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.DepositToken>;
+    getContractAt(
+      name: "EKLDepositor",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.EKLDepositor>;
     getContractAt(
       name: "ERC20Custom",
       address: string,
@@ -675,11 +597,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IBooster>;
     getContractAt(
-      name: "ICrvDepositor",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ICrvDepositor>;
-    getContractAt(
       name: "IDelegation",
       address: string,
       signer?: ethers.Signer
@@ -700,30 +617,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IKUSDtoken>;
     getContractAt(
-      name: "ILockedCvx",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ILockedCvx>;
-    getContractAt(
       name: "ILockedKP",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ILockedKP>;
-    getContractAt(
-      name: "ICrvDeposit",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ICrvDeposit>;
-    getContractAt(
-      name: "ICurveGauge",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ICurveGauge>;
-    getContractAt(
-      name: "ICurveVoteEscrow",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ICurveVoteEscrow>;
     getContractAt(
       name: "IDeposit",
       address: string,
@@ -919,11 +816,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.VoteDelegateExtension>;
-    getContractAt(
-      name: "CurveVoterProxy",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.CurveVoterProxy>;
     getContractAt(
       name: "EklipseVoterProxy",
       address: string,

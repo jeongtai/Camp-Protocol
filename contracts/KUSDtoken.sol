@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity =0.7.5;
 
-import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/math/SafeMath.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts/utils/Address.sol';
@@ -10,17 +9,20 @@ import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import "./Interfaces/IKPtoken.sol";
 import "./Interfaces/IAssetOracle.sol";
 import "./ERC20Custom.sol";
+import "./bank/Owned.sol";
 
-contract KUSDtoken is ERC20Custom, Ownable {
+contract KUSDtoken is ERC20Custom, Owned  {
     using SafeERC20 for IERC20;
     using Address for address;
     using SafeMath for uint256;
 
   string public symbol;
   string public name;
+  uint8 public constant decimals = 18;
   
   address public kp;
   address public usdt;
+  address public creator_address;
 
   uint256 public constant genesis_supply = 2000000e18; // 2M SCMAP 선발행
   address public kusdbank; //kusd Bank address받기
@@ -52,11 +54,13 @@ contract KUSDtoken is ERC20Custom, Ownable {
 
   constructor(
     string memory _name,
-    string memory _symbol
-  ) {
+    string memory _symbol,
+    address _creator_address
+  ) Owned(_creator_address){
     name = _name;
     symbol = _symbol;
-    _mint(msg.sender, genesis_supply);
+    creator_address = _creator_address;
+    _mint(creator_address, genesis_supply);
     kusd_step = 2500;
     refresh_cooldown = 3600;
     price_target = 1000000;

@@ -5,46 +5,58 @@ const { toBn } = require("evm-bn");
 const main = async () => {
     const [owner] = await ethers.getSigners();
 
-    const VoterProxy = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+    VoterProxyFactory = await ethers.getContractFactory("EklipseVoterProxy");
+    // let VoterProxy = await VoterProxyFactory.deploy();
+    const VoterProxy = await VoterProxyFactory.attach("0xA64310D109C707DD42248FACa21fD3fa0c6b3f70");
+    console.log("VoterProxy address is:", await VoterProxy.address);
 
     /*TOken Deploy */
 
     KUSDFactory = await ethers.getContractFactory("KUSDtoken");
-    // let KUSD = await KUSDFactory.deploy("kprotocol USD token", "KUSD");
-    const KUSD = await KUSDFactory.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+    // let KUSD = await KUSDFactory.deploy("kprotocol USD", "KUSD", owner.address);
+    const KUSD = await KUSDFactory.attach("0xBd309075273D8ebe4f09E5748Ef56aEb21bD4b98");
     console.log("KUSD address is:", await KUSD.address);
 
     KPFactory = await ethers.getContractFactory("KPtoken");
-    // let KP = await KPFactory.deploy(VoterProxy ,"kprotocol governance token", "KP");
-    const KP = await KPFactory.attach("0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0");
+    // let KP = await KPFactory.deploy(VoterProxy.address ,"kprotocol token", "KP", owner.address);
+    const KP = await KPFactory.attach("0xc8598d3770557fC23aA68566E38586E1c7EED778");
     console.log("KP address is:", await KP.address);
 
     mockFactory = await ethers.getContractFactory("MockUSDC");
-    // let mock = await mockFactory.deploy();
-    const mock = await mockFactory.attach("0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9");
-    console.log("mock address is:", await mock.address);
+    // let mock1 = await mockFactory.deploy();
+    const mock1 = await mockFactory.attach("0xE08177F3b94Da80e04e911126E5087f8Fe5807ae");
+    console.log("mock address is:", await mock1.address);
+
+    mockFactory = await ethers.getContractFactory("MockUSDC");
+    // let mock2 = await mockFactory.deploy();
+    const mock2 = await mockFactory.attach("0xB513979f2773d05971Ee729E21cc69e1AD1b9b52");
+    console.log("mock address is:", await mock2.address);
+
 
     /*Bank Deploy */
 
     const assetOracleFactory = await ethers.getContractFactory("AssetOracle");
     // const assetOracle = await assetOracleFactory.deploy();
-    const assetOracle = await assetOracleFactory.attach("0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9");
+    const assetOracle = await assetOracleFactory.attach("0x7BAFFfd2CDbeFB05d9746594E4c7E3b5f8241e69");
     console.log("assetOracle:", assetOracle.address);
 
-    KUSDPoolLibraryFactory = await ethers.getContractFactory("KUSDPoolLibrary");
-    // let KUSDPoolLibrary = await KUSDPoolLibraryFactory.deploy();
-    const KUSDPoolLibrary = await KUSDPoolLibraryFactory.attach("0x5FC8d32690cc91D4c39d9d3abcBD16989F875707");
-    console.log("KUSDPoolLibrary address is:", await KUSDPoolLibrary.address);
+    // KUSDPoolLibraryFactory = await ethers.getContractFactory("KUSDPoolLibrary");
+    // // let KUSDPoolLibrary = await KUSDPoolLibraryFactory.deploy();
+    // const KUSDPoolLibrary = await KUSDPoolLibraryFactory.attach("0xd273b93626FA553b23c28f04eEB666282F9B7507");
+    // console.log("KUSDPoolLibrary address is:", await KUSDPoolLibrary.address);
 
-    BankFactory = await ethers.getContractFactory("KUSDBank", {
-      libraries: {
-        KUSDPoolLibrary: KUSDPoolLibrary.address,
-      },
-    });
-    // let Bank = await BankFactory.deploy(KP.address, KUSDtoken.address, mock.address, assetOracle.address);
-    const Bank = await BankFactory.attach("0xa513E6E4b8f2a923D98304ec87F64353C4D5C853");
-    console.log("Bank address is:", Bank.address);
+    // BankFactory = await ethers.getContractFactory("KUSDBank", {
+    //   libraries: {
+    //     KUSDPoolLibrary: KUSDPoolLibrary.address,
+    //   },
+    // });
+    // // let Bank = await BankFactory.deploy(KP.address, KUSD.address, mock.address, assetOracle.address);
+    // const Bank = await BankFactory.attach("0xA2c050b8c0E297Dd676886B3098C5061293418b7");
+    // console.log("Bank address is:", Bank.address);
 
+    /* ============= setFunction ===========*/
+    await assetOracle.setAssetOracle(["0x4A679253410272dd5232B3Ff7cF5dbB88f295319", "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44"]);
+    // console.log(await assetOracle.getAssetPrice(KP.address))
 }
 
 

@@ -93,6 +93,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ClaimSwapKlayKbtLpDepository__factory>;
     getContractFactory(
+      name: "EKLBondDepository",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.EKLBondDepository__factory>;
+    getContractFactory(
       name: "IBondDepository",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IBondDepository__factory>;
@@ -121,6 +125,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IStakedToken__factory>;
     getContractFactory(
+      name: "KPUSDTBondDepository",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.KPUSDTBondDepository__factory>;
+    getContractFactory(
       name: "IOwnable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IOwnable__factory>;
@@ -144,6 +152,10 @@ declare module "hardhat/types/runtime" {
       name: "Ownable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Ownable__factory>;
+    getContractFactory(
+      name: "USDTUSDCBondDepository",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.USDTUSDCBondDepository__factory>;
     getContractFactory(
       name: "Booster",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -180,6 +192,10 @@ declare module "hardhat/types/runtime" {
       name: "ExtraRewardStashV3",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ExtraRewardStashV3__factory>;
+    getContractFactory(
+      name: "FakeGauge",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.FakeGauge__factory>;
     getContractFactory(
       name: "IAssetOracle",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -538,6 +554,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ClaimSwapKlayKbtLpDepository>;
     getContractAt(
+      name: "EKLBondDepository",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.EKLBondDepository>;
+    getContractAt(
       name: "IBondDepository",
       address: string,
       signer?: ethers.Signer
@@ -573,6 +594,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IStakedToken>;
     getContractAt(
+      name: "KPUSDTBondDepository",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.KPUSDTBondDepository>;
+    getContractAt(
       name: "IOwnable",
       address: string,
       signer?: ethers.Signer
@@ -602,6 +628,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Ownable>;
+    getContractAt(
+      name: "USDTUSDCBondDepository",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.USDTUSDCBondDepository>;
     getContractAt(
       name: "Booster",
       address: string,
@@ -647,6 +678,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ExtraRewardStashV3>;
+    getContractAt(
+      name: "FakeGauge",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.FakeGauge>;
     getContractAt(
       name: "IAssetOracle",
       address: string,

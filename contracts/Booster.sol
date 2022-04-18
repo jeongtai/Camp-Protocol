@@ -189,7 +189,7 @@ contract Booster{
                 lptoken: _lptoken,
                 token: token,
                 gauge: _gauge,
-                kpRewards: treasury,
+                kpRewards: stakerRewards,
                 stash: stash,
                 shutdown: false
             })
@@ -429,7 +429,7 @@ contract Booster{
 
     //callback from reward contract when ekl is received.
     function rewardClaimed(address _address, uint256 _amount) external returns(bool){
-        require(msg.sender == lockRewards, "!auth");
+        require(msg.sender == lockRewards || msg.sender == treasury, "!auth");
 
         //mint reward tokens
         ITokenMinter(minter).mint(_address,_amount);

@@ -2,11 +2,11 @@
 pragma solidity 0.7.5;
 
 import "./Interfaces/IEKLDepositor.sol";
+import "./Interfaces/Interfaces.sol";
 import '@openzeppelin/contracts/utils/Address.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 import '@openzeppelin/contracts/math/SafeMath.sol';
-
 
 
 interface IKPRewards {
@@ -55,16 +55,19 @@ contract KPStakingProxyV2 {
     address public pendingOwner;
     uint256 public callIncentive = 100;
 
+    address public booster;
+
     mapping(address => bool) public distributors;
     bool public UseDistributors = true;
 
     event AddDistributor(address indexed _distro, bool _valid);
     event RewardsDistributed(address indexed token, uint256 amount);
 
-    constructor(address _rewards) public {
+    constructor(address _rewards, address _booster) public {
         rewards = _rewards;
         owner = msg.sender;
         distributors[msg.sender] = true;
+        booster = _booster;
     }
 
     function setPendingOwner(address _po) external {
@@ -176,6 +179,11 @@ contract KPStakingProxyV2 {
 
             emit RewardsDistributed(kpEKL, kpEKLBal);
         }
+
+        IDeposit(booster).rewardClaimed(address(this), eklBal.add(kpEKLBal));
+
+        uint256 kpBal = IERC20(kp).balanceOf(address(this));
+        IKPLocker(rewards).notifyRewardAmount(kp, kpBal);
     }
 
     //in case a new reward is ever added, allow generic distribution

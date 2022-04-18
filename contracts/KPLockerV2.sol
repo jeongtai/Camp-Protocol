@@ -157,7 +157,6 @@ contract KPLockerV2 is ReentrancyGuard, Ownable {
         bool _useBoost
     ) public onlyOwner {
         require(rewardData[_rewardsToken].lastUpdateTime == 0);
-        require(_rewardsToken != address(stakingToken));
         rewardTokens.push(_rewardsToken);
         rewardData[_rewardsToken].lastUpdateTime = uint40(block.timestamp);
         rewardData[_rewardsToken].periodFinish = uint40(block.timestamp);

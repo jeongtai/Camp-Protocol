@@ -205,6 +205,9 @@ const config: HardhatUserConfig = {
       gasPrice: 750000000000,
       tags: ["staging"]
     },
+    localhost: {
+      url: "http://127.0.0.1:8545"
+    },
   },
   typechain: {
     target: "ethers-v5",

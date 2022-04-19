@@ -40,19 +40,94 @@ const main = async () => {
     const assetOracle = await assetOracleFactory.attach("0x7BAFFfd2CDbeFB05d9746594E4c7E3b5f8241e69");
     console.log("assetOracle:", assetOracle.address);
 
-    // KUSDPoolLibraryFactory = await ethers.getContractFactory("KUSDPoolLibrary");
-    // // let KUSDPoolLibrary = await KUSDPoolLibraryFactory.deploy();
-    // const KUSDPoolLibrary = await KUSDPoolLibraryFactory.attach("0xd273b93626FA553b23c28f04eEB666282F9B7507");
-    // console.log("KUSDPoolLibrary address is:", await KUSDPoolLibrary.address);
+    const KUSDPoolLibraryFactory = await ethers.getContractFactory("KUSDPoolLibrary");
+    // let KUSDPoolLibrary = await KUSDPoolLibraryFactory.deploy();
+    const KUSDPoolLibrary = await KUSDPoolLibraryFactory.attach("0xd273b93626FA553b23c28f04eEB666282F9B7507");
+    const BankFactory = await ethers.getContractFactory("KUSDBank", {
+        libraries: {
+            KUSDPoolLibrary: KUSDPoolLibrary.address,
+        },
+    });
+    console.log("KUSDPoolLibrary address is:", await KUSDPoolLibrary.address);
+    // let Bank = await BankFactory.deploy(KP.address, KUSD.address, mock.address, assetOracle.address);
+    const Bank = await BankFactory.attach("0xA2c050b8c0E297Dd676886B3098C5061293418b7");
+    console.log("Bank address is:", Bank.address);
 
-    // BankFactory = await ethers.getContractFactory("KUSDBank", {
-    //   libraries: {
-    //     KUSDPoolLibrary: KUSDPoolLibrary.address,
-    //   },
-    // });
-    // // let Bank = await BankFactory.deploy(KP.address, KUSD.address, mock.address, assetOracle.address);
-    // const Bank = await BankFactory.attach("0xA2c050b8c0E297Dd676886B3098C5061293418b7");
-    // console.log("Bank address is:", Bank.address);
+    await mock1.setBalance(Bank.address, toBn("5000000"));
+
+    //approve
+    await KP.approve(Bank.address, toBn("10000"));
+    await KUSD.approve(Bank.address, toBn("10000"));
+    await mock1.approve(Bank.address, toBn("10000"));
+    await mock2.approve(Bank.address, toBn("10000"));
+
+    //KP set()
+    await KP.updateOperator();
+    await KP.setKUSDAddress(KUSD.address);
+    await KP.mint(owner.address, "50000000");
+
+    //KUSD set()
+    await KUSD.setRedemptionFee(550); // 0.55% Frax랑 동일하게
+    await KUSD.setMintingFee(3000) // 3% 오픈시 0%
+    await KUSD.setkpAddress(KP.address);
+    await KUSD.setBankAddress(Bank.address);
+    await KUSD.setOracleAddress(assetOracle.address);
+
+    // ADD LIQUIDITY
+    const uniConFactory = await ethers.getContractFactory("UniswapV2Factory");
+    // const factory = await uniConFactory.deploy(owner.address);
+    const factory = uniConFactory.attach("0x09c32E9f420EC292dC477FdbDcb08078cbD1F8eDpairCodeHash:"); // with wKLAY
+    console.log("Factory address is:", factory.address);
+    const pairCodeHash = await factory.pairCodeHash();
+    console.log("pairCodeHash:", pairCodeHash);
+
+    // create KUSD, mock1 pair
+    // let KUSDPair = await factory.getPair(KUSD.address, mock1.address);
+    // if (KUSDPair == ethers.constants.AddressZero) {
+    //     console.log("create KUSD pair");
+    //     await factory.createPair(KUSD.address, mock1.address);
+    //     KUSDPair = await factory.getPair(KUSD.address, mock1.address);
+    // }
+    // console.log("KUSD pair:", KUSDPair);
+
+    // create KP, mock1 pair
+    let KPPair = await factory.getPair(KP.address, mock1.address);
+    if (KPPair == ethers.constants.AddressZero) {
+        console.log("create KP pair");
+        await factory.createPair(KP.address, mock1.address);
+        KPPair = await factory.getPair(KP.address, mock1.address);
+    }
+    console.log("KP pair:", KPPair);
+
+    const wKLAYFactory = await ethers.getContractFactory("WKLAY");
+    // const wKLAY = await wKLAYFactory.deploy();
+    const wKLAY = wKLAYFactory.attach("0x47AC1BA3FC552B73D22E26Fde46C6816b99ce4c7");
+    console.log("wKLAY address:", wKLAY.address);
+
+    const RouterFactory = await ethers.getContractFactory("UniswapV2Router02");
+    // const router = await RouterFactory.deploy(factory.address, wKLAY.address);
+    const router = RouterFactory.attach("0xfa0398bB3e1Ab03101aD9A36a8D7EF54AF1A0c54");
+    console.log("router address:", router.address);
+
+    // Approve and addLiquidity
+    const KUSDAllowance = await KUSD.allowance(owner.address, router.address);
+    if (KUSDAllowance == 0) {
+        await KUSD.approve(router.address, toBn("10000"));
+    }
+    console.log("KUSDAllowance:", KUSDAllowance.toString());
+    const mock1Allowance = await mock1.allowance(owner.address, router.address);
+    if (mock1Allowance == 0) {
+        await mock1.approve(router.address, toBn("10000"));
+    }
+    console.log("mock1CollatAllowance:", mock1Allowance.toString());
+
+
+
+
+
+
+
+
 
     /* ============= setFunction ===========*/
     await assetOracle.setAssetOracle(["0x4A679253410272dd5232B3Ff7cF5dbB88f295319", "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44"]);

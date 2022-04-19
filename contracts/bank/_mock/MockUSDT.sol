@@ -5,7 +5,7 @@ pragma solidity 0.7.5;
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
-contract MockUSDC is ERC20("MockERC20", "USDC"), Ownable {
+contract MockUSDC is ERC20("MockERC20", "UUSDT"), Ownable {
     uint256 public constant TOTAL_SUPPLY = 1000000e18;
 
     // @notice Must only be called by anyone! haha!

@@ -37,6 +37,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockUSDC__factory>;
     getContractFactory(
+      name: "MockUSDC",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MockUSDC__factory>;
+    getContractFactory(
       name: "AssetOracle",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.AssetOracle__factory>;
@@ -124,10 +128,6 @@ declare module "hardhat/types/runtime" {
       name: "IStakedToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IStakedToken__factory>;
-    getContractFactory(
-      name: "KPUSDTBondDepository",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.KPUSDTBondDepository__factory>;
     getContractFactory(
       name: "IOwnable",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -484,6 +484,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.MockUSDC>;
     getContractAt(
+      name: "MockUSDC",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MockUSDC>;
+    getContractAt(
       name: "AssetOracle",
       address: string,
       signer?: ethers.Signer
@@ -593,11 +598,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IStakedToken>;
-    getContractAt(
-      name: "KPUSDTBondDepository",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.KPUSDTBondDepository>;
     getContractAt(
       name: "IOwnable",
       address: string,

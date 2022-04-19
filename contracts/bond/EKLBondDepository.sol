@@ -32,9 +32,7 @@ abstract contract EKLBondDepository is Ownable, VersionedInitializable, IBondDep
     address public kp; // token given as payment for bond
 
     address public assetOracle;
-    // address public oracle;
-    address private Token0address;
-    address private Token1address;  
+    // address public oracle; 
     // UniswapPairOracle private Token0USDTOracle;
     // UniswapPairOracle private Token1USDTOracle;   
     // IUniswapV2Pair private principle; // token used to create bond(아마도 lp)
@@ -92,16 +90,10 @@ abstract contract EKLBondDepository is Ownable, VersionedInitializable, IBondDep
         address _kp,
         address _DAO,
         address _principle,
-        address _Token0address,
-        address _Token1address,
         address _oracle
     ) external initializer {
         require(_kp != address(0));
         kp = _kp;
-        require(_Token0address != address(0));
-        Token0address = _Token0address;
-        require(_Token1address != address(0));
-        Token1address = _Token1address;
         require(_DAO != address(0));
         DAO = _DAO;
         require(_principle != address(0));
@@ -406,7 +398,7 @@ abstract contract EKLBondDepository is Ownable, VersionedInitializable, IBondDep
     // pair의 단위 가격을 구한다 in USD
     function assetPrice() public view returns (uint256) {
         //가격 부르는 Function
-        return 1000000; //자릿수 맞추기..?!
+        return 1e6; //자릿수 맞추기..?!
     }
 
     // function assetPrice() public view returns (uint256) {

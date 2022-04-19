@@ -4,6 +4,7 @@ const { toBn } = require("evm-bn");
 
 const main = async () => {
     const [owner] = await ethers.getSigners();
+    const BondT = "0xE4A2D6c04405BEbf5284dA87D6e0714FaF20c588"
 
     VoterProxyFactory = await ethers.getContractFactory("EklipseVoterProxy");
     // let VoterProxy = await VoterProxyFactory.deploy();
@@ -37,7 +38,7 @@ const main = async () => {
 
     const assetOracleFactory = await ethers.getContractFactory("AssetOracle");
     // const assetOracle = await assetOracleFactory.deploy();
-    const assetOracle = await assetOracleFactory.attach("0x7BAFFfd2CDbeFB05d9746594E4c7E3b5f8241e69");
+    const assetOracle = await assetOracleFactory.attach("0xaE128B5ea43615Bd40c639C5617492B90B33F0c5");
     console.log("assetOracle:", assetOracle.address);
 
     // KUSDPoolLibraryFactory = await ethers.getContractFactory("KUSDPoolLibrary");
@@ -55,8 +56,9 @@ const main = async () => {
     // console.log("Bank address is:", Bank.address);
 
     /* ============= setFunction ===========*/
-    await assetOracle.setAssetOracle(["0x4A679253410272dd5232B3Ff7cF5dbB88f295319", "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44"]);
-    // console.log(await assetOracle.getAssetPrice(KP.address))
+    // await assetOracle.setAssetOracle(["0xcB02e69A21788C9655bA135FC2AC11D83f660DF4"])
+    console.log(await assetOracle.getAssetPrice(KP.address))
+    // console.log("BondT bal :", (await KP.balanceOf(BondT)).toString());
 }
 
 

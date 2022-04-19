@@ -122,8 +122,8 @@ const main = async () => {
         await StablePairOracle.update();
     }
 
-    const KPPairOracle = await uniOracleFactory.deploy(factory.address, KP.address, mock.address, owner.address);
-    // const KPPairOracle = uniOracleFactory.attach("0x9C41e45701bE7f96422B75A4D83b8874C83F445d");
+    // const KPPairOracle = await uniOracleFactory.deploy(factory.address, KP.address, mock.address, owner.address);
+    const KPPairOracle = uniOracleFactory.attach("0xeDCa184d07518833d6f3afB95327ce3fdB99e089");
     console.log("KPPairOracle:", KPPairOracle.address);
     await KPPairOracle.setPeriod(10000);
     if (await KPPairOracle.canUpdate()) {

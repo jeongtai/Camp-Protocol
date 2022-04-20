@@ -312,7 +312,7 @@ function Landing() {
         }
         setInterval(() => {
             const diff = preSaleTime.getTime() - Date.now();
-
+            
             let remainDay = Math.floor(diff / (1000 * 60 * 60 * 24)); // mil * sec * min * hour
             let remainHour = Math.floor((diff / (1000 * 60 * 60)) % 24);
             let remianMin = Math.floor((diff / (1000 * 60)) % 60);
@@ -372,14 +372,14 @@ function Landing() {
 
                     {/* real-------------------------------------------------  */}
 
-                    <a
+                    {/* <a
                         href={`${window.location.href.replace(
                             window.location.host,
                             `app.${window.location.host}`
                         )}`}
                     >
                         <MainBtn>Launch App</MainBtn>
-                    </a>
+                    </a> */}
 
                     {/* test-------------------------------------------------  */}
 
@@ -390,7 +390,7 @@ function Landing() {
                     <p className="page1-chainInfo">Based on Klaytn</p>
                 </Page1>
 
-                <Page2>
+                {/* <Page2>
                     <p className="preLaunch">Pre-Launch</p>
                     {remainTime ? (
                         <Time>
@@ -420,7 +420,7 @@ function Landing() {
                     <CapInfo>
                         <div className="cap-title"> Hardcap Gauge</div>
                     </CapInfo>
-                </Page2>
+                </Page2> 
                 <Page3>
                     <div className="page3-title">KProtocol Purchase</div>
                     <p className="page3-content">
@@ -445,10 +445,12 @@ function Landing() {
                             <Button text="Approve" />
                         </Approve>
                     </SaleContent>
-                </Page3>
+                </Page3>*/}
                 <Page4>
                     <div className="page4-title">Wanna Join Us?</div>
-                    <button className="get-klay-button">Get Klaytn</button>
+                    <a href="https://app.claimswap.org/swap?&tokenB=0x0000000000000000000000000000000000000000" target="_blank">
+                        <button className="get-klay-button">Get Klaytn</button>
+                    </a>
                 </Page4>
             </Main>
             <Footer></Footer>

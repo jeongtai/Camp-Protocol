@@ -99,7 +99,6 @@ interface IDeposit{
     function balanceOf(address _account) external view returns(uint256);
     function totalSupply() external view returns(uint256);
     function poolInfo(uint256) external view returns(address,address,address,address,address, bool);
-    function rewardClaimed(address,uint256) external;
     function withdrawTo(uint256,uint256,address) external;
     function claimRewards(uint256,address) external returns(bool);
     function rewardArbitrator() external returns(address);
@@ -108,7 +107,7 @@ interface IDeposit{
 }
 
 interface IEKLDeposit{
-    function deposit(uint256, bool) external;
+    function depositEKL(uint256, bool) external;
     function lockIncentive() external view returns(uint256);
 }
 

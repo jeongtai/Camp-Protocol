@@ -54,7 +54,7 @@ contract BaseRewardPool {
 
     IERC20 public rewardToken; //EKL
     IERC20 public stakingToken; //kpEKL
-    uint256 public constant duration = 7 days;
+    uint256 public constant duration = 7 days; // 7days
 
     address public operator; //Booster
     address public rewardManager; //RewardFactory
@@ -240,7 +240,6 @@ contract BaseRewardPool {
         if (reward > 0) {
             rewards[_account] = 0;
             rewardToken.safeTransfer(_account, reward);
-            IDeposit(operator).rewardClaimed(_account, reward);
             emit RewardPaid(_account, reward);
         }
 
@@ -253,7 +252,7 @@ contract BaseRewardPool {
         return true;
     }
 
-    function getReward() external returns(bool){
+    function getkpEKLReward() external returns(bool){
         getReward(msg.sender,true);
         return true;
     }

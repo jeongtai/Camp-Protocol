@@ -4,59 +4,61 @@ const { toBn } = require("evm-bn");
 
 const main = async () => {
     const [owner] = await ethers.getSigners();
+    const StablePair = "0x1d47E58c4cbf821aD2C360Ee8818223f885ffe1F"
 
     /* ============= Deploy =============== */
 
     KPFactory = await ethers.getContractFactory("KPtoken");
     // let KP = await KPFactory.deploy(VoterProxy ,"kprotocol governance token", "KP");
-    const KP = await KPFactory.attach("0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0");
+    const KP = await KPFactory.attach("0xc8598d3770557fC23aA68566E38586E1c7EED778");
     console.log("KP address is:", await KP.address);
 
     BTFactory = await ethers.getContractFactory("BondTreasury");
-    let BondTreasury = await BTFactory.deploy();
-    await BondTreasury.__initialize(owner.address, KP.address);
-    // const BondTreasury = await BondTreasury.attach("0xc3e53F4d16Ae77Db1c982e75a937B9f60FE63690");
+    // let BondTreasury = await BTFactory.deploy();
+    // await BondTreasury.__initialize(owner.address, KP.address);
+    const BondTreasury = await BTFactory.attach("0xDE394ba5751FD2d07A8Dc4dA1b7FE3f4454FcB43");
     console.log("BondTreasury address is:", await BondTreasury.address);
     
 
     VoterProxyFactory = await ethers.getContractFactory("EklipseVoterProxy");
     // let VoterProxy = await VoterProxyFactory.deploy();
-    const VoterProxy = await VoterProxyFactory.attach("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512");
+    const VoterProxy = await VoterProxyFactory.attach("0xA64310D109C707DD42248FACa21fD3fa0c6b3f70");
     console.log("VoterProxy address is:", await VoterProxy.address);
 
     BoosterFactory = await ethers.getContractFactory("Booster");
     // let Booster = await BoosterFactory.deploy(VoterProxy.address, KP.address);
-    const Booster = await BoosterFactory.attach("0x9E545E3C0baAB3E08CdfD552C960A1050f373042");
+    const Booster = await BoosterFactory.attach("0x3DD469B0E4176B1E82AeA2DA14860894AdD27e0E");
     console.log("Booster address is:", await Booster.address);
 
     //EKL Gauge
 
     GaugeFactory = await ethers.getContractFactory("FakeGauge");
-    // let Gauge = await GaugeFactory.deploy("0xd90a5a778f161b6631B3d77AA253d8F06EB11a0a");
-    const Gauge = await GaugeFactory.attach("0x851356ae760d987E095750cCeb3bC6014560891C");
+    // let Gauge = await GaugeFactory.deploy(StablePair);
+    const Gauge = await GaugeFactory.attach("0x1260D6d173b0257A6f513390a6A26fb384bC77B3");
     console.log("Gauge address is:", await Gauge.address);
 
     TokenFactory = await ethers.getContractFactory("TokenFactory");
     // let tFactory = await TokenFactory.deploy(Booster.address);
-    const tFactory = await TokenFactory.attach("0x4826533B4897376654Bb4d4AD88B7faFD0C98528");
+    const tFactory = await TokenFactory.attach("0x9288D759eFA8DDDDB370459f196378E92FE583d3");
     console.log("tFactory address is:", await tFactory.address);
 
     RewardFactory = await ethers.getContractFactory("RewardFactory");
     // let rFactory = await RewardFactory.deploy(Booster.address);
-    const rFactory = await RewardFactory.attach("0x99bbA657f2BbC93c02D617f8bA121cB8Fc104Acf");
+    const rFactory = await RewardFactory.attach("0x46792F2f39992C7F2bb84e39b510b8fFE5Cd9807");
     console.log("rFactory address is:", await rFactory.address);
     
     StashFactory = await ethers.getContractFactory("StashFactory");
     // let sFactory = await StashFactory.deploy(Booster.address, rFactory.address);
-    const sFactory = await StashFactory.attach("0x0E801D84Fa97b50751Dbf25036d067dCf18858bF");
+    const sFactory = await StashFactory.attach("0x0092daC3EFc528D48C9512514b5d547b937fEc5A");
     console.log("sFactory address is:", await sFactory.address);
 
-    /* ============ Set Functions ============*/
+    // /* ============ Set Functions ============*/
 
     // await Booster.setFactories(rFactory.address, sFactory.address, tFactory.address);
-    // await Booster.addPool("0xd90a5a778f161b6631B3d77AA253d8F06EB11a0a", Gauge.address, 0);
-    console.log(await Booster.poolInfo(0))
-    console.log(await Booster.poolInfo(1))
+    // await Booster.addPool(StablePair, Gauge.address, 1);
+    // console.log(await Booster.poolInfo(0))
+    // console.log(await Booster.poolInfo(1)
+    // await VoterProxy.setOperator(Booster.address)
 
 
 

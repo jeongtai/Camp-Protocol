@@ -16,6 +16,8 @@ const main = async () => {
     const fee = 1e4;
     const maxDebt = toBn("1000000000")
 
+    const booster = "0x3DD469B0E4176B1E82AeA2DA14860894AdD27e0E"
+
     /* ============= Deploy =============== */
 
     KPFactory = await ethers.getContractFactory("KPtoken");
@@ -77,21 +79,19 @@ const main = async () => {
     if (LPAllowance == 0) {
         await USDT_USDCLP.approve(USDT_USDC_BondDepository.address, toBn("10000"));
     }
-    console.log("LPAllowance:", LPAllowance.toString());    
+    console.log("LPAllowance:", LPAllowance.toString());
 
+    // await USDT_USDC_BondDepository.deposit(toBn("60"), (await USDT_USDC_BondDepository.bondPrice()).toString(), owner.address)
+    // console.log("Sucess!")
+    // await USDT_USDC_BondDepository.redeem(owner.address)
+    // await bondTreasury.setBooster(booster)
+    // await bondTreasury.setApprovals();
+    const BTallowance = await USDT_USDCLP.allowance(bondTreasury.address, booster);
+    console.log("BTallowance:", BTallowance.toString());
+    // console.log("Almost!")
+    // await bondTreasury.depositLP(0, toBn("1"));
 
-    console.log((await USDT_USDC_BondDepository.assetPrice()).toString())
-    console.log((await USDT_USDC_BondDepository.bondPrice()).toString())
-    console.log((await USDT_USDC_BondDepository.priceRate()).toString())
-    console.log((await USDT_USDC_BondDepository.payoutFor(toBn("100"))).toString())
-    console.log((await USDT_USDC_BondDepository.debtRatio()).toString())
-    console.log((await USDT_USDC_BondDepository.currentDebt()).toString())
-    console.log((await USDT_USDC_BondDepository.debtDecay()).toString())
-    console.log((await USDT_USDC_BondDepository.treasury()).toString())
-    console.log((await USDT_USDC_BondDepository.terms()).toString())
-
-    await USDT_USDC_BondDepository.deposit(toBn("100"), (await USDT_USDC_BondDepository.bondPrice()), owner.address)
-    console.log("Sucess!")
+    // console.log("Success!")
 }
 
 

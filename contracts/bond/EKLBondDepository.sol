@@ -39,8 +39,6 @@ abstract contract EKLBondDepository is Ownable, VersionedInitializable, IBondDep
     address public override principle; // token used to create bond??
     address public treasury; // mints OHM when receives principle
 
-    address public staking; // to auto-stake payout
-
     Terms public terms; // stores terms for new bonds
     Adjust public adjustment; // stores adjustment to BCV data
 

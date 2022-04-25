@@ -9,7 +9,7 @@ import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
 
-contract kpEKLToken is ERC20 {
+contract kpEKLToken is ERC20("kprotocolEKL", "kpEKL") {
     using SafeERC20 for IERC20;
     using Address for address;
     using SafeMath for uint256;
@@ -18,10 +18,6 @@ contract kpEKLToken is ERC20 {
 
     constructor()
         public
-        ERC20(
-            "Kprotocol EKL",
-            "kpEKL"
-        )
     {
         operator = msg.sender;
     }

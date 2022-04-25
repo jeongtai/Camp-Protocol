@@ -9,12 +9,22 @@ contract FakeGauge {
     using SafeERC20 for IERC20;
 
     IERC20 token;
+    IERC20 extra;
 
-    constructor(IERC20 _token) public {
+    constructor(IERC20 _token, IERC20 _extra) public {
         token = _token;
+        extra = _extra;
     }
 
     function deposit(uint256 amount) public {
-        token.safeTransferFrom(msg.sender, address(this), amount);
+      token.safeTransferFrom(msg.sender, address(this), amount);
+    }
+
+    function withdraw(uint256 amount) public {
+      token.safeTransfer(msg.sender, amount);
+    }
+
+    function claim_rewards() external {
+      extra.safeTransfer(msg.sender, 1e18);
     }
 }

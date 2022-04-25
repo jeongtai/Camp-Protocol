@@ -13,7 +13,7 @@ contract Booster{
     using Address for address;
     using SafeMath for uint256;
 
-    address public constant ekl = address(0xD533a949740bb3306d119CC777fa900bA034cd52); //EKL
+    address public constant ekl = address(0xADbC5fe6E80E606E640832656E3A7D8AE0dd1CA1); //EKL
     address public constant registry = address(0x0000000022D53366457F9d5E68Ec105046FC4383); //EKL Registry
     uint256 public constant distributionAddressId = 4;
     address public constant voteOwnership = address(0xE478de485ad2fe566d49342Cbd03E49ed7DB3356); //EKL VOteOwnership
@@ -23,8 +23,10 @@ contract Booster{
     uint256 public stakerIncentive = 450; //KP Staker에게 뿌려줄 EKL
     uint256 public earmarkIncentive = 50; //함수Caller에게 뿌려줄 EKL
     uint256 public platformFee = 0; //Locker에게 뿌려줄 EKL
+    uint256 public distributionrate = 2000;
     uint256 public constant MaxFees = 10000; //다합쳐서 20%를 넘을 수 X
     uint256 public constant FEE_DENOMINATOR = 10000;
+    
 
     address public owner;
     address public feeManager;
@@ -42,6 +44,7 @@ contract Booster{
     address public lockFees; //kpekl veekl fees
     address public feeDistro;
     address public feeToken;
+    address public bondTreasury;
 
     bool public isShutdown;
 
@@ -68,8 +71,8 @@ contract Booster{
         voteDelegate = msg.sender;
         feeManager = msg.sender;
         poolManager = msg.sender;
-        feeDistro = address(0); //address(0xA464e6DCda8AC41e03616F95f4BC98a13b8922Dc); //EKLfeeDistributor
-        feeToken = address(0); //address(0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490); //3Moon
+        feeDistro = address(0x7e6d10a83CFb603b0325241492Eda23b93B53C89); //address(0xA464e6DCda8AC41e03616F95f4BC98a13b8922Dc); //EKLfeeDistributor
+        feeToken = address(0x96748564751bEF5376B3f632f009BCca21700D12); //address(0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490); //3Moon
         treasury = address(0); //StakingProxy(Locker에게 줄 ekl, 3Moon)
         minter = _minter; //KP
     }
@@ -137,7 +140,7 @@ contract Booster{
         }
     }
 
-    function setFees(uint256 _lockFees, uint256 _stakerFees, uint256 _callerFees, uint256 _platform) external{
+    function setFees(uint256 _lockFees, uint256 _stakerFees, uint256 _callerFees, uint256 _platform, uint256 _distrrate) external{
         require(msg.sender==feeManager, "!auth");
 
         uint256 total = _lockFees.add(_stakerFees).add(_callerFees).add(_platform);
@@ -152,6 +155,7 @@ contract Booster{
             stakerIncentive = _stakerFees;
             earmarkIncentive = _callerFees;
             platformFee = _platform;
+            distributionrate = _distrrate;
         }
     }
 
@@ -164,8 +168,17 @@ contract Booster{
         require(msg.sender==owner, "!auth");
         rewardArbitrator = _arb;
     }
+
+    function setBondTreasury(address _bondTreasury) external {
+        require(msg.sender==owner, "!auth");
+        bondTreasury = _bondTreasury;
+    }    
     /// END SETTER SECTION ///
 
+    function mint_KP(uint256 _amount) external {
+      require(msg.sender ==owner, "!auth");
+      ITokenMinter(minter).mint(bondTreasury, _amount);
+    }
 
     function poolLength() external view returns (uint256) {
         return poolInfo.length;
@@ -422,19 +435,13 @@ contract Booster{
         IStaker(staker).claimFees(feeDistro, feeToken);
         //send fee rewards to reward contract
         uint256 _balance = IERC20(feeToken).balanceOf(address(this));
+        uint256 _kplockfee = _balance.mul(distributionrate).div(FEE_DENOMINATOR);
+        _balance = _balance.sub(_kplockfee); 
         IERC20(feeToken).safeTransfer(lockFees, _balance);
-        IRewards(lockFees).queueNewRewards(_balance);
+        IRewards(lockFees).queueNewRewards(_balance); //Have to Change
+        IERC20(feeToken).safeTransfer(treasury, _kplockfee);
         return true;
-    }
 
-    //callback from reward contract when ekl is received.
-    function rewardClaimed(address _address, uint256 _amount) external returns(bool){
-        require(msg.sender == lockRewards || msg.sender == treasury, "!auth");
-
-        //mint reward tokens
-        ITokenMinter(minter).mint(_address,_amount);
-        
-        return true;
     }
 
 }

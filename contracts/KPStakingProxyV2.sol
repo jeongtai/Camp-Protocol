@@ -154,7 +154,7 @@ contract KPStakingProxyV2 {
         eklBal = eklBal.sub(converteklBal); //Change
 
         if (eklBal > 0) {
-            IEKLDepositor(eklDeposit).deposit(converteklBal, true); // 50%만 바꾸기.Change
+            IEKLDepositor(eklDeposit).depositEKL(converteklBal, true); // 50%만 바꾸기.Change
         }
 
         //make sure nothing is in here
@@ -179,15 +179,13 @@ contract KPStakingProxyV2 {
 
             emit RewardsDistributed(kpEKL, kpEKLBal);
         }
-
-        IDeposit(booster).rewardClaimed(address(this), eklBal.add(kpEKLBal));
-
-        uint256 kpBal = IERC20(kp).balanceOf(address(this));
-        IKPLocker(rewards).notifyRewardAmount(kp, kpBal);
     }
 
     //in case a new reward is ever added, allow generic distribution
     function distributeOther(IERC20 _token) external {
+        if(UseDistributors){
+          require(distributors[msg.sender], "!auth");
+        }
         require( address(_token) != ekl && address(_token) != kpEKL, "not allowed");
 
         uint256 bal = _token.balanceOf(address(this));

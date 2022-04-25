@@ -21,7 +21,7 @@ contract KUSDtoken is ERC20Custom, Owned  {
   uint8 public constant decimals = 18;
   
   address public kp;
-  address public usdt;
+  // address public usdt;
   address public creator_address;
 
   uint256 public constant genesis_supply = 2000000e18; // 2M SCMAP 선발행

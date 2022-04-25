@@ -252,9 +252,9 @@ contract kpRewardPool{
             rewards[_account] = 0;
             rewardToken.safeApprove(eklDeposits,0);
             rewardToken.safeApprove(eklDeposits,reward);
-            IEKLDeposit(eklDeposits).deposit(reward,false);
-
-            uint256 kpEKLBalance = kpEKLToken.balanceOf(address(this));
+            IEKLDeposit(eklDeposits).depositEKL(reward,false);
+            uint256 lockincentive = IEKLDeposit(eklDeposits).lockIncentive();
+            uint256 kpEKLBalance = reward.mul(FEE_DENOMINATOR.sub(lockincentive)).div(FEE_DENOMINATOR);
             if(_stake){
                 IERC20(kpEKLToken).safeApprove(kpEKLRewards,0);
                 IERC20(kpEKLToken).safeApprove(kpEKLRewards,kpEKLBalance);
@@ -274,7 +274,7 @@ contract kpRewardPool{
         }
     }
 
-    function getReward(bool _stake) external{
+    function getKPReward(bool _stake) external{
         getReward(msg.sender,true, _stake);
     }
 

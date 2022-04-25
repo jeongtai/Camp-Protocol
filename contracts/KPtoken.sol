@@ -24,14 +24,11 @@ contract KPtoken is ERC20Custom, Owned {
     uint8 public constant decimals = 18;
 
     address public operator;
-    address public vecrvProxy;
+    address public voterProxy;
     address public kusd;
     address public creator_address;
 
     uint256 public constant maxSupply = 1000000000e18;
-    uint256 public constant totalCliffs = 1000;
-    uint256 public reductionPerCliff;
-
 
     /* ========== MODIFIERS ========== */
 
@@ -54,13 +51,12 @@ contract KPtoken is ERC20Custom, Owned {
         symbol = _symbol;
         creator_address = _creator_address;
         operator = msg.sender;
-        vecrvProxy = _proxy;
-        reductionPerCliff = maxSupply.div(totalCliffs);
+        voterProxy = _proxy;
     }
     
     /* ========== RESTRICTED FUNCTIONS ========== */
     function updateOperator() public {
-        operator = IStaker(vecrvProxy).operator();
+        operator = IStaker(voterProxy).operator();
     }
 
     function setKUSDAddress(address _kusd) external onlyOwner {
@@ -82,50 +78,25 @@ contract KPtoken is ERC20Custom, Owned {
         emit BankBurned(b_address, address(this), b_amount);
     }
 
-    function mint(address m_address, uint256 m_amount) external onlyOwner {        
-        _mint(m_address, m_amount);
-        emit Minted(address(this), m_address, m_amount);
+    function mint(address _to, uint256 _amount) external {
+        if(msg.sender != operator){
+            //dont error just return. if a shutdown happens, rewards on old system
+            //can still be claimed, just wont mint cvx
+            return;
+        }
+
+        uint256 supply = totalSupply();
+        if(supply == 0){
+            //premine, one time only
+            _mint(_to,_amount);
+            //automatically switch operators
+            updateOperator();
+            return;
+        }
+        supply = supply.add(_amount);
+        require(supply <= maxSupply, "Already MaxSup");
+        _mint(_to, _amount);
     }
-
-    function Operator_mint(address _to, uint256 _amount) external {
-          if(msg.sender != operator){
-              //dont error just return. if a shutdown happens, rewards on old system
-              //can still be claimed, just wont mint cvx
-              return;
-          }
-
-          uint256 supply = totalSupply();
-          if(supply == 0){
-              //premine, one time only
-              _mint(_to,_amount);
-              //automatically switch operators
-              updateOperator();
-              return;
-          }
-          
-          //use current supply to gauge cliff
-          //this will cause a bit of overflow into the next cliff range
-          //but should be within reasonable levels.
-          //requires a max supply check though
-          uint256 cliff = supply.div(reductionPerCliff);
-          //mint if below total cliffs
-          if(cliff < totalCliffs){
-              //for reduction% take inverse of current cliff
-              uint256 reduction = totalCliffs.sub(cliff);
-              //reduce
-              _amount = _amount.mul(reduction).div(totalCliffs);
-
-              //supply cap check
-              uint256 amtTillMax = maxSupply.sub(supply);
-              if(_amount > amtTillMax){
-                  _amount = amtTillMax;
-              }
-
-              //mint
-              _mint(_to, _amount);
-          }
-    }
-
     /* ========== EVENTS ========== */
 
     event KUSDAddressSet(address kusd);

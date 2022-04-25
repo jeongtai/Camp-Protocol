@@ -37,9 +37,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockUSDC__factory>;
     getContractFactory(
-      name: "MockUSDC",
+      name: "MockUSDT",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.MockUSDC__factory>;
+    ): Promise<Contracts.MockUSDT__factory>;
     getContractFactory(
       name: "AssetOracle",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -193,6 +193,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ExtraRewardStashV3__factory>;
     getContractFactory(
+      name: "Fakedistro",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Fakedistro__factory>;
+    getContractFactory(
       name: "FakeGauge",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FakeGauge__factory>;
@@ -345,6 +349,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.KUSDtoken__factory>;
     getContractFactory(
+      name: "MLKE",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MLKE__factory>;
+    getContractFactory(
       name: "RewardFactory",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.RewardFactory__factory>;
@@ -484,10 +492,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.MockUSDC>;
     getContractAt(
-      name: "MockUSDC",
+      name: "MockUSDT",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.MockUSDC>;
+    ): Promise<Contracts.MockUSDT>;
     getContractAt(
       name: "AssetOracle",
       address: string,
@@ -679,6 +687,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ExtraRewardStashV3>;
     getContractAt(
+      name: "Fakedistro",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Fakedistro>;
+    getContractAt(
       name: "FakeGauge",
       address: string,
       signer?: ethers.Signer
@@ -868,6 +881,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.KUSDtoken>;
+    getContractAt(
+      name: "MLKE",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MLKE>;
     getContractAt(
       name: "RewardFactory",
       address: string,

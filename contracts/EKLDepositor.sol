@@ -13,8 +13,8 @@ contract EKLDepositor{
     using Address for address;
     using SafeMath for uint256;
 
-    address public constant ekl = address(0xD533a949740bb3306d119CC777fa900bA034cd52);
-    address public constant escrow = address(0x5f3b5DfEb7B28CDbD7FAba78963EE202a494e2A2);
+    address public constant ekl = address(0x09523685a82d8e96F7FF02575DA94749955eD251);
+    address public constant escrow = address(0x09523685a82d8e96F7FF02575DA94749955eD251);
     uint256 private constant MAXTIME = 4 * 364 * 86400;
     uint256 private constant WEEK = 7 * 86400;
 
@@ -64,7 +64,7 @@ contract EKLDepositor{
     }
 
     //lock curve
-    function _lockCurve() internal {
+    function _lockEklipse() internal {
         uint256 eklBalance = IERC20(ekl).balanceOf(address(this));
         if(eklBalance > 0){
             IERC20(ekl).safeTransfer(staker, eklBalance);
@@ -90,8 +90,8 @@ contract EKLDepositor{
         }
     }
 
-    function lockCurve() external {
-        _lockCurve();
+    function lockEklipse() external {
+        _lockEklipse();
 
         //mint incentives
         if(incentiveEKL > 0){
@@ -110,7 +110,7 @@ contract EKLDepositor{
         if(_lock){
             //lock immediately, transfer directly to staker to skip an erc20 transfer
             IERC20(ekl).safeTransferFrom(msg.sender, staker, _amount);
-            _lockCurve();
+            _lockEklipse();
             if(incentiveEKL > 0){
                 //add the incentive tokens here so they can be staked together
                 _amount = _amount.add(incentiveEKL);
@@ -141,7 +141,7 @@ contract EKLDepositor{
         }
     }
 
-    function deposit(uint256 _amount, bool _lock) external {
+    function depositEKL(uint256 _amount, bool _lock) external {
         deposit(_amount,_lock,address(0));
     }
 

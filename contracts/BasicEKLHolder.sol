@@ -77,7 +77,7 @@ contract BasicEKLHolder{
 
         uint256 eklBal = IERC20(ekl).balanceOf(address(this));
         if (eklBal > 0) {
-            IEKLDepositor(eklDeposit).deposit(eklBal, true);
+            IEKLDepositor(eklDeposit).depositEKL(eklBal, true);
         }
 
         uint kpEKLBal = IERC20(kpEKL).balanceOf(address(this));

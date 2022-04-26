@@ -363,9 +363,9 @@ function Landing() {
                         More Safe
                     </div>
                     <div className="title-content">
-                        Fractional Algorithmic
+                        Yield Optimizer
                         <br />
-                        Stablecoin and the Decentralized
+                        and the Decentralized
                         <br />
                         Reserve Currency
                     </div>

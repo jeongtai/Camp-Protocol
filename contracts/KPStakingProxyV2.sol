@@ -14,7 +14,7 @@ interface IKPRewards {
 
     function balanceOf(address _account) external view returns(uint256);
 
-    function getReward(bool _stake) external;
+    function getKPReward(bool _stake) external;
 
     function stakeAll() external;
 }
@@ -39,14 +39,14 @@ contract KPStakingProxyV2 {
     for uint256;
 
     //tokens
-    address public constant ekl = address(0xD533a949740bb3306d119CC777fa900bA034cd52);
-    address public constant kp = address(0x4e3FBD56CD56c3e72c1403e103b45Db9da5B9D2B);
-    address public constant kpEKL = address(0x62B9c7356A2Dc64a1969e19C23e4f579F9810Aa7);
+    address public constant ekl = address(0x09523685a82d8e96F7FF02575DA94749955eD251);
+    address public constant kp = address(0x29B08932679063D03CdEE28283E3D1ACf10FB0Ea);
+    address public constant kpEKL = address(0x381692f513e962Cd5C424ce0797B6D1CB2d7B80b);
 
     //convex addresses
-    address public constant kpStaking = address(0xCF50b810E57Ac33B91dCF525C6ddd9881B139332);
-    address public constant kpEKLStaking = address(0x3Fe65692bfCD0e6CF84cB1E7d24108E434A7587e);
-    address public constant eklDeposit = address(0x8014595F2AB54cD7c604B00E9fb932176fDc86Ae);
+    address public constant kpStaking = address(0xdaa13cb99a9cb2b3b952d8eAE537488c4245B981);
+    address public constant kpEKLStaking = address(0x3CFF664661A6b19CbD70471e98169B6f66399066);
+    address public constant eklDeposit = address(0x65E229a9496ff8513aa6777810957413Ef1C57aB);
     uint256 public constant denominator = 10000;
 
     address public immutable rewards;
@@ -109,6 +109,9 @@ contract KPStakingProxyV2 {
 
         IERC20(kpEKL).safeApprove(rewards, 0);
         IERC20(kpEKL).safeApprove(rewards, uint256(-1));
+
+        IERC20(ekl).safeApprove(rewards, 0);
+        IERC20(ekl).safeApprove(rewards, uint256(-1));
     }
 
     function rescueToken(address _token, address _to) external {
@@ -146,7 +149,7 @@ contract KPStakingProxyV2 {
         }
 
         //claim rewards
-        IKPRewards(kpStaking).getReward(false);
+        IKPRewards(kpStaking).getKPReward(false);
 
         //convert any ekl that was directly added
         uint256 eklBal = IERC20(ekl).balanceOf(address(this));
@@ -154,7 +157,7 @@ contract KPStakingProxyV2 {
         eklBal = eklBal.sub(converteklBal); //Change
 
         if (eklBal > 0) {
-            IEKLDepositor(eklDeposit).depositEKL(converteklBal, true); // 50%만 바꾸기.Change
+            IEKLDepositor(eklDeposit).depositEKL(converteklBal, false); // 50%만 바꾸기.Change
         }
 
         //make sure nothing is in here

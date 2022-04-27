@@ -58,7 +58,7 @@ contract EKLDepositor{
             IStaker(staker).release();
             //create new lock
             uint256 eklBalanceStaker = IERC20(ekl).balanceOf(staker);
-            IStaker(staker).createLock(eklBalanceStaker, unlockAt);
+            IStaker(staker).createLock(eklBalanceStaker);
             unlockTime = unlockInWeeks;
         }
     }
@@ -75,29 +75,26 @@ contract EKLDepositor{
         if(eklBalanceStaker == 0){
             return;
         }
-        
         //increase amount
-        IStaker(staker).increaseAmount(eklBalanceStaker);
-        
-
-        uint256 unlockAt = block.timestamp + MAXTIME;
-        uint256 unlockInWeeks = (unlockAt/WEEK)*WEEK;
-
-        //increase time too if over 2 week buffer
-        if(unlockInWeeks.sub(unlockTime) > 2){
-            IStaker(staker).increaseTime(unlockAt);
-            unlockTime = unlockInWeeks;
-        }
+        IStaker(staker).createLock(eklBalanceStaker);
     }
 
     function lockEklipse() external {
         _lockEklipse();
-
         //mint incentives
         if(incentiveEKL > 0){
             ITokenMinter(minter).mint(msg.sender,incentiveEKL);
             incentiveEKL = 0;
         }
+    }
+
+    function withdrawexpiredekl() external {
+      IStaker(staker).release();
+      if(incentiveEKL > 0){
+          ITokenMinter(minter).mint(msg.sender,incentiveEKL);
+          incentiveEKL = 0;
+      }
+      _lockEklipse();      
     }
 
     //deposit ekl for cvxEKl

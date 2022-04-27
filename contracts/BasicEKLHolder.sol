@@ -72,7 +72,7 @@ contract BasicEKLHolder{
     function processRewards() external{
         require(msg.sender == operator, "!auth");
 
-        kplocker.getReward(address(this), true);
+        kplocker.getLockReward(address(this), true);
         IRewardStaking(kpEKLStaking).getReward(address(this), true);
 
         uint256 eklBal = IERC20(ekl).balanceOf(address(this));

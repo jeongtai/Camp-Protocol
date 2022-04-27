@@ -49,24 +49,50 @@ const main = async () => {
     const kpEKLStake = await kpEKLStakeFactory.attach("0x3CFF664661A6b19CbD70471e98169B6f66399066");
     console.log("kpEKLStake address is:", await kpEKLStake.address);
 
-    TreasuryFactory = await ethers.getContractFactory("TresuryFunds");
-    let Treasury = await TreasuryFactory.deploy(owner.address);
-    // const Treasury = await TreasuryFactory.attach("0x6382dc1683f2468C02B218a9cA795DB2Ffe035d3");
+    TreasuryFactory = await ethers.getContractFactory("TreasuryFunds");
+    // let Treasury = await TreasuryFactory.deploy(owner.address);
+    const Treasury = await TreasuryFactory.attach("0xaBa0A2fe85cDaA8da5020FD48e3674FE4c37c5a2");
     console.log("Treasury address is:", await Treasury.address);
 
+    kpLockFactory = await ethers.getContractFactory("KPLockerV2");
+    // let kpLock = await kpLockFactory.deploy()
+    const kpLock = await kpLockFactory.attach("0xf033Ea129F41Eb4770ceaf514c0B6959Bc996662")
+    console.log("kpLock address is:", await kpLock.address);
     
+    kpStakingProxyFactory = await ethers.getContractFactory("KPStakingProxyV2");
+    // let kpStakingProxy = await kpStakingProxyFactory.deploy(kpLock.address, Booster.address)
+    const kpStakingProxy = await kpStakingProxyFactory.attach("0x0f2b048dc2F6D3630591Ff642FEa67d25d9E3b73")
+    console.log("kpStakingProxy address is:", await kpStakingProxy.address);
 
     /* =============== Function ============= */
 
-    // await kpStake.queueNewRewards(EKL.balanceOf(kpStake.address))
-    // console.log("1")
-    // await kpStake.stake(toBn("5"))
-    // await kpStake.withdraw(toBn("1"), false)
-    // console.log(await kpStake.rewardPerToken())
-    // console.log(await kpStake.rewardRate())
-    // console.log(await kpStake.earned(owner.address))
-    await kpStake.getReward(owner.address, true)
+    // await kpLock.setStakingContract(kpStakingProxy.address);
+    // console.log(1)
+    // await kpLock.setApprovals()
+    // console.log(2)
+    // await kpLock.addReward(MockUSDT.address, kpStakingProxy.address, true)
+    // console.log(3)
+    // await KP.approve(kpLock.address, toBn("1000"))
+    // console.log(4)
+    // await kpStakingProxy.setApprovals()
+    // console.log(5)
+    // await MockUSDT.setBalance(kpStakingProxy.address, toBn("10000"))
+    // console.log(6)
+    // await kpLock.setBoost(1000, 20000, kpStakingProxy.address)
 
+
+    // await kpLock.lock(owner.address, toBn("100"), 0)
+    // await kpStakingProxy.distributeOther(MockUSDT.address)
+    console.log(await kpLock.totalSupply())
+    console.log(await kpLock.pendingLockOf(owner.address))
+    console.log(await kpLock.claimableRewards(owner.address))
+
+    await kpLock.getLockReward(owner.address)
+    // await EKL.mint(kpStakingProxy.address, toBn("1000"))
+    // await kpEKL.mint("0xdaa13cb99a9cb2b3b952d8eAE537488c4245B981", toBn("10000"))
+    // await kpLock.addReward(EKL.address, kpStakingProxy.address, true)
+    // await kpLock.addReward(kpEKL.address, kpStakingProxy.address, true)
+    // await kpStakingProxy.distribute()
 
 }
 

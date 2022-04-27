@@ -3,28 +3,31 @@ pragma solidity 0.7.5;
 
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
+import '@openzeppelin/contracts/math/SafeMath.sol';
 
 
 contract FakeGauge {
     using SafeERC20 for IERC20;
+    using SafeMath for uint256;
 
     IERC20 token;
-    IERC20 extra;
+    uint256 public totalSupply = 0; 
 
     constructor(IERC20 _token, IERC20 _extra) public {
         token = _token;
-        extra = _extra;
     }
 
     function deposit(uint256 amount) public {
       token.safeTransferFrom(msg.sender, address(this), amount);
+      totalSupply = totalSupply.add(amount);
+
     }
 
     function withdraw(uint256 amount) public {
       token.safeTransfer(msg.sender, amount);
     }
 
-    function claim_rewards() external {
-      extra.safeTransfer(msg.sender, 1e18);
+    function userInfo(address _addr) external view returns(uint256, uint256, uint256) {
+      return(totalSupply, 0,0);
     }
 }

@@ -5,24 +5,23 @@ pragma solidity 0.7.5;
 
 interface IEklipseGauge {
     function deposit(uint256) external;
-    function balanceOf(address) external view returns (uint256);
     function withdraw(uint256) external;
-    function claim_rewards() external;
-    function reward_tokens(uint256) external view returns(address);//v2
-    function rewarded_token() external view returns(address);//v1
+    function userInfo(address) external view returns(uint256, uint256, uint256);
     function lp_token() external view returns(address);
+    function EKLToken() external view returns(address);
+}
+
+interface IEKLClaim {
+  function claimAll(address) external;
 }
 
 interface IEklipseVoteEscrow {
-    function create_lock(uint256, uint256) external;
-    function increase_amount(uint256) external;
-    function increase_unlock_time(uint256) external;
-    function withdraw() external;
-    function smart_wallet_checker() external view returns (address);
-}
-
-interface IWalletChecker {
-    function check(address) external view returns (bool);
+    function MAX_LOCK_DURATION() external view returns(uint256); 
+    function userInfo(address) external view returns(uint256, uint256, uint256, uint256);
+    function addLock(uint256, uint256) external;
+    function withdrawEkl() external;
+    function getUserVekl(address) external view returns(uint256);
+    function withdrawFeeReward() external returns(uint256);
 }
 
 interface IVoting{
@@ -31,34 +30,17 @@ interface IVoting{
     function vote_for_gauge_weights(address,uint256) external;
 }
 
-interface IMinter{
-    function mint(address) external;
-}
-
-interface IRegistry{
-    function get_registry() external view returns(address);
-    function get_address(uint256 _id) external view returns(address);
-    function gauge_controller() external view returns(address);
-    function get_lp_token(address) external view returns(address);
-    function get_gauges(address) external view returns(address[10] memory,uint128[10] memory);
-}
-
 interface IStaker{
     function deposit(address, address) external;
-    function withdraw(address) external;
+    function withdrawOther(address) external;
     function withdraw(address, address, uint256) external;
     function withdrawAll(address, address) external;
-    function createLock(uint256, uint256) external;
-    function increaseAmount(uint256) external;
-    function increaseTime(uint256) external;
+    function createLock(uint256) external returns (bool);
     function release() external;
-    function claimEKL(address) external returns (uint256);
-    function claimRewards(address) external;
-    function claimFees(address,address) external;
-    function setStashAccess(address, bool) external;
+    function claimRewards() external;
+    function claimFees(address) external;
     function vote(uint256,address,bool) external;
     function voteGaugeWeight(address,uint256) external;
-    function balanceOfPool(address) external view returns (uint256);
     function operator() external view returns (address);
     function execute(address _to, uint256 _value, bytes calldata _data) external returns (bool, bytes memory);
 }
@@ -77,18 +59,6 @@ interface IRewards{
     function earned(address account) external view returns (uint256);
 }
 
-interface IStash{
-    function stashRewards() external returns (bool);
-    function processStash() external returns (bool);
-    function claimRewards() external returns (bool);
-    function initialize(uint256 _pid, address _operator, address _staker, address _gauge, address _rewardFactory) external;
-}
-
-interface IFeeDistro{
-    function claim() external;
-    function token() external view returns(address);
-}
-
 interface ITokenMinter{
     function mint(address,uint256) external;
     function burn(address,uint256) external;
@@ -101,8 +71,7 @@ interface IDeposit{
     function poolInfo(uint256) external view returns(address,address,address,address,address, bool);
     function withdrawTo(uint256,uint256,address) external;
     function claimRewards(uint256,address) external returns(bool);
-    function rewardArbitrator() external returns(address);
-    function setGaugeRedirect(uint256 _pid) external returns(bool);
+    function rewardClaimed(address,uint256) external;
     function owner() external returns(address);
 }
 
@@ -120,23 +89,10 @@ interface IRewardFactory{
     function removeActiveReward(address,uint256) external returns(bool);
 }
 
-interface IStashFactory{
-    function CreateStash(uint256,address,address,uint256) external returns(address);
-}
-
 interface ITokenFactory{
     function CreateDepositToken(address) external returns(address);
 }
 
-interface IPools{
-    function addPool(address _lptoken, address _gauge, uint256 _stashVersion) external returns(bool);
-    function forceAddPool(address _lptoken, address _gauge, uint256 _stashVersion) external returns(bool);
-    function shutdownPool(uint256 _pid) external returns(bool);
-    function poolInfo(uint256) external view returns(address,address,address,address,address,bool);
-    function poolLength() external view returns (uint256);
-    function gaugeMap(address) external view returns(bool);
-    function setPoolManager(address _poolM) external;
-}
 
 interface IVestedEscrow{
     function fund(address[] calldata _recipient, uint256[] calldata _amount) external returns(bool);

@@ -15,6 +15,8 @@ contract EklipseVoterProxy {
 
     address public constant mintr = address(0x09523685a82d8e96F7FF02575DA94749955eD251);
     address public constant ekl = address(0x09523685a82d8e96F7FF02575DA94749955eD251);
+    address public constant postekl = address(0x09523685a82d8e96F7FF02575DA94749955eD251);
+    address public constant eklclaim = address(0);
 
     address public constant escrow = address(0x5f3b5DfEb7B28CDbD7FAba78963EE202a494e2A2);
     address public constant gaugeController = address(0x2F50D538606Fa9EDD2B11E2446BEb18C9D5846bB);
@@ -52,15 +54,6 @@ contract EklipseVoterProxy {
         depositor = _depositor;
     }
 
-    function setStashAccess(address _stash, bool _status) external returns(bool){
-        require(msg.sender == operator, "!auth");
-        if(_stash != address(0)){
-            stashPool[_stash] = _status;
-        }
-        return true;
-    }
-
-
     function deposit(address _token, address _gauge) external returns(bool){
         require(msg.sender == operator, "!auth");
         if(protectedTokens[_token] == false){
@@ -79,8 +72,8 @@ contract EklipseVoterProxy {
     }
 
     //stash only function for pulling extra incentive reward tokens out
-    function withdraw(IERC20 _asset) external returns (uint256 balance) {
-        require(stashPool[msg.sender] == true, "!auth");
+    function withdrawOther(IERC20 _asset) external returns (uint256 balance) {
+        require(msg.sender == operator, "!auth");
 
         //check protection
         if(protectedTokens[address(_asset)] == true){
@@ -106,7 +99,8 @@ contract EklipseVoterProxy {
 
      function withdrawAll(address _token, address _gauge) external returns(bool){
         require(msg.sender == operator, "!auth");
-        uint256 amount = balanceOfPool(_gauge).add(IERC20(_token).balanceOf(address(this)));
+        (uint256 amount,,) = IEklipseGauge(_gauge).userInfo(address(this));
+        amount = amount.add(IERC20(_token).balanceOf(address(this)));
         withdraw(_token, _gauge, amount);
         return true;
     }
@@ -116,31 +110,18 @@ contract EklipseVoterProxy {
         return _amount;
     }
 
-    function createLock(uint256 _value, uint256 _unlockTime) external returns(bool){
+    function createLock(uint256 _value) external returns(bool){
         require(msg.sender == depositor, "!auth");
         IERC20(ekl).safeApprove(escrow, 0);
         IERC20(ekl).safeApprove(escrow, _value);
-        IEklipseVoteEscrow(escrow).create_lock(_value, _unlockTime);
-        return true;
-    }
-
-    function increaseAmount(uint256 _value) external returns(bool){
-        require(msg.sender == depositor, "!auth");
-        IERC20(ekl).safeApprove(escrow, 0);
-        IERC20(ekl).safeApprove(escrow, _value);
-        IEklipseVoteEscrow(escrow).increase_amount(_value);
-        return true;
-    }
-
-    function increaseTime(uint256 _value) external returns(bool){
-        require(msg.sender == depositor, "!auth");
-        IEklipseVoteEscrow(escrow).increase_unlock_time(_value);
+        uint256 max_time = IEklipseVoteEscrow(escrow).MAX_LOCK_DURATION();
+        IEklipseVoteEscrow(escrow).addLock(_value, max_time);
         return true;
     }
 
     function release() external returns(bool){
         require(msg.sender == depositor, "!auth");
-        IEklipseVoteEscrow(escrow).withdraw();
+        IEklipseVoteEscrow(escrow).withdrawEkl();
         return true;
     }
 
@@ -158,35 +139,27 @@ contract EklipseVoterProxy {
         return true;
     }
 
-    function claimEKL(address _gauge) external returns (uint256){
+    function claimRewards() external returns(bool){
         require(msg.sender == operator, "!auth");
-        
-        uint256 _balance = 0;
-        try IMinter(mintr).mint(_gauge){
-            _balance = IERC20(ekl).balanceOf(address(this));
-            IERC20(ekl).safeTransfer(operator, _balance);
-        }catch{}
-
-        return _balance;
-    }
-
-    function claimRewards(address _gauge) external returns(bool){
-        require(msg.sender == operator, "!auth");
-        IEklipseGauge(_gauge).claim_rewards();
+        IEKLClaim(eklclaim).claimAll(address(this));
+        uint256 eklbal = IERC20(ekl).balanceOf(address(this));
+        if (eklbal > 0) {
+          IERC20(ekl).safeTransfer(operator, eklbal);
+        }
+        uint256 posteklbal = IERC20(postekl).balanceOf(address(this));
+        if (posteklbal > 0) {
+          IERC20(postekl).safeTransfer(operator, posteklbal);
+        }
         return true;
     }
 
-    function claimFees(address _distroContract, address _token) external returns (uint256){
+    function claimFees(address _token) external returns (uint256){
         require(msg.sender == operator, "!auth");
-        IFeeDistro(_distroContract).claim();
+        IEklipseVoteEscrow(escrow).withdrawFeeReward();
         uint256 _balance = IERC20(_token).balanceOf(address(this));
         IERC20(_token).safeTransfer(operator, _balance);
         return _balance;
     }    
-
-    function balanceOfPool(address _gauge) public view returns (uint256) {
-        return IEklipseGauge(_gauge).balanceOf(address(this));
-    }
 
     function execute(
         address _to,

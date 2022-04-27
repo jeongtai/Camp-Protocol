@@ -59,7 +59,6 @@ contract BaseRewardPool {
     address public operator; //Booster
     address public rewardManager; //RewardFactory
 
-    uint256 public pid;
     uint256 public periodFinish = 0;
     uint256 public rewardRate = 0;
     uint256 public lastUpdateTime;
@@ -81,13 +80,11 @@ contract BaseRewardPool {
     event RewardPaid(address indexed user, uint256 reward);
 
     constructor(
-        uint256 pid_,
         address stakingToken_,
         address rewardToken_,
         address operator_,
         address rewardManager_
     ) public {
-        pid = pid_;
         stakingToken = IERC20(stakingToken_);
         rewardToken = IERC20(rewardToken_);
         operator = operator_;
@@ -240,6 +237,7 @@ contract BaseRewardPool {
         if (reward > 0) {
             rewards[_account] = 0;
             rewardToken.safeTransfer(_account, reward);
+            IDeposit(operator).rewardClaimed(_account, reward);
             emit RewardPaid(_account, reward);
         }
 

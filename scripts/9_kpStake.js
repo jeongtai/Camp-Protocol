@@ -63,7 +63,7 @@ const main = async () => {
     // console.log(await kpStake.rewardPerToken())
     // console.log(await kpStake.rewardRate())
     // console.log(await kpStake.earned(owner.address))
-    // await kpStake.getKPReward(true)
+    await kpStake.getKPReward(true)
     // await EKLDepositor.deposit()
 
 

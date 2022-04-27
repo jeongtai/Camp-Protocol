@@ -29,10 +29,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IUniswapV2Callee__factory>;
     getContractFactory(
-      name: "ArbitratorVault",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ArbitratorVault__factory>;
-    getContractFactory(
       name: "MockUSDC",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockUSDC__factory>;
@@ -161,14 +157,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Booster__factory>;
     getContractFactory(
-      name: "BoosterOwner",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.BoosterOwner__factory>;
-    getContractFactory(
-      name: "IOwner",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IOwner__factory>;
-    getContractFactory(
       name: "DepositToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.DepositToken__factory>;
@@ -181,17 +169,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20Custom__factory>;
     getContractFactory(
-      name: "ExtraRewardStashV1",
+      name: "FakeGauge",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ExtraRewardStashV1__factory>;
-    getContractFactory(
-      name: "ExtraRewardStashV2",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ExtraRewardStashV2__factory>;
-    getContractFactory(
-      name: "ExtraRewardStashV3",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ExtraRewardStashV3__factory>;
+    ): Promise<Contracts.FakeGauge__factory>;
     getContractFactory(
       name: "Fakedistro",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -200,6 +180,10 @@ declare module "hardhat/types/runtime" {
       name: "FakeGauge",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FakeGauge__factory>;
+    getContractFactory(
+      name: "FakeVoteEscrow",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.FakeVoteEscrow__factory>;
     getContractFactory(
       name: "IAssetOracle",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -233,6 +217,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IDeposit__factory>;
     getContractFactory(
+      name: "IEKLClaim",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IEKLClaim__factory>;
+    getContractFactory(
       name: "IEKLDeposit",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IEKLDeposit__factory>;
@@ -245,22 +233,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IEklipseVoteEscrow__factory>;
     getContractFactory(
-      name: "IFeeDistro",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IFeeDistro__factory>;
-    getContractFactory(
-      name: "IMinter",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IMinter__factory>;
-    getContractFactory(
-      name: "IPools",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IPools__factory>;
-    getContractFactory(
-      name: "IRegistry",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IRegistry__factory>;
-    getContractFactory(
       name: "IRewardFactory",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IRewardFactory__factory>;
@@ -272,14 +244,6 @@ declare module "hardhat/types/runtime" {
       name: "IStaker",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IStaker__factory>;
-    getContractFactory(
-      name: "IStash",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IStash__factory>;
-    getContractFactory(
-      name: "IStashFactory",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IStashFactory__factory>;
     getContractFactory(
       name: "ITokenFactory",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -296,10 +260,6 @@ declare module "hardhat/types/runtime" {
       name: "IVoting",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IVoting__factory>;
-    getContractFactory(
-      name: "IWalletChecker",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IWalletChecker__factory>;
     getContractFactory(
       name: "IRewardHook",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -356,14 +316,6 @@ declare module "hardhat/types/runtime" {
       name: "RewardFactory",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.RewardFactory__factory>;
-    getContractFactory(
-      name: "RewardHook",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.RewardHook__factory>;
-    getContractFactory(
-      name: "StashFactory",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.StashFactory__factory>;
     getContractFactory(
       name: "IERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -481,11 +433,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IUniswapV2Callee>;
-    getContractAt(
-      name: "ArbitratorVault",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ArbitratorVault>;
     getContractAt(
       name: "MockUSDC",
       address: string,
@@ -647,16 +594,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Booster>;
     getContractAt(
-      name: "BoosterOwner",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.BoosterOwner>;
-    getContractAt(
-      name: "IOwner",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IOwner>;
-    getContractAt(
       name: "DepositToken",
       address: string,
       signer?: ethers.Signer
@@ -672,20 +609,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ERC20Custom>;
     getContractAt(
-      name: "ExtraRewardStashV1",
+      name: "FakeGauge",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ExtraRewardStashV1>;
-    getContractAt(
-      name: "ExtraRewardStashV2",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ExtraRewardStashV2>;
-    getContractAt(
-      name: "ExtraRewardStashV3",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ExtraRewardStashV3>;
+    ): Promise<Contracts.FakeGauge>;
     getContractAt(
       name: "Fakedistro",
       address: string,
@@ -696,6 +623,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.FakeGauge>;
+    getContractAt(
+      name: "FakeVoteEscrow",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.FakeVoteEscrow>;
     getContractAt(
       name: "IAssetOracle",
       address: string,
@@ -737,6 +669,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IDeposit>;
     getContractAt(
+      name: "IEKLClaim",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IEKLClaim>;
+    getContractAt(
       name: "IEKLDeposit",
       address: string,
       signer?: ethers.Signer
@@ -752,26 +689,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IEklipseVoteEscrow>;
     getContractAt(
-      name: "IFeeDistro",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IFeeDistro>;
-    getContractAt(
-      name: "IMinter",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IMinter>;
-    getContractAt(
-      name: "IPools",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IPools>;
-    getContractAt(
-      name: "IRegistry",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IRegistry>;
-    getContractAt(
       name: "IRewardFactory",
       address: string,
       signer?: ethers.Signer
@@ -786,16 +703,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IStaker>;
-    getContractAt(
-      name: "IStash",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IStash>;
-    getContractAt(
-      name: "IStashFactory",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IStashFactory>;
     getContractAt(
       name: "ITokenFactory",
       address: string,
@@ -816,11 +723,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IVoting>;
-    getContractAt(
-      name: "IWalletChecker",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IWalletChecker>;
     getContractAt(
       name: "IRewardHook",
       address: string,
@@ -891,16 +793,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.RewardFactory>;
-    getContractAt(
-      name: "RewardHook",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.RewardHook>;
-    getContractAt(
-      name: "StashFactory",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.StashFactory>;
     getContractAt(
       name: "IERC20",
       address: string,

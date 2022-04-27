@@ -95,7 +95,7 @@ contract KPLockerV2 is ReentrancyGuard, Ownable {
     mapping(address => LockedBalance[]) public userLocks;
 
     //boost
-    address public boostPayment = address(0x1389388d01708118b497f59521f6943Be2541bb7);
+    address public boostPayment = address(0xaBa0A2fe85cDaA8da5020FD48e3674FE4c37c5a2);
     uint256 public maximumBoostPayment = 0;
     uint256 public boostRate = 10000;
     uint256 public nextMaximumBoostPayment = 0;
@@ -808,7 +808,7 @@ contract KPLockerV2 is ReentrancyGuard, Ownable {
     }
 
     // claim all pending rewards
-    function getReward(address _account) external{
+    function getLockReward(address _account) external{
         getReward(_account,false);
     }
 

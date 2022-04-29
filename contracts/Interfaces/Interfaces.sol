@@ -25,9 +25,11 @@ interface IEklipseVoteEscrow {
 }
 
 interface IVoting{
-    function vote(uint256, bool, bool) external; //voteId, support, executeIfDecided
-    function getVote(uint256) external view returns(bool,bool,uint64,uint64,uint64,uint64,uint256,uint256,uint256,bytes memory); 
-    function vote_for_gauge_weights(address,uint256) external;
+
+    function voteForGauge(address,uint256) external;
+    function getPortion(uint256,address) external view returns(uint256, uint256);
+    function currentWeek() external view returns(uint256);
+    function getLeftVotingPower(address) external view returns(uint256);
 }
 
 interface IStaker{
@@ -39,9 +41,9 @@ interface IStaker{
     function release() external;
     function claimRewards() external;
     function claimFees(address) external;
-    function vote(uint256,address,bool) external;
-    function voteGaugeWeight(address,uint256) external;
+    function vote(address,uint256) external;
     function operator() external view returns (address);
+    function getPortion(address) external view returns (uint256);
     function execute(address _to, uint256 _value, bytes calldata _data) external returns (bool, bytes memory);
 }
 

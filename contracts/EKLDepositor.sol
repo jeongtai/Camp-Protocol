@@ -13,8 +13,8 @@ contract EKLDepositor{
     using Address for address;
     using SafeMath for uint256;
 
-    address public constant ekl = address(0x09523685a82d8e96F7FF02575DA94749955eD251);
-    address public constant escrow = address(0x09523685a82d8e96F7FF02575DA94749955eD251);
+    address public constant ekl = address(0x70f1b7A318Ff0db9665D7AC089f08C29660C4cd8);
+    address public constant escrow = address(0x1d0e35A668F3dd38f9a229d5183699bE0a88Eb04);
     uint256 private constant MAXTIME = 4 * 364 * 86400;
     uint256 private constant WEEK = 7 * 86400;
 
@@ -49,7 +49,7 @@ contract EKLDepositor{
     function initialLock() external{
         require(msg.sender==feeManager, "!auth");
 
-        uint256 veekl = IERC20(escrow).balanceOf(staker);
+        (uint256 veekl,,,) = IEklipseVoteEscrow(escrow).userInfo(address(this));
         if(veekl == 0){
             uint256 unlockAt = block.timestamp + MAXTIME;
             uint256 unlockInWeeks = (unlockAt/WEEK)*WEEK;

@@ -5,7 +5,7 @@ import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 
 
-contract FakeGauge {
+contract FakeClaim {
     using SafeERC20 for IERC20;
 
     IERC20 ekl;
@@ -17,9 +17,9 @@ contract FakeGauge {
       postekl = _postekl;
     }
 
-    function claimAll() public {
-      ekl.safeTransfer(msg.sender, 10e18);
-      postekl.safeTransfer(msg.sender, 5e18);
+    function claimAll(address _to) public {
+      ekl.safeTransfer(_to, 10e18);
+      postekl.safeTransfer(_to, 5e18);
     }
     
 }

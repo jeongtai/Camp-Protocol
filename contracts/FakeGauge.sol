@@ -13,7 +13,7 @@ contract FakeGauge {
     IERC20 token;
     uint256 public totalSupply = 0; 
 
-    constructor(IERC20 _token, IERC20 _extra) public {
+    constructor(IERC20 _token) public {
         token = _token;
     }
 

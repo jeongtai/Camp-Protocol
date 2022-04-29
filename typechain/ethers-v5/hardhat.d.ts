@@ -29,13 +29,21 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IUniswapV2Callee__factory>;
     getContractFactory(
-      name: "MockUSDC",
+      name: "M3Moon",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.MockUSDC__factory>;
+    ): Promise<Contracts.M3Moon__factory>;
     getContractFactory(
-      name: "MockUSDT",
+      name: "MockLP",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.MockUSDT__factory>;
+    ): Promise<Contracts.MockLP__factory>;
+    getContractFactory(
+      name: "MpostEKL",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MpostEKL__factory>;
+    getContractFactory(
+      name: "MUSDT",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MUSDT__factory>;
     getContractFactory(
       name: "AssetOracle",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -76,6 +84,10 @@ declare module "hardhat/types/runtime" {
       name: "BasicEKLHolder",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BasicEKLHolder__factory>;
+    getContractFactory(
+      name: "M3MoonBondDepository",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.M3MoonBondDepository__factory>;
     getContractFactory(
       name: "BondDepository",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -149,10 +161,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Ownable__factory>;
     getContractFactory(
-      name: "USDTUSDCBondDepository",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.USDTUSDCBondDepository__factory>;
-    getContractFactory(
       name: "Booster",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Booster__factory>;
@@ -169,17 +177,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20Custom__factory>;
     getContractFactory(
-      name: "FakeGauge",
+      name: "FakeClaim",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.FakeGauge__factory>;
-    getContractFactory(
-      name: "Fakedistro",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Fakedistro__factory>;
+    ): Promise<Contracts.FakeClaim__factory>;
     getContractFactory(
       name: "FakeGauge",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FakeGauge__factory>;
+    getContractFactory(
+      name: "FakeVote",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.FakeVote__factory>;
     getContractFactory(
       name: "FakeVoteEscrow",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -309,9 +317,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.KUSDtoken__factory>;
     getContractFactory(
-      name: "MLKE",
+      name: "MEKL",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.MLKE__factory>;
+    ): Promise<Contracts.MEKL__factory>;
     getContractFactory(
       name: "RewardFactory",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -434,15 +442,25 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IUniswapV2Callee>;
     getContractAt(
-      name: "MockUSDC",
+      name: "M3Moon",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.MockUSDC>;
+    ): Promise<Contracts.M3Moon>;
     getContractAt(
-      name: "MockUSDT",
+      name: "MockLP",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.MockUSDT>;
+    ): Promise<Contracts.MockLP>;
+    getContractAt(
+      name: "MpostEKL",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MpostEKL>;
+    getContractAt(
+      name: "MUSDT",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MUSDT>;
     getContractAt(
       name: "AssetOracle",
       address: string,
@@ -493,6 +511,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.BasicEKLHolder>;
+    getContractAt(
+      name: "M3MoonBondDepository",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.M3MoonBondDepository>;
     getContractAt(
       name: "BondDepository",
       address: string,
@@ -584,11 +607,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Ownable>;
     getContractAt(
-      name: "USDTUSDCBondDepository",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.USDTUSDCBondDepository>;
-    getContractAt(
       name: "Booster",
       address: string,
       signer?: ethers.Signer
@@ -609,20 +627,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ERC20Custom>;
     getContractAt(
-      name: "FakeGauge",
+      name: "FakeClaim",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.FakeGauge>;
-    getContractAt(
-      name: "Fakedistro",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Fakedistro>;
+    ): Promise<Contracts.FakeClaim>;
     getContractAt(
       name: "FakeGauge",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.FakeGauge>;
+    getContractAt(
+      name: "FakeVote",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.FakeVote>;
     getContractAt(
       name: "FakeVoteEscrow",
       address: string,
@@ -784,10 +802,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.KUSDtoken>;
     getContractAt(
-      name: "MLKE",
+      name: "MEKL",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.MLKE>;
+    ): Promise<Contracts.MEKL>;
     getContractAt(
       name: "RewardFactory",
       address: string,

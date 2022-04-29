@@ -20,7 +20,6 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
 
     address public DAO;
     address public kp;
-    address public operator;
     address public booster;
 
     address[] internal _reserveTokens;
@@ -38,10 +37,6 @@ contract BondTreasury is Ownable, VersionedInitializable, IBondTreasury {
         DAO = DAO_;
         require(kp_ != address(0), "BondTreasury: 0 address");
         kp = kp_;
-    }
-
-    function setOperator(address _op) external onlyOwner {
-      operator = _op;
     }
 
     function setBooster(address _booster) external onlyOwner {

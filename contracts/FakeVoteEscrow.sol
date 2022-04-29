@@ -32,4 +32,8 @@ contract FakeVoteEscrow {
     uint256 bal = fee.balanceOf(address(this));
     fee.safeTransfer(msg.sender, bal);
   }
+
+  function userInfo(address user) external view returns(uint256, uint256, uint256, uint256){
+    return (0, 0, 0, 0);
+  }
 }

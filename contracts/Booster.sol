@@ -14,15 +14,12 @@ contract Booster{
     using Address for address;
     using SafeMath for uint256;
 
-    address public constant ekl = address(0xADbC5fe6E80E606E640832656E3A7D8AE0dd1CA1); //EKL
-    address public constant voteOwnership = address(0xE478de485ad2fe566d49342Cbd03E49ed7DB3356); //EKL VOteOwnership
-    address public constant voteParameter = address(0xBCfF8B0b9419b9A88c44546519b1e909cF330399); //EKL VoteParameter
+    address public constant ekl = address(0x70f1b7A318Ff0db9665D7AC089f08C29660C4cd8); //EKL
 
-
-    uint256 public lockIncentive = 1000; //kpEKL Staker에게 뿌려줄 EKL
-    uint256 public stakerIncentive = 450; //KP Staker에게 뿌려줄 EKL
-    uint256 public earmarkIncentive = 50; //함수Caller에게 뿌려줄 EKL
-    uint256 public platformFee = 0; //Locker에게 뿌려줄 EKL
+    uint256 public lockIncentive = 2000; //kpEKL Staker에게 뿌려줄 EKL
+    uint256 public stakerIncentive = 1990; //KP Staker에게 뿌려줄 EKL
+    uint256 public earmarkIncentive = 10; //함수Caller에게 뿌려줄 EKL
+    uint256 public platformFee = 6000; //Locker에게 뿌려줄 EKL
     uint256 public distributionrate = 2000; // kpEKL Locker 3mmon disrate
     uint256 public kpdisrate = 5000;
     uint256 public constant MaxFees = 10000; 
@@ -67,7 +64,7 @@ contract Booster{
         voteDelegate = msg.sender;
         feeManager = msg.sender;
         poolManager = msg.sender;
-        feeToken = address(0x96748564751bEF5376B3f632f009BCca21700D12); //address(0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490); //3Moon
+        feeToken = address(0); //address(0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490); //3Moon
         treasury = address(0); //StakingProxy(Locker에게 줄 ekl, 3Moon)
         minter = _minter; //KP
     }
@@ -90,7 +87,7 @@ contract Booster{
         poolManager = _poolM;
     }
 
-    function setFactories(address _rfactory, address _sfactory, address _tfactory) external {
+    function setFactories(address _rfactory, address _tfactory) external {
         require(msg.sender == owner, "!auth");
         
         //reward factory only allow this to be called once even if owner
@@ -301,32 +298,15 @@ contract Booster{
     }
 
     //delegate address votes on dao
-    function vote(uint256 _voteId, address _votingAddress, bool _support) external returns(bool){
+    function gaugevote(address _gaugeAddress, uint256 _amount) external returns(bool){
         require(msg.sender == voteDelegate, "!auth");
-        require(_votingAddress == voteOwnership || _votingAddress == voteParameter, "!voteAddr");
         
-        IStaker(staker).vote(_voteId,_votingAddress,_support);
-        return true;
-    }
-
-    function voteGaugeWeight(address[] calldata _gauge, uint256[] calldata _weight ) external returns(bool){
-        require(msg.sender == voteDelegate, "!auth");
-
-        for(uint256 i = 0; i < _gauge.length; i++){
-            IStaker(staker).voteGaugeWeight(_gauge[i],_weight[i]);
-        }
+        IStaker(staker).vote(_gaugeAddress,_amount);
         return true;
     }
 
     //claim ekl and extra rewards and disperse to reward contracts
-    function _earmarkRewards(uint256 _pid) internal {
-        // PoolInfo storage pool = poolInfo[_pid];
-        // require(pool.shutdown == false, "pool is closed");
-
-        // address gauge = pool.gauge;
-
-        // //claim ekl
-        // IStaker(staker).claimEKL(gauge);
+    function _earmarkRewards() internal {
 
         IStaker(staker).claimRewards();
 
@@ -357,9 +337,9 @@ contract Booster{
         }
     }
 
-    function earmarkRewards(uint256 _pid) external returns(bool){
+    function earmarkRewards() external returns(bool){
         require(!isShutdown,"shutdown");
-        _earmarkRewards(_pid);
+        _earmarkRewards();
         return true;
     }
 
@@ -381,7 +361,7 @@ contract Booster{
     function rewardClaimed(address _address, uint256 _amount) external returns(bool){
         require(msg.sender == lockRewards, "!auth");
         uint256 reward = _amount.mul(kpdisrate).div(FEE_DENOMINATOR);
-        IKPtoken(minter).kpEKLStakemint(_address,_amount);
+        IKPtoken(minter).mint(_address,reward);
         return true;
     }
 

@@ -39,14 +39,14 @@ contract KPStakingProxyV2 {
     for uint256;
 
     //tokens
-    address public constant ekl = address(0x09523685a82d8e96F7FF02575DA94749955eD251);
-    address public constant kp = address(0x29B08932679063D03CdEE28283E3D1ACf10FB0Ea);
-    address public constant kpEKL = address(0x381692f513e962Cd5C424ce0797B6D1CB2d7B80b);
+    address public constant ekl = address(0x70f1b7A318Ff0db9665D7AC089f08C29660C4cd8);
+    address public constant kp = address(0xEA049420C9210e324a631f499D3bDdC1FF3A7900);
+    address public constant kpEKL = address(0xb68a03fDb11b77a6e308324F4028696D8158e0C3);
 
     //convex addresses
-    address public constant kpStaking = address(0xdaa13cb99a9cb2b3b952d8eAE537488c4245B981);
-    address public constant kpEKLStaking = address(0x3CFF664661A6b19CbD70471e98169B6f66399066);
-    address public constant eklDeposit = address(0x65E229a9496ff8513aa6777810957413Ef1C57aB);
+    address public constant kpStaking = address(0x196F32c72a18B390B9d8cd8Dd1c82EFDfB04D756);
+    address public constant kpEKLStaking = address(0x31Ac7dcfa5C383cf145711431FED48324F09950f);
+    address public constant eklDeposit = address(0xAD7AA256071F4b04b3482D8366c910542CA499F9);
     uint256 public constant denominator = 10000;
 
     address public immutable rewards;
@@ -112,6 +112,7 @@ contract KPStakingProxyV2 {
 
         IERC20(ekl).safeApprove(rewards, 0);
         IERC20(ekl).safeApprove(rewards, uint256(-1));
+
     }
 
     function rescueToken(address _token, address _to) external {

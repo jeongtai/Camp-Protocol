@@ -2,11 +2,11 @@
 
 pragma solidity 0.7.5;
 
-import "./BondDepository.sol";
+import "./EKLkpEKLBondDepository.sol";
 import "./interface/IClaimSwapZap.sol";
 import "./interface/IClaimSwapPair.sol";
 
-contract ClaimSwapKlayKbtLpDepository is BondDepository {
+contract ClaimSwapEKLkpEKLLpDepository is EKLkpEKLBondDepository {
     uint256 public constant REVISION = 1;
 
     function getRevision() internal pure override returns (uint256) {

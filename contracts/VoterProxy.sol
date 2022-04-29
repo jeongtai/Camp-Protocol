@@ -13,13 +13,11 @@ contract EklipseVoterProxy {
     using Address for address;
     using SafeMath for uint256;
 
-    address public constant mintr = address(0x09523685a82d8e96F7FF02575DA94749955eD251);
-    address public constant ekl = address(0x09523685a82d8e96F7FF02575DA94749955eD251);
-    address public constant postekl = address(0x09523685a82d8e96F7FF02575DA94749955eD251);
-    address public constant eklclaim = address(0);
-
-    address public constant escrow = address(0x5f3b5DfEb7B28CDbD7FAba78963EE202a494e2A2);
-    address public constant gaugeController = address(0x2F50D538606Fa9EDD2B11E2446BEb18C9D5846bB);
+    address public constant ekl = address(0x70f1b7A318Ff0db9665D7AC089f08C29660C4cd8);
+    address public constant postekl = address(0x0EE3653ddE98BC35265D5F4deE91Bd83647a7d69);
+    address public constant eklclaim = address(0x253849896FE279525E2fB0a54b4Aa5f2E5953d31);
+    address public constant escrow = address(0x1d0e35A668F3dd38f9a229d5183699bE0a88Eb04);
+    address public constant gaugeController = address(0xE4D9A4e8A8C11ECEA72cc0862EE92D03ad92c974);
     
     address public owner;
     address public operator;
@@ -114,8 +112,7 @@ contract EklipseVoterProxy {
         require(msg.sender == depositor, "!auth");
         IERC20(ekl).safeApprove(escrow, 0);
         IERC20(ekl).safeApprove(escrow, _value);
-        uint256 max_time = IEklipseVoteEscrow(escrow).MAX_LOCK_DURATION();
-        IEklipseVoteEscrow(escrow).addLock(_value, max_time);
+        IEklipseVoteEscrow(escrow).addLock(_value, 365 * 4);
         return true;
     }
 
@@ -125,17 +122,9 @@ contract EklipseVoterProxy {
         return true;
     }
 
-    function vote(uint256 _voteId, address _votingAddress, bool _support) external returns(bool){
+    function vote(address _gaugeAddress, uint256 _amount) external returns(bool){
         require(msg.sender == operator, "!auth");
-        IVoting(_votingAddress).vote(_voteId,_support,false);
-        return true;
-    }
-
-    function voteGaugeWeight(address _gauge, uint256 _weight) external returns(bool){
-        require(msg.sender == operator, "!auth");
-
-        //vote
-        IVoting(gaugeController).vote_for_gauge_weights(_gauge, _weight);
+        IVoting(gaugeController).voteForGauge(_gaugeAddress,_amount);
         return true;
     }
 

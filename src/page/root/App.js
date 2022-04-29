@@ -6,6 +6,7 @@ import Navbar from "../routes/Navbar";
 import PageHeader from "../routes/PageHeader";
 
 import Home from "../routes/Home";
+import Convert from "../routes/Convert";
 import Stake from "../routes/Stake";
 import Bond from "../routes/Bond";
 import Bondingtool from "../../Components/Bondingtool";
@@ -33,6 +34,7 @@ function App() {
                 <PageHeader />
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/Convert" element={<Convert />} />
                     <Route path="/Stake" element={<Stake />} />
                     <Route path="/Bond" element={<Bond />} />
                     <Route path="/Bond/*" element={<Bondingtool />} />

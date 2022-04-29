@@ -88,6 +88,7 @@ function Navbar() {
 
     const menus = [
         { name: "Dashboard", path: "/", logo : Dashboard },
+        { name: "Convert", path: "/Convert", logo : Bank },
         { name: "Bank", path: "/Bank", logo : Bank },
         { name: "Bond", path: "/Bond", logo : Bond },
         { name: "Stake", path: "/Stake", logo : Stake },

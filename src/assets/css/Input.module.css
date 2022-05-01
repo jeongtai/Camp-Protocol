@@ -1,0 +1,13 @@
+.input {
+    display: block;
+    margin : 5px 0px;
+    border: 0px;
+    font-size : 18px;    
+    font-family: 'Lexend', sans-serif;
+    width : 200px;
+}
+
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }

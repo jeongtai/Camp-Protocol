@@ -5,7 +5,7 @@ function Root(){
 
     // -------------------real
     const isApp = () =>{
-        return window.location.host.includes("app")
+        return window.location.host.includes("test")
     }
 
     return isApp() ? <App/> : <Landing/>

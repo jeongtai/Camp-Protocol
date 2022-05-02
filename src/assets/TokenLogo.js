@@ -1,9 +1,12 @@
-import CAMP from "./CAMP-color.svg";
-import SCAMP from "./SCAMP-color.svg";
-import USDC from "./LegacyStable-color.svg";
-import USDT from "./LegacyStable-color.svg";
+import CAMP from "./TokenLogo/KPG.svg";
+import SCAMP from "./TokenLogo/KUSD.svg";
+import USDT from "./TokenLogo/USDT.svg";
+import KLAY from "./TokenLogo/KLAY.svg"
+import EKL from  "./TokenLogo/EKL.svg";
+import KPG from "./TokenLogo/KPG.svg";
+import kpEKL from  "./TokenLogo/kpEKL.png";
 import styled from "styled-components";
-import KLAY from "./KLAY.svg"
+
 
 const LpLogo = styled.div`
   width : 40px;
@@ -17,11 +20,13 @@ const LpLogo = styled.div`
   }
 `
 const arrTokenLogo = {
+    'KPG' : KPG,
     'CAMP': CAMP,
     'SCAMP': SCAMP,
-    'USDC': USDC,
-    'USDT': USDC,
+    'USDT': USDT,
     'KLAY': KLAY,
+    'EKL': EKL,
+    'kpEKL' : kpEKL,
 }
 
 function TokenLogo({ name }) {

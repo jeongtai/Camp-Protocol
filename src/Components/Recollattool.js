@@ -115,7 +115,7 @@ function Recollattool() {
           <p>Input</p>
 
           <InputForm
-            token="USDC"
+            token="USDT"
             balance={USDCBalance}
             onChange={USDCamt}
             value={usdcInputAmount}

@@ -173,7 +173,7 @@ const Calculator = () => {
         <InputCalculator>
           <span>USDC INPUT</span>
           <InputForm
-            token="USDC"
+            token="USDT"
             balance={0}
             value={usdcInputAmount}
             onChange={(event) => setUSDCInputAmount(event.target.value)}

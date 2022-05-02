@@ -3,17 +3,10 @@ import { useSelector } from "react-redux";
 import Caver from "caver-js";
 import styled from "styled-components";
 import { Routes, Route, Link, useMatch } from "react-router-dom";
-
-import TokenLogo from "./../../assets/TokenLogo";
-
-import Mint from "./../../Components/Mintingtool";
-import Redeem from "./../../Components/Redeemtool";
-import InputForm from "../../assets/InputForm";
-import Button from "./../../assets/Button";
-
-import Loading from "./../../assets/Loading.svg";
+import Converttool from "./../../Components/Converttool";
 
 import { eklipseLockABI } from "./../../abis/eklipse_lock.js";
+
 
 const Section = styled.div`
     // flex
@@ -25,17 +18,20 @@ const Section = styled.div`
 
     width: 50%;
     min-width: 380px;
-    margin: 8px auto;
+    margin: 0 auto;
     stroke: Solid #ededed 1px;
     background-color: white;
     border-radius: 15px;
     border: 2px solid ${(props) => props.theme.borderColor};
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
 
-    span {
+    & .sectionTitle {
         font-weight: 400;
         font-size: 20px;
         width: 100%;
+        margin-bottom: 24px;
     }
+
 `;
 
 const Content = styled.div`
@@ -50,104 +46,104 @@ const Content = styled.div`
 const caver = new Caver(window.klaytn)
 
 const Convert = () => {
-//     // ---------------------------------------- get Locked EKL User -------------
-//     const EVENTS_PER_QUERY = 1000000;
-//     const START_BLOCK =  82570552;
-//     const lockContractAddress = "0xD067C3b871ee9E07BA4205A8F96c182baBBA6c58";
-//     const lockContract = new caver.klay.Contract(eklipseLockABI, lockContractAddress);
-    
-//     const [userVeklInfo, setUserVeklInfo] = useState([]);
-//     const [isLoading, setIsLoading] = useState(true);
-//     const [blockNumber, setBlockNumber] = useState(START_BLOCK);
-//     const [sortDone, setSortDone] = useState(false);
+    //     // ---------------------------------------- get Locked EKL User -------------
+    //     const EVENTS_PER_QUERY = 1000000;
+    //     const START_BLOCK =  82570552;
+    //     const lockContractAddress = "0xD067C3b871ee9E07BA4205A8F96c182baBBA6c58";
+    //     const lockContract = new caver.klay.Contract(eklipseLockABI, lockContractAddress);
 
-//     const init = async () => {
-//         const users = await getAllLockedUser(setBlockNumber);
-//         console.log(users)
-//         setIsLoading(false);
-//         updateUserVeklInfo(0, users, []);
-//     };
+    //     const [userVeklInfo, setUserVeklInfo] = useState([]);
+    //     const [isLoading, setIsLoading] = useState(true);
+    //     const [blockNumber, setBlockNumber] = useState(START_BLOCK);
+    //     const [sortDone, setSortDone] = useState(false);
 
-//     const getUserVekl = async (address) => {
-//         const vEKL = await lockContract.methods.getUserVekl(address).call();
-//         return vEKL;
-//     };
+    //     const init = async () => {
+    //         const users = await getAllLockedUser(setBlockNumber);
+    //         console.log(users)
+    //         setIsLoading(false);
+    //         updateUserVeklInfo(0, users, []);
+    //     };
 
-//     const updateUserVeklInfo = async (index,users,_userVeklInfo) => {
-//         const userVekl= await getUserVekl(users[index]);
+    //     const getUserVekl = async (address) => {
+    //         const vEKL = await lockContract.methods.getUserVekl(address).call();
+    //         return vEKL;
+    //     };
 
-//         _userVeklInfo = [..._userVeklInfo, { userVekl }];
+    //     const updateUserVeklInfo = async (index,users,_userVeklInfo) => {
+    //         const userVekl= await getUserVekl(users[index]);
 
-//         if (index === users.length - 1 || index % 10 === 0) {
-//           _userVeklInfo.sort((a, b) =>
-//             a.vEklAmount > b.vEklAmount ? -1 : 1
-//           );
-//         }
-    
-//         if (index < users.length - 1) {
-//           updateUserVeklInfo(index + 1, users, _userVeklInfo);
-//         } else {
-//           setSortDone(true);
-//         }
-//         setUserVeklInfo(_userVeklInfo.slice(0, 20));
-//       };
+    //         _userVeklInfo = [..._userVeklInfo, { userVekl }];
 
-//     const getAllLockedUser = async () => {
-//         console.log("getAllLockedUser")
-//         let block = START_BLOCK;
-//         const userMap = {};
-//         let lockedUser = [];
-//         const uniqueUser = [];
-//         for (let i = 0; i < 100; i++) {
-//             const { done, events } = await getPastLockEvents(
-//                 block,
-//                 block + EVENTS_PER_QUERY
-//             );
-//             lockedUser = [
-//                 ...lockedUser,
-//                 ...events.map((eachEvent) => eachEvent.user),
-//             ];
-//             await new Promise((resolve, reject) => {
-//                 setTimeout(() => {
-//                     resolve(0);
-//                 }, 1300);
-//             });
-//             if (done) {
-//                 break;
-//             } else {
-//                 block += EVENTS_PER_QUERY;
-//                 setBlockNumber(block);
-//             }
-//         }
+    //         if (index === users.length - 1 || index % 10 === 0) {
+    //           _userVeklInfo.sort((a, b) =>
+    //             a.vEklAmount > b.vEklAmount ? -1 : 1
+    //           );
+    //         }
 
-//         lockedUser.forEach((user) => {
-//             if (!userMap[user]) {
-//                 userMap[user] = true;
-//                 uniqueUser.push(user);
-//             }
-//         });
-//         console.log(uniqueUser);
-//         return uniqueUser;
-//     };
+    //         if (index < users.length - 1) {
+    //           updateUserVeklInfo(index + 1, users, _userVeklInfo);
+    //         } else {
+    //           setSortDone(true);
+    //         }
+    //         setUserVeklInfo(_userVeklInfo.slice(0, 20));
+    //       };
+
+    //     const getAllLockedUser = async () => {
+    //         console.log("getAllLockedUser")
+    //         let block = START_BLOCK;
+    //         const userMap = {};
+    //         let lockedUser = [];
+    //         const uniqueUser = [];
+    //         for (let i = 0; i < 100; i++) {
+    //             const { done, events } = await getPastLockEvents(
+    //                 block,
+    //                 block + EVENTS_PER_QUERY
+    //             );
+    //             lockedUser = [
+    //                 ...lockedUser,
+    //                 ...events.map((eachEvent) => eachEvent.user),
+    //             ];
+    //             await new Promise((resolve, reject) => {
+    //                 setTimeout(() => {
+    //                     resolve(0);
+    //                 }, 1300);
+    //             });
+    //             if (done) {
+    //                 break;
+    //             } else {
+    //                 block += EVENTS_PER_QUERY;
+    //                 setBlockNumber(block);
+    //             }
+    //         }
+
+    //         lockedUser.forEach((user) => {
+    //             if (!userMap[user]) {
+    //                 userMap[user] = true;
+    //                 uniqueUser.push(user);
+    //             }
+    //         });
+    //         console.log(uniqueUser);
+    //         return uniqueUser;
+    //     };
 
 
-//     const getPastLockEvents = async (fromBlock, toBlock) => {
-//         let events;
-//         let done;
-//         try {
-//             events = await lockContract.getPastEvents("Lock", { fromBlock, toBlock });
-//         } catch {
-//             done = true;
-//             events = await lockContract.getPastEvents("Lock", {
-//                 fromBlock,
-//                 toBlock: "latest",
-//             });
-//         }
-//         return {
-//             done,
-//             events,
-//         };
-//     };
+    //     const getPastLockEvents = async (fromBlock, toBlock) => {
+    //         let events;
+    //         let done;
+    //         try {
+    //             events = await lockContract.getPastEvents("Lock", { fromBlock, toBlock });
+    //         } catch {
+    //             done = true;
+    //             events = await lockContract.getPastEvents("Lock", {
+    //                 fromBlock,
+    //                 toBlock: "latest",
+    //             });
+    //         }
+    //         return {
+    //             done,
+    //             events,
+    //         };
+    //     };
 
 
     // -----------------------------------------------------------
@@ -176,7 +172,7 @@ const Convert = () => {
 
     }
 
-    
+
     useEffect(() => {
         //init();
         getInfo();
@@ -189,12 +185,11 @@ const Convert = () => {
     }, []);
 
     return (
-
-
         <Section>
-            <p>Convert EKL to kpEKL</p>
-            <Content></Content>
-
+            <p className="sectionTitle">Convert EKL to kpEKL</p>
+            <Content>
+                <Converttool />
+            </Content>
         </Section>
 
     );

@@ -112,7 +112,7 @@ function Buybacktool () {
         />
       <p>Output</p>
         <InputForm
-          token="USDC"
+          token="USDT"
           balance={USDCBalance}
           onChange={USDCamt}
           value={usdcInputAmount}

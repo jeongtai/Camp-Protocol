@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
-import LogoText from "./../../assets/Logo-text.svg";
-import Dashboard from "./../../assets/Dashboard.svg";
-import Bank from "./../../assets/Bank.svg";
-import Bond from "./../../assets/Bond.svg";
-import Stake from "./../../assets/Stake.svg";
-import Calculator from "./../../assets/Calculator.svg";
-import Fund from "./../../assets/Fund.svg";
+import LogoText from "./../../assets/KProtocol-TextLogo.svg";
+import Dashboard from "./../../assets/NavbarIcon/Dashboard.svg";
+import Bank from "./../../assets/NavbarIcon/Bank.svg";
+import Convert from "./../../assets/NavbarIcon/Convert.svg";
+import Bond from "./../../assets/NavbarIcon/Bond.svg";
+import Stake from "./../../assets/NavbarIcon/Stake.svg";
+import Calculator from "./../../assets/NavbarIcon/Calculator.svg";
+import Fund from "./../../assets/NavbarIcon/Fund.svg";
 
 const Nav = styled.div`
     width: ${(props) => props.theme.navWidth}px;
@@ -19,7 +20,7 @@ const Nav = styled.div`
 
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     overflow-x: hidden; /* Disable horizontal scroll */
-    z-index: 1; /* Stay on top */
+    z-index: 2; /* Stay on top */
     
     top: 0; /* Stay at the top */
     left: 0;
@@ -88,7 +89,7 @@ function Navbar() {
 
     const menus = [
         { name: "Dashboard", path: "/", logo : Dashboard },
-        { name: "Convert", path: "/Convert", logo : Bank },
+        { name: "Convert", path: "/Convert", logo : Convert },
         { name: "Bank", path: "/Bank", logo : Bank },
         { name: "Bond", path: "/Bond", logo : Bond },
         { name: "Stake", path: "/Stake", logo : Stake },

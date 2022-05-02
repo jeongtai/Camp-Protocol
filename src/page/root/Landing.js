@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Routes, Route, Link, useMatch } from "react-router-dom";
 import BG_1 from "./../../assets/BG_1.png";
 import BG_2 from "./../../assets/BG_2.png";
-import LogoText from "./../../assets/Logo-text.svg";
+import LogoText from "./../../assets/KProtocol-TextLogo.svg";
 import InputForm from "./../../assets/InputForm";
 
 import react, { useState, useEffect } from "react";
@@ -95,6 +95,7 @@ const Page1 = styled.div`
     }
 
     & .page1-chainInfo {
+        margin-top: 48px;
         font-family: Lexend;
         font-size: 16px;
         font-weight: 400;
@@ -312,7 +313,7 @@ function Landing() {
         }
         setInterval(() => {
             const diff = preSaleTime.getTime() - Date.now();
-            
+
             let remainDay = Math.floor(diff / (1000 * 60 * 60 * 24)); // mil * sec * min * hour
             let remainHour = Math.floor((diff / (1000 * 60 * 60)) % 24);
             let remianMin = Math.floor((diff / (1000 * 60)) % 60);
@@ -350,24 +351,22 @@ function Landing() {
                 <ConnectWallet onClick={() => connectKaikas()}>
                     {isWalletConnected
                         ? currentAddress.slice(0, 10) +
-                          "..." +
-                          currentAddress.slice(-3)
+                        "..." +
+                        currentAddress.slice(-3)
                         : "Connect Wallet"}
                 </ConnectWallet>
             </Header>
             <Main>
                 <Page1>
                     <div className="title">
-                        More Stable
+                        More Stable,
                         <br />
-                        More Safe
+                        More Safe.
                     </div>
                     <div className="title-content">
                         Yield Optimizer
                         <br />
-                        and the Decentralized
-                        <br />
-                        Reserve Currency
+                        & Decentralized Reserve Currency
                     </div>
 
                     {/* real-------------------------------------------------  */}
@@ -448,8 +447,14 @@ function Landing() {
                 </Page3>*/}
                 <Page4>
                     <div className="page4-title">Wanna Join Us?</div>
-                    <a href="https://app.claimswap.org/swap?&tokenB=0x0000000000000000000000000000000000000000" target="_blank">
-                        <button className="get-klay-button">Get Klaytn</button>
+
+
+
+                    <a
+                        href="https://kprotocol.gitbook.io/k-protocol/"
+                        target="_blank"
+                    >
+                        <button className="get-klay-button">Read Docs</button>
                     </a>
                 </Page4>
             </Main>

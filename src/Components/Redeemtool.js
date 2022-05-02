@@ -320,7 +320,7 @@ function Redeemtool() {
 
           <span>Output (estimated)</span>
           <InputForm
-            token="USDC"
+            token="USDT"
             balance={USDCBalance}
             onChange={USDCamt}
             value={usdcInputAmount}

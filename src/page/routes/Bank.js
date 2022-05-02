@@ -173,7 +173,7 @@ const Bank = () => {
                 <CollectInfo>
                     <span>Collectable Redemption</span>
                     <CollectItem>
-                        <span>USDC<TokenLogo name={"USDC"} /></span>
+                        <span>USDT<TokenLogo name={"USDT"} /></span>
                         
                         <p>balance : </p>
                         <p>{unclaimedUSDT}</p>

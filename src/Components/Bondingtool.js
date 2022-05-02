@@ -17,7 +17,7 @@ const Content = styled.div`
     flex-direction: column;
     
     position : absolute;
-    z-index : 2;
+    z-index : 1;
     left : 40%;
     top : 20%;
 

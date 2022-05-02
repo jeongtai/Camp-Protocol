@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import LinkImg from "../assets/ExternalLink.svg";
 import TokenLogo from "../assets/TokenLogo";
-import { reducer } from "../Contract";
+import { reducer } from "../const/Contract";
 import Bondingtool from "./Bondingtool";
 import { useSelector } from "react-redux";
 

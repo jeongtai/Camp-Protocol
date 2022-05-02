@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import Root from "./page/root/Root";
 import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
-import { reducer, Sendreducer, Viewreducer } from "./Contract";
+import { reducer, Sendreducer, Viewreducer } from "./const/Contract";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { theme } from "./assets/theme";
 

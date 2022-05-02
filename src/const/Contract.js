@@ -1,13 +1,14 @@
 import Caver from "caver-js";
-import Bankjs from "./abis/SCAMPBank.json"
-import SCAMPjs from "./abis/SCAMP.json"
-import CAMPjs from "./abis/CAMP.json"
-import USDCjs from "./abis/MockUSDC.json"
-import Stakejs from "./abis/CAMPStake.json"
-import Oraclejs from "./abis/Oraclejs.json"
-import Bondjs from "./abis/Bond.json"
-import Treasuryjs from "./abis/BondTreasury.json"
-import Pairjs from "./abis/Pair.json"
+import Bankjs from "../abis/SCAMPBank.json"
+import SCAMPjs from "../abis/SCAMP.json"
+import CAMPjs from "../abis/CAMP.json"
+import USDCjs from "../abis/MockUSDC.json"
+import Stakejs from "../abis/CAMPStake.json"
+import Oraclejs from "../abis/Oraclejs.json"
+import Bondjs from "../abis/Bond.json"
+import Treasuryjs from "../abis/BondTreasury.json"
+import Pairjs from "../abis/Pair.json"
+import {klayswapABI} from "../abis/klayswap_abi.js"
 
 const caver = new Caver(window.klaytn)
 
@@ -25,6 +26,14 @@ const TreasuryContract = new caver.klay.Contract(Treasuryjs.abi, "0xa8604E038C9A
 const SCAMP_USDT_BondContract = new caver.klay.Contract(Bondjs.abi, "0x40D21487A039d7d7aD4Acd86d3Bc7561EB03626d")
 const SCAMP_USDT_LPContract = new caver.klay.Contract(Pairjs.abi, "0x7641e2619929eb2C90D4FEf000024D5AF74A1e74")
 
+export const EKLTokenAddress = "0x807c4e063eb0ac21e8eef7623a6ed50a8ede58ca";
+
+export const klaySwapAddress = "0x219ee5d76593f5bd639125b6411a17d309e3ad31";
+
+export const klaySwapContract = new caver.klay.Contract(
+  klayswapABI,
+  klaySwapAddress
+);
 
 
 const StakingContract = new caver.klay.Contract(Stakejs.abi, "0xC0C40B7bD1B9Dfec77FECcF43451f61550c6090a")

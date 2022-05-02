@@ -24,8 +24,9 @@ export const theme = {
 
    // navbar
    navWidth: 260,
-   hoverColor: "#FFEF98",
+   hoverColor: "#FFF7C8",
    hoverTextColor : "#262A31",
+   selectedColor : "#FFEF98",
 
    // page-header
    headerHeight : "100px",

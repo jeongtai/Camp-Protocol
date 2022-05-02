@@ -17,15 +17,15 @@ export const theme = {
 
    // text
    textBlack : "#282828",
-   textGray : "#B2B2B2",
+   textGray : "#B2B2B2", 
    textDarkGray : "#7D7D7D",
    textBlue : "#3E97FF",
    textWhite : "#FDFDFD",
 
    // navbar
    navWidth: 260,
-   hoverColor: "#D7E9FF",
-   hoverTextColor : "#0E7DFF",
+   hoverColor: "#FFEF98",
+   hoverTextColor : "#262A31",
 
    // page-header
    headerHeight : "100px",

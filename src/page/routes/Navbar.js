@@ -44,7 +44,7 @@ const Items = styled.div`
     margin-top: 20%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     width: 100%;
     min-width: 195px;
@@ -54,9 +54,9 @@ const Items = styled.div`
 
 const Item = styled.div`
     flex-direction: column;
-    padding: 10px 10% 10px 20%;
+    padding: 18px 10% 10px 20%;
     
-    height: 50px;    
+    height: 60px;
 
     span {
         position: relative;
@@ -66,6 +66,9 @@ const Item = styled.div`
 
     color: ${(props) =>
         props.isActive ? props.theme.activeColor : props.theme.unActiveColor};
+
+    background-color: ${(props) =>
+        props.isActive ?props.theme.hoverColor : null};
 
     &:hover {
         color: ${(props) => props.theme.hoverTextColor};
@@ -117,7 +120,7 @@ function Navbar() {
                                 }
                                 key={index}
                             >
-                                <img src={menu.logo } />
+                                <img src={menu.logo} />
                                 <span>{menu.name}</span>
                             </Item>
                         </Link>

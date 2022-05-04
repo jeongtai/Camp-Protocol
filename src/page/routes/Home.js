@@ -1,3 +1,5 @@
+/* global BigInt */
+
 import react, { useState, useEffect } from "react";
 import Caver from "caver-js";
 import styled from "styled-components";
@@ -10,7 +12,7 @@ const Dashboard = styled.div`
     justify-content: center;
     // grid
     display: grid;
-    gap: 20px;
+    grid-template-columns: 50% 50%;
     & .overview{
         grid-column: 1/3;
     }
@@ -23,7 +25,7 @@ const Overview = styled.div`
     justify-content: space-between;
     
     padding : 10px;
-
+    margin : 10px;
     stroke: Solid #ededed 1px;
     background-color: white;
     border-radius: 15px;
@@ -67,14 +69,18 @@ const TokensList = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    width : 200%;
+    
 `;
 
 const TokenItem = styled.div`
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    margin-top: 0px;
-    
+
+    margin : 10px 10px 0 10px;
+
     background-color: white;
     border-radius: 15px;
     padding: 20px;
@@ -106,16 +112,16 @@ const TokenItemInfo = styled.div`
 `;
 
 const AddWallet = styled.button`
-    width: 154px;
+    width: 186px;
     height: 34px;
     background-color: ${(props) => props.theme.btnGray};
     border: 0;
     border-radius: 6px;
-    margin-right: 8px;
+    margin-right: 16px;
 `;
 
-const GetScamp = styled.button`
-    width: 154px;
+const GetToken = styled.button`
+    width: 186px;
     height: 34px;
     background-color: ${(props) => props.theme.btnBlack};
     border: 0;
@@ -146,39 +152,40 @@ function addToken(tokenaddr, url, name) {
 
 function Home() {
     let state = useSelector((state) => state);
-    const [scampsupply, setScampSupply] = useState();
-    const [campsupply, setCampSupply] = useState();
-    const [pricetarget, setPriceTarget] = useState();
-    const [cur_ratio, setCur_Ratio] = useState();
-    const [SCAMPprice, setSCampprice] = useState();
-
+    const [kusdSupply, setKusdSupply] = useState();
+    const [kpgSupply, setKpgSupply] = useState();
+    const [priceTarget, setPriceTarget] = useState();
+    const [currentRatio, setCurrentRatio] = useState();
+    const [scampPrice, setScampPrice] = useState();
+    const [campPrice, setCampPrice] = useState()
+    const [eklPrice, setEklPrice] = useState();
     const [isLoading, setIsLoading] = useState(true);
-    const [campprice, setCampprice] = useState()
+
 
     const caver = new Caver(window.klaytn);
     const infos = [
-        { name: "Total Market Cap", amt: "$ 415252.5102" },
-        { name: "sCAMP Price", amt: `${SCAMPprice}` },
+        { name: "Total Market Cap", amt: "kpgSupply*price" },
         { name: "TVL", amt: "$ 19240.4912" },
         { name: "Treasury Balance", amt: "$ 7608.0027" },
-        { name: "Price Target", amt: ` $ ${pricetarget}` },
-        { name: "Current Ratio", amt: `${cur_ratio * 100} %` },
-        { name: "Owned Liquidity", amt: "$ 12667.3552" },
-        { name: "Rented Liquidity", amt: "$ 16891.8558" },
+        { name: "Total EKL", amt: "7608.0027" },
+        { name: "KPG Price", amt: `${scampPrice}` },
+        { name: "Backer Price per KPG", amt: ` $ ${priceTarget}` },
+        { name: "kpEKL Price", amt: `${scampPrice}` },
+        { name: "kpEKL/EKL Ratio", amt: `${scampPrice}` },
     ];
 
     const Tokens = [
         {
-            name: "CAMP",
-            price: campprice,
-            supply: campsupply,
+            name: "KPG",
+            price: campPrice,
+            supply: kpgSupply,
             Contract: state.CAMPContract._address,
             logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg",
         },
         {
-            name: "SCAMP",
-            price: SCAMPprice,
-            supply: scampsupply,
+            name: "kpEKL",
+            price: scampPrice,
+            supply: kusdSupply,
             Contract: state.SCAMPContract._address,
             logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg",
         },
@@ -188,14 +195,22 @@ function Home() {
         try {
             await state.SCAMPContract.methods
                 .totalSupply()
-                .call((e, v) => setScampSupply(caver.utils.fromPeb(v, "KLAY")));
-        } catch { setScampSupply(undefined) }
+                .call((e, v) => setKusdSupply(caver.utils.fromPeb(v, "KLAY")));
+        } catch { setKusdSupply(undefined) }
 
         try {
             await state.CAMPContract.methods
                 .totalSupply()
-                .call((e, v) => setCampSupply(caver.utils.fromPeb(v, "KLAY")));
-        } catch { setCampSupply(undefined) }
+                .call((e, v) => setKpgSupply(caver.utils.fromPeb(v, "KLAY")));
+        } catch { setKpgSupply(undefined) }
+
+        try {
+            await state.klaySwapContract.methods
+                .estimatePos(state.EKLTokenAddress, BigInt(10 ^ 18))
+                .call((e, v) => setEklPrice(caver.utils.fromPeb(Number(Number(v / 10, 6).toPrecision(3)), "KLAY")));
+            console.log(eklPrice)
+        } catch { setEklPrice(undefined) }
+
 
         try {
             await state.SCAMPContract.methods
@@ -206,20 +221,20 @@ function Home() {
         try {
             await state.SCAMPContract.methods
                 .current_collateral_ratio()
-                .call((e, v) => setCur_Ratio(v / 1e6));
-        } catch { setCur_Ratio(undefined) }
+                .call((e, v) => setCurrentRatio(v / 1e6));
+        } catch { setCurrentRatio(undefined) }
 
         try {
             await state.OracleContract.methods
                 .getAssetPrice(state.SCAMPContract._address)
-                .call((e, v) => setSCampprice(v / 1e6));
-        } catch { setSCampprice(undefined) }
+                .call((e, v) => setScampPrice(v / 1e6));
+        } catch { setScampPrice(undefined) }
 
         try {
             await state.OracleContract.methods
                 .getAssetPrice(state.CAMPContract._address)
-                .call((e, v) => setCampprice(v / 1e6));
-        } catch { setCampprice(undefined) }
+                .call((e, v) => setCampPrice(v / 1e6));
+        } catch { setCampPrice(undefined) }
 
         setIsLoading(false);
     }
@@ -261,7 +276,7 @@ function Home() {
                             </OverviewItem>
                         ))}
                     </Overview>
-                    
+
                     <TokensList>
                         {Tokens.map((token, index) => (
                             <TokenItem key={token.name}>
@@ -299,7 +314,7 @@ function Home() {
                                     >
                                         Add Wallet
                                     </AddWallet>
-                                    <GetScamp>Get {token.name}</GetScamp>
+                                    <GetToken>Get {token.name}</GetToken>
                                 </TokenItemInfo>
                             </TokenItem>
                         ))}

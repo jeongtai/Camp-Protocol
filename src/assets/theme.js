@@ -14,7 +14,8 @@ export const theme = {
    btnGray : "#EDEDED",
    btnBlack : "#282828",
    btnBlue : "#3E97FF",
-
+   btnSkyblue : "#D7E9FF",
+   
    // text
    textBlack : "#282828",
    textGray : "#B2B2B2", 
@@ -24,8 +25,9 @@ export const theme = {
 
    // navbar
    navWidth: 260,
-   hoverColor: "#FFEF98",
+   hoverColor: "#FFF7C8",
    hoverTextColor : "#262A31",
+   selectedColor : "#FFEF98",
 
    // page-header
    headerHeight : "100px",

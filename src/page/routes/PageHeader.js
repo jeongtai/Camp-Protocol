@@ -95,10 +95,10 @@ function PageHeader() {
             <p>
                 {/* 나중에 tokenB 부분 tokenAddress로 바꾸기 */}
                 <a
-                    href="https://app.claimswap.org/swap?&tokenB=0xCF87f94fD8F6B6f0b479771F10dF672f99eADa63"
+                    href="https://klayswap.com/exchange/swap"
                     target="_blank"
                 >
-                    Get CAMP
+                    Get EKL
                 </a>
                 <ConnectWallet onClick={() => connectKaikas()}>
                     {isWalletConnected

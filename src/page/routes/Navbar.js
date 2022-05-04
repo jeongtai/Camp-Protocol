@@ -26,7 +26,7 @@ const Nav = styled.div`
     left: 0;
 
     background-color: ${(props) => props.theme.navColor};
-    border-right: 1px solid ${props=>props.theme.borderColor};
+    border-right: 1px solid ${props => props.theme.borderColor};
 `;
 
 const Logo = styled.div`
@@ -50,6 +50,13 @@ const Items = styled.div`
     min-width: 195px;
     height: 60%;
     max-height: 500px;
+
+    & .soonTitle{
+        flex-direction: column;
+    padding: 18px 10% 10px 20%;
+        position: relative;
+        top: -4px;
+    }
 `;
 
 const Item = styled.div`
@@ -68,11 +75,11 @@ const Item = styled.div`
         props.isActive ? props.theme.activeColor : props.theme.unActiveColor};
 
     background-color: ${(props) =>
-        props.isActive ?props.theme.hoverColor : null};
+        props.isActive ? props.theme.selectedColor : null};
 
     &:hover {
         color: ${(props) => props.theme.hoverTextColor};
-        background-color: ${(props) => props.theme.hoverColor};
+        background-color: ${(props) => props.isActive ? props.theme.selectedColor : props.theme.hoverColor};
         transform: scale(1.05);
 
         animation: ${keyframes`
@@ -91,13 +98,16 @@ function Navbar() {
     const [activeMenu, setActiveMenu] = useState(window.location.pathname);
 
     const menus = [
-        { name: "Dashboard", path: "/", logo : Dashboard },
-        { name: "Convert", path: "/Convert", logo : Convert },
-        { name: "Bank", path: "/Bank", logo : Bank },
-        { name: "Bond", path: "/Bond", logo : Bond },
-        { name: "Stake", path: "/Stake", logo : Stake },
-        { name: "Calculator", path: "/Calculator", logo : Calculator },
-        { name: "Fund", path: "/Fund", logo : Fund },
+        { name: "Dashboard", path: "/", logo: Dashboard },
+        { name: "Convert", path: "/Convert", logo: Convert },
+        { name: "Bond", path: "/Bond", logo: Bond },
+        { name: "Stake & Lock", path: "/Stake&Lock", logo: Stake },
+    ];
+
+    const soonMenus = [
+        { name: "Bank", path: "/Bank", logo: Bank },
+        { name: "Calculator", path: "/Calculator", logo: Calculator },
+        { name: "Fund", path: "/Fund", logo: Fund },
     ];
 
     return (
@@ -108,6 +118,28 @@ function Navbar() {
 
             <Items>
                 {menus.map((menu, index) => {
+                    return (
+                        <Link
+                            to={menu.path}
+                            key={index}
+                            onClick={() => setActiveMenu(menu.path)}
+                        >
+                            <Item
+                                isActive={
+                                    window.location.pathname === menu.path
+                                }
+                                key={index}
+                            >
+                                <img src={menu.logo} />
+                                <span>{menu.name}</span>
+                            </Item>
+                        </Link>
+                    );
+                })}
+            </Items>
+            <Items>
+                <p className="soonTitle">Soon </p>
+                {soonMenus.map((menu, index) => {
                     return (
                         <Link
                             to={menu.path}

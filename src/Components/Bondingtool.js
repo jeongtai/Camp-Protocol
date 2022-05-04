@@ -151,7 +151,7 @@ function Bondingtool(lpInfosProps) {
 
     try {
       await bondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
-        .call((e, v) => setPendingCamp(v / 1e18))
+        .call((e, v) => setPendingCamp((v / 1e18).toFixed(4)))
     } catch (e) { setBondPrice(undefined) }
     try {
       await bondContract.methods.percentVestedFor(window.klaytn.selectedAddress)
@@ -179,7 +179,7 @@ function Bondingtool(lpInfosProps) {
       await bondContract.methods.bondInfo(window.klaytn.selectedAddress)
         .call((e, v) => {
           setRemainTime(v[1])
-          setRemainCamp(v[0] / 1e18)
+          setRemainCamp((v[0] / 1e18).toFixed(4))
         })
     } catch (e) {
       setRemainTime(undefined)
@@ -240,7 +240,7 @@ function Bondingtool(lpInfosProps) {
   }
 
   function onClick2() {
-    bondContract.methods.redeem(window.klaytn.selectedAddress, autostake)
+    bondContract.methods.redeem(window.klaytn.selectedAddress)
       .send({
         from: window.klaytn.selectedAddress,
         gas: 3000000

@@ -4,7 +4,8 @@ import LPinfos from "./../../Components/LPinfos";
 import LoadingSVG from "./../../assets/LoadingSVG";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-
+import {KPGAddress} from "../../const/Contract.js"
+import Caver from "caver-js";
 const Content = styled.div`
     visibility: ${props => props.isBondingtoolOpen ? "hidden" : "visible"};
     
@@ -93,13 +94,13 @@ const Header = styled.div`
     padding : 0 10px 0 0;
   }
 `
-
+const caver = new Caver(window.klaytn) 
 const Bond = () => {
   let state = useSelector((state) => state)
-  const [campprice, setCampprice] = useState()
-  const [treasurybal, setTreasurybal] = useState()
-  const [lpamount, setLPAmount] = useState()
-  const [lpbal, setLPbal] = useState()
+  const [kpgprice, setKPGprice] = useState()
+  const [ekl3moonbal, set3Moonbal] = useState()
+  const [ekl3moonprice, set3Moonprice] = useState()
+  const [tvl, setTVL] = useState()
   const [bondprice, setBondPrice] = useState()
   const [pendingCAMP, setPendingCamp] = useState()
   const [percentBond, setPecentBond] = useState()
@@ -107,16 +108,27 @@ const Bond = () => {
 
   //LP이름
   const bondLPInfos = [
-    { name: "CAMP-USDT", bondContract: state.CAMP_USDT_BondContract, lpContract : state.CAMP_USDT_LPContract, TreasuryContract : state.CAMP_USDT_TreasuryContract},
-    { name: "SCAMP-USDT", bondContract: state.SCAMP_USDT_BondContract, lpContract : state.SCAMP_USDT_LPContract, TreasuryContract : state.SCAMP_USDT_TreasuryContract},
+    { name : "KPG-USDT", bondContract : state.KPG_USDTBondContract, lpContract : state.KPG_USDTLPContract, TreasuryContract : state.BondTreasuryContract},
+    { name : "EKL-kpEKL", bondContract : state.EKLkpEKLBondContract, lpContract : state.EKLkpEKLLPContract, TreasuryContract : state.BondTreasuryContract},
+    { name : "EKL-3MoonLP", bondContract : state.EKL3MoonBondContract, lpContract : state.EKL3MoonLPContract, TreasuryContract : state.BondTreasuryContract}
   ]
 
 
   async function getInfo() {
-    try {await state.OracleContract.methods
-      .getAssetPrice(state.CAMPContract._address)
-      .call((e, v) => setCampprice(v / 1e6));
-    } catch {setCampprice(undefined)}
+    try {await state.KPG_USDTLPContract.methods
+      .estimatePos(KPGAddress, caver.utils.toPeb("1", "KLAY"))
+      .call((e, v) => setKPGprice(v / 1e6));
+    } catch {setKPGprice(undefined)}
+
+    try {await state.KPG_USDTLPContract.methods
+      .balanceOf(state.BondTreasuryContract._address)
+      .call((e, v) => set3Moonbal(v / 1e18));
+    } catch {set3Moonbal(undefined)}
+
+    try {await state.KPG_USDTBondContract.methods
+      .assetPrice()
+      .call((e, v) => set3Moonprice(v / 1e6));
+    } catch {set3Moonprice(undefined)}
   }
 
   // initialize hook----------------------------
@@ -132,10 +144,9 @@ const Bond = () => {
 
 
   const OverviewInfos = [
-    { name: "TVL", amt: 1000000 },
-    { name: "CAMP Price", amt: campprice },
-    { name: "ㅁㄴㄴㅁ", amt: 10000000 },
-    { name: "Treasury Balance" },
+    { name: "TVL", amt: tvl },
+    { name: "KPG Price", amt: kpgprice },
+    { name: "Undeposited Value", amt : ekl3moonbal * ekl3moonprice },
   ]
 
   return (

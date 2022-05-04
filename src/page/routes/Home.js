@@ -179,14 +179,14 @@ function Home() {
             name: "KPG",
             price: campPrice,
             supply: kpgSupply,
-            Contract: state.CAMPContract._address,
+            Contract: state.KPGContract._address,
             logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg",
         },
         {
             name: "kpEKL",
             price: scampPrice,
             supply: kusdSupply,
-            Contract: state.SCAMPContract._address,
+            Contract: state.kpEKLContract._address,
             logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg",
         },
     ];

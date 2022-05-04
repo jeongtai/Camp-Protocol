@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import Staketool from "../../Components/Staketool"
+import KpStaketool from "../../Components/kpStaketool"
+import KPLock from "../../Components/kpLock"
 import Caver from "caver-js"
 import styled from "styled-components";
 
@@ -95,6 +97,8 @@ const Stake = () => {
         <h3>Staked된 양 : {pendingCAMP}</h3>
         <h3>풀릴때 까지 남은 시간  : {(timeConversion(lockRemaining * 1000))}</h3>
         <Staketool />
+        <KpStaketool />
+        <KPLock />
       </Content>
     </Section>
 

@@ -65,6 +65,7 @@ function PageHeader() {
         //   -> 지갑주소 undefined 됐을때 대비 갱신
         if (window.klaytn) {
             window.klaytn.on("accountsChanged", async function (accounts) {
+                
                 console.log(
                     "2 account change listned in header : ",
                     currentAddress,

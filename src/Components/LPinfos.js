@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import LinkImg from "../assets/ExternalLink.svg";
 import TokenLogo from "../assets/TokenLogo";
 import { reducer } from "../const/Contract";
-import Bondingtool from "./Bond/Bondingtool";
+import Bondingtool from "./Bondingtool";
 import { useSelector } from "react-redux";
 import { timeConversion } from "../const/service.js"
 import Caver from "caver-js";
@@ -61,13 +61,6 @@ const BondingtoolBtn = styled.button`
   font-weight: 300;
   color: ${(props) => props.isOpened ? props.theme.textBlue : props.theme.textDarkGray};
   
-  ${(props) => {
-    if (props.btnState === "Bond") { return props.theme.textBlue }
-    else if (props.btnState === "Sold-out") { return props.theme.textDarkGray }
-    else if (props.btnState === "Claim") { return "white" }
-  }
-  };
-
   &:hover {
       cursor: ${(props) => props.isOpened ? "pointer" : ""};
   }
@@ -77,6 +70,7 @@ const BondClaimtoolBtn = styled(BondingtoolBtn)`
   color: ${(props) => props.isOpened ? props.theme.btnWhite : props.theme.textDarkGray};
 `
 const caver = new Caver(window.klaytn)
+
 function LPInfos(props) {
 
   let state = useSelector((state) => state)
@@ -86,17 +80,17 @@ function LPInfos(props) {
   const [poolState, setPoolState] = useState("Bond")
   const [isClaimable, setIsClaimable] = useState(false)
   const [isBondable, setIsBondable] = useState(true)
-  const [clickedBtn, setClickBtn] = useState("")
-
+  const [clickedBtn, setClickBtn] = useState({})
   const lpName = props.bondLPInfo.name;
   const bondContract = props.bondLPInfo.bondContract;
   const TreasuryContract = props.bondLPInfo.TreasuryContract;
-  const ClickBondingtoolBtn = () => {
-    props.isBondingtoolOpenCtrl.setIsBondingtoolOpen(true)
-    setClickBtn(lpName)
 
+  const ClickBtn = (toolInfo) => {
+    props.isToolOpenCtrl.setIsToolOpen(true)
+    setClickBtn({ lp: lpName, tool: toolInfo })
   }
-  useEffect(async () => {
+
+  async function getInfo(accounts) {
     try {
       await bondContract.methods.assetPrice()
         .call((e, v) => setAssetPrice((v / 1e6).toFixed(3)))
@@ -113,7 +107,7 @@ function LPInfos(props) {
     } catch (e) { setVestingTerm(undefined) }
 
     try {
-      await bondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
+      await bondContract.methods.pendingPayoutFor(accounts)
         .call((e, v) => {
           if (v.toString() !== "0") setIsClaimable(true)
         })
@@ -126,8 +120,17 @@ function LPInfos(props) {
           if (v < caver.utils.toPeb("10", "KLAY")) setIsBondable(false)
         })
     } catch (e) { setIsBondable(true) }
-    
-  }, [])
+  }
+
+  // initialize hook----------------------------
+  useEffect(() => {
+    getInfo(window.klaytn.selectedAddress);
+    if (window.klaytn) {
+      window.klaytn.on("accountsChanged", function (accounts) {
+        getInfo(accounts[0]);
+      });
+    }
+  }, []);
 
   const getDexLink = (dex) => {
     switch (dex) {
@@ -158,24 +161,36 @@ function LPInfos(props) {
 
       <BtnSection>
         <div>
-          <BondingtoolBtn isOpened={isBondable} onClick={isBondable ? ClickBondingtoolBtn : null} btnState={poolState}>
-            {clickedBtn === lpName && props.isBondingtoolOpenCtrl.isBondingtoolOpen ?
+          <BondingtoolBtn
+            isOpened={isBondable}
+            onClick={isBondable ? ()=>ClickBtn("bond") : null}
+            btnState={poolState}>
+            {isBondable ? "Bond" : "Soldout"}
+          </BondingtoolBtn>
+          {clickedBtn.lp === lpName && props.isToolOpenCtrl.isToolOpen && clickedBtn.tool === "bond" ?
               <Bondingtool
                 bondLPInfo={props.bondLPInfo}
                 btnState={poolState}
-                isBondingtoolOpenCtrl={props.isBondingtoolOpenCtrl}
+                isToolOpenCtrl={props.isToolOpenCtrl}
               />
               : null}
-            {isBondable ? "Bond" : "Soldout"}
-          </BondingtoolBtn>
         </div>
+
         <div>
           <BondClaimtoolBtn
             isOpened={isClaimable}
-            onClick={isClaimable ? ClickBondingtoolBtn : null}>
+            onClick={isClaimable ? ()=>ClickBtn("bondClaim") : null}>
             Claim
           </BondClaimtoolBtn>
+          {clickedBtn.lp === lpName && props.isToolOpenCtrl.isToolOpen && clickedBtn.tool === "bondClaim" ?
+              <Bondingtool
+                bondLPInfo={props.bondLPInfo}
+                btnState="Claim"
+                isToolOpenCtrl={props.isToolOpenCtrl}
+              />
+              : null}
         </div>
+
       </BtnSection>
     </LPInfoItem>
   )

@@ -57,12 +57,21 @@ export const klaySwapContract = new caver.klay.Contract(
 
 export const MAX_UNIT = (2**256 - 1)/10
 
+export const bondLPInfos = [
+  { name : "KPG-oUSDT", dex : "klayswap", bondContract : KPG_USDTBondContract, lpContract : KPG_USDTLPContract, TreasuryContract : BondTreasuryContract},
+  { name : "EKL-kpEKL", dex : "klayswap", bondContract : EKLkpEKLBondContract, lpContract : EKLkpEKLLPContract, TreasuryContract : BondTreasuryContract},
+  { name : "3Moon LP", dex : "eklipse", bondContract : EKL3MoonBondContract, lpContract : EKL3MoonLPContract, TreasuryContract : BondTreasuryContract}
+]
+
 const initialstate = {BankContract, SCAMPContract, BondTreasuryContract,
 
   EKLLPContract, EKLContract, EKLkpEKLLPContract, kpEKLContract, EKLDepositorContract, KPG_USDTLPContract, EKL3MoonLPContract,
   KPG_USDTBondContract, EKLkpEKLBondContract, EKL3MoonBondContract, kpEKLStakingContract, kpEKLStakeFeeContract, kpStakingContract,
   KPGContract, kpLockContract, mock3MoonContract
 }
+
+
+
 
 export function reducer (state = initialstate, action) {
   switch(action.type) {

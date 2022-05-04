@@ -1,11 +1,13 @@
-import Bondingtool from "../../Components/Bond/Bondingtool";
+import Bondingtool from "../../Components/Bondingtool";
 import styled from "styled-components";
 import LPinfos from "./../../Components/LPinfos";
 import LoadingSVG from "./../../assets/LoadingSVG";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import {KPGAddress} from "../../const/Contract.js"
+import { KPGAddress, bondLPInfos } from "../../const/Contract.js"
+
 import Caver from "caver-js";
+
 const Content = styled.div`
     visibility: ${props => props.isBondingtoolOpen ? "hidden" : "visible"};
     
@@ -94,7 +96,7 @@ const Header = styled.div`
     padding : 0 10px 0 0;
   }
 `
-const caver = new Caver(window.klaytn) 
+const caver = new Caver(window.klaytn)
 const Bond = () => {
   let state = useSelector((state) => state)
   const [kpgprice, setKPGprice] = useState()
@@ -104,40 +106,39 @@ const Bond = () => {
   const [bondprice, setBondPrice] = useState()
   const [pendingCAMP, setPendingCamp] = useState()
   const [percentBond, setPecentBond] = useState()
-  const [isBondingtoolOpen, setIsBondingtoolOpen] = useState(false)
+  const [isToolOpen, setIsToolOpen] = useState(false)
 
-  let undepositval =  ekl3moonbal * ekl3moonprice
+  let undepositval = ekl3moonbal * ekl3moonprice
   let depositval = deposit3moon * ekl3moonprice
   let tvl = undepositval + depositval
+  let isReload = 0;
 
-  //LP이름
-  const bondLPInfos = [
-    { name : "KPG-oUSDT", dex : "klayswap", bondContract : state.KPG_USDTBondContract, lpContract : state.KPG_USDTLPContract, TreasuryContract : state.BondTreasuryContract},
-    { name : "EKL-kpEKL", dex : "klayswap", bondContract : state.EKLkpEKLBondContract, lpContract : state.EKLkpEKLLPContract, TreasuryContract : state.BondTreasuryContract},
-    { name : "3Moon LP", dex : "eklipse", bondContract : state.EKL3MoonBondContract, lpContract : state.EKL3MoonLPContract, TreasuryContract : state.BondTreasuryContract}
-  ]
 
 
   async function getInfo() {
-    try {await state.KPG_USDTLPContract.methods
-      .estimatePos(KPGAddress, caver.utils.toPeb("1", "KLAY"))
-      .call((e, v) => setKPGprice(v / 1e6));
-    } catch {setKPGprice(undefined)}
+    try {
+      await state.KPG_USDTLPContract.methods
+        .estimatePos(KPGAddress, caver.utils.toPeb("1", "KLAY"))
+        .call((e, v) => setKPGprice(v / 1e6));
+    } catch { setKPGprice(undefined) }
 
-    try {await state.EKL3MoonLPContract.methods
-      .balanceOf(state.BondTreasuryContract._address)
-      .call((e, v) => set3Moonbal(v / 1e18));
-    } catch {set3Moonbal(undefined)}
+    try {
+      await state.EKL3MoonLPContract.methods
+        .balanceOf(state.BondTreasuryContract._address)
+        .call((e, v) => set3Moonbal(v / 1e18));
+    } catch { set3Moonbal(undefined) }
 
-    try {await state.EKL3MoonBondContract.methods
-      .assetPrice()
-      .call((e, v) => set3Moonprice(v / 1e6));
-    } catch {set3Moonprice(undefined)}
+    try {
+      await state.EKL3MoonBondContract.methods
+        .assetPrice()
+        .call((e, v) => set3Moonprice(v / 1e6));
+    } catch { set3Moonprice(undefined) }
 
-    try {await state.mock3MoonContract.methods
-      .balanceOf(state.BondTreasuryContract._address)
-      .call((e, v) => setDeposit3Moon(v / 1e18));
-    } catch {setDeposit3Moon(undefined)}
+    try {
+      await state.mock3MoonContract.methods
+        .balanceOf(state.BondTreasuryContract._address)
+        .call((e, v) => setDeposit3Moon(v / 1e18));
+    } catch { setDeposit3Moon(undefined) }
   }
 
   // initialize hook----------------------------
@@ -145,23 +146,22 @@ const Bond = () => {
     getInfo();
     if (window.klaytn) {
       window.klaytn.on("accountsChanged", async function (accounts) {
-        getInfo();
-        console.log("account change listen in bank");
+          getInfo();
+        console.log(accounts, "account change listen in bond");
       });
     }
   }, []);
 
-
   const OverviewInfos = [
-    { name: "TVL", amt : tvl},
+    { name: "TVL", amt: tvl },
     { name: "Deposited Value", amt: depositval },
-    { name: "Not Deposited Yet", amt :  undepositval },
+    { name: "Not Deposited Yet", amt: undepositval },
     { name: "KPG Price", amt: kpgprice },
   ]
 
   return (
-    <Content isBondingtoolOpen={isBondingtoolOpen}>
-      <Overview>
+    <Content isBondingtoolOpen={isToolOpen}>
+      <Overview isReload={isReload}>
         <p className="Title">Overview</p>
 
         {OverviewInfos.map((info, index) => (
@@ -186,7 +186,7 @@ const Bond = () => {
         </Header>
 
         {bondLPInfos.map((bondLPInfo, index) => (
-          <LPinfos key={index} bondLPInfo={bondLPInfo} isBondingtoolOpenCtrl={{isBondingtoolOpen,setIsBondingtoolOpen}} />
+          <LPinfos key={index} bondLPInfo={bondLPInfo} isToolOpenCtrl={{ isToolOpen, setIsToolOpen }} />
         ))}
       </LPTokenItems>
 

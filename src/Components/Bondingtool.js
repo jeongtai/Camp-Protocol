@@ -1,17 +1,18 @@
-import Button from "../../assets/Button";
-import InputForm from "../../assets/InputForm";
+import Button from "../assets/Button";
+import InputForm from "../assets/InputForm";
 import Caver from "caver-js";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
+import TokenLogo from "../assets/TokenLogo";
 
-import { MAX_UNIT } from "../../const/Contract";
-import {timeConversion} from "../../const/service.js"
-import LoadingSVG from "../../assets/LoadingSVG.js";
+import { MAX_UNIT } from "../const/Contract";
+import { timeConversion } from "../const/service.js"
+import LoadingSVG from "../assets/LoadingSVG.js";
 
-const Content = styled.div`
-    visibility: ${props => props.isBondingtoolOpen ? "visible" : "hidden"};
+const BondingContent = styled.div`
+    visibility: ${props => props.isToolOpen ? "visible" : "hidden"};
 
     // flex
     display: flex;
@@ -21,7 +22,7 @@ const Content = styled.div`
     position : absolute;
     z-index : 1;
     left : 40%;
-    top : 20%;
+    top : 40%;
 
 
     padding: 24px;
@@ -46,6 +47,11 @@ const Content = styled.div`
     font-size: 14px;
 
 `;
+
+const InfoContent = styled(BondingContent)`
+    top : 20%;
+`;
+
 const BondInfos = styled.div`
     padding: 10px;
 
@@ -87,7 +93,7 @@ const caver = new Caver(window.klaytn)
 
 
 function Bondingtool(lpInfosProps) {
-  
+
   let state = useSelector((state) => state)
 
   const [btnInfo, setBtnInfo] = useState(lpInfosProps.btnState)
@@ -212,15 +218,15 @@ function Bondingtool(lpInfosProps) {
   // }
   // }, [isapproved])
 
-  function onClick() {
-    bondContract.methods.deposit(caver.utils.toPeb(lpamount, "KLAY"), bondprice * 1e6*1.01, window.klaytn.selectedAddress)
+  function onClickBond() {
+    bondContract.methods.deposit(caver.utils.toPeb(lpamount, "KLAY"), bondprice * 1e6 * 1.01, window.klaytn.selectedAddress)
       .send({
         from: window.klaytn.selectedAddress,
         gas: 3000000
       })
   }
 
-  function onClick2() {
+  function onClickClaim() {
     bondContract.methods.redeem(window.klaytn.selectedAddress)
       .send({
         from: window.klaytn.selectedAddress,
@@ -228,7 +234,7 @@ function Bondingtool(lpInfosProps) {
       })
   }
 
-  function onClick3() {
+  function onClickApprove() {
     lpContract.methods.approve(bondContract._address, MAX_UNIT)
       .send({
         from: window.klaytn.selectedAddress,
@@ -246,7 +252,6 @@ function Bondingtool(lpInfosProps) {
     { name: "ROI", val: pricerate, expression: `${pricerate} %` },
     { name: "Vesting term end", val: vestingterm, expression: timeConversion(vestingterm * 1000) },
     { name: "Minimum Puchase", val: "0.01CAMP", expression: "0.01 CAMP" },
-    { name: "Bond price", val: bondprice, expression: bondprice },
     { name: "asset Price", val: assetprice, expression: assetprice },
   ];
 
@@ -264,55 +269,63 @@ function Bondingtool(lpInfosProps) {
   return (
     <>
       {lpInfosProps ?
-      <><p>dsdfsdfdsf</p>
-        <Content isBondingtoolOpen={lpInfosProps.isBondingtoolOpenCtrl.isBondingtoolOpen}>
-          <span className="bondTitle">{lpInfosProps.bondLPInfo.name + " // " + lpInfosProps.btnState}</span>
-          <InputForm
-            token={lpInfosProps.bondLPInfo.name}
-            onChange={onLPChange}
-            value={lpamount}
-            setValueFn={setLPAmount}
-            haveBal={true}
-            price={1}
-            balance={lpbal}
-            haveMax={true}
-            type="number"
-            text="amount to Bond"
-            isVisible={true}
-          />
-          <BondInfos>
-            {lpInfosProps.btnState === "Bond" ? (
-              bondInfos.map((bondInfo, index) => (
-                <Info key={bondInfo.name}>
-                  <p className="infoName">{bondInfo.name}</p>
-                  <p>{bondInfo.val === undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : bondInfo.expression}</p>
-                </Info>)))
-              :
-              (
-                claimInfos.map((claimInfos, index) => (
-                  <Info key={claimInfos.name}>
-                    <p className="infoName">{claimInfos.name}</p>
-                    <p>{claimInfos.val === undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : claimInfos.expression}</p>
-                  </Info>
-                )))}
-          </BondInfos>
+        <><InfoContent isToolOpen={lpInfosProps.isToolOpenCtrl.isToolOpen}>
+          <span className="bondTitle">
+            <TokenLogo name={lpInfosProps.bondLPInfo.name} />
+            {lpInfosProps.bondLPInfo.name + " // " + lpInfosProps.btnState}
+          </span>
+          <span>
+            {lpInfosProps.btnState == "Bond" ? `Bond price : ${bondprice}`
+              : `Claimable Reward : ${pendingCAMP}`}
+          </span>
+        </InfoContent>
+          <BondingContent isToolOpen={lpInfosProps.isToolOpenCtrl.isToolOpen}>
+            <InputForm
+              token={lpInfosProps.bondLPInfo.name}
+              onChange={onLPChange}
+              value={lpamount}
+              setValueFn={setLPAmount}
+              haveBal={true}
+              price={1}
+              balance={lpbal}
+              haveMax={true}
+              type="number"
+              text="amount to Bond"
+              isVisible={true}
+            />
+            <BondInfos>
+              {lpInfosProps.btnState === "Bond" ? (
+                bondInfos.map((bondInfo, index) => (
+                  <Info key={bondInfo.name}>
+                    <p className="infoName">{bondInfo.name}</p>
+                    <p>{bondInfo.val === undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : bondInfo.expression}</p>
+                  </Info>)))
+                :
+                (
+                  claimInfos.map((claimInfos, index) => (
+                    <Info key={claimInfos.name}>
+                      <p className="infoName">{claimInfos.name}</p>
+                      <p>{claimInfos.val === undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : claimInfos.expression}</p>
+                    </Info>
+                  )))}
+            </BondInfos>
 
-          <Approve>
-            <Button
-              text={btnInfo}
-              isApproved={isApproved}
-              onClick={() => {
-                if (btnInfo === "Bond") {
-                  return onClick()
-                } else if (btnInfo === "Claim") {
-                  return onClick2()
-                } else {
-                  return onClick3()
-                }
-              }} />
+            <Approve>
+              <Button
+                text={btnInfo}
+                isApproved={isApproved}
+                onClick={() => {
+                  if (btnInfo === "Bond") {
+                    return onClickBond()
+                  } else if (btnInfo === "Claim") {
+                    return onClickClaim()
+                  } else {
+                    return onClickApprove()
+                  }
+                }} />
 
-          </Approve>
-        </Content>
+            </Approve>
+          </BondingContent>
         </>
         : <p margin="0 auto">
           <LoadingSVG

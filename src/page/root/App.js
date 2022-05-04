@@ -9,7 +9,7 @@ import Home from "../routes/Home";
 import Convert from "../routes/Convert";
 import Stake from "../routes/Stake";
 import Bond from "../routes/Bond";
-import Bondingtool from "../../Components/Bond/Bondingtool";
+import Bondingtool from "../../Components/Bondingtool";
 import Bank from "../routes/Bank";
 import Fund from "../routes/Fund";
 import Calculator from "../routes/Calculator";

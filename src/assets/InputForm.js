@@ -40,11 +40,10 @@ const Top = styled.div`
         display:flex;
         flex-direction : row;
         align-items:center;
-        justify-items: flex-end;
-        text-align: center;
-        padding: 3px;
+        gap:5px;
+
         font-weight: 400;
-        color: black;
+        color: black;        
     }
 
     & .longName{
@@ -119,7 +118,7 @@ function InputForm(props) {
                     </MaxBtn>
                 </p>
                 <div className="inputform-tokenLogo">
-                    <TokenLogo name={props.token}></TokenLogo>
+                    <TokenLogo name={props.token}/>
                     <div className={props.token.length > 5 ? "longName" : "shortName"}>
                         {props.token}
                     </div>
@@ -128,7 +127,7 @@ function InputForm(props) {
             <Bottom>
                 <p>
                     $ {isNaN(parseFloat(props.price) * parseFloat(props.value))
-                        ? <LoadingSVG type="dot" color="#000" width="15px" height="15px" />
+                        ? null
                         : parseFloat(props.price) * parseFloat(props.value)}
                 </p>
 

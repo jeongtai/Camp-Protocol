@@ -160,21 +160,21 @@ function Home() {
     const [eklprice, setEKLprice] = useState();
     const [kpgprice, setKPGPrice] = useState()
     const [kpEKLprice, setkpEklPrice] = useState();
-    const [treasurykpgval, setKPGval] = useState();
-    const [treasuryeklkpeklval, setEKLkpEKLval] =useState()
-    const [treasury3moonval, set3Moonval] = useState()
-    const [deposit3moonval, setD3MoonVal] = useState()
+    const [kpgTreasuryVal, setKPGTreasuryVal] = useState();
+    const [eklkpeklTreasuryVal, setEklkpeklTreasuryVal] = useState()
+    const [threemoonTreasuryVal, setThreemoonTreasuryVal] = useState()
+    const [depositThreemoonVal, setDepositThreemoonVal] = useState()
     const [isLoading, setIsLoading] = useState(false);
 
 
     const caver = new Caver(window.klaytn);
     const infos = [
-        { name: "Total Market Cap", amt: `${kpgprice}`},
-        { name: "TVL", amt: `${kpgprice}` },
+        { name: "Total Market Cap", amt: `${kpgprice}` },
+        { name: "TVL", amt: `${parseFloat(kpgTreasuryVal) + parseFloat(eklkpeklTreasuryVal) + parseFloat(threemoonTreasuryVal)}` },
         { name: "Treasury Balance", amt: `${kpgprice}` },
         { name: "Total EKL", amt: `${kpEKLSupply}` },
         { name: "KPG Price", amt: `${kpgprice}` },
-        { name: "Backer Price per KPG", amt: ` $ ${kpgprice}` },
+        { name: "Backer Price per KPG", amt: `${kpgprice}` },
         { name: "kpEKL Price", amt: `${kpEKLprice}` },
         { name: "kpEKL/EKL Ratio", amt: `${kpEKLratio}` },
     ];
@@ -206,99 +206,102 @@ function Home() {
         try {
             await state.kpEKLContract.methods
                 .totalSupply()
-                .call((e, v) => setkpEKLSupply((v/1e18).toFixed(3)))
+                .call((e, v) => setkpEKLSupply((v / 1e18).toFixed(3)))
         } catch { setkpEKLSupply(undefined) }
 
         try {
             await state.KPG_USDTLPContract.methods
                 .estimatePos(state.KPGContract._address, caver.utils.toPeb("1", "KLAY"))
-                .call((e, v) => setKPGPrice((v/1e6).toFixed(3)));
+                .call((e, v) => setKPGPrice((v / 1e6).toFixed(3)));
         } catch { setKPGPrice(undefined) }
-
-        try {
-          await state.EKLLPContract.methods
-              .estimatePos(EKLTokenAddress, caver.utils.toPeb("1", "KLAY"))
-              .call((e, v) => {setEKLprice((v/1e6).toFixed(3))})
-      } catch { setEKLprice(undefined) }
-
-        try {
-          await state.EKLkpEKLLPContract.methods
-              .getCurrentPool()
-              .call((e, v) => setkpEklPrice((v[0]/v[1]*eklprice).toFixed(3)))
-      } catch { setkpEklPrice(undefined) }
-
-      try {
-        await state.EKLkpEKLLPContract.methods
-            .getCurrentPool()
-            .call((e, v) => setkpEKLRatio((v[0]/v[1]).toPrecision(3)))
-    } catch { setkpEKLRatio(undefined) }
-
 
         try {
             await state.KPG_USDTBondContract.methods
                 .assetPrice()
-                .call(async (e, price) => { 
-                  await state.KPG_USDTLPContract.methods
-                  .balanceOf(state.BondTreasuryContract._address)
-                  .call((e, bal) => {
-                    setKPGval((price * bal/1e24).toPrecision(3))
-                  })
+                .call(async (e, price) => {
+                    await state.KPG_USDTLPContract.methods
+                        .balanceOf(state.BondTreasuryContract._address)
+                        .call((e, bal) => {
+                            setKPGTreasuryVal((price * bal / 1e24).toPrecision(3))
+                        })
                 });
-        } catch { setKPGval(undefined) }
+        } catch { setKPGTreasuryVal(undefined) }
 
         try {
-          await state.EKLkpEKLBondContract.methods
-              .assetPrice()
-              .call(async (e, price) => { 
-                await state.EKLkpEKLLPContract.methods
-                .balanceOf(state.BondTreasuryContract._address)
-                .call((e, bal) => {
-                  setEKLkpEKLval((price * bal/1e24).toPrecision(3))
-                })
-              });
-      } catch { setEKLkpEKLval(undefined) }
-
-      try {
-        await state.EKL3MoonBondContract.methods
-            .assetPrice()
-            .call(async (e, price) => { 
-              await state.EKL3MoonLPContract.methods
-              .balanceOf(state.BondTreasuryContract._address)
-              .call((e, bal) => {
-                set3Moonval((price * bal/1e24).toPrecision(3))
-              })
-            });
-    } catch { set3Moonval(undefined) }
-
-    try {
-      await state.EKL3MoonBondContract.methods
-          .assetPrice()
-          .call(async (e, price) => { 
-            await state.mock3MoonContract.methods
-            .balanceOf(state.BondTreasuryContract._address)
-            .call((e, bal) => {
-              setD3MoonVal((price * bal/1e24).toPrecision(3))
-            })
-          });
-  } catch { setD3MoonVal(undefined) }
+            await state.EKLkpEKLBondContract.methods
+                .assetPrice()
+                .call(async (e, price) => {
+                    await state.EKLkpEKLLPContract.methods
+                        .balanceOf(state.BondTreasuryContract._address)
+                        .call((e, bal) => {
+                            setEklkpeklTreasuryVal((price * bal / 1e24).toPrecision(3))
+                        })
+                });
+        } catch { setEklkpeklTreasuryVal(undefined) }
 
         try {
-            await state.SCAMPContract.methods
-                .current_collateral_ratio()
-                .call((e, v) => setPriceTarget(v / 1e6));
-        } catch { setPriceTarget(undefined) }
+            await state.EKL3MoonBondContract.methods
+                .assetPrice()
+                .call(async (e, price) => {
+                    await state.EKL3MoonLPContract.methods
+                        .balanceOf(state.BondTreasuryContract._address)
+                        .call((e, bal) => {
+                            setThreemoonTreasuryVal((price * bal / 1e24).toPrecision(3))
+                        })
+                });
+        } catch { setThreemoonTreasuryVal(undefined) }
 
         try {
-            await state.OracleContract.methods
-                .getAssetPrice(state.SCAMPContract._address)
-                .call((e, v) => setPriceTarget(v / 1e6));
-        } catch { setPriceTarget(undefined) }
+            await state.EKL3MoonBondContract.methods
+                .assetPrice()
+                .call(async (e, price) => {
+                    await state.mock3MoonContract.methods
+                        .balanceOf(state.BondTreasuryContract._address)
+                        .call((e, bal) => {
+                            setDepositThreemoonVal((price * bal / 1e24).toPrecision(3))
+                        })
+                });
+        } catch { setDepositThreemoonVal(undefined) }
+
 
         try {
-            await state.OracleContract.methods
-                .getAssetPrice(state.CAMPContract._address)
-                .call((e, v) => setPriceTarget(v / 1e6));
-        } catch { setPriceTarget(undefined) }
+            await state.EKLLPContract.methods
+                .estimatePos(EKLTokenAddress, caver.utils.toPeb("1", "KLAY"))
+                .call((e, v) => {setEKLprice((v/1e6).toFixed(3))})
+
+            await state.EKLkpEKLLPContract.methods
+                .getCurrentPool()
+                .call((e, v) => setkpEKLRatio((v[0] / v[1]).toPrecision(3)))
+        //미안하다 상준아 해결못했다
+            await state.EKLkpEKLLPContract.methods
+                .getCurrentPool()
+                .call((e, v) => setkpEklPrice((v[0] / v[1] * eklprice).toFixed(3)))
+        } catch {
+            setEKLprice(undefined)
+            setkpEklPrice(undefined)
+            setkpEKLRatio(undefined)
+        }
+
+
+
+        // --------- bank 관련-------------
+        // try {
+        //     await state.SCAMPContract.methods
+        //         .current_collateral_ratio()
+        //         .call((e, v) => setPriceTarget(v / 1e6));
+        // } catch { setPriceTarget(undefined) }
+
+        // try {
+        //     await state.OracleContract.methods
+        //         .getAssetPrice(state.SCAMPContract._address)
+        //         .call((e, v) => setPriceTarget(v / 1e6));
+        // } catch { setPriceTarget(undefined) }
+
+        // try {
+        //     await state.OracleContract.methods
+        //         .getAssetPrice(state.CAMPContract._address)
+        //         .call((e, v) => setPriceTarget(v / 1e6));
+        // } catch { setPriceTarget(undefined) }
 
         setIsLoading(false);
     }
@@ -333,7 +336,7 @@ function Home() {
                             <OverviewItem key={info.name}>
                                 <p className="name">{info.name}</p>
                                 <p className="value">
-                                    {info.amt === "undefined"
+                                    {isNaN(info.amt)
                                         ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
                                         : info.amt}
                                 </p>

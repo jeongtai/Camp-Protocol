@@ -8,6 +8,10 @@ import PageHeader from "../routes/PageHeader";
 import Home from "../routes/Home";
 import Convert from "../routes/Convert";
 import Stake from "../routes/Stake";
+import KPGLock from "../../Components/KPGLock";
+import KPGStakingtool from "../../Components/KPGStakingtool";
+import KPEKLStaketool from "../../Components/KPEKLStaketool";
+
 import Bond from "../routes/Bond";
 import Bondingtool from "../../Components/Bondingtool";
 import Bank from "../routes/Bank";
@@ -35,7 +39,10 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/Convert" element={<Convert />} />
-                    <Route path="/Stake&LOck" element={<Stake />} />
+                    <Route path="/Stake&Lock" element={<Stake />} />
+                    <Route path="/Stake&Lock/KPGLock" element={<KPGLock />} />
+                    <Route path="/Stake&Lock/KPGStakingtool" element={<KPGStakingtool />} />
+                    <Route path="/Stake&Lock/KPEKLStaketool" element={<KPEKLStaketool />} />                    
                     <Route path="/Bond" element={<Bond />} />
                     <Route path="/Bond/*" element={<Bondingtool />} />
                     <Route path="/Bank" element={<Bank />} />

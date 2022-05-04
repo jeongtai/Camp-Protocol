@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import Staketool from "../../Components/Staketool"
-import KpStaketool from "../../Components/kpStaketool"
-import KPLock from "../../Components/kpLock"
+import { Link } from "react-router-dom";
+
 import Caver from "caver-js"
 import styled from "styled-components";
 import { timeConversion } from "../../const/service.js"
 import TokenLogo from "../../assets/TokenLogo";
 import LinkImg from "../../assets/ExternalLink.svg";
 import ArrowIcon from "../../assets/ArrowIcon.svg";
+import KPEKLStaketool from "../../Components/KPEKLStaketool"
+import KPGStakingtool from "../../Components/KPGStakingtool"
+import KPGLock from "../../Components/KPGLock"
 
 const caver = new Caver(window.klaytn)
 
@@ -140,8 +142,11 @@ const Stake = () => {
           <div> n %</div>
           <div>$ 00,000</div>
           <div>$ 00,000</div>
-          <div> <img src={ArrowIcon}/> </div>
+          <div>
+            <Link to={"/Stake&Lock/KPGStakingtool"}><img src={ArrowIcon} /></Link>
+          </div>
         </Item>
+        
         <Item>
           <div className="tokenName">
             <TokenLogo name="kpEKL" />
@@ -156,9 +161,10 @@ const Stake = () => {
           <div> n %</div>
           <div>$ 00,000</div>
           <div>$ 00,000</div>
-          <div> <img src={ArrowIcon}/> </div>
+          <div><Link to={"/Stake&Lock/KPEKLStaketool"}> <img src={ArrowIcon} /></Link> </div>
         </Item>
       </Section>
+
       <Section className="wide">
         <p className="Title">Lock</p>
         <Header>
@@ -183,7 +189,7 @@ const Stake = () => {
           <div> n %</div>
           <div>$ 00,000</div>
           <div>$ 00,000</div>
-          <div> <img src={ArrowIcon}/> </div>
+          <div><Link to={"/Stake&Lock/KPGLock"}> <img src={ArrowIcon} /></Link> </div>
         </Item>
       </Section>
 
@@ -191,9 +197,9 @@ const Stake = () => {
         <StakeContent>
           <h3>Staked된 양 : {pendingCAMP}</h3>
           <h3>풀릴때 까지 남은 시간  : {(timeConversion(lockRemaining * 1000))}</h3>
-          <Staketool />
-          <KpStaketool />
-          <KPLock />
+          <KPEKLStaketool />
+          <KPGStakingtool />
+          <KPGLock />
         </StakeContent>
       </Section>
     </Main>

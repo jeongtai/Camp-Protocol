@@ -159,7 +159,7 @@ function Home() {
     const [scampPrice, setScampPrice] = useState();
     const [campPrice, setCampPrice] = useState()
     const [eklPrice, setEklPrice] = useState();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const caver = new Caver(window.klaytn);

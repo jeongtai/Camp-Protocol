@@ -56,7 +56,7 @@ function Converttool() {
     let state = useSelector((state) => state)
 
     const [isLoading, setIsLoading] = useState(false);
-    const [isapproved, setIsApproved] = useState(false);
+    const [isApproved, setIsApproved] = useState(false);
     const [isSetOpen, setIsSetOpen] = useState(false);
     const [slippage, setSlippage] = useState(0.1);
 
@@ -66,7 +66,7 @@ function Converttool() {
     const [kpEKLbal, setkpEKLbal] = useState();
 
     const [inputbal, setInputbal] = useState();
-
+    
     const [EKLallowance, setEKLallowance] = useState();
 
 
@@ -172,8 +172,10 @@ function Converttool() {
                     <InputForm
                         token="EKL"
                         balance={EKLbal}
+                        setValueFn={setInputbal}
                         onChange={onChange}
                         value={inputbal}
+                        price={EKLprice}                        
                         type="number"
                         isVisible={true}
                         haveMax={true}
@@ -183,8 +185,10 @@ function Converttool() {
                     <InputForm
                         token="kpEKL"
                         balance={kpEKLbal}
+                        setValueFn={setkpEKLbal}
                         onChange={onChange}
                         value={inputbal}
+                        price={kpEKLprice}
                         type="number"
                         isVisible={true}
                         haveMax={false}
@@ -200,13 +204,15 @@ function Converttool() {
                             EKL to kpEKL for Converting.
                         </p>
 
-                        {isapproved ? (
-                            <Button text="Convert!"
+                        {isApproved ? (
+                            <Button text="Convert"
+                            isApproved={isApproved}
                             onClick={Convert}
                             >
                             </Button>
                         ) : (
                             <Button text="Approve"
+                            isApproved={isApproved}
                             onClick={ApproveEKL}
                             >
                             </Button>

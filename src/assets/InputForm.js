@@ -26,15 +26,6 @@ const Section = styled.div`
     }
 `;
 
-const Bottom = styled.div`
-    display: grid;
-    grid-template-columns: 90% 10%;
-    align-items: center;
-    justify-items: flex-start;
-    
-    height: 20px;
-`;
-
 const Top = styled.div`
     display: flex;
     justify-content: space-between;
@@ -54,6 +45,18 @@ const Top = styled.div`
     
 `;
 
+const Bottom = styled.div`
+    display: grid;
+    grid-template-columns: 80% 20%;
+    align-items: end;
+    justify-items: flex-start;
+    
+    height: 20px;
+    & span{
+        margin-right:7px;
+    }
+`;
+
 const MaxBtn = styled.button`
     margin: 0 0 0 auto;
     padding: 4px;
@@ -70,7 +73,6 @@ const MaxBtn = styled.button`
 
 
 function InputForm(props) {
-    const [formValue, setFormValue] = useState(props.value)
     const inputRef = useRef(null);
 
     return (
@@ -79,7 +81,7 @@ function InputForm(props) {
                 <input
                     className={styles.input}
                     onChange={props.onChange}
-                    value={props.value}
+                    value={props.value || ''}
                     type={props.type}
                     ref={inputRef}
                     placeholder="0"
@@ -107,20 +109,24 @@ function InputForm(props) {
             </Top>
             <Bottom>
                 <p>
-                    $
+
+                    $ {isNaN(parseFloat(props.price) * parseFloat(props.value))
+                        ? null
+                        : parseFloat(props.price) * parseFloat(props.value)}
                 </p>
 
                 {props.haveBal ? <p>
                     <span>
-                    <img src={WalletIcon} />
+                        <img src={WalletIcon} /></span>
+                    <span>
+                        {props.balance == undefined ?
+                            <LoadingSVG
+                                type="circle"
+                                color="#000"
+                                width="15px"
+                                height="15px"
+                            /> : props.balance}
                     </span>
-                    {props.balance == undefined ?
-                        <LoadingSVG
-                            type="circle"
-                            color="#000"
-                            width="15px"
-                            height="15px"
-                        /> : props.balance}
                 </p> : <p></p>}
 
             </Bottom>

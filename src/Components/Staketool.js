@@ -17,7 +17,6 @@ function Staketool () {
     function Stake() {
       state.CAMPContract.methods.approve(
         state.StakingContract._address,
-        
       ).send({
         from : window.klaytn.selectedAddress,
         gas : 3000000
@@ -30,7 +29,7 @@ function Staketool () {
           gas : '3000000'
         })
       })
-    }
+    } 
 
     function Unstake() {
       state.StakingContract.methods.unstake(

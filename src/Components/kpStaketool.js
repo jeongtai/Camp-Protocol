@@ -3,7 +3,8 @@ import InputForm from "../assets/InputForm"
 import Button from"../assets/Button";
 import {useSelector } from "react-redux";
 import Caver from "caver-js";
-import { EKLTokenAddress } from "../const/Contract";
+import { EKLTokenAddress, MAX_UNIT } from "../const/Contract";
+import BigNumber from "bignumber.js";
 
 const caver = new Caver(window.klaytn)
 
@@ -35,7 +36,7 @@ function KpLocktool () {
         await state.KPGContract.methods
           .allowance(window.klaytn.selectedAddress, state.kpEKLStakingContract._address)
           .call((e, v) => {
-            if (v > 1e18) {
+            if (v > caver.utils.toPeb("1e10", "KLAY")) {
               setIsApproved(true)
             }
           })
@@ -76,7 +77,7 @@ function KpLocktool () {
     function Approve() {
       state.KPGContract.methods.approve(
         state.kpStakingContract._address,
-        caver.utils.toPeb("10000000", "KLAY")
+        BigNumber(MAX_UNIT)
       ).send({
         from : window.klaytn.selectedAddress,
         gas : 3000000
@@ -126,7 +127,7 @@ function KpLocktool () {
             />
             <Button text = "Stake!" onClick={Stake}/>
             <Button text = "Unstake!" onClick={unLock}/>
-            <Button text = "Claim" onClick={Claim}/>
+            <Button text = "Claim" onClick={Approve}/>
         </div>
     )
 }

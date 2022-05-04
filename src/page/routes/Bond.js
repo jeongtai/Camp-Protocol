@@ -100,11 +100,15 @@ const Bond = () => {
   const [kpgprice, setKPGprice] = useState()
   const [ekl3moonbal, set3Moonbal] = useState()
   const [ekl3moonprice, set3Moonprice] = useState()
-  const [tvl, setTVL] = useState()
+  const [deposit3moon, setDeposit3Moon] = useState()
   const [bondprice, setBondPrice] = useState()
   const [pendingCAMP, setPendingCamp] = useState()
   const [percentBond, setPecentBond] = useState()
   const [isBondingtoolOpen, setIsBondingtoolOpen] = useState(false)
+
+  let undepositval =  ekl3moonbal * ekl3moonprice
+  let depositval = deposit3moon * ekl3moonprice
+  let tvl = undepositval + depositval
 
   //LP이름
   const bondLPInfos = [
@@ -120,15 +124,20 @@ const Bond = () => {
       .call((e, v) => setKPGprice(v / 1e6));
     } catch {setKPGprice(undefined)}
 
-    try {await state.KPG_USDTLPContract.methods
+    try {await state.EKL3MoonLPContract.methods
       .balanceOf(state.BondTreasuryContract._address)
       .call((e, v) => set3Moonbal(v / 1e18));
     } catch {set3Moonbal(undefined)}
 
-    try {await state.KPG_USDTBondContract.methods
+    try {await state.EKL3MoonBondContract.methods
       .assetPrice()
       .call((e, v) => set3Moonprice(v / 1e6));
     } catch {set3Moonprice(undefined)}
+
+    try {await state.mock3MoonContract.methods
+      .balanceOf(state.BondTreasuryContract._address)
+      .call((e, v) => setDeposit3Moon(v / 1e18));
+    } catch {setDeposit3Moon(undefined)}
   }
 
   // initialize hook----------------------------
@@ -144,9 +153,10 @@ const Bond = () => {
 
 
   const OverviewInfos = [
-    { name: "TVL", amt: tvl },
+    { name: "TVL", amt : tvl},
+    { name: "Deposited Value", amt: depositval },
+    { name: "Not Deposited Yet", amt :  undepositval },
     { name: "KPG Price", amt: kpgprice },
-    { name: "Undeposited Value", amt : ekl3moonbal * ekl3moonprice },
   ]
 
   return (

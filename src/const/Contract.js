@@ -27,11 +27,13 @@ const EKLkpEKLLPContract = new caver.klay.Contract(klayswapABI, "0x5e9bb1fad0a26
 const kpEKLContract = new caver.klay.Contract(kpEKLjs.abi, "0x08644836b786B69a5082fD4644a3F2D1534B11A8")
 const KPGContract = new caver.klay.Contract(kpTokenjs.abi, "0xF05d180a169418959a017865866F0aBaF7DB7EAd")
 
+const mock3MoonContract = new caver.klay.Contract(klayswapABI, "0xbb0297b1641d00c48f44212a2d83447f2d8f3a56")
+
 const EKLDepositorContract = new caver.klay.Contract(EKLDepositorjs.abi, "0xABe0F9cFf7d77aEd6b6C9107f0584f897cC0942d")
 const KPG_USDTBondContract = new caver.klay.Contract(KPGUSDTBondjs.abi, "0x86929978fFF53F72Fc4cf0e2FC64f4f16EE652A3")
 const EKLkpEKLBondContract = new caver.klay.Contract(EKLkpEKLBondjs.abi, "0xa914415d5AAEB893154d65204eC5e242BA480B31")
 const EKL3MoonBondContract = new caver.klay.Contract(EKL3MoonBondjs.abi, "0x0b1E366479BC9F1Ec8717908457B3f21792b90FF")
-const BondTreasuryContract = new caver.klay.Contract(Treasuryjs.abi, "0xa8604E038C9A02D1dad0ecA7fC07e6A0bc9C2f30")
+const BondTreasuryContract = new caver.klay.Contract(Treasuryjs.abi, "0xc71d938d5Faf4057B7A9cd19b633A1d921Eee26c")
 
 const kpEKLStakingContract = new caver.klay.Contract(kpEKLStakejs.abi, "0x58337263cf52A4906913866242cfdeE16dEe82Bb")
 const kpEKLStakeFeeContract = new caver.klay.Contract(kpEklStakeFeejs.abi, "0x54D9692Eb4539970acE6dB1Bf8220e4ABb259df0")
@@ -46,17 +48,20 @@ export const klaySwapAddress = "0x219ee5d76593f5bd639125b6411a17d309e3ad31";
 export const EKLDepositorAddress = "0xABe0F9cFf7d77aEd6b6C9107f0584f897cC0942d";
 export const KPGAddress = "0xF05d180a169418959a017865866F0aBaF7DB7EAd";
 
+export const EKL3MoonMockAddress = "0xbb0297b1641d00c48f44212a2d83447f2d8f3a56"
+
 export const klaySwapContract = new caver.klay.Contract(
   klayswapABI,
   klaySwapAddress
 );
 
+export const MAX_UNIT = (2**256 - 1)/10
 
 const initialstate = {BankContract, SCAMPContract, BondTreasuryContract,
 
   EKLLPContract, EKLContract, EKLkpEKLLPContract, kpEKLContract, EKLDepositorContract, KPG_USDTLPContract, EKL3MoonLPContract,
   KPG_USDTBondContract, EKLkpEKLBondContract, EKL3MoonBondContract, kpEKLStakingContract, kpEKLStakeFeeContract, kpStakingContract,
-  KPGContract, kpLockContract
+  KPGContract, kpLockContract, mock3MoonContract
 }
 
 export function reducer (state = initialstate, action) {

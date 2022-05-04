@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 
 import LoadingSVG from "../assets/LoadingSVG.js";
+import { MAX_UNIT } from "../const/Contract";
 
 const Content = styled.div`
     visibility: ${props => props.isBondingtoolOpen ? "visible" : "hidden"};
@@ -152,7 +153,7 @@ function Bondingtool(lpInfosProps) {
     try {
       await bondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
         .call((e, v) => setPendingCamp((v / 1e18).toFixed(4)))
-    } catch (e) { setBondPrice(undefined) }
+    } catch (e) { setPendingCamp(undefined) }
     try {
       await bondContract.methods.percentVestedFor(window.klaytn.selectedAddress)
         .call((e, v) => {
@@ -162,7 +163,7 @@ function Bondingtool(lpInfosProps) {
             setPecentBond(v / 100)
           }
         })
-    } catch (e) { setBondPrice(undefined) }
+    } catch (e) { setPendingCamp(undefined) }
 
     try {
       await bondContract.methods.terms()
@@ -230,7 +231,7 @@ function Bondingtool(lpInfosProps) {
   // }, [isapproved])
 
   function onClick() {
-    bondContract.methods.deposit(caver.utils.toPeb(lpamount, "KLAY"), bondprice * 1e6, window.klaytn.selectedAddress)
+    bondContract.methods.deposit(caver.utils.toPeb(lpamount, "KLAY"), bondprice * 1e6 * 99.9, window.klaytn.selectedAddress)
       .send({
         from: window.klaytn.selectedAddress,
         gas: 3000000
@@ -246,7 +247,7 @@ function Bondingtool(lpInfosProps) {
   }
 
   function onClick3() {
-    lpContract.methods.approve(bondContract._address, caver.utils.toPeb(1e18, "KLAY"))
+    lpContract.methods.approve(bondContract._address, MAX_UNIT)
       .send({
         from: window.klaytn.selectedAddress,
         gas: 3000000

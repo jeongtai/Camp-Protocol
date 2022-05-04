@@ -4,6 +4,7 @@ import styled from "styled-components";
 import TokenLogo from "./TokenLogo";
 import { useState } from "react";
 import LoadingSVG from "./LoadingSVG.js";
+import WalletIcon from "./WalletIcon.svg"
 
 const Section = styled.div`
     margin: 14px 0px;
@@ -25,7 +26,7 @@ const Section = styled.div`
     }
 `;
 
-const Top = styled.div`
+const Bottom = styled.div`
     display: grid;
     grid-template-columns: 90% 10%;
     align-items: center;
@@ -34,7 +35,7 @@ const Top = styled.div`
     height: 20px;
 `;
 
-const Bottom = styled.div`
+const Top = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -57,13 +58,13 @@ const MaxBtn = styled.button`
     margin: 0 0 0 auto;
     padding: 4px;
 
-    border: solid 1px #F96161;
-    border-radius: 4px;
-    background-color: transparent;
+    border: solid 1px ${(props) => props.theme.btnSkyblue};
+    border-radius: 6px;
+    background-color: ${(props) => props.theme.btnSkyblue};
 
-    color: red;
-    font-weight: 400;
-    font-size: 9px;
+    color: ${(props) => props.theme.textDarkGray};
+
+    font-size: 12px;
     visibility: ${(props) => ((props.haveMax && props.isVisible) ? "visible" : "hidden")};
 `;
 
@@ -75,31 +76,6 @@ function InputForm(props) {
     return (
         <Section isVisible={props.isVisible}>
             <Top>
-                {props.haveBal ?<p>Balance : {props.balance == undefined ? <LoadingSVG
-                                                type="circle"
-                                                color="#000"
-                                                width="15px"
-                                                height="15px"
-                                            /> : props.balance}
-                </p> : <p></p>}
-                <p>
-                <MaxBtn
-                    onClick={props.haveMax
-                        ? async (e) => {
-                            props.setValueFn(props.balance)
-                            
-                            inputRef.current.dispatchEvent(new Event('change', { bubbles: true }))
-                        }
-                        : null
-                    }
-                    haveMax={props.haveMax}
-                    isVisible={props.isVisible}
-                >
-                    MAX
-                </MaxBtn>
-                </p>
-            </Top>
-            <Bottom>
                 <input
                     className={styles.input}
                     onChange={props.onChange}
@@ -108,11 +84,47 @@ function InputForm(props) {
                     ref={inputRef}
                     placeholder="0"
                 ></input>
+                <p>
+                    <MaxBtn
+                        onClick={props.haveMax
+                            ? async (e) => {
+                                props.setValueFn(props.balance)
+
+                                inputRef.current.dispatchEvent(new Event('change', { bubbles: true }))
+                            }
+                            : null
+                        }
+                        haveMax={props.haveMax}
+                        isVisible={props.isVisible}
+                    >
+                        MAX
+                    </MaxBtn>
+                </p>
                 <div>
                     <TokenLogo name={props.token} />
                     <p className="name">{props.token}</p>
                 </div>
+            </Top>
+            <Bottom>
+                <p>
+                    $
+                </p>
+
+                {props.haveBal ? <p>
+                    <span>
+                    <img src={WalletIcon} />
+                    </span>
+                    {props.balance == undefined ?
+                        <LoadingSVG
+                            type="circle"
+                            color="#000"
+                            width="15px"
+                            height="15px"
+                        /> : props.balance}
+                </p> : <p></p>}
+
             </Bottom>
+
         </Section>
     );
 }

@@ -35,7 +35,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/Convert" element={<Convert />} />
-                    <Route path="/Stake" element={<Stake />} />
+                    <Route path="/Stake&LOck" element={<Stake />} />
                     <Route path="/Bond" element={<Bond />} />
                     <Route path="/Bond/*" element={<Bondingtool />} />
                     <Route path="/Bank" element={<Bank />} />

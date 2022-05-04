@@ -11,11 +11,39 @@ import SetIcon from "../assets/SetIcon.svg";
 const Approve = styled.div`
     text-align: center;
     color: ${(props) => props.theme.textGray};
-
+    margin : 24px 0;
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
     line-height: 18px;
+`;
+
+const SlippageInfos = styled.div`
+    padding: 10px;
+    background-color: ${(props) => props.theme.backBlue};
+    border-radius: 15px;
+`;
+
+const Info = styled.div`
+    margin: 3px;
+    padding: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-content: flex-start;
+
+    & .infoName {
+        text-align: left;
+        color: ${(props) => props.theme.textGray};
+    }
+
+    p {
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        text-align: right;
+        color: ${(props) => props.theme.textBlack};
+    }
+
 `;
 
 
@@ -50,6 +78,7 @@ function Converttool() {
                 <div>
                     <span>Input</span>
                     <span>
+                        
                         <img
                             className="slippageImg"
                             align="right"
@@ -84,7 +113,7 @@ function Converttool() {
                         //setValueFn={setUSDCInputAmount}
                         type="number"
                         isVisible={true}
-                        haveMax={true}
+                        haveMax={false}
                         haveBal={true}
                     />
 
@@ -101,7 +130,7 @@ function Converttool() {
                             <Button text="Buyback!"
                             //onClick={Buyback}
                             >
-                                Buyback!!
+                                Convert
                             </Button>
                         ) : (
                             <Button text="Approve"
@@ -111,6 +140,13 @@ function Converttool() {
                             </Button>
                         )}
                     </Approve>
+                    <SlippageInfos>
+                        <Info>
+                            <p className="infoName">Slippage Tolerance</p>
+                            <p>{slippage} %</p>
+                        </Info>
+                    </SlippageInfos>
+
                 </div>
             )
             }

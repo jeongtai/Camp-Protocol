@@ -101,7 +101,7 @@ function Navbar() {
         { name: "Dashboard", path: "/", logo: Dashboard },
         { name: "Convert", path: "/Convert", logo: Convert },
         { name: "Bond", path: "/Bond", logo: Bond },
-        { name: "Stake", path: "/Stake", logo: Stake },
+        { name: "Stake & Lock", path: "/Stake&Lock", logo: Stake },
     ];
 
     const soonMenus = [

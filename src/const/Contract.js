@@ -20,7 +20,7 @@ const SCAMPContract = new caver.klay.Contract(kpEKLjs.abi, "0xbcb51E0C1fF0Cf9517
 const BankContract = new caver.klay.Contract(EKLDepositorjs.abi, "0x427Da2f75D986e985994d186b5bCE7d00A8db380")
 
 const KPG_USDTLPContract = new caver.klay.Contract(klayswapABI, "0x8a187220fd9dfc4fafe1e206385ea55659147602")
-const EKL3MoonLPContract = new caver.klay.Contract(EKLLPjs, "0xd83b9dfa49d6c6d2a69554576e712e45a8a13e49")
+const EKL3MoonLPContract = new caver.klay.Contract(klayswapABI, "0xd83b9dfa49d6c6d2a69554576e712e45a8a13e49")
 const EKLLPContract = new caver.klay.Contract(klayswapABI, "0x219ee5d76593f5bd639125b6411a17d309e3ad31")
 const EKLContract = new caver.klay.Contract(kpEKLjs.abi, "0x807c4e063eb0ac21e8eef7623a6ed50a8ede58ca")
 const EKLkpEKLLPContract = new caver.klay.Contract(klayswapABI, "0x5e9bb1fad0a26ac60e19c1b9370fdf7037ac7d95")

@@ -199,8 +199,6 @@ function Bondingtool(lpInfosProps) {
           }
         })
     } catch (e) { setIsApproved(undefined) }
-
-
   }
 
   // initialize hook----------------------------

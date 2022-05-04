@@ -114,7 +114,7 @@ const Bond = () => {
   const bondLPInfos = [
     { name : "KPG-oUSDT", dex : "klayswap", bondContract : state.KPG_USDTBondContract, lpContract : state.KPG_USDTLPContract, TreasuryContract : state.BondTreasuryContract},
     { name : "EKL-kpEKL", dex : "klayswap", bondContract : state.EKLkpEKLBondContract, lpContract : state.EKLkpEKLLPContract, TreasuryContract : state.BondTreasuryContract},
-    { name : "EKL-3Moon LP", dex : "eklipse", bondContract : state.EKL3MoonBondContract, lpContract : state.EKL3MoonLPContract, TreasuryContract : state.BondTreasuryContract}
+    { name : "3Moon LP", dex : "eklipse", bondContract : state.EKL3MoonBondContract, lpContract : state.EKL3MoonLPContract, TreasuryContract : state.BondTreasuryContract}
   ]
 
 

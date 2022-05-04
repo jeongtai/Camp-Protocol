@@ -5,6 +5,8 @@ import KLAY from "./TokenLogo/KLAY.svg"
 import EKL from "./TokenLogo/EKL.svg";
 import KPG from "./TokenLogo/KPG.svg";
 import kpEKL from "./TokenLogo/kpEKL.png";
+import ThreeMoon from "./TokenLogo/3Moon.png";
+
 import styled from "styled-components";
 
 
@@ -31,6 +33,7 @@ const arrTokenLogo = {
   'KLAY': KLAY,
   'EKL': EKL,
   'kpEKL': kpEKL,
+  '3Moon LP': ThreeMoon,
 }
 
 function TokenLogo({ name }) {
@@ -51,7 +54,8 @@ function TokenLogo({ name }) {
           <span className="firstTokenLogo"><img width="23px" src={lpTokenA} /></span>
           <span className="secondTokenLogo"><img width="23px" src={lpTokenB} /></span>
         </LpLogo>
-        : <div><img width="23px" src={src} /></div>
+        // 이름에 " LP" 존재하면 46px. 아니면 23px
+        : <div>{name.split(" LP").length > 1 ? <img width="46px" src={src} /> : <img width="23px" src={src} />}</div>
       }
     </>
   )

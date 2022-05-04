@@ -13,9 +13,8 @@ import BigNumber from "bignumber.js";
 const LPInfoItem = styled.div`
   display: grid;
   grid-template-columns: 2fr repeat(4, 1fr);
-  
   height : 80px;
-  padding: 23px 0px;
+  padding: 23px 0;
 
   border-bottom: 2px solid ${(props) => props.theme.borderColor};
   
@@ -23,26 +22,33 @@ const LPInfoItem = styled.div`
   
   & .tokenName {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-items: center;
     gap : 5px;
     padding : 0 10px 0 0;
   }
-
-  & .btnSection{
+`
+const BtnSection = styled.div`
+    display:flex;
     flex-direction: row;
     align-items: space-between;
     justify-items: center;
-  }
+    @media (max-width: 1000px) {
+      margin-top: -17px;
+      gap:5px;
+      flex-direction: column;
+      align-items: space-between;
+      justify-items: center;
+    }
 `
 
 
 const BondingtoolBtn = styled.button`
   width : 40%;
   margin : 0 2px;
-  min-width : 30px;  
+  min-width : 60px;  
 
-  height: 34px;
+  height: 30px;
 
   background-color: ${(props) => props.isOpened ? props.theme.btnWhite : props.theme.btnGray};
 
@@ -67,15 +73,8 @@ const BondingtoolBtn = styled.button`
   }
 `
 const BondClaimtoolBtn = styled(BondingtoolBtn)`
-background-color: ${(props) => props.isOpened ? props.theme.btnWhite : props.theme.btnGray};
-color: ${(props) => props.isOpened ? props.theme.btnWhite : props.theme.textDarkGray};
-
-{
-  if (props.btnState === "Bond") { return props.theme.btnBlue }
-  else if (props.btnState === "Sold-out") { return props.theme.btnGray }
-  else if (props.btnState === "Claim") { return props.theme.btnBlue }
-}
-};
+  background-color: ${(props) => props.isOpened ? props.theme.btnBlue : props.theme.btnGray};
+  color: ${(props) => props.isOpened ? props.theme.btnWhite : props.theme.textDarkGray};
 `
 const caver = new Caver(window.klaytn)
 function LPInfos(props) {
@@ -116,21 +115,18 @@ function LPInfos(props) {
     try {
       await bondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
         .call((e, v) => {
-          if (v.toString() !== "0") { // Claim이 없다면
-            setIsClaimable(true)
-          }
+          if (v.toString() !== "0") setIsClaimable(true)
         })
     } catch (e) { setPoolState(undefined) }
 
     try {
       await state.KPGContract.methods
-      .balanceOf(TreasuryContract)
-      .call((e, v) => {
-        if (v <caver.utils.toPeb("10", "KLAY")) {
-          setIsBondable(false)
-        }
-      })
-    } catch(e) {setIsBondable(true)}
+        .balanceOf(TreasuryContract)
+        .call((e, v) => {
+          if (v < caver.utils.toPeb("10", "KLAY")) setIsBondable(false)
+        })
+    } catch (e) { setIsBondable(true) }
+    
   }, [])
 
   const getDexLink = (dex) => {
@@ -149,19 +145,19 @@ function LPInfos(props) {
 
   return (
     <LPInfoItem>
-      <p className="tokenName">
+      <div className="tokenName">
         <TokenLogo name={lpName} />
         {" "}{lpName}{" "}
         <a href={getDexLink(props.bondLPInfo.dex)} target="_blank">
           <img src={LinkImg} />
         </a>
-      </p>
-      <p> $ {assetprice}</p>
-      <p> {priceRate}%</p>
-      <p>{timeConversion(vestingterm * 1000)}</p>
+      </div>
+      <div> $ {assetprice}</div>
+      <div> {priceRate}%</div>
+      <div>{timeConversion(vestingterm * 1000)}</div>
 
-      <p className="btnSection">
-        <span>
+      <BtnSection>
+        <div>
           <BondingtoolBtn isOpened={isBondable} onClick={isBondable ? ClickBondingtoolBtn : null} btnState={poolState}>
             {clickedBtn === lpName && props.isBondingtoolOpenCtrl.isBondingtoolOpen ?
               <Bondingtool
@@ -172,15 +168,15 @@ function LPInfos(props) {
               : null}
             {isBondable ? "Bond" : "Soldout"}
           </BondingtoolBtn>
-        </span>
-        <span>
-          <BondingtoolBtn
+        </div>
+        <div>
+          <BondClaimtoolBtn
             isOpened={isClaimable}
             onClick={isClaimable ? ClickBondingtoolBtn : null}>
             Claim
-          </BondingtoolBtn>
-        </span>
-      </p>
+          </BondClaimtoolBtn>
+        </div>
+      </BtnSection>
     </LPInfoItem>
   )
 }

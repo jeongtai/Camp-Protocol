@@ -27,6 +27,10 @@ const Nav = styled.div`
 
     background-color: ${(props) => props.theme.navColor};
     border-right: 1px solid ${props => props.theme.borderColor};
+
+    @media (max-width: 500px) {
+        visibility: hidden;
+    }
 `;
 
 const Logo = styled.div`

@@ -8,7 +8,7 @@ import WalletIcon from "./WalletIcon.svg"
 
 const Section = styled.div`
     margin: 14px 0px;
-    padding: 14px 20px;
+    padding: 14px 15px;
 
     height: 80px;
 
@@ -27,7 +27,8 @@ const Section = styled.div`
 `;
 
 const Top = styled.div`
-    display: flex;
+    display: grid;
+    grid-template-columns: 45% 22% 23%;
     justify-content: space-between;
     align-items: center;
 
@@ -35,19 +36,22 @@ const Top = styled.div`
         display: flex;
         flex-direction: row;
     }
-    & .longName{
+    & .inputform-tokenLogo{
+        display:flex;
+        flex-direction : row;
+        align-items:center;
+        justify-items: flex-end;
+        text-align: center;
         padding: 3px;
-        font-size: 12px;
         font-weight: 400;
         color: black;
-        text-align: right;
+    }
+
+    & .longName{
+        font-size: 12px;
     }
     & .shortName{
-        padding: 4px;
         font-size: 16px;
-        font-weight: 400;
-        color: black;
-        text-align: right;
     }
     
 `;
@@ -62,10 +66,15 @@ const Bottom = styled.div`
     & span{
         margin-right:7px;
     }
+    & .inputform-balance{
+        display:flex;
+        flex-direction: row;
+        justify-items:flex-end;
+    }
 `;
 
 const MaxBtn = styled.button`
-    margin: 0 0 0 auto;
+    margin: 0 0 0 30px;
     padding: 4px;
 
     border: solid 1px ${(props) => props.theme.btnSkyblue};
@@ -109,30 +118,28 @@ function InputForm(props) {
                         MAX
                     </MaxBtn>
                 </p>
-                <div>
-                    <TokenLogo name={props.token} />
-                    <p className={props.token.length>5 ? "longName":"shortName"}>{props.token}</p>
+                <div className="inputform-tokenLogo">
+                    <TokenLogo name={props.token}></TokenLogo>
+                    <div className={props.token.length > 5 ? "longName" : "shortName"}>
+                        {props.token}
+                    </div>
                 </div>
             </Top>
             <Bottom>
                 <p>
-
-                    $ {isNaN(parseFloat(props.price)*parseFloat(props.value))
-                        ? null
+                    $ {isNaN(parseFloat(props.price) * parseFloat(props.value))
+                        ? <LoadingSVG type="dot" color="#000" width="15px" height="15px" />
                         : parseFloat(props.price) * parseFloat(props.value)}
                 </p>
 
-                {props.haveBal ? <p>
+                {props.haveBal ? <p className="inputform-balance">
                     <span>
-                        <img src={WalletIcon} /></span>
+                        <img src={WalletIcon} />
+                    </span>
                     <span>
-                        {props.balance == undefined ?
-                            <LoadingSVG
-                                type="circle"
-                                color="#000"
-                                width="15px"
-                                height="15px"
-                            /> : props.balance}
+                        {props.balance == undefined
+                            ? <LoadingSVG type="dot" color="#000" width="15px" height="15px" />
+                            : props.balance}
                     </span>
                 </p> : <p></p>}
 

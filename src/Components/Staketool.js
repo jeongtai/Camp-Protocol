@@ -97,7 +97,7 @@ function Staketool () {
         from : window.klaytn.selectedAddress,
         gas : 3000000
       })
-    }
+    } 
 
     function Unstake() {
       state.kpEKLStakingContract.methods.withdraw(

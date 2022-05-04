@@ -1,13 +1,14 @@
-import Button from "../assets/Button";
-import InputForm from "../assets/InputForm";
+import Button from "../../assets/Button";
+import InputForm from "../../assets/InputForm";
 import Caver from "caver-js";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 
-import LoadingSVG from "../assets/LoadingSVG.js";
-import { MAX_UNIT } from "../const/Contract";
+import { MAX_UNIT } from "../../const/Contract";
+import {timeConversion} from "../../const/service.js"
+import LoadingSVG from "../../assets/LoadingSVG.js";
 
 const Content = styled.div`
     visibility: ${props => props.isBondingtoolOpen ? "visible" : "hidden"};
@@ -34,7 +35,7 @@ const Content = styled.div`
     border-radius: 15px;
     border: 2px solid ${(props) => props.theme.borderColor};
 
-    span {
+    & .bondTitle {
         font-weight: 400;
         font-size: 20px;
         width: 100%;
@@ -84,26 +85,6 @@ const Info = styled.div`
 
 const caver = new Caver(window.klaytn)
 
-function timeConversion(millisec) {
-
-  var seconds = (millisec / 1000).toFixed(1);
-
-  var minutes = (millisec / (1000 * 60)).toFixed(1);
-
-  var hours = (millisec / (1000 * 60 * 60)).toFixed(1);
-
-  var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
-
-  if (seconds < 60) {
-    return seconds + " Sec";
-  } else if (minutes < 60) {
-    return minutes + " Min";
-  } else if (hours < 24) {
-    return hours + " Hrs";
-  } else {
-    return days + " Days"
-  }
-}
 
 function Bondingtool(lpInfosProps) {
   
@@ -123,7 +104,7 @@ function Bondingtool(lpInfosProps) {
   const [autostake, setAutoStake] = useState(false)
   const [remaintime, setRemainTime] = useState()
   const [remaincamp, setRemainCamp] = useState()
-  const [isapproved, setIsApproved] = useState(false)
+  const [isApproved, setIsApproved] = useState(false)
 
   const onLPChange = (event) => setLPAmount(event.target.value)
 
@@ -213,15 +194,16 @@ function Bondingtool(lpInfosProps) {
   }, []);
 
 
-  async function CalCamp() {
+  async function CalculateKPG() {
     try {
       await bondContract.methods
         .payoutFor(caver.utils.toPeb(lpamount, "KLAY"))
         .call((e, v) => setCAMPamt((v / 1e18 * assetprice).toFixed(3)))
     } catch (e) { setCAMPamt(0) }
   }
+
   useEffect(() => {
-    CalCamp()
+    CalculateKPG()
   }, [lpamount])
 
   // useEffect(() => {
@@ -231,7 +213,7 @@ function Bondingtool(lpInfosProps) {
   // }, [isapproved])
 
   function onClick() {
-    bondContract.methods.deposit(caver.utils.toPeb(lpamount, "KLAY"), bondprice * 1e6 * 99.9, window.klaytn.selectedAddress)
+    bondContract.methods.deposit(caver.utils.toPeb(lpamount, "KLAY"), bondprice * 1e6*1.01, window.klaytn.selectedAddress)
       .send({
         from: window.klaytn.selectedAddress,
         gas: 3000000
@@ -282,14 +264,16 @@ function Bondingtool(lpInfosProps) {
   return (
     <>
       {lpInfosProps ?
+      <><p>dsdfsdfdsf</p>
         <Content isBondingtoolOpen={lpInfosProps.isBondingtoolOpenCtrl.isBondingtoolOpen}>
-          <span>{lpInfosProps.bondLPInfo.name + " // " + lpInfosProps.btnState}</span>
+          <span className="bondTitle">{lpInfosProps.bondLPInfo.name + " // " + lpInfosProps.btnState}</span>
           <InputForm
             token={lpInfosProps.bondLPInfo.name}
             onChange={onLPChange}
             value={lpamount}
             setValueFn={setLPAmount}
             haveBal={true}
+            price={1}
             balance={lpbal}
             haveMax={true}
             type="number"
@@ -316,6 +300,7 @@ function Bondingtool(lpInfosProps) {
           <Approve>
             <Button
               text={btnInfo}
+              isApproved={isApproved}
               onClick={() => {
                 if (btnInfo === "Bond") {
                   return onClick()
@@ -328,6 +313,7 @@ function Bondingtool(lpInfosProps) {
 
           </Approve>
         </Content>
+        </>
         : <p margin="0 auto">
           <LoadingSVG
             type="circle"

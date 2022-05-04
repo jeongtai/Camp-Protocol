@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import LinkImg from "../assets/ExternalLink.svg";
 import TokenLogo from "../assets/TokenLogo";
 import { reducer } from "../const/Contract";
-import Bondingtool from "./Bondingtool";
+import Bondingtool from "./Bond/Bondingtool";
 import { useSelector } from "react-redux";
-
+import { timeConversion } from "../const/service.js"
+import Caver from "caver-js";
+import BigNumber from "bignumber.js";
 
 const LPInfoItem = styled.div`
   display: grid;
@@ -28,39 +30,32 @@ const LPInfoItem = styled.div`
   }
 
   & .btnSection{
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: space-between;
     justify-items: center;
   }
 `
 
 
 const BondingtoolBtn = styled.button`
-  width : 100%;
-  min-width : 60px;  
+  width : 40%;
+  margin : 0 2px;
+  min-width : 30px;  
 
   height: 34px;
 
-  background-color: ${(props) => {
-    if (props.btnState === "Bond") { return "white" }
-    else if (props.btnState === "Sold-out") { return props.theme.btnGray }
-    else if (props.btnState === "Claim") { return props.theme.btnBlue }
-  }
-  };
+  background-color: ${(props) => props.isOpened ? props.theme.btnWhite : props.theme.btnGray};
 
   border : 2px solid;
-  border-color : ${(props) => {
-    if (props.btnState === "Bond") { return props.theme.btnBlue }
-    else if (props.btnState === "Sold-out") { return props.theme.btnGray }
-    else if (props.btnState === "Claim") { return props.theme.btnBlue }
-  }
-  };
+  border-color : ${(props) => props.isOpened ? props.theme.btnBlue : props.theme.btnGray};
 
   border-radius: 6px;
 
   font-size: 14px;
   font-weight: 300;
-  color: ${(props) => {
+  color: ${(props) => props.isOpened ? props.theme.textBlue : props.theme.textDarkGray};
+  
+  ${(props) => {
     if (props.btnState === "Bond") { return props.theme.textBlue }
     else if (props.btnState === "Sold-out") { return props.theme.textDarkGray }
     else if (props.btnState === "Claim") { return "white" }
@@ -68,31 +63,21 @@ const BondingtoolBtn = styled.button`
   };
 
   &:hover {
-      cursor: ${(props) => props.btnState === "Sold-out" ? "" : "pointer"};
+      cursor: ${(props) => props.isOpened ? "pointer" : ""};
   }
 `
+const BondClaimtoolBtn = styled(BondingtoolBtn)`
+background-color: ${(props) => props.isOpened ? props.theme.btnWhite : props.theme.btnGray};
+color: ${(props) => props.isOpened ? props.theme.btnWhite : props.theme.textDarkGray};
 
-function timeConversion(millisec) {
-
-  var seconds = (millisec / 1000).toFixed(1);
-
-  var minutes = (millisec / (1000 * 60)).toFixed(1);
-
-  var hours = (millisec / (1000 * 60 * 60)).toFixed(1);
-
-  var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
-
-  if (seconds < 60) {
-    return seconds + " Sec";
-  } else if (minutes < 60) {
-    return minutes + " Min";
-  } else if (hours < 24) {
-    return hours + " Hrs";
-  } else {
-    return days + " Days"
-  }
+{
+  if (props.btnState === "Bond") { return props.theme.btnBlue }
+  else if (props.btnState === "Sold-out") { return props.theme.btnGray }
+  else if (props.btnState === "Claim") { return props.theme.btnBlue }
 }
-
+};
+`
+const caver = new Caver(window.klaytn)
 function LPInfos(props) {
 
   let state = useSelector((state) => state)
@@ -100,7 +85,8 @@ function LPInfos(props) {
   const [priceRate, setPriceRate] = useState()
   const [vestingterm, setVestingTerm] = useState()
   const [poolState, setPoolState] = useState("Bond")
-
+  const [isClaimable, setIsClaimable] = useState(false)
+  const [isBondable, setIsBondable] = useState(true)
   const [clickedBtn, setClickBtn] = useState("")
 
   const lpName = props.bondLPInfo.name;
@@ -109,7 +95,7 @@ function LPInfos(props) {
   const ClickBondingtoolBtn = () => {
     props.isBondingtoolOpenCtrl.setIsBondingtoolOpen(true)
     setClickBtn(lpName)
-    
+
   }
   useEffect(async () => {
     try {
@@ -130,21 +116,43 @@ function LPInfos(props) {
     try {
       await bondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
         .call((e, v) => {
-          if (v.toString() === "0") {
-            setPoolState("Bond")
-          } else {
-            setPoolState("Claim")
+          if (v.toString() !== "0") { // Claim이 없다면
+            setIsClaimable(true)
           }
         })
     } catch (e) { setPoolState(undefined) }
+
+    try {
+      await state.KPGContract.methods
+      .balanceOf(TreasuryContract)
+      .call((e, v) => {
+        if (v <caver.utils.toPeb("10", "KLAY")) {
+          setIsBondable(false)
+        }
+      })
+    } catch(e) {setIsBondable(true)}
   }, [])
+
+  const getDexLink = (dex) => {
+    switch (dex) {
+      case 'eklipse':
+        return "https://app.eklipse.finance/pool";
+        break;
+      case 'klayswap':
+        return "https://klayswap.com/exchange/pool";
+        break;
+      case 'claimswap':
+        return "https://app.claimswap.org/liquidity/add";
+        break;
+    }
+  }
 
   return (
     <LPInfoItem>
       <p className="tokenName">
         <TokenLogo name={lpName} />
         {" "}{lpName}{" "}
-        <a href="https://app.claimswap.org/liquidity/add" target="_blank">
+        <a href={getDexLink(props.bondLPInfo.dex)} target="_blank">
           <img src={LinkImg} />
         </a>
       </p>
@@ -153,27 +161,28 @@ function LPInfos(props) {
       <p>{timeConversion(vestingterm * 1000)}</p>
 
       <p className="btnSection">
-        {poolState === "Sold-out"
-          ? <BondingtoolBtn btnState={poolState}>
-            {poolState}
-          </BondingtoolBtn>
-          :
-          <BondingtoolBtn onClick={ClickBondingtoolBtn} btnState={poolState}>
-            { clickedBtn===lpName && props.isBondingtoolOpenCtrl.isBondingtoolOpen ?
+        <span>
+          <BondingtoolBtn isOpened={isBondable} onClick={isBondable ? ClickBondingtoolBtn : null} btnState={poolState}>
+            {clickedBtn === lpName && props.isBondingtoolOpenCtrl.isBondingtoolOpen ?
               <Bondingtool
                 bondLPInfo={props.bondLPInfo}
                 btnState={poolState}
                 isBondingtoolOpenCtrl={props.isBondingtoolOpenCtrl}
               />
-
               : null}
-            {poolState}
+            {isBondable ? "Bond" : "Soldout"}
           </BondingtoolBtn>
-        }
+        </span>
+        <span>
+          <BondingtoolBtn
+            isOpened={isClaimable}
+            onClick={isClaimable ? ClickBondingtoolBtn : null}>
+            Claim
+          </BondingtoolBtn>
+        </span>
       </p>
     </LPInfoItem>
   )
-
 }
 
 export default LPInfos;

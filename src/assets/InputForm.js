@@ -26,15 +26,6 @@ const Section = styled.div`
     }
 `;
 
-const Bottom = styled.div`
-    display: grid;
-    grid-template-columns: 90% 10%;
-    align-items: center;
-    justify-items: flex-start;
-    
-    height: 20px;
-`;
-
 const Top = styled.div`
     display: flex;
     justify-content: space-between;
@@ -44,7 +35,14 @@ const Top = styled.div`
         display: flex;
         flex-direction: row;
     }
-    & .name{
+    & .longName{
+        padding: 3px;
+        font-size: 12px;
+        font-weight: 400;
+        color: black;
+        text-align: right;
+    }
+    & .shortName{
         padding: 4px;
         font-size: 16px;
         font-weight: 400;
@@ -52,6 +50,18 @@ const Top = styled.div`
         text-align: right;
     }
     
+`;
+
+const Bottom = styled.div`
+    display: grid;
+    grid-template-columns: 80% 20%;
+    align-items: end;
+    justify-items: flex-start;
+    
+    height: 20px;
+    & span{
+        margin-right:7px;
+    }
 `;
 
 const MaxBtn = styled.button`
@@ -70,7 +80,6 @@ const MaxBtn = styled.button`
 
 
 function InputForm(props) {
-    const [formValue, setFormValue] = useState(props.value)
     const inputRef = useRef(null);
 
     return (
@@ -79,7 +88,7 @@ function InputForm(props) {
                 <input
                     className={styles.input}
                     onChange={props.onChange}
-                    value={props.value}
+                    value={props.value || ''}
                     type={props.type}
                     ref={inputRef}
                     placeholder="0"
@@ -102,25 +111,29 @@ function InputForm(props) {
                 </p>
                 <div>
                     <TokenLogo name={props.token} />
-                    <p className="name">{props.token}</p>
+                    <p className={props.token.length>5 ? "longName":"shortName"}>{props.token}</p>
                 </div>
             </Top>
             <Bottom>
                 <p>
-                    $
+
+                    $ {isNaN(parseFloat(props.price)*parseFloat(props.value))
+                        ? null
+                        : parseFloat(props.price) * parseFloat(props.value)}
                 </p>
 
                 {props.haveBal ? <p>
                     <span>
-                    <img src={WalletIcon} />
+                        <img src={WalletIcon} /></span>
+                    <span>
+                        {props.balance == undefined ?
+                            <LoadingSVG
+                                type="circle"
+                                color="#000"
+                                width="15px"
+                                height="15px"
+                            /> : props.balance}
                     </span>
-                    {props.balance == undefined ?
-                        <LoadingSVG
-                            type="circle"
-                            color="#000"
-                            width="15px"
-                            height="15px"
-                        /> : props.balance}
                 </p> : <p></p>}
 
             </Bottom>

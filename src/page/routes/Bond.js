@@ -1,4 +1,4 @@
-import Bondingtool from "./../../Components/Bondingtool";
+import Bondingtool from "../../Components/Bond/Bondingtool";
 import styled from "styled-components";
 import LPinfos from "./../../Components/LPinfos";
 import LoadingSVG from "./../../assets/LoadingSVG";
@@ -108,9 +108,9 @@ const Bond = () => {
 
   //LP이름
   const bondLPInfos = [
-    { name : "KPG-USDT", bondContract : state.KPG_USDTBondContract, lpContract : state.KPG_USDTLPContract, TreasuryContract : state.BondTreasuryContract},
-    { name : "EKL-kpEKL", bondContract : state.EKLkpEKLBondContract, lpContract : state.EKLkpEKLLPContract, TreasuryContract : state.BondTreasuryContract},
-    { name : "EKL-3MoonLP", bondContract : state.EKL3MoonBondContract, lpContract : state.EKL3MoonLPContract, TreasuryContract : state.BondTreasuryContract}
+    { name : "KPG-oUSDT", dex : "klayswap", bondContract : state.KPG_USDTBondContract, lpContract : state.KPG_USDTLPContract, TreasuryContract : state.BondTreasuryContract},
+    { name : "EKL-kpEKL", dex : "klayswap", bondContract : state.EKLkpEKLBondContract, lpContract : state.EKLkpEKLLPContract, TreasuryContract : state.BondTreasuryContract},
+    { name : "EKL-3Moon LP", dex : "eklipse", bondContract : state.EKL3MoonBondContract, lpContract : state.EKL3MoonLPContract, TreasuryContract : state.BondTreasuryContract}
   ]
 
 

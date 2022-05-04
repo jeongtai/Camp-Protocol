@@ -35,7 +35,14 @@ const Top = styled.div`
         display: flex;
         flex-direction: row;
     }
-    & .name{
+    & .longName{
+        padding: 3px;
+        font-size: 12px;
+        font-weight: 400;
+        color: black;
+        text-align: right;
+    }
+    & .shortName{
         padding: 4px;
         font-size: 16px;
         font-weight: 400;
@@ -104,13 +111,13 @@ function InputForm(props) {
                 </p>
                 <div>
                     <TokenLogo name={props.token} />
-                    <p className="name">{props.token}</p>
+                    <p className={props.token.length>5 ? "longName":"shortName"}>{props.token}</p>
                 </div>
             </Top>
             <Bottom>
                 <p>
 
-                    $ {isNaN(parseFloat(props.price) * parseFloat(props.value))
+                    $ {isNaN(parseFloat(props.price)*parseFloat(props.value))
                         ? null
                         : parseFloat(props.price) * parseFloat(props.value)}
                 </p>

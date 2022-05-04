@@ -15,6 +15,7 @@ export const theme = {
    btnBlack : "#282828",
    btnBlue : "#3E97FF",
    btnSkyblue : "#D7E9FF",
+   btnWhite : "#FDFDFD",
    
    // text
    textBlack : "#282828",

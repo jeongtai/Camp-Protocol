@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import TokenLogo from "../../assets/TokenLogo";
 import LoadingSVG from "../../assets/LoadingSVG.js";
 import ApexCharts from "react-apexcharts";
+import { EKLTokenAddress } from "../../const/Contract";
 
 const Dashboard = styled.div`
     justify-content: center;
@@ -152,89 +153,152 @@ function addToken(tokenaddr, url, name) {
 
 function Home() {
     let state = useSelector((state) => state);
-    const [kusdSupply, setKusdSupply] = useState();
+    const [kpEKLSupply, setkpEKLSupply] = useState();
     const [kpgSupply, setKpgSupply] = useState();
     const [priceTarget, setPriceTarget] = useState();
-    const [currentRatio, setCurrentRatio] = useState();
-    const [scampPrice, setScampPrice] = useState();
-    const [campPrice, setCampPrice] = useState()
-    const [eklPrice, setEklPrice] = useState();
+    const [kpEKLratio, setkpEKLRatio] = useState();
+    const [eklprice, setEKLprice] = useState();
+    const [kpgprice, setKPGPrice] = useState()
+    const [kpEKLprice, setkpEklPrice] = useState();
+    const [treasurykpgval, setKPGval] = useState();
+    const [treasuryeklkpeklval, setEKLkpEKLval] =useState()
+    const [treasury3moonval, set3Moonval] = useState()
+    const [deposit3moonval, setD3MoonVal] = useState()
     const [isLoading, setIsLoading] = useState(false);
 
 
     const caver = new Caver(window.klaytn);
     const infos = [
-        { name: "Total Market Cap", amt: "kpgSupply*price" },
-        { name: "TVL", amt: "$ 19240.4912" },
-        { name: "Treasury Balance", amt: "$ 7608.0027" },
-        { name: "Total EKL", amt: "7608.0027" },
-        { name: "KPG Price", amt: `${scampPrice}` },
-        { name: "Backer Price per KPG", amt: ` $ ${priceTarget}` },
-        { name: "kpEKL Price", amt: `${scampPrice}` },
-        { name: "kpEKL/EKL Ratio", amt: `${scampPrice}` },
+        { name: "Total Market Cap", amt: `${kpgprice}`},
+        { name: "TVL", amt: `${kpgprice}` },
+        { name: "Treasury Balance", amt: `${kpgprice}` },
+        { name: "Total EKL", amt: `${kpEKLSupply}` },
+        { name: "KPG Price", amt: `${kpgprice}` },
+        { name: "Backer Price per KPG", amt: ` $ ${kpgprice}` },
+        { name: "kpEKL Price", amt: `${kpEKLprice}` },
+        { name: "kpEKL/EKL Ratio", amt: `${kpEKLratio}` },
     ];
 
     const Tokens = [
         {
             name: "KPG",
-            price: campPrice,
+            price: kpgprice,
             supply: kpgSupply,
             Contract: state.KPGContract._address,
-            logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/Logo-color.jpg",
+            logo: "https://kprotocol-asset.s3.ap-northeast-2.amazonaws.com/KP_Token.png",
         },
         {
             name: "kpEKL",
-            price: scampPrice,
-            supply: kusdSupply,
+            price: kpEKLprice,
+            supply: kpEKLSupply,
             Contract: state.kpEKLContract._address,
-            logo: "https://s3.ap-northeast-2.amazonaws.com/jonghun.me/scamp-Logo-color.jpg",
+            logo: "https://kprotocol-asset.s3.ap-northeast-2.amazonaws.com/KUSD_TOKEN.png",
         },
     ];
 
     async function getInfo() {
         try {
-            await state.SCAMPContract.methods
-                .totalSupply()
-                .call((e, v) => setKusdSupply(caver.utils.fromPeb(v, "KLAY")));
-        } catch { setKusdSupply(undefined) }
-
-        try {
-            await state.CAMPContract.methods
+            await state.KPGContract.methods
                 .totalSupply()
                 .call((e, v) => setKpgSupply(caver.utils.fromPeb(v, "KLAY")));
         } catch { setKpgSupply(undefined) }
 
         try {
-            await state.klaySwapContract.methods
-                .estimatePos(state.EKLTokenAddress, BigInt(10 ^ 18))
-                .call((e, v) => setEklPrice(caver.utils.fromPeb(Number(Number(v / 10, 6).toPrecision(3)), "KLAY")));
-            console.log(eklPrice)
-        } catch { setEklPrice(undefined) }
+            await state.kpEKLContract.methods
+                .totalSupply()
+                .call((e, v) => setkpEKLSupply((v/1e18).toFixed(3)))
+        } catch { setkpEKLSupply(undefined) }
+
+        try {
+            await state.KPG_USDTLPContract.methods
+                .estimatePos(state.KPGContract._address, caver.utils.toPeb("1", "KLAY"))
+                .call((e, v) => setKPGPrice((v/1e6).toFixed(3)));
+        } catch { setKPGPrice(undefined) }
+
+        try {
+          await state.EKLLPContract.methods
+              .estimatePos(EKLTokenAddress, caver.utils.toPeb("1", "KLAY"))
+              .call((e, v) => {setEKLprice((v/1e6).toFixed(3))})
+      } catch { setEKLprice(undefined) }
+
+        try {
+          await state.EKLkpEKLLPContract.methods
+              .getCurrentPool()
+              .call((e, v) => setkpEklPrice((v[0]/v[1]*eklprice).toFixed(3)))
+      } catch { setkpEklPrice(undefined) }
+
+      try {
+        await state.EKLkpEKLLPContract.methods
+            .getCurrentPool()
+            .call((e, v) => setkpEKLRatio((v[0]/v[1]).toPrecision(3)))
+    } catch { setkpEKLRatio(undefined) }
 
 
         try {
-            await state.SCAMPContract.methods
-                .price_target()
-                .call((e, v) => setPriceTarget(v / 1e6));
-        } catch { setPriceTarget(undefined) }
+            await state.KPG_USDTBondContract.methods
+                .assetPrice()
+                .call(async (e, price) => { 
+                  await state.KPG_USDTLPContract.methods
+                  .balanceOf(state.BondTreasuryContract._address)
+                  .call((e, bal) => {
+                    setKPGval((price * bal/1e24).toPrecision(3))
+                  })
+                });
+        } catch { setKPGval(undefined) }
+
+        try {
+          await state.EKLkpEKLBondContract.methods
+              .assetPrice()
+              .call(async (e, price) => { 
+                await state.EKLkpEKLLPContract.methods
+                .balanceOf(state.BondTreasuryContract._address)
+                .call((e, bal) => {
+                  setEKLkpEKLval((price * bal/1e24).toPrecision(3))
+                })
+              });
+      } catch { setEKLkpEKLval(undefined) }
+
+      try {
+        await state.EKL3MoonBondContract.methods
+            .assetPrice()
+            .call(async (e, price) => { 
+              await state.EKL3MoonLPContract.methods
+              .balanceOf(state.BondTreasuryContract._address)
+              .call((e, bal) => {
+                set3Moonval((price * bal/1e24).toPrecision(3))
+              })
+            });
+    } catch { set3Moonval(undefined) }
+
+    try {
+      await state.EKL3MoonBondContract.methods
+          .assetPrice()
+          .call(async (e, price) => { 
+            await state.mock3MoonContract.methods
+            .balanceOf(state.BondTreasuryContract._address)
+            .call((e, bal) => {
+              setD3MoonVal((price * bal/1e24).toPrecision(3))
+            })
+          });
+  } catch { setD3MoonVal(undefined) }
 
         try {
             await state.SCAMPContract.methods
                 .current_collateral_ratio()
-                .call((e, v) => setCurrentRatio(v / 1e6));
-        } catch { setCurrentRatio(undefined) }
+                .call((e, v) => setPriceTarget(v / 1e6));
+        } catch { setPriceTarget(undefined) }
 
         try {
             await state.OracleContract.methods
                 .getAssetPrice(state.SCAMPContract._address)
-                .call((e, v) => setScampPrice(v / 1e6));
-        } catch { setScampPrice(undefined) }
+                .call((e, v) => setPriceTarget(v / 1e6));
+        } catch { setPriceTarget(undefined) }
 
         try {
             await state.OracleContract.methods
                 .getAssetPrice(state.CAMPContract._address)
-                .call((e, v) => setCampPrice(v / 1e6));
-        } catch { setCampPrice(undefined) }
+                .call((e, v) => setPriceTarget(v / 1e6));
+        } catch { setPriceTarget(undefined) }
 
         setIsLoading(false);
     }

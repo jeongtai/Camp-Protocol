@@ -88,7 +88,7 @@ function Converttool() {
       .balanceOf(window.klaytn.selectedAddress)
       .call((e, v) => setEKLbal((v /1e18).toFixed(4)));
 
-      await state.kpEKLLPContract.methods
+      await state.EKLkpEKLLPContract.methods
       .estimatePos(kpEKLTokenAddress,  1e6)
       .call((e, v) => setkpEKLPrice((v / 1e6 *EKLprice).toFixed(2)));
 

@@ -96,7 +96,7 @@ function timeConversion(millisec) {
 function LPInfos(props) {
 
   let state = useSelector((state) => state)
-  const [bondprice, setBondPrice] = useState()
+  const [assetprice, setAssetPrice] = useState()
   const [priceRate, setPriceRate] = useState()
   const [vestingterm, setVestingTerm] = useState()
   const [poolState, setPoolState] = useState("Bond")
@@ -113,9 +113,9 @@ function LPInfos(props) {
   }
   useEffect(async () => {
     try {
-      await bondContract.methods.bondPrice()
-        .call((e, v) => setBondPrice((v / 1e6).toFixed(3)))
-    } catch (e) { setBondPrice(undefined) }
+      await bondContract.methods.assetPrice()
+        .call((e, v) => setAssetPrice((v / 1e6).toFixed(3)))
+    } catch (e) { setAssetPrice(undefined) }
 
     try {
       await bondContract.methods.priceRate()
@@ -148,7 +148,7 @@ function LPInfos(props) {
           <img src={LinkImg} />
         </a>
       </p>
-      <p> $ {bondprice}</p>
+      <p> $ {assetprice}</p>
       <p> {priceRate}%</p>
       <p>{timeConversion(vestingterm * 1000)}</p>
 

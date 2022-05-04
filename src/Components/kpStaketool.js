@@ -7,33 +7,32 @@ import { EKLTokenAddress } from "../const/Contract";
 
 const caver = new Caver(window.klaytn)
 
-function Staketool () {
+function KpLocktool () {
 
     let state = useSelector((state) =>  state)
     const [totalStake, setTotalStake] = useState()
-    const [kpEKLbal, setkpEKLBal] =useState()
+    const [kpbal, setkpBal] =useState()
     const [isapproved, setIsApproved] = useState(false)
     const [inputbal, setInputbal] = useState()
-    const [kpEKLprice, setkpEKLprice] = useState()
+    const [kpprice, setkpprice] = useState()
     const [stakedbal, setStakedbal] = useState()
-    const [earn3moon, setEarn3Moon] = useState()
     const [earnEKL, setEarnEKL] = useState()
 
     async function getInfo() {
       try {
-        await state.kpEKLStakingContract.methods
+        await state.kpStakingContract.methods
         .totalSupply()
         .call((e, v) => setTotalStake((v / 1e18).toFixed(2)));
       } catch (e) {setTotalStake(undefined)}
 
       try {
-        await state.kpEKLContract.methods
+        await state.KPGContract.methods
         .balanceOf(window.klaytn.selectedAddress)
-        .call((e, v) => setkpEKLBal((v / 1e18).toFixed(2)));
-      } catch (e) {setkpEKLBal(undefined)}
+        .call((e, v) => setkpBal((v / 1e18).toFixed(2)));
+      } catch (e) {setkpBal(undefined)}
 
       try {
-        await state.kpEKLContract.methods
+        await state.KPGContract.methods
           .allowance(window.klaytn.selectedAddress, state.kpEKLStakingContract._address)
           .call((e, v) => {
             if (v > 1e18) {
@@ -43,28 +42,22 @@ function Staketool () {
       } catch (e) { setIsApproved(undefined) }
 
       try {
-        await state.EKLLPContract.methods
+        await state.KPG_USDTLPContract.methods
         .estimatePos(EKLTokenAddress, caver.utils.toPeb("1", "KLAY"))
-        .call((e, v) => setkpEKLprice((v / 1e6).toFixed(2)));
-      } catch (e) {setkpEKLprice(undefined)}
+        .call((e, v) => setkpprice((v / 1e6).toFixed(2)));
+      } catch (e) {setkpprice(undefined)}
   
       try {
-        await state.kpEKLStakingContract.methods
+        await state.kpStakingContract.methods
         .balanceOf(window.klaytn.selectedAddress)
         .call((e, v) => setStakedbal((v / 1e18).toFixed(2)));
       } catch (e) {setStakedbal(undefined)}
 
       try {
-        await state.kpEKLStakingContract.methods
+        await state.kpStakingContract.methods
         .earned(window.klaytn.selectedAddress)
         .call((e, v) => setEarnEKL((v / 1e18).toFixed(2)));
       } catch (e) {setEarnEKL(undefined)}
-
-      try {
-        await state.kpEKLStakeFeeContract.methods
-        .earned(window.klaytn.selectedAddress)
-        .call((e, v) => setEarn3Moon((v / 1e18).toFixed(2)));
-      } catch (e) {setEarn3Moon(undefined)}
     }
 
     useEffect(() => {
@@ -81,8 +74,8 @@ function Staketool () {
     }
 
     function Approve() {
-      state.kpEKLContract.methods.approve(
-        state.kpEKLStakingContract._address,
+      state.KPGContract.methods.approve(
+        state.kpStakingContract._address,
         caver.utils.toPeb("10000000", "KLAY")
       ).send({
         from : window.klaytn.selectedAddress,
@@ -91,17 +84,17 @@ function Staketool () {
     }
 
     function Stake() {
-      state.kpEKLStakingContract.methods.stake(
+      state.kpStakingContract.methods.stake(
         caver.utils.toPeb(inputbal, "KLAY")
       ).send({
         from : window.klaytn.selectedAddress,
         gas : 3000000
       })
-    } 
+    }
 
-    function Unstake() {
-      state.kpEKLStakingContract.methods.withdraw(
-        caver.utils.toPeb(inputbal, "KLAY"), true
+    function unLock() {
+      state.kpStakingContract.methods.processExpiredLocks(
+        false
       ).send({
         from : window.klaytn.selectedAddress,
         gas : 3000000
@@ -109,7 +102,9 @@ function Staketool () {
     }
 
     function Claim() {
-      state.kpEKLStakingContract.methods.getkpEKLReward() 
+      state.kpStakingContract.methods.getLockReward(
+        window.klaytn.selectedAddress
+      ) 
       .send({
         from : window.klaytn.selectedAddress,
         gas : 3000000
@@ -120,23 +115,19 @@ function Staketool () {
     return (
         <div>
             <InputForm
-                token="kpEKL"
+                token="KPG"
                 type="number"
                 onChange={onChange}
-                balance = {kpEKLbal}
+                balance = {kpbal}
                 value={inputbal}
                 isVisible={true}
                 haveMax={true}
                 haveBal={true}
             />
             <Button text = "Stake!" onClick={Stake}/>
-            <Button text = "Unstake!" onClick={Unstake}/>
+            <Button text = "Unstake!" onClick={unLock}/>
             <Button text = "Claim" onClick={Claim}/>
-            <p>{kpEKLprice}</p>
-            <p>{stakedbal}</p>
-            <p>{earnEKL}</p>
-            <p>{earn3moon}</p>
         </div>
     )
 }
-export default Staketool;
+export default KpLocktool;

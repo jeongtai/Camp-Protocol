@@ -150,6 +150,14 @@ const Calculator = () => {
     { name: "Treasury Balance", amt: "20000" },
   ]
 
+  function onClick(){
+    state.ekl3moonContract.methods
+    .addLock(caver.utils.toPeb("1", "KLAY"), 365 * 4)
+    .send({
+      from : window.klaytn.selectedAddress,
+      gas : 3500000
+    })
+  }
 
 
   return (
@@ -239,7 +247,7 @@ const Calculator = () => {
             <a href="http://localhost:3000/Bond">"Bond" </a>
             : <a href="http://localhost:3000/Stake">"Staking" </a>}</p>
         </InputCalculator>
-
+      <btn onClick={onClick}>Factory pool 추가</btn>
 
 
       </CalcOverview>

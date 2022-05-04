@@ -1,10 +1,45 @@
 import { useEffect, useState } from "react";
-import InputForm from "../assets/InputForm"
-import Button from "../assets/Button";
+import InputForm from "../../assets/InputForm"
+import Button from "../../assets/Button";
 import { useSelector } from "react-redux";
 import Caver from "caver-js";
-import { EKLTokenAddress, MAX_UNIT } from "../const/Contract";
+import { EKLTokenAddress, MAX_UNIT } from "../../const/Contract";
 import BigNumber from "bignumber.js";
+import styled from "styled-components";
+
+const Section = styled.div`
+    // flex
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 24px;
+
+    width: 50%;
+    min-width: 380px;
+    margin: 0 auto;
+    stroke: Solid #ededed 1px;
+    background-color: white;
+    border-radius: 15px;
+    border: 2px solid ${(props) => props.theme.borderColor};
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+
+    & .sectionTitle {
+        font-weight: 400;
+        font-size: 20px;
+        width: 100%;
+        margin-bottom: 24px;
+    }
+
+`;
+
+const Content = styled.div`
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+`;
 
 const caver = new Caver(window.klaytn)
 
@@ -114,22 +149,24 @@ function KPGStakingtool() {
     }
 
     return (
-        <div>
-            KPG STAKING
-            <InputForm
-                token="KPG"
-                type="number"
-                onChange={onChange}
-                balance={kpbal}
-                value={inputbal}
-                isVisible={true}
-                haveMax={true}
-                haveBal={true}
-            />
-            <Button text="Stake!" onClick={Stake} />
-            <Button text="Unstake!" onClick={Unstake} />
-            <Button text="Claim" onClick={Approve} />
-        </div>
+        <Section>
+            <p className="sectionTitle">KPG STAKING</p>
+            <Content>
+                <InputForm
+                    token="KPG"
+                    type="number"
+                    onChange={onChange}
+                    balance={kpbal}
+                    value={inputbal}
+                    isVisible={true}
+                    haveMax={true}
+                    haveBal={true}
+                />
+                <Button text="Stake!" onClick={Stake} />
+                <Button text="Unstake!" onClick={Unstake} />
+                <Button text="Claim" onClick={Approve} />
+            </Content>
+        </Section>
     )
 }
 export default KPGStakingtool;

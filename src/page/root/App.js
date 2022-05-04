@@ -8,8 +8,8 @@ import PageHeader from "../routes/PageHeader";
 import Home from "../routes/Home";
 import Convert from "../routes/Convert";
 import Stake from "../routes/Stake";
-import KPGLock from "../../Components/KPGLock";
-import KPGStakingtool from "../../Components/KPGStakingtool";
+import KPGLock from "../../Components/Stake/KPGLock";
+import KPGStakingtool from "../../Components/Stake/KPGStakingtool";
 import KPEKLStaketool from "../../Components/KPEKLStaketool";
 
 import Bond from "../routes/Bond";

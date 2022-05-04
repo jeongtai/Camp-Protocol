@@ -4,6 +4,41 @@ import Button from "../assets/Button";
 import { useSelector } from "react-redux";
 import Caver from "caver-js";
 import { EKLTokenAddress } from "../const/Contract";
+import styled from "styled-components";
+
+const Section = styled.div`
+    // flex
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 24px;
+
+    width: 50%;
+    min-width: 380px;
+    margin: 0 auto;
+    stroke: Solid #ededed 1px;
+    background-color: white;
+    border-radius: 15px;
+    border: 2px solid ${(props) => props.theme.borderColor};
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+
+    & .sectionTitle {
+        font-weight: 400;
+        font-size: 20px;
+        width: 100%;
+        margin-bottom: 24px;
+    }
+
+`;
+
+const Content = styled.div`
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+`;
 
 const caver = new Caver(window.klaytn)
 
@@ -118,26 +153,28 @@ function KPEKLStaketool() {
     }
 
     return (
-        <div>
-            kpEKL STAKING
-            <InputForm
-                token="kpEKL"
-                type="number"
-                onChange={onChange}
-                balance={kpEKLbal}
-                value={inputbal}
-                isVisible={true}
-                haveMax={true}
-                haveBal={true}
-            />
-            <Button text="Stake!" onClick={Stake} />
-            <Button text="Unstake!" onClick={Unstake} />
-            <Button text="Claim" onClick={Claim} />
-            <p>{kpEKLprice}</p>
-            <p>{stakedbal}</p>
-            <p>{earnEKL}</p>
-            <p>{earn3moon}</p>
-        </div>
+        <Section>
+            <p className="sectionTitle">kpEKL STAKING</p>
+            <Content>
+                <InputForm
+                    token="kpEKL"
+                    type="number"
+                    onChange={onChange}
+                    balance={kpEKLbal}
+                    value={inputbal}
+                    isVisible={true}
+                    haveMax={true}
+                    haveBal={true}
+                />
+                <Button text="Stake!" onClick={Stake} />
+                <Button text="Unstake!" onClick={Unstake} />
+                <Button text="Claim" onClick={Claim} />
+                <p>{kpEKLprice}</p>
+                <p>{stakedbal}</p>
+                <p>{earnEKL}</p>
+                <p>{earn3moon}</p>
+            </Content>
+        </Section>
     )
 }
 export default KPEKLStaketool;

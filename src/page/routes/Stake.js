@@ -9,8 +9,8 @@ import TokenLogo from "../../assets/TokenLogo";
 import LinkImg from "../../assets/ExternalLink.svg";
 import ArrowIcon from "../../assets/ArrowIcon.svg";
 import KPEKLStaketool from "../../Components/KPEKLStaketool"
-import KPGStakingtool from "../../Components/KPGStakingtool"
-import KPGLock from "../../Components/KPGLock"
+import KPGStakingtool from "../../Components/Stake/KPGStakingtool"
+import KPGLock from "../../Components/Stake/KPGLock"
 
 const caver = new Caver(window.klaytn)
 
@@ -115,8 +115,14 @@ const Stake = () => {
 
   return (
     <Main>
-      <Section>TotalClaimable : 0</Section>
-      <Section>TotalDeposit : 0</Section>
+      <Section>TotalClaimable : 0
+
+
+      </Section>
+      <Section>TotalDeposit : 0<br />
+        Staked된 양 : {pendingCAMP}<br />
+        풀릴때 까지 남은 시간  : {(timeConversion(lockRemaining * 1000))}<br />
+      </Section>
 
       <Section className="wide">
         <p className="Title">stake</p>
@@ -146,7 +152,7 @@ const Stake = () => {
             <Link to={"/Stake&Lock/KPGStakingtool"}><img src={ArrowIcon} /></Link>
           </div>
         </Item>
-        
+
         <Item>
           <div className="tokenName">
             <TokenLogo name="kpEKL" />
@@ -191,16 +197,6 @@ const Stake = () => {
           <div>$ 00,000</div>
           <div><Link to={"/Stake&Lock/KPGLock"}> <img src={ArrowIcon} /></Link> </div>
         </Item>
-      </Section>
-
-      <Section>
-        <StakeContent>
-          <h3>Staked된 양 : {pendingCAMP}</h3>
-          <h3>풀릴때 까지 남은 시간  : {(timeConversion(lockRemaining * 1000))}</h3>
-          <KPEKLStaketool />
-          <KPGStakingtool />
-          <KPGLock />
-        </StakeContent>
       </Section>
     </Main>
 

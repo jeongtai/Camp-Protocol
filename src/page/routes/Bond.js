@@ -103,23 +103,21 @@ const Bond = () => {
   const [ekl3moonbal, set3Moonbal] = useState()
   const [ekl3moonprice, set3Moonprice] = useState()
   const [deposit3moon, setDeposit3Moon] = useState()
-  const [bondprice, setBondPrice] = useState()
-  const [pendingCAMP, setPendingCamp] = useState()
-  const [percentBond, setPecentBond] = useState()
+  const [kpgusdtval, setKPGUSDTVal] = useState()
+  const [eklkpeklval, setEKLkpEKLval] = useState()
   const [isToolOpen, setIsToolOpen] = useState(false)
 
   let undepositval = ekl3moonbal * ekl3moonprice
   let depositval = deposit3moon * ekl3moonprice
-  let tvl = undepositval + depositval
+  let tvl = undepositval + depositval + parseFloat(kpgusdtval) + parseFloat(eklkpeklval)
   let isReload = 0;
-
 
 
   async function getInfo() {
     try {
       await state.KPG_USDTLPContract.methods
         .estimatePos(KPGAddress, caver.utils.toPeb("1", "KLAY"))
-        .call((e, v) => setKPGprice(v / 1e6));
+        .call((e, v) => setKPGprice((v / 1e6).toFixed(3)));
     } catch { setKPGprice(undefined) }
 
     try {
@@ -139,6 +137,30 @@ const Bond = () => {
         .balanceOf(state.BondTreasuryContract._address)
         .call((e, v) => setDeposit3Moon(v / 1e18));
     } catch { setDeposit3Moon(undefined) }
+
+    try {
+      await state.KPG_USDTBondContract.methods
+          .assetPrice()
+          .call(async (e, price) => {
+              await state.KPG_USDTLPContract.methods
+                  .balanceOf(state.BondTreasuryContract._address)
+                  .call((e, bal) => {
+                    setKPGUSDTVal((price * bal / 1e24).toPrecision(3))
+                  })
+          });
+  } catch { setKPGUSDTVal(undefined) }
+
+  try {
+    await state.EKLkpEKLBondContract.methods
+        .assetPrice()
+        .call(async (e, price) => {
+            await state.EKLkpEKLLPContract.methods
+                .balanceOf(state.BondTreasuryContract._address)
+                .call((e, bal) => {
+                  setEKLkpEKLval((price * bal / 1e24).toPrecision(3))
+                })
+        });
+} catch { setEKLkpEKLval(undefined) }
   }
 
   // initialize hook----------------------------
@@ -153,9 +175,9 @@ const Bond = () => {
   }, []);
 
   const OverviewInfos = [
-    { name: "TVL", amt: tvl },
-    { name: "Deposited Value", amt: depositval },
-    { name: "Not Deposited Yet", amt: undepositval },
+    { name: "TVL", amt: tvl.toFixed(3) },
+    { name: "Deposited Value", amt: depositval.toFixed(3) },
+    { name: "Not Deposited Yet", amt: undepositval.toFixed(3) },
     { name: "KPG Price", amt: kpgprice },
   ]
 

@@ -88,9 +88,19 @@ function Converttool() {
       .balanceOf(window.klaytn.selectedAddress)
       .call((e, v) => setEKLbal((v /1e18).toFixed(4)));
 
-      await state.EKLkpEKLLPContract.methods
-      .estimatePos(kpEKLTokenAddress,  1e6)
-      .call((e, v) => setkpEKLPrice((v / 1e6 *EKLprice).toFixed(2)));
+      try {
+        await state.EKLLPContract.methods
+            .estimatePos(EKLTokenAddress, caver.utils.toPeb("1", "KLAY"))
+            .call(async (e, eklprice) => {
+              await state.EKLkpEKLLPContract.methods
+              .getCurrentPool()
+              .call((e, v) => {
+                setkpEKLPrice((v[0] / v[1] * eklprice /1e6).toFixed(3))
+              })
+            })
+    } catch {
+        setkpEKLPrice(undefined)
+    }
 
       await state.kpEKLContract.methods
       .balanceOf(window.klaytn.selectedAddress)

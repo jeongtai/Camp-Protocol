@@ -11,6 +11,8 @@ import ArrowIcon from "../../assets/ArrowIcon.svg";
 import KPEKLStaketool from "../../Components/KPEKLStaketool"
 import KPGStakingtool from "../../Components/Stake/KPGStakingtool"
 import KPGLock from "../../Components/Stake/KPGLock"
+import { EKLTokenAddress } from "../../const/Contract.js";
+import { parse } from "url";
 
 const caver = new Caver(window.klaytn)
 
@@ -86,22 +88,131 @@ align-content: center;
 
 const Stake = () => {
   let state = useSelector((state) => state)
-  const [pendingCAMP, setPendingCAMP] = useState()
-  const [lockRemaining, setLockRemaining] = useState()
+  const [kpgprice, setKPGPrice] = useState()
+  const [kpeklprice, setkpEKLPrice] = useState()
+  const [eklprice, setEKLPrice] = useState()
+  const [ekl3moonprice, set3Moonprice] = useState()
+  const [kpeklstaketvl, setkpEKLStakeTVl] = useState()
+  const [kpstaketvl, setKPStakeTVL] =useState()
+  const [kpLocktvl, setKPLockTVL] = useState()
+  const [kpeklstakebal, setkpEKLStakeBal] = useState()
+  const [kpstakebal, setKPStakeBal] = useState()
+  const [kplockbal, setKPLockBal] = useState()
+  const [lockeklreward, setLockEKLweekreward] =useState()
+  const [lockkpEKLreward, setLockkpEKLweekreward] =useState()
+  const [lock3moonreward, setLock3Moonweekreward] =useState()
+  const [stakekpeklreward, setKPStakekpEKLweekreward] =useState()
+  const [kpeklStakeEKLreward, setkpEKLStakeEKLweekreward] =useState()
+  const [kpeklStakeFeereward, setkpEKLStakeFeeweekreward] = useState()
+
+
+  //APR 계산 필요ㅜㅜ
+  
+  let totaldeposit = parseFloat(kpeklstakebal) + parseFloat(kpstakebal) + parseFloat(kplockbal)
+
+  let kpstakeApr = parseFloat(stakekpeklreward) * 365/7 * kpeklprice /kpgprice 
+
+  let kpeklStakeApr = (parseFloat(kpeklStakeEKLreward) * 365/7 * eklprice +
+                      parseFloat(kpeklStakeFeereward) * 365/7 * ekl3moonprice
+                      )/kpeklprice
+
+  let lockApr = (parseFloat(lockeklreward) * 365/7 *eklprice +
+                parseFloat(lockkpEKLreward) * 365/7 *kpeklprice +
+                parseFloat(lock3moonreward) * 365/7 *ekl3moonprice
+                )/kplockbal
 
   async function getInfo() {
-    try {
-      await state.StakingContract.methods
-        .pendingxCube(window.klaytn.selectedAddress)
-        .call((e, v) => setPendingCAMP(caver.utils.fromPeb(v, 'KLAY')))
-    } catch (e) { setPendingCAMP(undefined) }
 
-    try {
-      await state.StakingContract.methods
-        .userLockInfo(window.klaytn.selectedAddress)
-        .call((e, v) => setLockRemaining(v[1]))
-    } catch (e) { setLockRemaining(undefined) }
-  }
+        try {
+            await state.KPG_USDTLPContract.methods
+                .estimatePos(state.KPGContract._address, caver.utils.toPeb("1", "KLAY"))
+                .call(async (e, price) => {
+                  setKPGPrice((price / 1e6).toFixed(3))
+
+                  await state.kpStakingContract.methods
+                  .totalSupply()
+                  .call((e, bal) => setKPStakeTVL((bal * price /1e24).toFixed(3)))
+
+                  await state.kpStakingContract.methods
+                  .balanceOf(window.klaytn.selectedAddress)
+                  .call((e, bal) => setKPStakeBal((bal * price /1e24).toFixed(3)))
+
+                  await state.kpLockContract.methods
+                  .totalSupply()
+                  .call((e, bal) => setKPLockTVL((bal * price /1e24).toFixed(3)))
+                  
+                  await state.kpLockContract.methods
+                  .balanceOf(window.klaytn.selectedAddress)
+                  .call((e, bal) => setKPLockBal((bal * price /1e24).toFixed(3)))
+                });
+        } catch { setKPGPrice(undefined) }
+
+        try {
+          await state.EKLLPContract.methods
+              .estimatePos(EKLTokenAddress, caver.utils.toPeb("1", "KLAY"))
+              .call(async (e, eklprice) => {
+                setEKLPrice((eklprice/1e6).toPrecision(3))
+                await state.EKLkpEKLLPContract.methods
+                .getCurrentPool()
+                .call(async (e, v) => {
+                  setkpEKLPrice((v[0] / v[1] * eklprice /1e6).toFixed(3))
+
+                  await state.kpEKLStakingContract.methods
+                  .totalSupply()
+                  .call((e, bal) => setkpEKLStakeTVl((bal * v[0] / v[1] * eklprice /1e24).toFixed(3)))
+
+                  await state.kpEKLStakingContract.methods
+                  .balanceOf(window.klaytn.selectedAddress)
+                  .call((e, bal) => setkpEKLStakeBal((bal * v[0] / v[1] * eklprice /1e24).toFixed(3)))
+                })
+              })
+      } catch {
+        setkpEKLStakeTVl(undefined)
+      }
+
+      try {
+        await state.kpLockContract.methods
+        .getRewardForDuration(EKLTokenAddress)
+        .call((e, v) => {setLockEKLweekreward((v/1e18).toPrecision(3))})
+      } catch (e) {}
+
+      try {
+        await state.kpLockContract.methods
+        .getRewardForDuration(state.kpEKLContract._address)
+        .call((e, v) => {setLockkpEKLweekreward((v/1e18).toPrecision(3))})
+      } catch (e) {}
+
+      try {
+        await state.kpLockContract.methods
+        .getRewardForDuration(state.EKL3MoonLPContract._address)
+        .call((e, v) => {setLock3Moonweekreward((v/1e18).toPrecision(3))})
+      } catch (e) {}
+
+      try {
+        await state.EKL3MoonBondContract.methods
+          .assetPrice()
+          .call((e, v) => set3Moonprice((v / 1e6).toPrecision(3)));
+      } catch { set3Moonprice(undefined) }
+
+      try {
+        await state.kpStakingContract.methods
+          .rewardPerToken()
+          .call((e, v) => setKPStakekpEKLweekreward((v / 1e18).toPrecision(3)));
+      } catch { setKPStakekpEKLweekreward(undefined) }
+
+      try {
+        await state.kpEKLStakingContract.methods
+          .rewardPerToken()
+          .call((e, v) => setkpEKLStakeEKLweekreward((v / 1e18).toPrecision(3)));
+      } catch { setkpEKLStakeEKLweekreward(undefined) }
+
+      try {
+        await state.kpEKLStakeFeeContract.methods
+        .rewardPerToken()
+        .call((e, v) => setkpEKLStakeFeeweekreward((v / 1e18).toPrecision(3)));
+    } catch { setkpEKLStakeFeeweekreward(undefined) }
+      }
+  
 
   useEffect(() => {
     if (window.klaytn) {
@@ -119,9 +230,9 @@ const Stake = () => {
 
 
       </Section>
-      <Section>TotalDeposit : 0<br />
-        Staked된 양 : {pendingCAMP}<br />
-        풀릴때 까지 남은 시간  : {(timeConversion(lockRemaining * 1000))}<br />
+      <Section>TotalDeposit : $ {totaldeposit}<br />
+        Staked된 양 : {kpgprice}<br />
+        풀릴때 까지 남은 시간  : {(timeConversion(1 * 1000))}<br />
       </Section>
 
       <Section className="wide">
@@ -144,9 +255,9 @@ const Stake = () => {
               </a>
             </p>
           </div>
-          <div> $ 0,000</div>
-          <div> n %</div>
-          <div>$ 00,000</div>
+          <div>$ {kpstaketvl}</div>
+          <div> {kpstakeApr} %</div>
+          <div>$ {kpstakebal}</div>
           <div>$ 00,000</div>
           <div>
             <Link to={"/Stake&Lock/KPGStakingtool"}><img src={ArrowIcon} /></Link>
@@ -163,9 +274,9 @@ const Stake = () => {
               </a>
             </p>
           </div>
-          <div> $ 0,000</div>
-          <div> n %</div>
-          <div>$ 00,000</div>
+          <div> $ {kpeklstaketvl}</div>
+          <div> {kpeklStakeApr} %</div>
+          <div>$ {kpeklstakebal}</div>
           <div>$ 00,000</div>
           <div><Link to={"/Stake&Lock/KPEKLStaketool"}> <img src={ArrowIcon} /></Link> </div>
         </Item>
@@ -191,9 +302,9 @@ const Stake = () => {
               </a>
             </p>
           </div>
-          <div> $ 0,000</div>
-          <div> n %</div>
-          <div>$ 00,000</div>
+          <div> $ {kpLocktvl}</div>
+          <div> {lockApr.toFixed(3)} %</div>
+          <div>$ {kplockbal}</div>
           <div>$ 00,000</div>
           <div><Link to={"/Stake&Lock/KPGLock"}> <img src={ArrowIcon} /></Link> </div>
         </Item>

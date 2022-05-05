@@ -164,17 +164,23 @@ function Home() {
     const [eklkpeklTreasuryVal, setEklkpeklTreasuryVal] = useState()
     const [threemoonTreasuryVal, setThreemoonTreasuryVal] = useState()
     const [depositThreemoonVal, setDepositThreemoonVal] = useState()
+    const [kpstaketvl, setKPStakeTVL] =useState()
+    const [kpLocktvl, setKPLockTVL] = useState()
+    const [kpeklstaketvl, setkpEKLStakeTVl] = useState()
     const [isLoading, setIsLoading] = useState(false);
 
 
+    let Treasurybal = parseFloat(kpgTreasuryVal) + parseFloat(eklkpeklTreasuryVal) + parseFloat(threemoonTreasuryVal)
+    let tvl = Treasurybal +parseFloat(kpstaketvl) + parseFloat(kpLocktvl) + parseFloat(kpeklstaketvl)
+
     const caver = new Caver(window.klaytn);
     const infos = [
-        { name: "Total Market Cap", amt: `${kpgprice}` },
-        { name: "TVL", amt: `${parseFloat(kpgTreasuryVal) + parseFloat(eklkpeklTreasuryVal) + parseFloat(threemoonTreasuryVal)}` },
-        { name: "Treasury Balance", amt: `${kpgprice}` },
+        { name: "Total Market Cap", amt: `${(kpgprice *kpgSupply + kpEKLSupply * kpEKLprice).toFixed(3)}` },
+        { name: "TVL", amt: `${tvl}` },
+        { name: "Treasury Balance", amt: `${Treasurybal}` },
         { name: "Total EKL", amt: `${kpEKLSupply}` },
         { name: "KPG Price", amt: `${kpgprice}` },
-        { name: "Backer Price per KPG", amt: `${kpgprice}` },
+        { name: "Backer Price per KPG", amt: `${(Treasurybal / kpgSupply).toPrecision(3)}` },
         { name: "kpEKL Price", amt: `${kpEKLprice}` },
         { name: "kpEKL/EKL Ratio", amt: `${kpEKLratio}` },
     ];
@@ -212,7 +218,18 @@ function Home() {
         try {
             await state.KPG_USDTLPContract.methods
                 .estimatePos(state.KPGContract._address, caver.utils.toPeb("1", "KLAY"))
-                .call((e, v) => setKPGPrice((v / 1e6).toFixed(3)));
+                .call(async (e, v) => {
+                  setKPGPrice((v / 1e6).toFixed(3))
+
+                  await state.kpStakingContract.methods
+                  .totalSupply()
+                  .call((e, bal) => setKPStakeTVL((bal * v /1e24).toFixed(3)))
+
+                  await state.kpLockContract.methods
+                  .totalSupply()
+                  .call((e, bal) => setKPLockTVL((bal * v /1e24).toFixed(3)))
+
+                });
         } catch { setKPGPrice(undefined) }
 
         try {
@@ -245,8 +262,12 @@ function Home() {
                 .call(async (e, price) => {
                     await state.EKL3MoonLPContract.methods
                         .balanceOf(state.BondTreasuryContract._address)
-                        .call((e, bal) => {
-                            setThreemoonTreasuryVal((price * bal / 1e24).toPrecision(3))
+                        .call(async (e, undepositval) => {
+                            await state.mock3MoonContract.methods
+                            .balanceOf(state.BondTreasuryContract._address)
+                            .call((e, depositval) => {
+                              setThreemoonTreasuryVal((price * (parseFloat(undepositval) + parseFloat(depositval)) / 1e24).toFixed(3))
+                            })
                         })
                 });
         } catch { setThreemoonTreasuryVal(undefined) }
@@ -267,15 +288,18 @@ function Home() {
         try {
             await state.EKLLPContract.methods
                 .estimatePos(EKLTokenAddress, caver.utils.toPeb("1", "KLAY"))
-                .call((e, v) => {setEKLprice((v/1e6).toFixed(3))})
-
-            await state.EKLkpEKLLPContract.methods
-                .getCurrentPool()
-                .call((e, v) => setkpEKLRatio((v[0] / v[1]).toPrecision(3)))
-        //미안하다 상준아 해결못했다
-            await state.EKLkpEKLLPContract.methods
-                .getCurrentPool()
-                .call((e, v) => setkpEklPrice((v[0] / v[1] * eklprice).toFixed(3)))
+                .call(async (e, eklprice) => {
+                  setEKLprice((eklprice / 1e6).toPrecision(3))
+                  await state.EKLkpEKLLPContract.methods
+                  .getCurrentPool()
+                  .call(async(e, v) => {
+                    setkpEklPrice((v[0] / v[1] * eklprice /1e6).toFixed(3))
+                    setkpEKLRatio((v[0] / v[1]).toFixed(3))
+                    await state.kpEKLStakingContract.methods
+                    .totalSupply()
+                    .call((e, bal) => setkpEKLStakeTVl((bal * v[0] / v[1] * eklprice /1e24).toFixed(3)))
+                  })
+                })
         } catch {
             setEKLprice(undefined)
             setkpEklPrice(undefined)

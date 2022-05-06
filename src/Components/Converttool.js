@@ -9,9 +9,10 @@ import LoadingSVG from "../assets/LoadingSVG.js";
 import SetIcon from "../assets/SetIcon.svg";
 
 import { useSelector } from "react-redux";
-import { EKLTokenAddress, kpEKLTokenAddress, EKLDepositorAddress } from "../const/Contract";
+import { EKLTokenAddress, kpEKLTokenAddress, EKLDepositorAddress, MAX_UNIT } from "../const/Contract";
 
 import Caver from "caver-js";
+import BigNumber from "bignumber.js";
 
 const Approve = styled.div`
     text-align: center;
@@ -131,7 +132,7 @@ function Converttool() {
 
     const ApproveEKL = () => {
       state.EKLContract.methods
-      .approve(EKLDepositorAddress, caver.utils.toPeb("1000000000", "KLAY"))
+      .approve(EKLDepositorAddress, BigNumber(MAX_UNIT))
       .send({
         from : window.klaytn.selectedAddress,
         gas : 3500000

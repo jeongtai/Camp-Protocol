@@ -10,6 +10,7 @@ import TokenLogo from "../assets/TokenLogo";
 import { MAX_UNIT } from "../const/Contract";
 import { timeConversion } from "../const/service.js"
 import LoadingSVG from "../assets/LoadingSVG.js";
+import BigNumber from "bignumber.js";
 
 const BondingContent = styled.div`
     visibility: ${props => props.isToolOpen ? "visible" : "hidden"};
@@ -239,7 +240,7 @@ function Bondingtool(lpInfosProps) {
   }
 
   function onClickApprove() {
-    lpContract.methods.approve(bondContract._address, MAX_UNIT)
+    lpContract.methods.approve(bondContract._address, BigNumber(MAX_UNIT))
       .send({
         from: window.klaytn.selectedAddress,
         gas: 3000000

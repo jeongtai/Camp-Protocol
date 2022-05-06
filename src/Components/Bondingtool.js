@@ -154,9 +154,13 @@ function Bondingtool(lpInfosProps) {
 
     try {
       await bondContract.methods.terms()
-        .call((e, v) => {
+        .call(async (e, v) => {
           setVestingTerm(v[1])
-          setMaxDebt(v[3])
+          await state.KPGContract.methods
+          .totalSupply()
+          .call((e,sup) => {
+            setMaxDebt((v[3] * sup / 1e24).toPrecision(3))
+          })
         })
     } catch (e) {
       setVestingTerm(undefined)
@@ -247,11 +251,11 @@ function Bondingtool(lpInfosProps) {
 
   const bondInfos = [
     { name: "your LP balance", val: lpbal, expression: lpbal },
-    { name: "You'll get", val: campamt, expression: `${campamt} CAMP` },
-    { name: "Max can buy", val: maxdebt, expression: `${maxdebt} CAMP` },
+    { name: "You'll get", val: campamt, expression: `${campamt} KPG` },
+    { name: "Max can buy", val: maxdebt, expression: `${maxdebt} KPG` },
     { name: "ROI", val: pricerate, expression: `${pricerate} %` },
     { name: "Vesting term end", val: vestingterm, expression: timeConversion(vestingterm * 1000) },
-    { name: "Minimum Puchase", val: "0.01CAMP", expression: "0.01 CAMP" },
+    { name: "Minimum Puchase", val: "0.01KPG", expression: "0.01 KPG" },
     { name: "asset Price", val: assetprice, expression: assetprice },
   ];
 
@@ -286,7 +290,7 @@ function Bondingtool(lpInfosProps) {
               value={lpamount}
               setValueFn={setLPAmount}
               haveBal={true}
-              price={1}
+              price={lpamount * assetprice}
               balance={lpbal}
               haveMax={true}
               type="number"

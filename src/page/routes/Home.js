@@ -176,8 +176,8 @@ function Home() {
     const caver = new Caver(window.klaytn);
     const infos = [
         { name: "Total Market Cap", amt: `${(kpgprice *kpgSupply + kpEKLSupply * kpEKLprice).toFixed(3)}` },
-        { name: "TVL", amt: `${tvl}` },
-        { name: "Treasury Balance", amt: `${Treasurybal}` },
+        { name: "TVL", amt: `${tvl.toFixed(3)}` },
+        { name: "Treasury Balance", amt: `${Treasurybal.toFixed(3)}` },
         { name: "Total EKL", amt: `${kpEKLSupply}` },
         { name: "KPG Price", amt: `${kpgprice}` },
         { name: "Backer Price per KPG", amt: `${(Treasurybal / kpgSupply).toPrecision(3)}` },

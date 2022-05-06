@@ -129,8 +129,9 @@ function KPGStakingtool() {
     }
 
     function Unstake() {
-        state.kpStakingContract.methods.processExpiredLocks(
-            false
+        state.kpStakingContract.methods.withdraw(
+            caver.utils.toPeb(inputbal, "KLAY"),
+            true
         ).send({
             from: window.klaytn.selectedAddress,
             gas: 3000000

@@ -175,10 +175,10 @@ const Bond = () => {
   }, []);
 
   const OverviewInfos = [
-    { name: "TVL", amt: tvl.toFixed(3) },
-    { name: "Deposited Value", amt: depositval.toFixed(3) },
-    { name: "Not Deposited Yet", amt: undepositval.toFixed(3) },
-    { name: "KPG Price", amt: kpgprice },
+    { name: "TVL", amt: `${tvl.toFixed(3)} $` },
+    { name: "Deposited Value", amt:  `${depositval.toFixed(3)} $` },
+    { name: "Not Deposited Yet", amt: `${undepositval.toFixed(3)} $` },
+    { name: "KPG Price", amt: `${kpgprice} $` },
   ]
 
   return (

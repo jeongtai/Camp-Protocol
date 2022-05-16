@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import InputForm from "../assets/InputForm"
-import Button from "../assets/Button";
+
+import Button from "../../assets/Button";
 import { useSelector } from "react-redux";
 import Caver from "caver-js";
-import { EKLTokenAddress } from "../const/Contract";
+import { EKLTokenAddress } from "../../const/Contract";
 import styled from "styled-components";
+import StakeTab from "./Tab/StakeTab";
 
 const Section = styled.div`
     // flex
@@ -29,16 +30,69 @@ const Section = styled.div`
         width: 100%;
         margin-bottom: 24px;
     }
-
 `;
+
+
+const StakeInfo = styled.div`
+    padding: 10px;
+    background-color: ${(props) => props.theme.backBlack};
+    border-radius: 15px;
+`;
+
+const Info = styled.div`
+    margin: 3px;
+    padding: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-content: flex-start;
+
+    & .infoName {
+        text-align: left;
+        color: ${(props) => props.theme.textGray};
+    }
+
+    p {
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        text-align: right;
+        color: ${(props) => props.theme.textWhite};
+    }
+`;
+
+const Tabs = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 10px 0px;
+    gap: 10px;
+`;
+
+const Tab = styled.div`
+    text-align: center;
+    font-size: 18px;
+    font-weight: 400;
+
+    padding: 0px 0px 10px 0px;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    color: ${(props) =>
+        props.isActive ? props.theme.textBlack : props.theme.textGray};
+
+    border-bottom: ${(props) =>
+        props.isActive ? "2px solid" + props.theme.btnBlue : null};
+`;
+
 
 const Content = styled.div`
     flex-direction: column;
     display: flex;
     justify-content: center;
     align-content: center;
-
 `;
+
 
 const caver = new Caver(window.klaytn)
 
@@ -48,11 +102,13 @@ function KPEKLStaketool() {
     const [totalStake, setTotalStake] = useState()
     const [kpEKLbal, setkpEKLBal] = useState()
     const [isapproved, setIsApproved] = useState(false)
+    
     const [inputbal, setInputbal] = useState()
     const [kpEKLprice, setkpEKLprice] = useState()
     const [stakedbal, setStakedbal] = useState()
     const [earn3moon, setEarn3Moon] = useState()
     const [earnEKL, setEarnEKL] = useState()
+    const [nowTab, setNowTab] = useState("Stake")
 
     async function getInfo() {
         try {
@@ -111,9 +167,7 @@ function KPEKLStaketool() {
         }
     }, []);
 
-    const onChange = (event) => {
-        setInputbal(event.target.value)
-    }
+
 
     function Approve() {
         state.kpEKLContract.methods.approve(
@@ -125,14 +179,7 @@ function KPEKLStaketool() {
         })
     }
 
-    function Stake() {
-        state.kpEKLStakingContract.methods.stake(
-            caver.utils.toPeb(inputbal, "KLAY")
-        ).send({
-            from: window.klaytn.selectedAddress,
-            gas: 3000000
-        })
-    }
+
 
     function Unstake() {
         state.kpEKLStakingContract.methods.withdraw(
@@ -155,25 +202,42 @@ function KPEKLStaketool() {
     return (
         <Section>
             <p className="sectionTitle">kpEKL STAKING</p>
+            <StakeInfo>
+                <Info>
+                    <p className="infoName">kpEKL Price</p>
+                    <p>{kpEKLprice}</p>
+                </Info>
+                <Info>
+                    <p className="infoName">Staked kpEKL</p>
+                    <p>{stakedbal}</p>
+                </Info>
+                <Info>
+                    <p className="infoName">Rewards</p>
+                    <p>{earnEKL} EKL</p>
+                </Info>
+                <Info>
+                    <p className="infoName"></p>
+                    <p>{earn3moon} 3Moon</p>
+                </Info>
+            </StakeInfo>
+
+            <Tabs>
+                <Tab onClick={() => setNowTab("Stake")} isActive={nowTab === "Stake"}>
+                    Stake
+                </Tab>
+                <Tab onClick={() => setNowTab("UnStake")} isActive={nowTab === "UnStake"}>
+                    UnStake
+                </Tab>
+                <Tab onClick={() => setNowTab("Claim")} isActive={nowTab === "Claim"}>
+                    Claim
+                </Tab>
+            </Tabs>
             <Content>
-                <InputForm
-                    token="kpEKL"
-                    type="number"
-                    onChange={onChange}
-                    balance={kpEKLbal}
-                    value={inputbal}
-                    isVisible={true}
-                    haveMax={true}
-                    haveBal={true}
-                />
-                <Button text="Stake!" onClick={Stake} />
-                <Button text="Unstake!" onClick={Unstake} />
-                <Button text="Claim" onClick={Claim} />
-                <p>{kpEKLprice}</p>
-                <p>{stakedbal}</p>
-                <p>{earnEKL}</p>
-                <p>{earn3moon}</p>
+                {nowTab === "Stake" ? <StakeTab/> : null}
             </Content>
+
+            <Button text="Unstake!" onClick={Unstake} />
+            <Button text="Claim" onClick={Claim} />
         </Section>
     )
 }

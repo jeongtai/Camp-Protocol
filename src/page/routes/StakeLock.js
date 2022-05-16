@@ -8,9 +8,9 @@ import { timeConversion } from "../../const/service.js"
 import TokenLogo from "../../assets/TokenLogo";
 import LinkImg from "../../assets/ExternalLink.svg";
 import ArrowIcon from "../../assets/ArrowIcon.svg";
-import KPEKLStaketool from "../../Components/KPEKLStaketool"
-import KPGStakingtool from "../../Components/Stake/KPGStakingtool"
-import KPGLock from "../../Components/Stake/KPGLock"
+import KPEKLStaketool from "../../Components/StakeLock/KPEKLStaketool"
+import KPGStakingtool from "../../Components/StakeLock/KPGStakingtool"
+import KPGLock from "../../Components/StakeLock/KPGLock"
 import { EKLTokenAddress } from "../../const/Contract.js";
 import { parse } from "url";
 
@@ -320,7 +320,7 @@ const Stake = () => {
             <TokenLogo name="KPG" />
             <p>
               KPG
-              <a href="www.klayswap.com" target="_blank">
+              <a href="https://klayswap.com/exchange/swap" target="_blank">
                 <img src={LinkImg} />
               </a>
             </p>
@@ -339,7 +339,7 @@ const Stake = () => {
             <TokenLogo name="kpEKL" />
             <p>
               kpEKL
-              <a href="www.klayswap.com" target="_blank">
+              <a href="Convert" target="_blank">
                 <img src={LinkImg} />
               </a>
             </p>
@@ -367,7 +367,7 @@ const Stake = () => {
             <TokenLogo name="KPG" />
             <p>
               KPG
-              <a href="www.klayswap.com" target="_blank">
+              <a href="https://klayswap.com/exchange/swap" target="_blank">
                 <img src={LinkImg} />
               </a>
             </p>

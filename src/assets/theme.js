@@ -10,6 +10,7 @@ export const theme = {
    backBlack : "#262A31",
    backYellow : "#FFDE30",
    
+   
    // Btn
    btnGray : "#EDEDED",
    btnBlack : "#282828",

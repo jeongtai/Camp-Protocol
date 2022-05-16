@@ -56,6 +56,10 @@ contract KPtoken is ERC20Custom, Owned {
     }
     
     /* ========== RESTRICTED FUNCTIONS ========== */
+
+    function setVoterproxy(address _newproxy) external onlyOwner {
+      voterProxy = _newproxy;
+    }
     function updateOperator() public {
         operator = IStaker(voterProxy).operator();
     }

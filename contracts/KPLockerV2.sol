@@ -65,8 +65,8 @@ contract KPLockerV2 is ReentrancyGuard, Ownable {
     }
 
     //token constants
-    IERC20 public constant stakingToken = IERC20(0xEA049420C9210e324a631f499D3bDdC1FF3A7900); //kp
-    address public constant kpEKL = address(0xb68a03fDb11b77a6e308324F4028696D8158e0C3);
+    IERC20 public constant stakingToken = IERC20(0xF05d180a169418959a017865866F0aBaF7DB7EAd); //kp
+    address public constant kpEKL = address(0x08644836b786B69a5082fD4644a3F2D1534B11A8);
 
     //rewards
     address[] public rewardTokens;
@@ -95,7 +95,7 @@ contract KPLockerV2 is ReentrancyGuard, Ownable {
     mapping(address => LockedBalance[]) public userLocks;
 
     //boost
-    address public boostPayment = address(0x9A2ECEC436B224F31973B2265A0c8F979F6c81c5);
+    address public boostPayment = address(0xd4C8292dD4262e0b74fca1fAF523F3B962AB791d);
     uint256 public maximumBoostPayment = 0;
     uint256 public boostRate = 10000;
     uint256 public nextMaximumBoostPayment = 0;
@@ -106,7 +106,7 @@ contract KPLockerV2 is ReentrancyGuard, Ownable {
     uint256 public minimumStake = 10000;
     uint256 public maximumStake = 10000;
     address public stakingProxy;
-    address public constant kpEKLStaking = address(0x31Ac7dcfa5C383cf145711431FED48324F09950f);
+    address public constant kpEKLStaking = address(0x58337263cf52A4906913866242cfdeE16dEe82Bb);
     uint256 public constant stakeOffsetOnLock = 500; //allow broader range for staking when depositing
 
     //management

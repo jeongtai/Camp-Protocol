@@ -13,11 +13,11 @@ contract EklipseVoterProxy {
     using Address for address;
     using SafeMath for uint256;
 
-    address public constant ekl = address(0x70f1b7A318Ff0db9665D7AC089f08C29660C4cd8);
-    address public constant postekl = address(0x0EE3653ddE98BC35265D5F4deE91Bd83647a7d69);
-    address public constant eklclaim = address(0x253849896FE279525E2fB0a54b4Aa5f2E5953d31);
-    address public constant escrow = address(0x1d0e35A668F3dd38f9a229d5183699bE0a88Eb04);
-    address public constant gaugeController = address(0xE4D9A4e8A8C11ECEA72cc0862EE92D03ad92c974);
+    address public constant ekl = address(0x807C4E063eb0aC21E8EeF7623A6ed50A8EDe58cA);
+    address public constant postekl = address(0x0e23BeE35717987E71Fa8445E4Dd750aD718BA8a);
+    address public constant eklclaim = address(0xAb7f8facb7db88db80F35c96CD67A9e9d381C7Ee);
+    address public constant escrow = address(0xD067C3b871ee9E07BA4205A8F96c182baBBA6c58);
+    address public constant gaugeController = address(0x18428b7826C2588207e39b742c15642B8D9755B4);
     
     address public owner;
     address public operator;

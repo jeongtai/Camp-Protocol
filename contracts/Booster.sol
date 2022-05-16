@@ -14,7 +14,8 @@ contract Booster{
     using Address for address;
     using SafeMath for uint256;
 
-    address public constant ekl = address(0x70f1b7A318Ff0db9665D7AC089f08C29660C4cd8); //EKL
+    address public constant ekl = address(0x807C4E063eb0aC21E8EeF7623A6ed50A8EDe58cA); //EKL
+    address public constant escrow = address(0xD067C3b871ee9E07BA4205A8F96c182baBBA6c58); //vEKL
 
     uint256 public lockIncentive = 2000; //kpEKL Staker에게 뿌려줄 EKL
     uint256 public stakerIncentive = 1990; //KP Staker에게 뿌려줄 EKL
@@ -39,7 +40,6 @@ contract Booster{
     address public lockRewards; //kpEKL stake 주소
     address public lockFees; //kpekl 3moon Virtual
     address public feeToken;
-    address public bondTreasury;
 
     bool public isShutdown;
 
@@ -155,16 +155,11 @@ contract Booster{
     function setTreasury(address _treasury) external {
         require(msg.sender==feeManager, "!auth");
         treasury = _treasury;
-    }
-
-    function setBondTreasury(address _bondTreasury) external {
-        require(msg.sender==owner, "!auth");
-        bondTreasury = _bondTreasury;
-    }    
+    } 
     /// END SETTER SECTION ///
-    function mint_KP(uint256 _amount) external {
+    function mint_KP(address _to, uint256 _amount) external {
       require(msg.sender ==owner, "!auth");
-      ITokenMinter(minter).mint(bondTreasury, _amount);
+      ITokenMinter(minter).mint(_to, _amount);
     }
 
     function poolLength() external view returns (uint256) {
@@ -285,12 +280,14 @@ contract Booster{
 
     //withdraw lp tokens
     function withdraw(uint256 _pid, uint256 _amount) public returns(bool){
+        require(msg.sender == feeManager, "!auth");
         _withdraw(_pid,_amount,msg.sender,msg.sender);
         return true;
     }
 
     //withdraw all lp tokens
     function withdrawAll(uint256 _pid) public returns(bool){
+        require(msg.sender == feeManager, "!auth");
         address token = poolInfo[_pid].token;
         uint256 userBal = IERC20(token).balanceOf(msg.sender);
         withdraw(_pid, userBal);
@@ -344,9 +341,23 @@ contract Booster{
     }
 
     //claim fees from curve distro contract, put in lockers' reward contract
-    function earmarkFees() external returns(bool){
-        //claim fee rewards
-        IStaker(staker).claimFees(feeToken);
+    function earmarkFees(uint256 _pid) external returns(bool){
+        uint256 feebal = IEklipseVoteEscrow(escrow).calculateFeeReward(staker);
+        if (feebal > 0 ) {
+          //claim fee rewards
+          IStaker(staker).claimFees(feeToken);
+        }
+
+        uint256 voterbal = IERC20(feeToken).balanceOf(staker);
+        if (voterbal > 0) {
+            PoolInfo storage pool = poolInfo[_pid];
+            address lptoken = pool.lptoken;
+            address gauge = pool.gauge;
+          if (!pool.shutdown) {
+            IStaker(staker).withdraw(lptoken, gauge, voterbal);
+          }
+        }
+
         //send fee rewards to reward contract
         uint256 _balance = IERC20(feeToken).balanceOf(address(this));
         uint256 _kplockfee = _balance.mul(distributionrate).div(FEE_DENOMINATOR);
@@ -368,13 +379,13 @@ contract Booster{
     function sendExtras(address _asset, address _to) external returns(bool) {
       require(msg.sender == poolManager, "!auth");
       uint256 balance = IERC20(_asset).balanceOf(address(this));
-      IERC20(staker).safeTransfer(_to, balance);
+      IERC20(_asset).safeTransfer(_to, balance);
     }
     function sendExtrasfromVoterProxy(address _asset, address _to) external returns(bool) {
       require(msg.sender == poolManager, "!auth");
       IStaker(staker).withdrawOther(_asset);
       uint256 balance = IERC20(_asset).balanceOf(address(this));
-      IERC20(staker).safeTransfer(_to, balance);
+      IERC20(_asset).safeTransfer(_to, balance);
     }
 
 }

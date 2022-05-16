@@ -39,14 +39,14 @@ contract KPStakingProxyV2 {
     for uint256;
 
     //tokens
-    address public constant ekl = address(0x70f1b7A318Ff0db9665D7AC089f08C29660C4cd8);
-    address public constant kp = address(0xEA049420C9210e324a631f499D3bDdC1FF3A7900);
-    address public constant kpEKL = address(0xb68a03fDb11b77a6e308324F4028696D8158e0C3);
+    address public constant ekl = address(0x807C4E063eb0aC21E8EeF7623A6ed50A8EDe58cA);
+    address public constant kp = address(0xF05d180a169418959a017865866F0aBaF7DB7EAd);
+    address public constant kpEKL = address(0x08644836b786B69a5082fD4644a3F2D1534B11A8);
 
     //convex addresses
-    address public constant kpStaking = address(0x196F32c72a18B390B9d8cd8Dd1c82EFDfB04D756);
-    address public constant kpEKLStaking = address(0x31Ac7dcfa5C383cf145711431FED48324F09950f);
-    address public constant eklDeposit = address(0xAD7AA256071F4b04b3482D8366c910542CA499F9);
+    address public constant kpStaking = address(0x5042D8158d3c3C7f95374512b726fB2fA82EBa6B);
+    address public constant kpEKLStaking = address(0x58337263cf52A4906913866242cfdeE16dEe82Bb);
+    address public constant eklDeposit = address(0xABe0F9cFf7d77aEd6b6C9107f0584f897cC0942d);
     uint256 public constant denominator = 10000;
 
     address public immutable rewards;

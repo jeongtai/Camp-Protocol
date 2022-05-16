@@ -2,11 +2,11 @@
 
 pragma solidity 0.7.5;
 
-import "./EKLkpEKLBondDepository.sol";
+import "./EKLBondDepository.sol";
 import "./interface/IClaimSwapZap.sol";
 import "./interface/IClaimSwapPair.sol";
 
-contract ClaimSwapEKLkpEKLLpDepository is EKLkpEKLBondDepository {
+contract Eklipse_3Moon_BondDepository is EKLBondDepository {
     uint256 public constant REVISION = 1;
 
     function getRevision() internal pure override returns (uint256) {
@@ -14,6 +14,6 @@ contract ClaimSwapEKLkpEKLLpDepository is EKLkpEKLBondDepository {
     }
 
     function NAME() external pure override returns (string memory) {
-        return "ClaimSwap KLAY-KBT LP Depository";
+        return "Eklipse 3Moon LP Depository";
     }
 }

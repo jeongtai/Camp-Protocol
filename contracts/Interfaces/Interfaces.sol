@@ -22,6 +22,7 @@ interface IEklipseVoteEscrow {
     function withdrawEkl() external;
     function getUserVekl(address) external view returns(uint256);
     function withdrawFeeReward() external returns(uint256);
+    function calculateFeeReward(address)external view returns (uint256);
 }
 
 interface IVoting{

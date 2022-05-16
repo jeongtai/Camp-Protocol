@@ -49,6 +49,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.AssetOracle__factory>;
     getContractFactory(
+      name: "AssetOracleKlaySwap",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.AssetOracleKlaySwap__factory>;
+    getContractFactory(
+      name: "IKlaySwapOracle",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IKlaySwapOracle__factory>;
+    getContractFactory(
       name: "IUniswapPairOracle",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IUniswapPairOracle__factory>;
@@ -85,29 +93,45 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BasicEKLHolder__factory>;
     getContractFactory(
-      name: "M3MoonBondDepository",
+      name: "Eklipse3MoonBondDepository",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.M3MoonBondDepository__factory>;
+    ): Promise<Contracts.Eklipse3MoonBondDepository__factory>;
     getContractFactory(
       name: "BondDepository",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BondDepository__factory>;
     getContractFactory(
+      name: "IKlaySwapOracle",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IKlaySwapOracle__factory>;
+    getContractFactory(
       name: "BondTreasury",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BondTreasury__factory>;
     getContractFactory(
-      name: "ClaimSwapBondZap",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ClaimSwapBondZap__factory>;
-    getContractFactory(
-      name: "ClaimSwapKlayKbtLpDepository",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ClaimSwapKlayKbtLpDepository__factory>;
-    getContractFactory(
       name: "EKLBondDepository",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.EKLBondDepository__factory>;
+    getContractFactory(
+      name: "IEklipseOracle",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IEklipseOracle__factory>;
+    getContractFactory(
+      name: "IKlaySwapOracle",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IKlaySwapOracle__factory>;
+    getContractFactory(
+      name: "EKLkpEKLBond",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.EKLkpEKLBond__factory>;
+    getContractFactory(
+      name: "EKLkpEKLBondDepository",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.EKLkpEKLBondDepository__factory>;
+    getContractFactory(
+      name: "IKlaySwapOracle",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IKlaySwapOracle__factory>;
     getContractFactory(
       name: "IBondDepository",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -136,6 +160,10 @@ declare module "hardhat/types/runtime" {
       name: "IStakedToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IStakedToken__factory>;
+    getContractFactory(
+      name: "KPUSDTBond",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.KPUSDTBond__factory>;
     getContractFactory(
       name: "IOwnable",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -208,6 +236,10 @@ declare module "hardhat/types/runtime" {
       name: "IEKLDepositor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IEKLDepositor__factory>;
+    getContractFactory(
+      name: "IKlaySwap",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IKlaySwap__factory>;
     getContractFactory(
       name: "IKPtoken",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -467,6 +499,16 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.AssetOracle>;
     getContractAt(
+      name: "AssetOracleKlaySwap",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.AssetOracleKlaySwap>;
+    getContractAt(
+      name: "IKlaySwapOracle",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IKlaySwapOracle>;
+    getContractAt(
       name: "IUniswapPairOracle",
       address: string,
       signer?: ethers.Signer
@@ -512,35 +554,55 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.BasicEKLHolder>;
     getContractAt(
-      name: "M3MoonBondDepository",
+      name: "Eklipse3MoonBondDepository",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.M3MoonBondDepository>;
+    ): Promise<Contracts.Eklipse3MoonBondDepository>;
     getContractAt(
       name: "BondDepository",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.BondDepository>;
     getContractAt(
+      name: "IKlaySwapOracle",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IKlaySwapOracle>;
+    getContractAt(
       name: "BondTreasury",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.BondTreasury>;
     getContractAt(
-      name: "ClaimSwapBondZap",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ClaimSwapBondZap>;
-    getContractAt(
-      name: "ClaimSwapKlayKbtLpDepository",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ClaimSwapKlayKbtLpDepository>;
-    getContractAt(
       name: "EKLBondDepository",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.EKLBondDepository>;
+    getContractAt(
+      name: "IEklipseOracle",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IEklipseOracle>;
+    getContractAt(
+      name: "IKlaySwapOracle",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IKlaySwapOracle>;
+    getContractAt(
+      name: "EKLkpEKLBond",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.EKLkpEKLBond>;
+    getContractAt(
+      name: "EKLkpEKLBondDepository",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.EKLkpEKLBondDepository>;
+    getContractAt(
+      name: "IKlaySwapOracle",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IKlaySwapOracle>;
     getContractAt(
       name: "IBondDepository",
       address: string,
@@ -576,6 +638,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IStakedToken>;
+    getContractAt(
+      name: "KPUSDTBond",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.KPUSDTBond>;
     getContractAt(
       name: "IOwnable",
       address: string,
@@ -666,6 +733,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IEKLDepositor>;
+    getContractAt(
+      name: "IKlaySwap",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IKlaySwap>;
     getContractAt(
       name: "IKPtoken",
       address: string,

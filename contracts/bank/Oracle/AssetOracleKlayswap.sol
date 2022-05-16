@@ -5,8 +5,12 @@ import '@openzeppelin/contracts/math/SafeMath.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import "./IUniswapPairOracle.sol";
 
+interface IKlaySwapOracle {
+    function estimatePos(address , uint256) external view returns (uint256);
+    function getCurrentPool() external view returns(uint256, uint256);
+}
 
-contract AssetOracle is Ownable {
+contract AssetOracleKlaySwap is Ownable {
     using SafeMath for uint256;
 
     address[] public priceOracle;
@@ -18,7 +22,7 @@ contract AssetOracle is Ownable {
 
     function getAssetPrice(address asset) external view returns (uint256) {
         for (uint i = 0; i < priceOracle.length; i++) {
-            uint256 price = uint256(IUniswapPairOracle(priceOracle[i]).consult(asset, PRICE_PRECISION));
+            uint256 price = uint256(IKlaySwapOracle(priceOracle[i]).estimatePos(asset, PRICE_PRECISION));
             if (price > 0) {
                 return price;
             }

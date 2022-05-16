@@ -14,6 +14,12 @@ import "./interface/IBondDepository.sol";
 import "../Interfaces/IAssetOracle.sol";
 import "../bank/Uniswap/interfaces/IUniswapV2Pair.sol";
 
+interface IKlaySwapOracle {
+    function estimatePos(address , uint256) external view returns (uint256);
+    function balanceOf(address) external view returns(uint256);
+    function totalSupply() external view returns(uint256);
+    function getCurrentPool() external view returns(uint256, uint256);
+}
 abstract contract EKLkpEKLBondDepository is Ownable, VersionedInitializable, IBondDepository  {
     using SafeERC20 for IERC20;
     using Address for address;
@@ -31,10 +37,10 @@ abstract contract EKLkpEKLBondDepository is Ownable, VersionedInitializable, IBo
     address public DAO;
     address public kp; // token given as payment for bond
 
-    address public assetOracle;
-    // address public oracle;
-    address private ekladdress;
-    address private kpekladdress;  
+    address public ekllp;
+    address public kplp;
+    address public constant ekl = address(0x807C4E063eb0aC21E8EeF7623A6ed50A8EDe58cA);
+    // address public oracle; 
     // UniswapPairOracle private Token0USDTOracle;
     // UniswapPairOracle private Token1USDTOracle;   
     // IUniswapV2Pair private principle; // token used to create bond(아마도 lp)
@@ -92,21 +98,17 @@ abstract contract EKLkpEKLBondDepository is Ownable, VersionedInitializable, IBo
         address _kp,
         address _DAO,
         address _principle,
-        address _ekladdress,
-        address _kpekladdress,
-        address _oracle
+        address _ekllp,
+        address _kplp
     ) external initializer {
         require(_kp != address(0));
         kp = _kp;
-        require(_ekladdress != address(0));
-        ekladdress = _ekladdress;
-        require(_kpekladdress != address(0));
-        kpekladdress = _kpekladdress;
         require(_DAO != address(0));
         DAO = _DAO;
         require(_principle != address(0));
         principle = _principle;
-        assetOracle = _oracle;
+        ekllp = _ekllp;
+        kplp = _kplp;
     }
 
     /**
@@ -362,11 +364,10 @@ abstract contract EKLkpEKLBondDepository is Ownable, VersionedInitializable, IBo
      *  @return price_ uint256 in 10**6 precision in usd
      */
     function bondPrice() public view returns (uint256 price_) {
-        uint256 _KPPrice = IAssetOracle(assetOracle).getAssetPrice(kp); // 1e6
+        uint256 _KPPrice = IKlaySwapOracle(kplp).estimatePos(kp, 1e18);
         uint256 _priceRate = priceRate(); // 1e9
         price_ = _KPPrice.mul(_priceRate).div(10**9);
     }
-
     /**
      *  @notice calculate bond price rate
      *  @return rate_ uint256 in 10**9 precision
@@ -405,13 +406,10 @@ abstract contract EKLkpEKLBondDepository is Ownable, VersionedInitializable, IBo
 
     // pair의 단위 가격을 구한다 in USD
     function assetPrice() public view returns (uint256) {
-        uint256 lpSupply = IUniswapV2Pair(principle).totalSupply();
-        // uint112 reserve0, reserve1, blocktimestamp = IUniswapV2Pair(_principle).getReserves();
-        uint256 balance0 = IERC20(ekladdress).balanceOf(address(IUniswapV2Pair(principle)));
-        uint256 balance1 = IERC20(kpekladdress).balanceOf(address(IUniswapV2Pair(principle)));
-        uint256 lpValue = balance0.mul(IAssetOracle(assetOracle).getAssetPrice(ekladdress)) + balance1.mul(IAssetOracle(assetOracle).getAssetPrice(ekladdress));
-
-        return lpValue.div(lpSupply); //자릿수 맞추기..?!
+        uint256 lpSupply = IKlaySwapOracle(principle).totalSupply();
+        uint256 eklprice = IKlaySwapOracle(ekllp).estimatePos(ekl, 1e18);
+        (uint256 eklbal, ) = IKlaySwapOracle(principle).getCurrentPool();
+        return eklbal.mul(2).mul(eklprice).div(lpSupply); //자릿수 맞추기..?!
     }
 
     // function assetPrice() public view returns (uint256) {

@@ -165,7 +165,7 @@ function KPGStakingtool() {
                 />
                 <Button text="Stake!" onClick={Stake} />
                 <Button text="Unstake!" onClick={Unstake} />
-                <Button text="Claim" onClick={Approve} />
+                <Button text="Claim" onClick={Claim} />
             </Content>
         </Section>
     )

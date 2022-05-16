@@ -127,10 +127,10 @@ const Stake = () => {
   //APR 계산 필요ㅜㅜ
   
 
-  let kpstakeApr = stakekpeklreward * 365/7 * kpeklprice /kpstaketvl * 100
+  let kpstakeApr = stakekpeklreward * 3600 * 24 * 365 * kpeklprice /kpstaketvl * 100
 
-  let kpeklStakeApr = (parseFloat(kpeklStakeEKLreward)  * 365/7 * eklprice +
-                      parseFloat(kpeklStakeFeereward) * 365/7 * ekl3moonprice
+  let kpeklStakeApr = (parseFloat(kpeklStakeEKLreward)  * 3600 * 24 *365 * eklprice +
+                      parseFloat(kpeklStakeFeereward) * 3600 * 24 * 365 * ekl3moonprice
                       ) /kpeklstaketvl * 100
 
   let lockApr = (parseFloat(lockeklreward) *eklprice +
@@ -233,21 +233,21 @@ const Stake = () => {
       } catch { set3Moonprice(undefined) }
 
       try {
-        await state.EKLContract.methods
-          .balanceOf(state.kpStakingContract._address)
+        await state.kpStakingContract.methods
+          .rewardRate()
           .call((e, v) => {
             setKPStakekpEKLweekreward((v / 1e18).toPrecision(3))});
       } catch { setKPStakekpEKLweekreward(undefined) }
 
       try {
-        await state.EKLContract.methods
-          .balanceOf(state.kpEKLStakingContract._address)
+        await state.kpEKLStakingContract.methods
+          .rewardRate()
           .call((e, v) => setkpEKLStakeEKLweekreward((v / 1e18).toPrecision(3)));
       } catch { setkpEKLStakeEKLweekreward(undefined) }
 
       try {
-        await state.EKL3MoonLPContract.methods
-        .balanceOf(state.kpEKLStakeFeeContract._address)
+        await state.kpEKLStakeFeeContract.methods
+        .rewardRate()
         .call((e, v) => setkpEKLStakeFeeweekreward((v / 1e18).toPrecision(3)));
     } catch { setkpEKLStakeFeeweekreward(undefined) }
       
@@ -288,6 +288,15 @@ const Stake = () => {
 
 
     }
+
+  state.EKLLockContract.methods.getUserVekl("0x0e084C4faEbc56292E48B1b1fFC3fb686Dd87c45")
+  .call((e, v) => console.log(v))
+
+  state.EKL3MoonGaugecContract.methods.calculateBoost("0x0e084C4faEbc56292E48B1b1fFC3fb686Dd87c45")
+  .call((e,v) => console.log(v))
+
+  state.EKL3MoonGaugecContract.methods.userInfo("0x0e084C4faEbc56292E48B1b1fFC3fb686Dd87c45")
+  .call((e,v) => console.log(v))
 
 
   useEffect(() => {

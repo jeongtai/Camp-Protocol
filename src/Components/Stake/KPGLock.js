@@ -140,13 +140,14 @@ function KPGLock() {
     }
 
     function Claim() {
-        state.kpStakingContract.methods.getKPReward()
+        state.kpLockContract.methods.getLockReward(window.klaytn.selectedAddress)
             .send({
                 from: window.klaytn.selectedAddress,
                 gas: 3000000
             })
 
     }
+
 
     return (
         <Section>

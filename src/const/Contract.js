@@ -12,6 +12,9 @@ import kpEklStakeFeejs from "../abis/kpEKLStakeFee.json"
 import kpStakejs from "../abis/kpStake.json"
 import kpTokenjs from "../abis/KPtoken.json"
 import kpLockjs from "../abis/KPLock.json"
+import {eklipseLockABI} from "../abis/eklipse_lock.js"
+import eklvotejs from "../abis/eklvote.json"
+import eklgaguejs from "../abis/EKLgauge.json"
 
 const caver = new Caver(window.klaytn)
 
@@ -40,7 +43,9 @@ const kpEKLStakeFeeContract = new caver.klay.Contract(kpEklStakeFeejs.abi, "0x54
 const kpStakingContract = new caver.klay.Contract(kpStakejs.abi, "0x5042D8158d3c3C7f95374512b726fB2fA82EBa6B")
 const kpLockContract = new caver.klay.Contract(kpLockjs.abi, "0xDc1b8Fe74ED56Fe11AB9ECfD7238aBaA8298f3d9")
 
-
+const EKLLockContract = new caver.klay.Contract(eklipseLockABI, "0xD067C3b871ee9E07BA4205A8F96c182baBBA6c58")
+const EKLVoteContract = new caver.klay.Contract(eklvotejs, "0x18428b7826C2588207e39b742c15642B8D9755B4")
+const EKL3MoonGaugecContract = new caver.klay.Contract(eklgaguejs, "0xCeAAF9f6C8147B2A7Cd8bD4E9fA8955b430Eb423")
 
 export const EKLTokenAddress = "0x807c4e063eb0ac21e8eef7623a6ed50a8ede58ca";
 export const kpEKLTokenAddress = "0x08644836b786B69a5082fD4644a3F2D1534B11A8"
@@ -67,7 +72,7 @@ const initialstate = {BankContract, SCAMPContract, BondTreasuryContract,
 
   EKLLPContract, EKLContract, EKLkpEKLLPContract, kpEKLContract, EKLDepositorContract, KPG_USDTLPContract, EKL3MoonLPContract,
   KPG_USDTBondContract, EKLkpEKLBondContract, EKL3MoonBondContract, kpEKLStakingContract, kpEKLStakeFeeContract, kpStakingContract,
-  KPGContract, kpLockContract, mock3MoonContract
+  KPGContract, kpLockContract, mock3MoonContract, EKLLockContract, EKLVoteContract, EKL3MoonGaugecContract
 }
 
 

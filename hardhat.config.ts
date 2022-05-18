@@ -193,7 +193,7 @@ const config: HardhatUserConfig = {
       chainId: 1001,
       accounts: [process.env.PRIVATE_KEY!],
       saveDeployments: true,
-      gasPrice: 750000000000,
+      gasPrice: 250000000000,
       // gas: 8500000,
       tags: ["test"]
     },

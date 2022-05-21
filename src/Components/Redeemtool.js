@@ -84,7 +84,7 @@ function Redeemtool() {
       getInfo();
       window.klaytn.on("accountsChanged", async function (accounts) {
         getInfo();
-        console.log("account change listen in bank");
+        console.log("account change listen in redeem");
       });
     }
   }, []);
@@ -167,7 +167,6 @@ function Redeemtool() {
   const RedeemDecimal = 1000;
 
   const SCAMPamt = (event) => {
-    console.log(CCR);
     const scamp = event.target.value;
     setUSDCInputAmount(
       Math.round(scamp * CCR * RedeemDecimal) / RedeemDecimal
@@ -238,9 +237,6 @@ function Redeemtool() {
     }
 
     else {
-      console.log(scampInputAmount)
-      console.log(campInputAmount)
-      console.log(usdcInputAmount)
       state.BankContract.methods
         .redeemFractionalSCAMP(caver.utils.toPeb(scampInputAmount * decimal, 'Ston'), caver.utils.toPeb(campInputAmount * decimal * (100 - slippage) / 100, "Ston"), caver.utils.toPeb(usdcInputAmount * decimal * (100 - slippage) / 100, "Ston"))
         .send({

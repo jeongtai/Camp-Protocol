@@ -76,7 +76,6 @@ function Buybacktool () {
         getInfo();
         window.klaytn.on("accountsChanged", async function (accounts) {
             getInfo();
-            console.log("account change listen in bank");
         });
     }
 

@@ -2,11 +2,9 @@ import react, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Caver from "caver-js";
 import styled from "styled-components";
-import { Routes, Route, Link, useMatch } from "react-router-dom";
+
+import InfoIcon from "./../../assets/InfoIcon.svg";
 import Converttool from "./../../Components/Converttool";
-
-import { eklipseLockABI } from "./../../abis/eklipse_lock.js";
-
 
 const Section = styled.div`
     // flex
@@ -42,21 +40,36 @@ const Content = styled.div`
 
 `;
 
+const InfoModal = styled.div`
+    position: absolute;
+    margin-left : 14%;
+    padding: 10px 15px;
 
-const caver = new Caver(window.klaytn)
+    width: 266px;
+
+    background-color:${(props) => props.theme.backDarkGray};
+    color : ${(props) => props.theme.textWhite};
+
+    border-radius: 15px;
+    z-index: 2;
+
+    font-size: 14px;
+    line-height: 18px;
+    
+`;
 
 const Convert = () => {
     // toggle true=mint false=redeem
     let state = useSelector((state) => state)
-    const [isNowMint, setIsNowMint] = useState(true);
     const [isCollect, setIsCollect] = useState(false);
     const [unclaimedUSDT, setUnclaimedUSDT] = useState()
     const [unclaimedCAMP, setUnclaimedCAMP] = useState()
+    const [isInfoOpen, setIsInfoOpen] = useState(false);
 
     async function getInfo() {
         try {
             setIsCollect(true);
-        } catch (e) { console.log(e) }
+        } catch (e) { console.log('set Collect Error', e) }
         try {
             state.BankContract.methods
                 .redeemCAMPBalances(window.klaytn.selectedAddress)
@@ -78,14 +91,25 @@ const Convert = () => {
         if (window.klaytn) {
             window.klaytn.on("accountsChanged", async function (accounts) {
                 getInfo();
-                console.log("account change listen in bank");
+                console.log("account change listen in convert");
             });
         }
     }, []);
 
     return (
         <Section>
-            <p className="sectionTitle">Convert EKL to kpEKL</p>
+            <p className="sectionTitle">Convert EKL to kpEKL
+                &nbsp;<img
+                    onMouseOver={() => setIsInfoOpen(true)}
+                    onMouseLeave={() => setIsInfoOpen(false)}
+                    src={InfoIcon}
+                />
+                {isInfoOpen ? <InfoModal>
+                    - If a user deposits EKL into K-Protocol, that EKL is locked forever on the platform as vEKL.<br/>
+                    - A tokenized version of vEKL, kpEKL, is returned to the user at a 1:1 rate.<br/>
+                    - Users can swap kpEKL on KLAYSwap.
+                    </InfoModal> : null}
+            </p>
             <Content>
                 <Converttool />
             </Content>

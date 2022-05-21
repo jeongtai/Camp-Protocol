@@ -49,8 +49,8 @@ const Info = styled.div`
         text-align: right;
         color: ${(props) => props.theme.textBlack};
     }
-
 `;
+
 const caver = new Caver(window.klaytn)
 
 function Converttool() {
@@ -120,7 +120,6 @@ function Converttool() {
           getInfo();
           window.klaytn.on("accountsChanged", async function (accounts) {
               getInfo();
-              console.log("account change");
           });
       }
     }, []);

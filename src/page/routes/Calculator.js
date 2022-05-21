@@ -111,7 +111,7 @@ const Calculator = () => {
               }
             })
         })
-    } catch (e) { console.log(e) }
+    } catch (e) { console.log('price call error ', e) }
   }
 
   // initialize hook----------------------------
@@ -120,7 +120,7 @@ const Calculator = () => {
     if (window.klaytn) {
       window.klaytn.on("accountsChanged", async function (accounts) {
         getInfo();
-        console.log("account change listen in bank");
+        console.log("account change listen in calc");
       });
     }
   }, []);

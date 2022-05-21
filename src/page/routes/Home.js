@@ -184,19 +184,19 @@ function Home() {
     const [isLoading, setIsLoading] = useState(false);
 
 
-    let Treasurybal = parseFloat(kpgTreasuryVal) + parseFloat(eklkpeklTreasuryVal) + parseFloat(threemoonTreasuryVal)
-    let tvl = Treasurybal + parseFloat(kpstaketvl) + parseFloat(kpLocktvl) + parseFloat(kpeklstaketvl)
+    let Treasurybal = kpgTreasuryVal + eklkpeklTreasuryVal + threemoonTreasuryVal
+    let tvl = Treasurybal + kpstaketvl + kpLocktvl + kpeklstaketvl
 
     const caver = new Caver(window.klaytn);
     const infos = [
-        { name: "Total Market Cap", amt: `${(kpgprice * kpgSupply + kpEKLSupply * kpEKLprice).toFixed(3)}` },
-        { name: "TVL", amt: `${tvl.toFixed(3)}` },
-        { name: "Treasury Balance", amt: `${Treasurybal.toFixed(3)}` },
-        { name: "Total EKL", amt: `${kpEKLSupply}` },
-        { name: "KPG Price", amt: `${kpgprice}` },
-        { name: "Backer Price per KPG", amt: `${(Treasurybal / kpgSupply).toPrecision(3)}` },
-        { name: "kpEKL Price", amt: `${kpEKLprice}` },
-        { name: "kpEKL/EKL Ratio", amt: `${kpEKLratio}` },
+        { name: "TVL", amt: `${tvl.toFixed(3)}` , prefix : '$'},
+        { name: "Treasury Balance", amt: `${Treasurybal.toFixed(3)}` , prefix : '$'},
+        { name: "Backer Price per KPG", amt: `${(Treasurybal / kpgSupply).toPrecision(3)}` , prefix : '$'},
+        { name: "kpEKL/EKL Ratio", amt: `${kpEKLratio}` , prefix : ''},
+        { name: "KPG Price", amt: `${kpgprice}` , prefix : '$'},       
+        { name: "KPG Supply", amt: `${kpgSupply}`, prefix : ''}, 
+        { name: "kpEKL Price", amt: `${kpEKLprice}` , prefix : '$'},
+        { name: "kpEKL Supply", amt: `${kpEKLSupply}` , prefix : ''},
     ];
 
     const Tokens = [
@@ -220,13 +220,13 @@ function Home() {
         try {
             await state.KPGContract.methods
                 .totalSupply()
-                .call((e, v) => setKpgSupply(caver.utils.fromPeb(v, "KLAY")));
+                .call((e, v) => setKpgSupply(parseFloat(caver.utils.fromPeb(v, "KLAY")).toFixed(3)))
         } catch { setKpgSupply(undefined) }
 
         try {
             await state.kpEKLContract.methods
                 .totalSupply()
-                .call((e, v) => setkpEKLSupply((v / 1e18).toFixed(3)))
+                .call((e, v) => setkpEKLSupply(parseFloat((v / 1e18)).toFixed(3)))
         } catch { setkpEKLSupply(undefined) }
 
         try {
@@ -237,11 +237,11 @@ function Home() {
 
                     await state.kpStakingContract.methods
                         .totalSupply()
-                        .call((e, bal) => setKPStakeTVL((bal * v / 1e24).toFixed(3)))
+                        .call((e, bal) => setKPStakeTVL(parseFloat((bal * v / 1e24).toFixed(3))))
 
                     await state.kpLockContract.methods
                         .totalSupply()
-                        .call((e, bal) => setKPLockTVL((bal * v / 1e24).toFixed(3)))
+                        .call((e, bal) => setKPLockTVL(parseFloat((bal * v / 1e24).toFixed(3))))
 
                 });
         } catch { setKPGPrice(undefined) }
@@ -253,7 +253,7 @@ function Home() {
                     await state.KPG_USDTLPContract.methods
                         .balanceOf(state.BondTreasuryContract._address)
                         .call((e, bal) => {
-                            setKPGTreasuryVal((price * bal / 1e24).toPrecision(3))
+                            setKPGTreasuryVal(parseFloat((price * bal / 1e24).toPrecision(3)))
                         })
                 });
         } catch { setKPGTreasuryVal(undefined) }
@@ -265,7 +265,7 @@ function Home() {
                     await state.EKLkpEKLLPContract.methods
                         .balanceOf(state.BondTreasuryContract._address)
                         .call((e, bal) => {
-                            setEklkpeklTreasuryVal((price * bal / 1e24).toPrecision(3))
+                            setEklkpeklTreasuryVal(parseFloat((price * bal / 1e24).toPrecision(3)))
                         })
                 });
         } catch { setEklkpeklTreasuryVal(undefined) }
@@ -280,7 +280,7 @@ function Home() {
                             await state.mock3MoonContract.methods
                                 .balanceOf(state.BondTreasuryContract._address)
                                 .call((e, depositval) => {
-                                    setThreemoonTreasuryVal((price * (parseFloat(undepositval) + parseFloat(depositval)) / 1e24).toFixed(3))
+                                    setThreemoonTreasuryVal(parseFloat((price * (parseFloat(undepositval) + parseFloat(depositval)) / 1e24).toFixed(3)))
                                 })
                         })
                 });
@@ -311,7 +311,7 @@ function Home() {
                             setkpEKLRatio((v[0] / v[1]).toFixed(3))
                             await state.kpEKLStakingContract.methods
                                 .totalSupply()
-                                .call((e, bal) => setkpEKLStakeTVl((bal * v[0] / v[1] * eklprice / 1e24).toFixed(3)))
+                                .call((e, bal) => setkpEKLStakeTVl(parseFloat((bal * v[0] / v[1] * eklprice / 1e24).toFixed(3))))
                         })
                 })
         } catch {
@@ -319,8 +319,6 @@ function Home() {
             setkpEklPrice(undefined)
             setkpEKLRatio(undefined)
         }
-
-
 
         // --------- bank 관련-------------
         // try {
@@ -340,7 +338,8 @@ function Home() {
         //         .getAssetPrice(state.CAMPContract._address)
         //         .call((e, v) => setPriceTarget(v / 1e6));
         // } catch { setPriceTarget(undefined) }
-
+        // ----------------------------------
+        
         setIsLoading(false);
     }
     useEffect(() => {
@@ -376,7 +375,7 @@ function Home() {
                                 <p className="value">
                                     {isNaN(info.amt)
                                         ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
-                                        : info.amt}
+                                        : `${info.prefix} ${info.amt}`}
                                 </p>
                             </OverviewItem>
                         ))}

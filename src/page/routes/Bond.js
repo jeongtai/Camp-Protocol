@@ -140,27 +140,27 @@ const Bond = () => {
 
     try {
       await state.KPG_USDTBondContract.methods
-          .assetPrice()
-          .call(async (e, price) => {
-              await state.KPG_USDTLPContract.methods
-                  .balanceOf(state.BondTreasuryContract._address)
-                  .call((e, bal) => {
-                    setKPGUSDTVal((price * bal / 1e24).toPrecision(3))
-                  })
-          });
-  } catch { setKPGUSDTVal(undefined) }
-
-  try {
-    await state.EKLkpEKLBondContract.methods
         .assetPrice()
         .call(async (e, price) => {
-            await state.EKLkpEKLLPContract.methods
-                .balanceOf(state.BondTreasuryContract._address)
-                .call((e, bal) => {
-                  setEKLkpEKLval((price * bal / 1e24).toPrecision(3))
-                })
+          await state.KPG_USDTLPContract.methods
+            .balanceOf(state.BondTreasuryContract._address)
+            .call((e, bal) => {
+              setKPGUSDTVal((price * bal / 1e24).toPrecision(3))
+            })
         });
-} catch { setEKLkpEKLval(undefined) }
+    } catch { setKPGUSDTVal(undefined) }
+
+    try {
+      await state.EKLkpEKLBondContract.methods
+        .assetPrice()
+        .call(async (e, price) => {
+          await state.EKLkpEKLLPContract.methods
+            .balanceOf(state.BondTreasuryContract._address)
+            .call((e, bal) => {
+              setEKLkpEKLval((price * bal / 1e24).toPrecision(3))
+            })
+        });
+    } catch { setEKLkpEKLval(undefined) }
   }
 
   // initialize hook----------------------------
@@ -168,17 +168,17 @@ const Bond = () => {
     getInfo();
     if (window.klaytn) {
       window.klaytn.on("accountsChanged", async function (accounts) {
-          getInfo();
+        getInfo();
         console.log(accounts, "account change listen in bond");
       });
     }
   }, []);
 
   const OverviewInfos = [
-    { name: "TVL", amt: `${tvl.toFixed(3)} $` },
-    { name: "Deposited Value", amt:  `${depositval.toFixed(3)} $` },
-    { name: "Not Deposited Yet", amt: `${undepositval.toFixed(3)} $` },
-    { name: "KPG Price", amt: `${kpgprice} $` },
+    { name: "TVL", amt: tvl.toFixed(3) },
+    { name: "Deposited Value", amt: depositval.toFixed(3) },
+    { name: "Not Deposited Yet", amt: undepositval.toFixed(3) },
+    { name: "KPG Price", amt: kpgprice },
   ]
 
   return (
@@ -190,9 +190,9 @@ const Bond = () => {
           <OverviewItem key={info.name}>
             <p className="name">{info.name}</p>
             <p className="value">
-              {info.amt === "undefiend"
+              {isNaN(info.amt)
                 ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
-                : info.amt}
+                : `$ ${info.amt}`}
             </p>
           </OverviewItem>
         ))}

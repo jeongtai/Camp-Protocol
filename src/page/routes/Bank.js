@@ -130,7 +130,7 @@ const Bank = () => {
     async function getInfo() {
         try {
             setIsCollect(true);
-        } catch (e) { console.log(e) }
+        } catch (e) { console.log('set Collect Error', e) }
         try {
             state.BankContract.methods
                 .redeemCAMPBalances(window.klaytn.selectedAddress)
@@ -153,7 +153,7 @@ const Bank = () => {
                     from: window.klaytn.selectedAddress,
                     gas: 3000000
                 })
-        } catch (e) { console.log(e) }
+        } catch (e) { console.log('set Collect Redemption Error', e) }
     }
 
     useEffect(() => {

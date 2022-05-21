@@ -88,14 +88,20 @@ function Mintingtool() {
 
     // initialize hook----------------------------
     useEffect(() => {
-        getInfo();
         if (window.klaytn) {
+            getInfo();
             window.klaytn.on("accountsChanged", async function (accounts) {
                 getInfo();
-                console.log("account change listen in bank");
+                console.log("account change listen in mint");
             });
         }
     }, []);
+
+    useEffect(() => {
+        if (USDCapprove === true && CAMPapprove === true) {
+            setIsApproved(true)
+        }
+    }, [USDCapprove, CAMPapprove])
 
     async function getInfo() {
         // SCAMP UserBalance, PRICE
@@ -212,7 +218,7 @@ function Mintingtool() {
     };
 
     const SCAMPamt = (event) => {
-        console.log(CCR);
+
         const scamp = event.target.value;
         setUSDCInputAmount(
             Math.round(scamp * CCR * mintDecimal) / mintDecimal
@@ -262,10 +268,6 @@ function Mintingtool() {
                     gas: "3000000",
                 });
         } else {
-            console.log(usdcInputAmount * decimal)
-            console.log(campInputAmount * decimal)
-            console.log(scampInputAmount * decimal * (100 - slippage) / 100)
-            console.log(slippage)
             state.BankContract.methods
                 .mintFractionalSCAMP(
                     caver.utils.toPeb(usdcInputAmount * decimal, "uKLAY"),
@@ -280,7 +282,6 @@ function Mintingtool() {
     }
 
     function onClick2() {
-        console.log(CAMPapprove, USDCapprove)
         if (CAMPapprove === false && USDCapprove === false) {
             state.CAMPContract.methods
                 .approve(
@@ -324,23 +325,6 @@ function Mintingtool() {
                 })
         }
     }
-    useEffect(() => {
-        if (USDCapprove === true && CAMPapprove === true) {
-            setIsApproved(true)
-        }
-    }, [USDCapprove, CAMPapprove])
-
-    // initialize hook----------------------------
-    useEffect(() => {
-        if (window.klaytn) {
-            getInfo();
-            window.klaytn.on("accountsChanged", async function (accounts) {
-                getInfo();
-                console.log("account change listen in bank");
-            });
-        }
-    }, []);
-
 
     const mintInfos = [
         { name: "Current Collateral Ratio", val: CCR, expression: `${CCR * 100} %`, },

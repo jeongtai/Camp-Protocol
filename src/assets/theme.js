@@ -31,8 +31,10 @@ export const theme = {
    hoverTextColor : "#262A31",
    selectedColor : "#FFEF98",
 
-   // page-header
-   headerHeight : "100px",
+   // responsive page width setting
+   firstResponsiveWidth : "900px",
+   secondResponsiveWidth : "600px",
+   // 
 }
 
 export default theme

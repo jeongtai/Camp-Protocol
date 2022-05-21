@@ -28,7 +28,7 @@ const Nav = styled.div`
     background-color: ${(props) => props.theme.navColor};
     border-right: 1px solid ${props => props.theme.borderColor};
 
-    @media (max-width: 500px) {
+    @media (max-width: ${(props) => props.theme.secondResponsiveWidth}) {
         visibility: hidden;
     }
 `;
@@ -105,7 +105,7 @@ function Navbar() {
         { name: "Dashboard", path: "/", logo: Dashboard },
         { name: "Convert", path: "/Convert", logo: Convert },
         { name: "Bond", path: "/Bond", logo: Bond },
-        { name: "Stake & Lock", path: "/Stake&Lock", logo: Stake },
+        { name: "Stake & Lock", path: "/StakeLock", logo: Stake },
     ];
 
     const soonMenus = [

@@ -23,9 +23,12 @@ import Landing from "./Landing";
 
 const Main = styled.div`
     padding : 0 15px 0 ${(props) => props.theme.navWidth+15}px;
+    @media (max-width: ${(props)=>props.theme.secondResponsiveWidth}) {
+        padding : 0 15px 0 15px;
+    }
     margin : 0px auto 50px auto;
     max-width: 1200px;
-    min-width: 800px;
+    min-width: 500px;
     display: flex;
     flex-direction: column;
 `;
@@ -39,10 +42,10 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/Convert" element={<Convert />} />
-                    <Route path="/Stake&Lock" element={<Stake />} />
-                    <Route path="/Stake&Lock/KPGLock" element={<KPGLock />} />
-                    <Route path="/Stake&Lock/KPGStakingtool" element={<KPGStakingtool />} />
-                    <Route path="/Stake&Lock/KPEKLStaketool" element={<KPEKLStaketool />} />                    
+                    <Route path="/StakeLock" element={<Stake />} />
+                    <Route path="/StakeLock/KPGLock" element={<KPGLock />} />
+                    <Route path="/StakeLock/KPGStakingtool" element={<KPGStakingtool />} />
+                    <Route path="/StakeLock/KPEKLStaketool" element={<KPEKLStaketool />} />                    
                     <Route path="/Bond" element={<Bond />} />
                     <Route path="/Bond/*" element={<Bondingtool />} />
                     <Route path="/Bank" element={<Bank />} />

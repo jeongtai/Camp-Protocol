@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import Caver from "caver-js";
 import { EKLTokenAddress } from "../../const/Contract";
 import styled from "styled-components";
-import StakeTab from "./Tab/StakeTab";
+import InputForm from "../../assets/InputForm"
 
 const Section = styled.div`
     // flex
@@ -31,7 +31,6 @@ const Section = styled.div`
         margin-bottom: 24px;
     }
 `;
-
 
 const StakeInfo = styled.div`
     padding: 10px;
@@ -64,25 +63,25 @@ const Tabs = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     margin: 10px 0px;
+    padding : 3px;
     gap: 10px;
+    background-color: ${(props) => props.theme.btnGray};
+    border-radius: 6px;
 `;
 
 const Tab = styled.div`
     text-align: center;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 400;
-
-    padding: 0px 0px 10px 0px;
-
+    padding : 6px 0;
+    border-radius: 6px;
     &:hover {
         cursor: pointer;
     }
-
+    background-color: ${(props) =>
+        props.isActive ? props.theme.btnWhite : null};
     color: ${(props) =>
         props.isActive ? props.theme.textBlack : props.theme.textGray};
-
-    border-bottom: ${(props) =>
-        props.isActive ? "2px solid" + props.theme.btnBlue : null};
 `;
 
 
@@ -100,39 +99,18 @@ function KPEKLStaketool() {
 
     let state = useSelector((state) => state)
     const [totalStake, setTotalStake] = useState()
-    const [kpEKLbal, setkpEKLBal] = useState()
-    const [isapproved, setIsApproved] = useState(false)
-    
-    const [inputbal, setInputbal] = useState()
+
+    const [isApproved, setIsApproved] = useState(false)
+    const [kpEKLbalance, setkpEKLBalance] = useState()
+    const [inputformValue, setinputformValue] = useState()
     const [kpEKLprice, setkpEKLprice] = useState()
-    const [stakedbal, setStakedbal] = useState()
+    const [stakedKPEKLBalance, setStakedKPEKLBalance] = useState()
     const [earn3moon, setEarn3Moon] = useState()
     const [earnEKL, setEarnEKL] = useState()
     const [nowTab, setNowTab] = useState("Stake")
 
     async function getInfo() {
-        try {
-            await state.kpEKLStakingContract.methods
-                .totalSupply()
-                .call((e, v) => setTotalStake((v / 1e18).toFixed(2)));
-        } catch (e) { setTotalStake(undefined) }
-
-        try {
-            await state.kpEKLContract.methods
-                .balanceOf(window.klaytn.selectedAddress)
-                .call((e, v) => setkpEKLBal((v / 1e18).toFixed(2)));
-        } catch (e) { setkpEKLBal(undefined) }
-
-        try {
-            await state.kpEKLContract.methods
-                .allowance(window.klaytn.selectedAddress, state.kpEKLStakingContract._address)
-                .call((e, v) => {
-                    if (v > 1e18) {
-                        setIsApproved(true)
-                    }
-                })
-        } catch (e) { setIsApproved(undefined) }
-
+        // kpEKL StakeInfo
         try {
             await state.EKLLPContract.methods
                 .estimatePos(EKLTokenAddress, caver.utils.toPeb("1", "KLAY"))
@@ -142,8 +120,8 @@ function KPEKLStaketool() {
         try {
             await state.kpEKLStakingContract.methods
                 .balanceOf(window.klaytn.selectedAddress)
-                .call((e, v) => setStakedbal((v / 1e18).toFixed(2)));
-        } catch (e) { setStakedbal(undefined) }
+                .call((e, v) => setStakedKPEKLBalance((v / 1e18).toFixed(2)));
+        } catch (e) { setStakedKPEKLBalance(undefined) }
 
         try {
             await state.kpEKLStakingContract.methods
@@ -156,6 +134,27 @@ function KPEKLStaketool() {
                 .earned(window.klaytn.selectedAddress)
                 .call((e, v) => setEarn3Moon((v / 1e18).toFixed(2)));
         } catch (e) { setEarn3Moon(undefined) }
+
+
+        try {
+            await state.kpEKLStakingContract.methods
+                .totalSupply()
+                .call((e, v) => setTotalStake((v / 1e18).toFixed(2)));
+        } catch (e) { setTotalStake(undefined) }
+
+        try {
+            await state.kpEKLContract.methods
+                .allowance(window.klaytn.selectedAddress, state.kpEKLStakingContract._address)
+                .call((e, v) => {
+                    if (v > 1e18) { setIsApproved(true) }
+                })
+        } catch (e) { setIsApproved(false) }
+
+        try {
+            await state.kpEKLContract.methods
+                .balanceOf(window.klaytn.selectedAddress)
+                .call((e, v) => setkpEKLBalance((v / 1e18).toFixed(2)));
+        } catch (e) { setkpEKLBalance(undefined) }
     }
 
     useEffect(() => {
@@ -167,9 +166,7 @@ function KPEKLStaketool() {
         }
     }, []);
 
-
-
-    function Approve() {
+    function kpEKLApprove() {
         state.kpEKLContract.methods.approve(
             state.kpEKLStakingContract._address,
             caver.utils.toPeb("10000000", "KLAY")
@@ -179,24 +176,34 @@ function KPEKLStaketool() {
         })
     }
 
-
-
-    function Unstake() {
-        state.kpEKLStakingContract.methods.withdraw(
-            caver.utils.toPeb(inputbal, "KLAY"), true
+    function kpEKLStake() {
+        state.kpEKLStakingContract.methods.stake(
+            caver.utils.toPeb(inputformValue, "KLAY")
         ).send({
             from: window.klaytn.selectedAddress,
             gas: 3000000
         })
     }
 
-    function Claim() {
+    function kpEKLUnstake() {
+        state.kpEKLStakingContract.methods.withdraw(
+            caver.utils.toPeb(inputformValue, "KLAY"), true
+        ).send({
+            from: window.klaytn.selectedAddress,
+            gas: 3000000
+        })
+    }
+
+    function kpEKLClaim() {
         state.kpEKLStakingContract.methods.getkpEKLReward()
             .send({
                 from: window.klaytn.selectedAddress,
                 gas: 3000000
             })
+    }
 
+    const onChange = (event) => {
+        setinputformValue(event.target.value)
     }
 
     return (
@@ -209,7 +216,7 @@ function KPEKLStaketool() {
                 </Info>
                 <Info>
                     <p className="infoName">Staked kpEKL</p>
-                    <p>{stakedbal}</p>
+                    <p>{stakedKPEKLBalance}</p>
                 </Info>
                 <Info>
                     <p className="infoName">Rewards</p>
@@ -233,12 +240,61 @@ function KPEKLStaketool() {
                 </Tab>
             </Tabs>
             <Content>
-                {nowTab === "Stake" ? <StakeTab/> : null}
+
+                {nowTab === "Stake" &&
+                    <>
+                        <InputForm
+                            token="kpEKL"
+                            type="number"
+                            onChange={onChange}
+                            balance={kpEKLbalance}
+                            value={inputformValue}
+                            isVisible={true}
+                            haveMax={true}
+                            haveBal={true}
+                            setValueFn={setinputformValue}
+                            price={kpEKLprice}
+                        />
+
+                        {isApproved ?
+                            <Button text="Stake" onClick={kpEKLStake} />
+                            : <Button text="Approve" onClick={kpEKLApprove} />
+                        }
+                    </>
+                }
+
+                {nowTab === "UnStake" &&
+                    <>
+                        <InputForm
+                            token="kpEKL"
+                            type="number"
+                            onChange={onChange}
+                            balance={stakedKPEKLBalance}
+                            value={inputformValue}
+                            isVisible={true}
+                            haveMax={true}
+                            haveBal={true}
+                            setValueFn={setinputformValue}
+                            price={kpEKLprice}
+                        />
+
+                        <Button text="Unstake" onClick={kpEKLUnstake} />
+                    </>
+                }
+
+                {nowTab === "Claim" &&
+                    <>
+                        <p className="infoName">Rewards</p>
+                        <p>{earnEKL} EKL</p>
+                        <p>{earn3moon} 3Moon</p>
+                        <Button text="Claim" onClick={kpEKLClaim} />
+                    </>}
             </Content>
 
-            <Button text="Unstake!" onClick={Unstake} />
-            <Button text="Claim" onClick={Claim} />
+
+
         </Section>
     )
 }
+
 export default KPEKLStaketool;

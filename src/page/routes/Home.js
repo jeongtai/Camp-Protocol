@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import TokenLogo from "../../assets/TokenLogo";
 import LoadingSVG from "../../assets/LoadingSVG.js";
-import ApexCharts from "react-apexcharts";
 import { EKLTokenAddress } from "../../const/Contract";
 
 const Dashboard = styled.div`
@@ -14,9 +13,11 @@ const Dashboard = styled.div`
     // grid
     display: grid;
     grid-template-columns: 50% 50%;
+    
     & .overview{
         grid-column: 1/3;
     }
+
 `;
 
 const Overview = styled.div`
@@ -70,9 +71,12 @@ const TokensList = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
     width : 200%;
-    
+
+    @media (max-width: ${(props)=>props.theme.firstResponsiveWidth}) {
+        flex-direction: column;
+    }
+
 `;
 
 const TokenItem = styled.div`
@@ -81,6 +85,10 @@ const TokenItem = styled.div`
     flex-direction: column;
 
     margin : 10px 10px 0 10px;
+    width : 50%;
+    @media (max-width: ${(props)=>props.theme.firstResponsiveWidth}) {
+        width : 100%;
+    }
 
     background-color: white;
     border-radius: 15px;
@@ -113,7 +121,7 @@ const TokenItemInfo = styled.div`
 `;
 
 const AddWallet = styled.button`
-    width: 186px;
+    width: 50%;
     height: 34px;
     background-color: ${(props) => props.theme.btnGray};
     border: 0;
@@ -122,7 +130,7 @@ const AddWallet = styled.button`
 `;
 
 const GetToken = styled.button`
-    width: 186px;
+    width: 50%;
     height: 34px;
     background-color: ${(props) => props.theme.btnBlack};
     border: 0;

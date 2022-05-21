@@ -36,9 +36,11 @@ const Main = styled.div`
 function App() {
     const [networkVersion, setNetworkVersion] = useState();
     useEffect(() => {
-        {window.klaytn.networkVersion === 1001 && setNetworkVersion(1001)}
-        {window.klaytn.networkVersion === 8217 && setNetworkVersion(8217)}
-        window.klaytn.on("networkChanged", async function (network) { setNetworkVersion(network) })
+        if (window.klaytn) {
+            { window.klaytn.networkVersion === 1001 && setNetworkVersion(1001) }
+            { window.klaytn.networkVersion === 8217 && setNetworkVersion(8217) }
+            window.klaytn.on("networkChanged", async function (network) { setNetworkVersion(network) })
+        }
     }, []);
 
     return (

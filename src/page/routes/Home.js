@@ -73,7 +73,7 @@ const TokensList = styled.div`
     justify-content: space-between;
     width : 200%;
 
-    @media (max-width: ${(props)=>props.theme.firstResponsiveWidth}) {
+    @media (max-width: ${(props) => props.theme.firstResponsiveWidth}) {
         flex-direction: column;
     }
 
@@ -86,7 +86,7 @@ const TokenItem = styled.div`
 
     margin : 10px 10px 0 10px;
     width : 50%;
-    @media (max-width: ${(props)=>props.theme.firstResponsiveWidth}) {
+    @media (max-width: ${(props) => props.theme.firstResponsiveWidth}) {
         width : 100%;
     }
 
@@ -127,6 +127,9 @@ const AddWallet = styled.button`
     border: 0;
     border-radius: 6px;
     margin-right: 16px;
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 const GetToken = styled.button`
@@ -136,6 +139,9 @@ const GetToken = styled.button`
     border: 0;
     border-radius: 6px;
     color: white;
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 function addToken(tokenaddr, url, name) {
@@ -172,18 +178,18 @@ function Home() {
     const [eklkpeklTreasuryVal, setEklkpeklTreasuryVal] = useState()
     const [threemoonTreasuryVal, setThreemoonTreasuryVal] = useState()
     const [depositThreemoonVal, setDepositThreemoonVal] = useState()
-    const [kpstaketvl, setKPStakeTVL] =useState()
+    const [kpstaketvl, setKPStakeTVL] = useState()
     const [kpLocktvl, setKPLockTVL] = useState()
     const [kpeklstaketvl, setkpEKLStakeTVl] = useState()
     const [isLoading, setIsLoading] = useState(false);
 
 
     let Treasurybal = parseFloat(kpgTreasuryVal) + parseFloat(eklkpeklTreasuryVal) + parseFloat(threemoonTreasuryVal)
-    let tvl = Treasurybal +parseFloat(kpstaketvl) + parseFloat(kpLocktvl) + parseFloat(kpeklstaketvl)
+    let tvl = Treasurybal + parseFloat(kpstaketvl) + parseFloat(kpLocktvl) + parseFloat(kpeklstaketvl)
 
     const caver = new Caver(window.klaytn);
     const infos = [
-        { name: "Total Market Cap", amt: `${(kpgprice *kpgSupply + kpEKLSupply * kpEKLprice).toFixed(3)}` },
+        { name: "Total Market Cap", amt: `${(kpgprice * kpgSupply + kpEKLSupply * kpEKLprice).toFixed(3)}` },
         { name: "TVL", amt: `${tvl.toFixed(3)}` },
         { name: "Treasury Balance", amt: `${Treasurybal.toFixed(3)}` },
         { name: "Total EKL", amt: `${kpEKLSupply}` },
@@ -206,7 +212,7 @@ function Home() {
             price: kpEKLprice,
             supply: kpEKLSupply,
             Contract: state.kpEKLContract._address,
-            logo: "https://kprotocol-asset.s3.ap-northeast-2.amazonaws.com/KUSD_TOKEN.png",
+            logo: "https://kprotocol-asset.s3.ap-northeast-2.amazonaws.com/kpEKL.png",
         },
     ];
 
@@ -227,15 +233,15 @@ function Home() {
             await state.KPG_USDTLPContract.methods
                 .estimatePos(state.KPGContract._address, caver.utils.toPeb("1", "KLAY"))
                 .call(async (e, v) => {
-                  setKPGPrice((v / 1e6).toFixed(3))
+                    setKPGPrice((v / 1e6).toFixed(3))
 
-                  await state.kpStakingContract.methods
-                  .totalSupply()
-                  .call((e, bal) => setKPStakeTVL((bal * v /1e24).toFixed(3)))
+                    await state.kpStakingContract.methods
+                        .totalSupply()
+                        .call((e, bal) => setKPStakeTVL((bal * v / 1e24).toFixed(3)))
 
-                  await state.kpLockContract.methods
-                  .totalSupply()
-                  .call((e, bal) => setKPLockTVL((bal * v /1e24).toFixed(3)))
+                    await state.kpLockContract.methods
+                        .totalSupply()
+                        .call((e, bal) => setKPLockTVL((bal * v / 1e24).toFixed(3)))
 
                 });
         } catch { setKPGPrice(undefined) }
@@ -272,10 +278,10 @@ function Home() {
                         .balanceOf(state.BondTreasuryContract._address)
                         .call(async (e, undepositval) => {
                             await state.mock3MoonContract.methods
-                            .balanceOf(state.BondTreasuryContract._address)
-                            .call((e, depositval) => {
-                              setThreemoonTreasuryVal((price * (parseFloat(undepositval) + parseFloat(depositval)) / 1e24).toFixed(3))
-                            })
+                                .balanceOf(state.BondTreasuryContract._address)
+                                .call((e, depositval) => {
+                                    setThreemoonTreasuryVal((price * (parseFloat(undepositval) + parseFloat(depositval)) / 1e24).toFixed(3))
+                                })
                         })
                 });
         } catch { setThreemoonTreasuryVal(undefined) }
@@ -297,16 +303,16 @@ function Home() {
             await state.EKLLPContract.methods
                 .estimatePos(EKLTokenAddress, caver.utils.toPeb("1", "KLAY"))
                 .call(async (e, eklprice) => {
-                  setEKLprice((eklprice / 1e6).toPrecision(3))
-                  await state.EKLkpEKLLPContract.methods
-                  .getCurrentPool()
-                  .call(async(e, v) => {
-                    setkpEklPrice((v[0] / v[1] * eklprice /1e6).toFixed(3))
-                    setkpEKLRatio((v[0] / v[1]).toFixed(3))
-                    await state.kpEKLStakingContract.methods
-                    .totalSupply()
-                    .call((e, bal) => setkpEKLStakeTVl((bal * v[0] / v[1] * eklprice /1e24).toFixed(3)))
-                  })
+                    setEKLprice((eklprice / 1e6).toPrecision(3))
+                    await state.EKLkpEKLLPContract.methods
+                        .getCurrentPool()
+                        .call(async (e, v) => {
+                            setkpEklPrice((v[0] / v[1] * eklprice / 1e6).toFixed(3))
+                            setkpEKLRatio((v[0] / v[1]).toFixed(3))
+                            await state.kpEKLStakingContract.methods
+                                .totalSupply()
+                                .call((e, bal) => setkpEKLStakeTVl((bal * v[0] / v[1] * eklprice / 1e24).toFixed(3)))
+                        })
                 })
         } catch {
             setEKLprice(undefined)
@@ -413,7 +419,11 @@ function Home() {
                                     >
                                         Add Wallet
                                     </AddWallet>
-                                    <GetToken>Get {token.name}</GetToken>
+                                    <GetToken onClick={()=>window.open('https://klayswap.com/exchange/swap')}>
+                                        Get {token.name}
+                                    </GetToken>
+                                    
+
                                 </TokenItemInfo>
                             </TokenItem>
                         ))}

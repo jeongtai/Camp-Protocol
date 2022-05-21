@@ -148,7 +148,6 @@ const Stake = () => {
   let totalclaimable = kpstakeclaimable + kpeklstakeclaimable + kpLockclaimable
 
   async function getInfo() {
-
     try {
       await state.KPG_USDTLPContract.methods
         .estimatePos(state.KPGContract._address, caver.utils.toPeb("1", "KLAY"))
@@ -310,7 +309,7 @@ const Stake = () => {
       </Section>
 
       <Section className="wide">
-        <p className="Title">stake</p>
+        <p className="Title">Stake</p>
         <Header>
           <p>Name</p>
           <p>TVL</p>
@@ -334,7 +333,7 @@ const Stake = () => {
           <div> {kpstakebal} KP</div>
           <div>$ {kpstakeclaimable.toFixed(3)}</div>
           <div>
-            <Link to={"/StakeLock/KPGStakingtool"}><img src={ArrowIcon} /></Link>
+            <Link to={"/StakeLock/KPGStake"}><img src={ArrowIcon} /></Link>
           </div>
         </Item>
 
@@ -352,7 +351,7 @@ const Stake = () => {
           <div> {kpeklStakeApr.toFixed(3)} %</div>
           <div> {kpeklstakebal} kpEKL</div>
           <div>$ {kpeklstakeclaimable.toFixed(3)}</div>
-          <div><Link to={"/StakeLock/KPEKLStaketool"}> <img src={ArrowIcon} /></Link> </div>
+          <div><Link to={"/StakeLock/kpEKLStake"}> <img src={ArrowIcon} /></Link> </div>
         </Item>
       </Section>
 

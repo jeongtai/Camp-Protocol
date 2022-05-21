@@ -6,6 +6,7 @@ import Caver from "caver-js";
 import { EKLTokenAddress } from "../../const/Contract";
 import styled from "styled-components";
 import InputForm from "../../assets/InputForm"
+import TokenLogo from "../../assets/TokenLogo";
 
 const Section = styled.div`
     // flex
@@ -84,7 +85,6 @@ const Tab = styled.div`
         props.isActive ? props.theme.textBlack : props.theme.textGray};
 `;
 
-
 const Content = styled.div`
     flex-direction: column;
     display: flex;
@@ -92,10 +92,24 @@ const Content = styled.div`
     align-content: center;
 `;
 
+const ClaimInfo = styled(StakeInfo)`
+    margin : 32px 0px;
+    padding : 20px;
+    background-color: ${(props) => props.theme.btnGray};
+    color: ${(props) => props.theme.textBlack};
+
+    & .rewardsInfo{
+        margin-top : 10px;
+        display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: flex-start;
+    }
+`
 
 const caver = new Caver(window.klaytn)
 
-function KPEKLStaketool() {
+function KPEKLStakingtool() {
 
     let state = useSelector((state) => state)
     const [totalStake, setTotalStake] = useState()
@@ -105,7 +119,7 @@ function KPEKLStaketool() {
     const [inputformValue, setinputformValue] = useState()
     const [kpEKLprice, setkpEKLprice] = useState()
     const [stakedKPEKLBalance, setStakedKPEKLBalance] = useState()
-    const [earn3moon, setEarn3Moon] = useState()
+    const [earn3Moon, setEarn3Moon] = useState()
     const [earnEKL, setEarnEKL] = useState()
     const [nowTab, setNowTab] = useState("Stake")
 
@@ -166,6 +180,10 @@ function KPEKLStaketool() {
         }
     }, []);
 
+    const onChange = (event) => {
+        setinputformValue(event.target.value)
+    }
+
     function kpEKLApprove() {
         state.kpEKLContract.methods.approve(
             state.kpEKLStakingContract._address,
@@ -194,7 +212,7 @@ function KPEKLStaketool() {
         })
     }
 
-    function kpEKLClaim() {
+    function kpEKLStakingRewardClaim() {
         state.kpEKLStakingContract.methods.getkpEKLReward()
             .send({
                 from: window.klaytn.selectedAddress,
@@ -202,9 +220,7 @@ function KPEKLStaketool() {
             })
     }
 
-    const onChange = (event) => {
-        setinputformValue(event.target.value)
-    }
+
 
     return (
         <Section>
@@ -224,7 +240,7 @@ function KPEKLStaketool() {
                 </Info>
                 <Info>
                     <p className="infoName"></p>
-                    <p>{earn3moon} 3Moon</p>
+                    <p>{earn3Moon} 3Moon</p>
                 </Info>
             </StakeInfo>
 
@@ -284,17 +300,20 @@ function KPEKLStaketool() {
 
                 {nowTab === "Claim" &&
                     <>
-                        <p className="infoName">Rewards</p>
-                        <p>{earnEKL} EKL</p>
-                        <p>{earn3moon} 3Moon</p>
-                        <Button text="Claim" onClick={kpEKLClaim} />
+                        <ClaimInfo>
+                            Rewards
+                            <p className="rewardsInfo">
+                                <TokenLogo name={"kpEKL"} />
+                                <p>{earnEKL} kpEKL</p>
+                                <TokenLogo name={"3Moon LP"} />
+                                <p>{earn3Moon} 3Moon LP</p>
+                            </p>
+                        </ClaimInfo>
+                        <Button text="Claim" onClick={kpEKLStakingRewardClaim} />
                     </>}
             </Content>
-
-
-
         </Section>
     )
 }
 
-export default KPEKLStaketool;
+export default KPEKLStakingtool;

@@ -128,7 +128,7 @@ function InputForm(props) {
                 <p>
                     $ {isNaN(parseFloat(props.price) * parseFloat(props.value))
                         ? null
-                        : parseFloat(props.price) * parseFloat(props.value)}
+                        : (parseFloat(props.price)*parseFloat(props.value)).toFixed(4)}
                 </p>
 
                 {props.haveBal ? <p className="inputform-balance">

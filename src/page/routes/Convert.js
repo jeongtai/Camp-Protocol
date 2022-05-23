@@ -81,7 +81,6 @@ const Convert = () => {
                 .redeemCollateralBalances(window.klaytn.selectedAddress)
                 .call((e, v) => setUnclaimedUSDT((v / 1e18).toFixed(2)))
         } catch (e) { setUnclaimedCAMP(undefined) }
-
     }
 
 

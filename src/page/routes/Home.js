@@ -189,9 +189,9 @@ function Home() {
 
     const caver = new Caver(window.klaytn);
     const infos = [
-        { name: "TVL", amt: `${tvl.toFixed(3)}` , prefix : '$'},
-        { name: "Treasury Balance", amt: `${Treasurybal.toFixed(3)}` , prefix : '$'},
-        { name: "Backer Price per KPG", amt: `${(Treasurybal / kpgSupply).toPrecision(3)}` , prefix : '$'},
+        { name: "K-Protocol TVL", amt: `${tvl.toFixed(3)}` , prefix : '$'},
+        { name: "Bond Treasury TVL", amt: `${Treasurybal.toFixed(3)}` , prefix : '$'},
+        { name: "Staked/Locked TVL", amt: `${(kpstaketvl + kpLocktvl + kpeklstaketvl).toPrecision(3)}` , prefix : '$'},
         { name: "kpEKL/EKL Ratio", amt: `${kpEKLratio}` , prefix : ''},
         { name: "KPG Price", amt: `${kpgprice}` , prefix : '$'},       
         { name: "KPG Supply", amt: `${kpgSupply}`, prefix : ''}, 

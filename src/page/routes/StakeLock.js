@@ -129,7 +129,7 @@ const Stake = () => {
   const [kpgStakekpEKLweekreward, setKpgStakekpEKLweekreward] = useState()
 
   const [kpEKLStakeEKLweekreward, setkpEKLStakeEKLweekreward] = useState()
-  const [kpeklStakeFeereward, setkpEKLStakeFeeweekreward] = useState()
+  const [kpEKLStakeFeeweekreward, setkpEKLStakeFeeweekreward] = useState()
 
   const [kpStakeearnedkpEKL, setKPStakeEarnedkpEKL] = useState()
   const [kpEKLStakeearnedEKL, setKPEKLStakeEarnedEKL] = useState()
@@ -152,7 +152,8 @@ const Stake = () => {
   console.log(kpeklStakeFeereward)
   // kpEKL STAKE APR
   let kpeklStakeRewardEklApr = parseFloat(kpEKLStakeEKLweekreward) * 3600 * 24 * 365 * eklprice / kpeklstaketvl * 100
-  let kpeklStakeReward3MoonApr = parseFloat(kpeklStakeFeereward) * 3600 * 24 * 365 * ekl3moonprice / kpeklstaketvl * 100
+  let kpeklStakeReward3MoonApr = parseFloat(kpEKLStakeFeeweekreward) * 3600 * 24 * 365 * ekl3moonprice / kpeklstaketvl * 100
+  
   let kpeklStakeApr = kpeklStakeRewardEklApr + kpeklStakeReward3MoonApr;
 
   // KPG Lock APR
@@ -275,6 +276,15 @@ const Stake = () => {
         .call((e, v) => setkpEKLStakeFeeweekreward((v / 1e18).toPrecision(3)));
     } catch { setkpEKLStakeFeeweekreward(undefined) }
 
+    /****** */
+
+    try {
+      await state.kpEKLStakeFeeContract.methods
+        .rewardRate()
+        .call((e, v) => setkpEKLStakeFeeweekreward((v / 1e18).toPrecision(3)));
+    } catch { setkpEKLStakeFeeweekreward(undefined) }
+
+    /***** */
     try {
       await state.kpStakingContract.methods
         .earned(window.klaytn.selectedAddress)

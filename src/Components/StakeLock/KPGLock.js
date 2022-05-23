@@ -212,8 +212,8 @@ function KPGLock() {
     }
 
     function KPGUnlock() {
-        state.kpLockContract.methods.withdraw(
-            caver.utils.toPeb(inputformValue, "KLAY"), true
+        state.kpLockContract.methods.processExpiredLocks(
+            false
         ).send({
             from: window.klaytn.selectedAddress,
             gas: 3000000

@@ -94,7 +94,7 @@ const Content = styled.div`
     align-content: center;
 `;
 
-const ClaimInfo = styled(StakeInfo)`
+const DetailTabInfo = styled(StakeInfo)`
     margin : 32px 0px;
     padding : 20px;
     background-color: ${(props) => props.theme.btnGray};
@@ -119,10 +119,10 @@ function KPGStakingtool() {
     const [kpgBalance, setKpgBalance] = useState()
     const [kpgPrice, setKpgPrice] = useState()
     const [stakedKPGBalance, setStakedKPGBalance] = useState()
-    const [earnEKL, setEarnEKL] = useState()
+    const [earnedEKL, setEarnedEKL] = useState()
     const [isApproved, setIsApproved] = useState(false)
     const [inputformValue, setInputformValue] = useState()
-
+    const [earnedkpEKL, setEarnedkpEKL] = useState()
     const [nowTab, setNowTab] = useState("Stake")
 
     async function getInfo() {
@@ -163,8 +163,15 @@ function KPGStakingtool() {
         try {
             await state.kpStakingContract.methods
                 .earned(window.klaytn.selectedAddress)
-                .call((e, v) => setEarnEKL((v / 1e18).toFixed(2)));
-        } catch (e) { setEarnEKL(undefined) }
+                .call((e, v) => setEarnedEKL((v / 1e18).toFixed(2)));
+        } catch (e) { setEarnedEKL(undefined) }
+
+        try {
+            await state.kpStakingContract.methods
+              .earned(window.klaytn.selectedAddress)
+              .call((e, v) => setEarnedkpEKL((v / 1e18).toPrecision(3)))
+        } catch (e) { setEarnedkpEKL(undefined) }
+
     }
 
     useEffect(() => {
@@ -235,7 +242,7 @@ function KPGStakingtool() {
                 </Info>
                 <Info>
                     <p className="infoName">Rewards</p>
-                    <p>{earnEKL} EKL</p>
+                    <p>{earnedEKL} EKL</p>
                 </Info>
             </StakeInfo>
 
@@ -295,13 +302,13 @@ function KPGStakingtool() {
 
                 {nowTab === "Claim" &&
                     <>
-                        <ClaimInfo>
+                        <DetailTabInfo>
                             Rewards
                             <p className="rewardsInfo">
-                                <TokenLogo name={"EKL"} />
-                                <p>{earnEKL} EKL</p>
+                                <TokenLogo name={"kpEKL"} />
+                                <p>{earnedkpEKL} kpEKL</p>
                             </p>
-                        </ClaimInfo>
+                        </DetailTabInfo>
                         <Button text="Claim" onClick={KPGStakingRewardClaim} />
                     </>
                 }

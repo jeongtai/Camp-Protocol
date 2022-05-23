@@ -12,6 +12,13 @@ import { timeConversion } from "../const/service.js"
 import LoadingSVG from "../assets/LoadingSVG.js";
 import BigNumber from "bignumber.js";
 
+const BondingtoolSection = styled.div`
+        position : absolute;
+    z-index : 1;
+    left : 40%;
+    top : 20%;
+`;
+
 const BondingContent = styled.div`
     visibility: ${props => props.isToolOpen ? "visible" : "hidden"};
 
@@ -19,12 +26,6 @@ const BondingContent = styled.div`
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    
-    position : absolute;
-    z-index : 1;
-    left : 40%;
-    top : 40%;
-
 
     padding: 24px;
     margin: 0 auto;
@@ -49,13 +50,27 @@ const BondingContent = styled.div`
 
 `;
 
-const InfoContent = styled(BondingContent)`
-    top : 20%;
-`;
+
+const BondingtoolHeaderInfo = styled.div`
+    border-radius: 15px;
+
+    margin : 32px 0px;
+    padding : 20px;
+    background-color: ${(props) => props.theme.btnGray};
+    color: ${(props) => props.theme.textBlack};
+
+    & .rewardsInfo{
+        margin-top : 10px;
+        display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: flex-start;
+    }
+`
+
 
 const BondInfos = styled.div`
     padding: 10px;
-
     background-color: ${(props) => props.theme.backBlue};
     border-radius: 15px;
 `;
@@ -69,7 +84,7 @@ const Approve = styled.div`
     line-height: 18px;
 `;
 
-const Info = styled.div`
+const DetailInfo = styled.div`
     margin: 3px;
     padding: 6px;
     display: flex;
@@ -101,13 +116,13 @@ function Bondingtool(lpInfosProps) {
   const [lpamount, setLPAmount] = useState()
   const [lpbal, setLPbal] = useState()
   const [bondprice, setBondPrice] = useState()
-  const [assetprice, setAssetPrice] = useState()
-  const [pricerate, setPriceRate] = useState()
-  const [pendingCAMP, setPendingCamp] = useState()
+  const [assetPrice, setAssetPrice] = useState()
+  const [priceDiscountRate, setPriceDiscountRate] = useState()
+  const [pendingKPG, setPendingKPG] = useState()
   const [percentBond, setPecentBond] = useState()
-  const [campamt, setCAMPamt] = useState()
-  const [vestingterm, setVestingTerm] = useState()
-  const [maxdebt, setMaxDebt] = useState()
+  const [kpgAmt, setkpgAmt] = useState()
+  const [vestingTerm, setVestingTerm] = useState()
+  const [maxDebt, setMaxDebt] = useState()
   const [autostake, setAutoStake] = useState(false)
   const [remaintime, setRemainTime] = useState()
   const [remaincamp, setRemainCamp] = useState()
@@ -134,14 +149,14 @@ function Bondingtool(lpInfosProps) {
     } catch (e) { setAssetPrice(undefined) }
 
     try {
-      await bondContract.methods.priceRate()
-        .call((e, v) => setPriceRate(((1 - v / 1e9) * 100).toFixed(2)))
-    } catch (e) { setPriceRate(undefined) }
+      await bondContract.methods.priceDiscountRate()
+        .call((e, v) => setPriceDiscountRate(((1 - v / 1e9) * 100).toFixed(2)))
+    } catch (e) { setPriceDiscountRate(undefined) }
 
     try {
       await bondContract.methods.pendingPayoutFor(window.klaytn.selectedAddress)
-        .call((e, v) => setPendingCamp((v / 1e18).toFixed(4)))
-    } catch (e) { setPendingCamp(undefined) }
+        .call((e, v) => setPendingKPG((v / 1e18).toFixed(4)))
+    } catch (e) { setPendingKPG(undefined) }
     try {
       await bondContract.methods.percentVestedFor(window.klaytn.selectedAddress)
         .call((e, v) => {
@@ -151,17 +166,17 @@ function Bondingtool(lpInfosProps) {
             setPecentBond(v / 100)
           }
         })
-    } catch (e) { setPendingCamp(undefined) }
+    } catch (e) { setPendingKPG(undefined) }
 
     try {
       await bondContract.methods.terms()
         .call(async (e, v) => {
           setVestingTerm(v[1])
           await state.KPGContract.methods
-          .totalSupply()
-          .call((e,sup) => {
-            setMaxDebt((v[3] * sup / 1e24).toPrecision(3))
-          })
+            .totalSupply()
+            .call((e, sup) => {
+              setMaxDebt((v[3] * sup / 1e24).toPrecision(3))
+            })
         })
     } catch (e) {
       setVestingTerm(undefined)
@@ -209,8 +224,8 @@ function Bondingtool(lpInfosProps) {
     try {
       await bondContract.methods
         .payoutFor(caver.utils.toPeb(lpamount, "KLAY"))
-        .call((e, v) => setCAMPamt((v / 1e18 * assetprice).toFixed(3)))
-    } catch (e) { setCAMPamt(0) }
+        .call((e, v) => setkpgAmt((v / 1e18 * assetPrice).toFixed(3)))
+    } catch (e) { setkpgAmt(0) }
   }
 
   useEffect(() => {
@@ -250,23 +265,23 @@ function Bondingtool(lpInfosProps) {
       })
   }
 
-  const bondInfos = [
+  const bondInfosArray = [
     { name: "your LP balance", val: lpbal, expression: lpbal },
-    { name: "You'll get", val: campamt, expression: `${campamt} KPG` },
-    { name: "Max can buy", val: maxdebt, expression: `${maxdebt} KPG` },
-    { name: "ROI", val: pricerate, expression: `${pricerate} %` },
-    { name: "Vesting term end", val: vestingterm, expression: timeConversion(vestingterm * 1000) },
-    { name: "Minimum Puchase", val: "0.01KPG", expression: "0.01 KPG" },
-    { name: "asset Price", val: assetprice, expression: assetprice },
+    { name: "You'll get", val: kpgAmt, expression: `${kpgAmt} KPG` },
+    { name: "Max can buy", val: maxDebt, expression: `${maxDebt} KPG` },
+    { name: "ROI", val: priceDiscountRate, expression: `${priceDiscountRate} %` },
+    { name: "Vesting term end", val: vestingTerm, expression: timeConversion(vestingTerm * 1000) },
+    { name: "Minimum Purchase", val: "0.01 KPG", expression: "0.01 KPG" },
+    { name: "asset Price", val: assetPrice, expression: assetPrice },
   ];
 
   const claimInfos = [
 
-    { name: "Pending reward", val: remaincamp, expression: remaincamp },
-    { name: "Claimable reward", val: pendingCAMP, expression: pendingCAMP },
+    { name: "Pending KPG", val: remaincamp, expression: remaincamp },
+    { name: "Claimable KPG", val: pendingKPG, expression: pendingKPG },
     { name: "Time until Fully Vested", val: remaintime, expression: timeConversion(remaintime * 1000) },
-    { name: "ROI", val: pricerate, expression: `${pricerate} %` },
-    { name: "Vesting term end", val: vestingterm, expression: timeConversion(vestingterm * 1000) },
+    { name: "ROI", val: priceDiscountRate, expression: `${priceDiscountRate} %` },
+    { name: "Vesting term end", val: vestingTerm, expression: timeConversion(vestingTerm * 1000) },
     { name: "PercentVested", val: percentBond, expression: `${percentBond} %` },
   ];
 
@@ -274,45 +289,60 @@ function Bondingtool(lpInfosProps) {
   return (
     <>
       {lpInfosProps ?
-        <><InfoContent isToolOpen={lpInfosProps.isToolOpenCtrl.isToolOpen}>
-          <span className="bondTitle">
-            <TokenLogo name={lpInfosProps.bondLPInfo.name} />
-            {lpInfosProps.bondLPInfo.name + " // " + lpInfosProps.btnState}
-          </span>
-          <span>
-            {lpInfosProps.btnState == "Bond" ? `Bond price : ${bondprice}`
-              : `Claimable Reward : ${pendingCAMP}`}
-          </span>
-        </InfoContent>
+        <BondingtoolSection>
           <BondingContent isToolOpen={lpInfosProps.isToolOpenCtrl.isToolOpen}>
-            <InputForm
-              token={lpInfosProps.bondLPInfo.name}
-              onChange={onLPChange}
-              value={lpamount}
-              setValueFn={setLPAmount}
-              haveBal={true}
-              price={assetprice}
-              balance={lpbal}
-              haveMax={true}
-              type="number"
-              text="amount to Bond"
-              isVisible={true}
-            />
+            <span className="bondTitle">
+              <TokenLogo name={lpInfosProps.bondLPInfo.name} />
+              {lpInfosProps.bondLPInfo.name}
+            </span>
+
+            <BondingtoolHeaderInfo>
+              <p className="rewardsInfo">
+                <p>
+                  {
+                    lpInfosProps.btnState == "Bond"
+                      ? `Bond price : ${bondprice}`
+                      : `Claimable KPG ${pendingKPG}`
+                  }
+                </p>
+              </p>
+            </BondingtoolHeaderInfo>
+
+          </BondingContent>
+          <BondingContent isToolOpen={lpInfosProps.isToolOpenCtrl.isToolOpen}>
+            {lpInfosProps.btnState === "Bond" &&
+              <InputForm
+                token={lpInfosProps.bondLPInfo.name}
+                onChange={onLPChange}
+                value={lpamount}
+                setValueFn={setLPAmount}
+                haveBal={true}
+                price={assetPrice}
+                balance={lpbal}
+                haveMax={true}
+                type="number"
+                text="amount to Bond"
+                isVisible={true}
+              />
+            }
             <BondInfos>
+
               {lpInfosProps.btnState === "Bond" ? (
-                bondInfos.map((bondInfo, index) => (
-                  <Info key={bondInfo.name}>
+                bondInfosArray.map((bondInfo, index) => (
+                  <DetailInfo key={bondInfo.name}>
                     <p className="infoName">{bondInfo.name}</p>
-                    <p>{bondInfo.val === undefined ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" />  : bondInfo.expression}</p>
-                  </Info>)))
+                    <p>{bondInfo.val === undefined ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" /> : bondInfo.expression}</p>
+                  </DetailInfo>))
+              )
                 :
-                (
-                  claimInfos.map((claimInfos, index) => (
-                    <Info key={claimInfos.name}>
-                      <p className="infoName">{claimInfos.name}</p>
-                      <p>{claimInfos.val === undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : claimInfos.expression}</p>
-                    </Info>
-                  )))}
+                (claimInfos.map((claimInfos, index) => (
+                  <DetailInfo key={claimInfos.name}>
+
+                    <p className="infoName">{claimInfos.name}</p>
+                    <p>{claimInfos.val === undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : claimInfos.expression}</p>
+                  </DetailInfo>
+                ))
+                )}
             </BondInfos>
 
             <Approve>
@@ -331,7 +361,7 @@ function Bondingtool(lpInfosProps) {
 
             </Approve>
           </BondingContent>
-        </>
+        </BondingtoolSection>
         : <p margin="0 auto">
           <LoadingSVG
             type="circle"

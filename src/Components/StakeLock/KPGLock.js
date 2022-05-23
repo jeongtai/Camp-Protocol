@@ -91,7 +91,7 @@ const Content = styled.div`
     align-content: center;
 `;
 
-const ClaimInfo = styled(StakeInfo)`
+const DetailTabInfo = styled(StakeInfo)`
     margin : 32px 0px;
     padding : 20px;
     background-color: ${(props) => props.theme.btnGray};
@@ -115,8 +115,11 @@ function KPGLock() {
     const [kpgBalance, setKpgBalance] = useState()
     const [kpgPrice, setKpgPrice] = useState()
     const [lockKPGBalance, setLockKPGBalance] = useState()
-    const [earnEKL, setEarnEKL] = useState()
-    const [earn3Moon, setEarn3Moon] = useState()
+
+    const [kpLockearnedEKL, setKPLockEarnedEKL] = useState()
+    const [kpLockearnedkpEKL, setKPLockEarnedkpEKL] = useState()
+    const [kpLockearned3Moon, setKPLockEarned3Moon] = useState()
+    const [kpLockearnedpostEKL, setKPLockEarnedpostEKL] = useState()
 
     const [isApproved, setIsApproved] = useState(false)
     const [inputformValue, setInputformValue] = useState()
@@ -158,16 +161,20 @@ function KPGLock() {
         } catch (e) { setLockKPGBalance(undefined) }
 
         try {
-            await state.kpLockContract.methods
-                .earned(window.klaytn.selectedAddress)
-                .call((e, v) => setEarnEKL((v / 1e18).toFixed(2)));
-        } catch (e) { setEarnEKL(undefined) }
-
-        try {
-            await state.kpLockContract.methods
-                .earned(window.klaytn.selectedAddress)
-                .call((e, v) => setEarn3Moon((v / 1e18).toFixed(2)));
-        } catch (e) { setEarn3Moon(undefined) }
+        await state.kpLockContract.methods
+            .claimableRewards(window.klaytn.selectedAddress)
+            .call((e, data) => {
+            setKPLockEarnedEKL((data[0][1] / 1e18).toPrecision(2))
+            setKPLockEarnedkpEKL((data[1][1] / 1e18).toPrecision(2))
+            setKPLockEarned3Moon((data[2][1] / 1e18).toPrecision(2))
+            setKPLockEarnedpostEKL((data[3][1] / 1e18).toPrecision(2))
+            })
+        } catch (e) {
+        setKPLockEarnedEKL(undefined)
+        setKPLockEarnedkpEKL(undefined)
+        setKPLockEarned3Moon(undefined)
+        setKPLockEarnedpostEKL(undefined)
+        }
 
     }
 
@@ -239,7 +246,10 @@ function KPGLock() {
                 </Info>
                 <Info>
                     <p className="infoName">Rewards</p>
-                    <p>{earnEKL} EKL</p>
+                    <p>{kpLockearnedEKL} EKL<br/>
+                    {kpLockearnedkpEKL} kpEKL<br/>
+                    {kpLockearned3Moon} 3Moon LP
+                    </p>
                 </Info>
             </StakeInfo>
 
@@ -299,18 +309,19 @@ function KPGLock() {
 
                 {nowTab === "Claim" &&
                     <>
-                        <ClaimInfo>
-                            Rewards (ekl, kpekl 반반 나눠야 하고, 리워드 ekl, 3moon으로 둘다표시필요)
+                        <DetailTabInfo>
+                            Rewards
                             <p className="rewardsInfo">
                                 
                                 <TokenLogo name={"EKL"} />
-                                <p>{earnEKL} EKL</p>
+                                <p>{kpLockearnedEKL} EKL</p>
                                 <TokenLogo name={"kpEKL"} />
-                                <p>{earnEKL} kpEKL</p>
+                                <p>{kpLockearnedkpEKL} kpEKL</p>
                                 <TokenLogo name={"3Moon LP"} />
-                                <p>{earn3Moon} 3Moon LP</p>
+                                <p>{kpLockearned3Moon} 3Moon LP</p>
+
                             </p>
-                        </ClaimInfo>
+                        </DetailTabInfo>
                         <Button text="Claim" onClick={KPGLockRewardClaim} />
                     </>
                 }

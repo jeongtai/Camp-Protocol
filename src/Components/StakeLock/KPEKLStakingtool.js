@@ -92,13 +92,13 @@ const Content = styled.div`
     align-content: center;
 `;
 
-const ClaimInfo = styled(StakeInfo)`
+const DetailTabInfo = styled(StakeInfo)`
     margin : 32px 0px;
     padding : 20px;
     background-color: ${(props) => props.theme.btnGray};
     color: ${(props) => props.theme.textBlack};
 
-    & .rewardsInfo{
+    & .tokenInfo{
         margin-top : 10px;
         display: flex;
     flex-direction: row;
@@ -140,13 +140,13 @@ function KPEKLStakingtool() {
         try {
             await state.kpEKLStakingContract.methods
                 .earned(window.klaytn.selectedAddress)
-                .call((e, v) => setEarnEKL((v / 1e18).toFixed(2)));
+                .call((e, v) => setEarnEKL((v / 1e18).toFixed(7)));
         } catch (e) { setEarnEKL(undefined) }
 
         try {
             await state.kpEKLStakeFeeContract.methods
                 .earned(window.klaytn.selectedAddress)
-                .call((e, v) => setEarn3Moon((v / 1e18).toFixed(2)));
+                .call((e, v) => setEarn3Moon((v / 1e18).toFixed(7)));
         } catch (e) { setEarn3Moon(undefined) }
 
 
@@ -281,6 +281,13 @@ function KPEKLStakingtool() {
 
                 {nowTab === "UnStake" &&
                     <>
+                        <DetailTabInfo>
+                            Your staked balance
+                            <p className="tokenInfo">
+                                <TokenLogo name={"kpEKL"} />
+                                <p>{stakedKPEKLBalance} kpEKL</p>
+                            </p>
+                        </DetailTabInfo>
                         <InputForm
                             token="kpEKL"
                             type="number"
@@ -293,22 +300,21 @@ function KPEKLStakingtool() {
                             setValueFn={setinputformValue}
                             price={kpEKLprice}
                         />
-
                         <Button text="Unstake" onClick={kpEKLUnstake} />
                     </>
                 }
 
                 {nowTab === "Claim" &&
                     <>
-                        <ClaimInfo>
+                        <DetailTabInfo>
                             Rewards
-                            <p className="rewardsInfo">
-                                <TokenLogo name={"kpEKL"} />
-                                <p>{earnEKL} kpEKL</p>
+                            <p className="tokenInfo">
+                                <TokenLogo name={"EKL"} />
+                                <p>{earnEKL} EKL</p>
                                 <TokenLogo name={"3Moon LP"} />
                                 <p>{earn3Moon} 3Moon LP</p>
                             </p>
-                        </ClaimInfo>
+                        </DetailTabInfo>
                         <Button text="Claim" onClick={kpEKLStakingRewardClaim} />
                     </>}
             </Content>

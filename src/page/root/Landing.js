@@ -94,25 +94,47 @@ const Page1 = styled.div`
         line-height: 30px;
     }
 
+    & .enter-app-button{
+        margin: 30px 10px;
+
+        width: 154px;
+        height: 34px;
+        background-color: ${(props) => props.theme.backYellow};
+        border: 0;
+        border-radius: 6px;
+
+        font-size: 14px;
+        font-weight: 300;
+        color: ${(props) => props.theme.textBlack};
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    & .read-docs-button {
+        margin: 30px 10px;
+        width: 154px;
+        height: 34px;
+        background-color: ${(props) => props.theme.btnBlack};
+        border: 0;
+        border-radius: 6px;
+
+        font-size: 14px;
+        font-weight: 300;
+        color: ${(props) => props.theme.textWhite};
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
     & .page1-chainInfo {
-        margin-top: 48px;
+        margin-top:20px;
         font-family: Lexend;
         font-size: 16px;
         font-weight: 400;
         color: ${(props) => props.theme.textGray};
     }
-`;
-
-const MainBtn = styled.button`
-    width: 154px;
-    height: 34px;
-    background-color: ${(props) => props.theme.btnBlue};
-    border: 0;
-    border-radius: 0px 21px 21px 21px;
-    margin: 60px 0px;
-    font-size: 14px;
-    font-weight: 300;
-    color: ${(props) => props.theme.textWhite};
 `;
 
 const Page2 = styled.div`
@@ -241,6 +263,7 @@ const Approve = styled.div`
 `;
 
 const Page4 = styled.div`
+    height : 300px;
     background: url(${BG_1});
     background-size: 100%;
     background-repeat: no-repeat;
@@ -250,22 +273,7 @@ const Page4 = styled.div`
     font-size: 36px;
     font-weight: 700;
 
-    & .get-klay-button {
-        margin: 50px;
-        width: 154px;
-        height: 34px;
-        background-color: ${(props) => props.theme.backYellow};
-        border: 0;
-        border-radius: 6px;
-
-        font-size: 14px;
-        font-weight: 300;
-        color: ${(props) => props.theme.textBlack};
-
-        &:hover {
-            cursor: pointer;
-        }
-    }
+    
 `;
 
 const Footer = styled.div`
@@ -348,13 +356,14 @@ function Landing() {
                 <div>
                     <img className="LogoText" src={LogoText} />
                 </div>
-                <ConnectWallet onClick={() => connectKaikas()}>
+                
+                {/* <ConnectWallet onClick={() => connectKaikas()}>
                     {isWalletConnected
                         ? currentAddress.slice(0, 10) +
                         "..." +
                         currentAddress.slice(-3)
                         : "Connect Wallet"}
-                </ConnectWallet>
+                </ConnectWallet> */}
             </Header>
             <Main>
                 <Page1>
@@ -368,23 +377,21 @@ function Landing() {
                         <br />
                         & Decentralized Reserve Currency
                     </div>
-
-                    {/* real-------------------------------------------------  */}
-
-                    {/* <a
+                    <a
                         href={`${window.location.href.replace(
                             window.location.host,
                             `app.${window.location.host}`
                         )}`}
                     >
-                        <MainBtn>Launch App</MainBtn>
-                    </a> */}
+                        <button className="enter-app-button">Launch App</button>
+                    </a>
 
-                    {/* test-------------------------------------------------  */}
-
-                    {/* <a href={`${window.location.href.replace("landing.", "")}`}>
-                        <MainBtn>Launch App</MainBtn>
-                    </a> */}
+                    <a
+                        href="https://kprotocol.gitbook.io/k-protocol/"
+                        target="_blank"
+                    >
+                        <button className="read-docs-button">Read Docs</button>
+                    </a>
 
                     <p className="page1-chainInfo">Based on Klaytn</p>
                 </Page1>
@@ -447,15 +454,6 @@ function Landing() {
                 </Page3>*/}
                 <Page4>
                     <div className="page4-title">Wanna Join Us?</div>
-
-
-
-                    <a
-                        href="https://kprotocol.gitbook.io/k-protocol/"
-                        target="_blank"
-                    >
-                        <button className="get-klay-button">Read Docs</button>
-                    </a>
                 </Page4>
             </Main>
             <Footer></Footer>

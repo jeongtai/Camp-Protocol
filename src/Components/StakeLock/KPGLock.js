@@ -115,8 +115,10 @@ function KPGLock() {
     const [kpgBalance, setKpgBalance] = useState()
     const [kpgPrice, setKpgPrice] = useState()
     const [lockKPGBalance, setLockKPGBalance] = useState()
-    const [earnEKL, setEarnEKL] = useState()
-    const [earn3Moon, setEarn3Moon] = useState()
+    const [kpLockearnedEKL, setKPLockEarnedEKL] = useState()
+    const [kpLockearnedkpEKL, setKPLockEarnedkpEKL] = useState()
+    const [kpLockearned3Moon, setKPLockEarned3Moon] = useState()
+    const [kpLockearnedpostEKL, setKPLockEarnedpostEKL] = useState()
 
     const [isApproved, setIsApproved] = useState(false)
     const [inputformValue, setInputformValue] = useState()
@@ -158,16 +160,20 @@ function KPGLock() {
         } catch (e) { setLockKPGBalance(undefined) }
 
         try {
-            await state.kpLockContract.methods
-                .earned(window.klaytn.selectedAddress)
-                .call((e, v) => setEarnEKL((v / 1e18).toFixed(2)));
-        } catch (e) { setEarnEKL(undefined) }
-
-        try {
-            await state.kpLockContract.methods
-                .earned(window.klaytn.selectedAddress)
-                .call((e, v) => setEarn3Moon((v / 1e18).toFixed(2)));
-        } catch (e) { setEarn3Moon(undefined) }
+          await state.kpLockContract.methods
+            .claimableRewards(window.klaytn.selectedAddress)
+            .call((e, data) => {
+              setKPLockEarnedEKL((data[0][1] / 1e18).toPrecision(3))
+              setKPLockEarnedkpEKL((data[1][1] / 1e18).toPrecision(3))
+              setKPLockEarned3Moon((data[2][1] / 1e18).toPrecision(3))
+              setKPLockEarnedpostEKL((data[3][1] / 1e18).toPrecision(3))
+            })
+        } catch (e) {
+          setKPLockEarnedEKL(undefined)
+          setKPLockEarnedkpEKL(undefined)
+          setKPLockEarned3Moon(undefined)
+          setKPLockEarnedpostEKL(undefined)
+        }
 
     }
 
@@ -239,7 +245,7 @@ function KPGLock() {
                 </Info>
                 <Info>
                     <p className="infoName">Rewards</p>
-                    <p>{earnEKL} EKL</p>
+                    <p>{kpLockearnedEKL} EKL</p>
                 </Info>
             </StakeInfo>
 
@@ -304,11 +310,11 @@ function KPGLock() {
                             <p className="rewardsInfo">
                                 
                                 <TokenLogo name={"EKL"} />
-                                <p>{earnEKL} EKL</p>
+                                <p>{kpLockearnedEKL} EKL</p>
                                 <TokenLogo name={"kpEKL"} />
-                                <p>{earnEKL} kpEKL</p>
+                                <p>{kpLockearnedkpEKL} kpEKL</p>
                                 <TokenLogo name={"3Moon LP"} />
-                                <p>{earn3Moon} 3Moon LP</p>
+                                <p>{kpLockearned3Moon} 3Moon LP</p>
                             </p>
                         </ClaimInfo>
                         <Button text="Claim" onClick={KPGLockRewardClaim} />

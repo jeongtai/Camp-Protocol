@@ -242,7 +242,7 @@ function KPGStakingtool() {
                 </Info>
                 <Info>
                     <p className="infoName">Rewards</p>
-                    <p>{earnedEKL} EKL</p>
+                    <p>{earnedkpEKL} kpEKL</p>
                 </Info>
             </StakeInfo>
 

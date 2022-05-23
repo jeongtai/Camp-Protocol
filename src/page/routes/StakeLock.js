@@ -148,6 +148,8 @@ const Stake = () => {
   let kpgStakeRewardKpeklApr = kpgStakekpEKLweekreward * 3600 * 24 * 365 * kpeklprice / kpstaketvl * 100
   let kpgStakeApr = kpgStakeRewardKpeklApr
 
+
+  console.log(kpeklStakeFeereward)
   // kpEKL STAKE APR
   let kpeklStakeRewardEklApr = parseFloat(kpEKLStakeEKLweekreward) * 3600 * 24 * 365 * eklprice / kpeklstaketvl * 100
   let kpeklStakeReward3MoonApr = parseFloat(kpeklStakeFeereward) * 3600 * 24 * 365 * ekl3moonprice / kpeklstaketvl * 100

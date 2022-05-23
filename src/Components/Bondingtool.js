@@ -149,7 +149,7 @@ function Bondingtool(lpInfosProps) {
     } catch (e) { setAssetPrice(undefined) }
 
     try {
-      await bondContract.methods.priceDiscountRate()
+      await bondContract.methods.priceRate()
         .call((e, v) => setPriceDiscountRate(((1 - v / 1e9) * 100).toFixed(2)))
     } catch (e) { setPriceDiscountRate(undefined) }
 

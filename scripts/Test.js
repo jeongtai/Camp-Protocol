@@ -95,6 +95,11 @@ const main = async () => {
     const kpStakingProxy = await kpStakingProxyFactory.attach("0x02712572C2A5d2eA9F6Ec2eB5Ea0adf498657252");
     console.log("kpStakingProxy address is:", await kpStakingProxy.address);
 
+    BondTreasuryFactory = await ethers.getContractFactory("BondTreasury");
+    // let BondTreasury = await BondTreasuryFactory.deploy();
+    const BondTreasury = await BondTreasuryFactory.attach("0xc71d938d5Faf4057B7A9cd19b633A1d921Eee26c");
+    console.log("BondTreasury address is:", await BondTreasury.address);
+
 
     /* =============== kpEKLStake Run =============== */
 
@@ -107,15 +112,8 @@ const main = async () => {
     // await kpStakingProxy.distribute()
     // await kpStakingProxy.distributeOther(postEKL)
     // await kpStakingProxy.distributeOther(EKL3Moon)
-
-    // console.log(await kpStake.earned(owner.address))
-    // console.log(await kpEKLStake.earned(owner.address))
-
-    // console.log(await kpLocker.getRewardForDuration(EKL3Moon))
-    // console.log(await kpLocker.getRewardForDuration(EKL.address))
-    // console.log(await kpLocker.getRewardForDuration(postEKL))
-
-    // await Booster.setKPdisrate(0)
+    
+    // await BondTreasury.depositAll(0)
 
     // await Booster.gaugevote(EKL33MoonGauge, "5403")
 }

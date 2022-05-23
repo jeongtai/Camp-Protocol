@@ -124,6 +124,11 @@ const main = async () => {
     const kpStakingProxy = await kpStakingProxyFactory.attach("0x02712572C2A5d2eA9F6Ec2eB5Ea0adf498657252");
     console.log("kpStakingProxy address is:", await kpStakingProxy.address);
 
+    kpEKLStakefeeFactory = await ethers.getContractFactory("VirtualBalanceRewardPool");
+    // let kpEKLStakefee = await kpEKLStakefeeFactory.deploy(kpLocker.address, Booster.address);
+    const kpEKLStakefee = await kpEKLStakefeeFactory.attach("0x54d9692eb4539970ace6db1bf8220e4abb259df0");
+    console.log("kpEKLStakefee address is:", await kpEKLStakefee.address);
+
 
     /* =============== kpEKLStake Run =============== */
 
@@ -198,7 +203,12 @@ const main = async () => {
 
     // console.log(await kpStake.earned(owner.address))
     // console.log(await kpEKLStake.earned(owner.address))
+    // let feerate = await kpEKLStakefee.rewardRate()
+    // let feeduration = await kpEKLStakefee.duration()
+    // console.log(await feerate * feeduration)
 
+    console.log()
+    console.log(await kpEKLStakefee.currentRewards())
 }
 
 

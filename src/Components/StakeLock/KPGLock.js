@@ -115,7 +115,7 @@ function KPGLock() {
     const [kpgBalance, setKpgBalance] = useState()
     const [kpgPrice, setKpgPrice] = useState()
     const [lockKPGBalance, setLockKPGBalance] = useState()
-
+    
     const [kpLockearnedEKL, setKPLockEarnedEKL] = useState()
     const [kpLockearnedkpEKL, setKPLockEarnedkpEKL] = useState()
     const [kpLockearned3Moon, setKPLockEarned3Moon] = useState()
@@ -161,19 +161,19 @@ function KPGLock() {
         } catch (e) { setLockKPGBalance(undefined) }
 
         try {
-        await state.kpLockContract.methods
+          await state.kpLockContract.methods
             .claimableRewards(window.klaytn.selectedAddress)
             .call((e, data) => {
-            setKPLockEarnedEKL((data[0][1] / 1e18).toPrecision(2))
-            setKPLockEarnedkpEKL((data[1][1] / 1e18).toPrecision(2))
-            setKPLockEarned3Moon((data[2][1] / 1e18).toPrecision(2))
-            setKPLockEarnedpostEKL((data[3][1] / 1e18).toPrecision(2))
+              setKPLockEarnedEKL((data[0][1] / 1e18).toPrecision(3))
+              setKPLockEarnedkpEKL((data[1][1] / 1e18).toPrecision(3))
+              setKPLockEarned3Moon((data[2][1] / 1e18).toPrecision(3))
+              setKPLockEarnedpostEKL((data[3][1] / 1e18).toPrecision(3))
             })
         } catch (e) {
-        setKPLockEarnedEKL(undefined)
-        setKPLockEarnedkpEKL(undefined)
-        setKPLockEarned3Moon(undefined)
-        setKPLockEarnedpostEKL(undefined)
+          setKPLockEarnedEKL(undefined)
+          setKPLockEarnedkpEKL(undefined)
+          setKPLockEarned3Moon(undefined)
+          setKPLockEarnedpostEKL(undefined)
         }
 
     }
@@ -319,7 +319,6 @@ function KPGLock() {
                                 <p>{kpLockearnedkpEKL} kpEKL</p>
                                 <TokenLogo name={"3Moon LP"} />
                                 <p>{kpLockearned3Moon} 3Moon LP</p>
-
                             </p>
                         </DetailTabInfo>
                         <Button text="Claim" onClick={KPGLockRewardClaim} />

@@ -172,8 +172,6 @@ const Stake = () => {
   let totaldeposit = kpeklstakeval + kpstakeval + kplockval
   let totalclaimable = kpstakeclaimable + kpeklstakeclaimable + kpLockclaimable
 
-  state.kpLockContract.methods.claimableRewards(window.klaytn.selectedAddress).call((e, v) => console.log(v))
-
   async function getInfo() {
     try {
       await state.KPG_USDTLPContract.methods
@@ -380,7 +378,7 @@ const Stake = () => {
             </AprInfoModal> : null}
 
           </div>
-          <div> {kpstakebal} KP</div>
+          <div> {kpstakebal} KPG</div>
           <div>$ {kpstakeclaimable.toFixed(5)}</div>
           <div>
             <Link to={"/StakeLock/KPGStake"}><img src={ArrowIcon} /></Link>
@@ -449,7 +447,7 @@ const Stake = () => {
             </AprInfoModal> : null}
 
           </div>
-          <div> {kplockbal} KP</div>
+          <div> {kplockbal} KPG</div>
           <div> $ {kpLockclaimable.toFixed(5)}</div>
           <div><Link to={"/StakeLock/KPGLock"}> <img src={ArrowIcon} /></Link> </div>
         </Item>

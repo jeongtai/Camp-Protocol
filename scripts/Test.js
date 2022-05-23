@@ -7,50 +7,18 @@ const main = async () => {
     const [owner] = await ethers.getSigners();
 
     /* ============= EKL Contract Deploy =============== */
+    // const EKL = "0x807C4E063eb0aC21E8EeF7623A6ed50A8EDe58cA"
+    const EKL3Moon = "0xd83b9dfa49d6c6d2a69554576e712e45a8a13e49"
+    const EKL33MoonGauge = "0xceaaf9f6c8147b2a7cd8bd4e9fa8955b430eb423"
+    const postEKL = "0x0e23bee35717987e71fa8445e4dd750ad718ba8a"
+    const EKLClaimer = "0xAb7f8facb7db88db80F35c96CD67A9e9d381C7Ee"
+    const GaugeController = "0x18428b7826C2588207e39b742c15642B8D9755B4"
+    const KlaySwap = "0xc6a2ad8cc6e4a7e08fc37cc5954be07d499e7654"
+
     EKLFactory = await ethers.getContractFactory("MEKL");
     // let EKL = await EKLFactory.deploy();
-    const EKL = await EKLFactory.attach("0x9F3C49F5e83c43815c8710FdEB54876d6F649B14");
+    const EKL = await EKLFactory.attach("0x807C4E063eb0aC21E8EeF7623A6ed50A8EDe58cA");
     console.log("EKL address is:", await EKL.address);
-    
-    m3MoonFactory = await ethers.getContractFactory("m3Moon");
-    // let m3Moon = await m3MoonFactory.deploy();
-    const m3Moon = await m3MoonFactory.attach("0xeCDDa9623c57e4539BE76EEEb0F43Ca73a441438");
-    console.log("m3Moon address is:", await m3Moon.address);
-
-    mpostEKLFactory = await ethers.getContractFactory("mpostEKL");
-    // let mpostEKL = await mpostEKLFactory.deploy();
-    const mpostEKL = await mpostEKLFactory.attach("0x0228CC95f101871Cc1Ca94F6C248F2840D176f90");
-    console.log("mpostEKL address is:", await mpostEKL.address);
-
-    kpEKLTokenFactory = await ethers.getContractFactory("kpEKLToken");
-    // let kpEKL = await kpEKLTokenFactory.deploy();
-    const kpEKL = await kpEKLTokenFactory.attach("0x4612f95b014814467BDB069422dAE5A427092520");
-    console.log("kpEKL address is:", await kpEKL.address);
-
-    MockLPFactory = await ethers.getContractFactory("MockLP");
-    // let MockLP = await MockLPFactory.deploy();
-    const MockLP = await MockLPFactory.attach("0xd44725E11821534AB6b9a17D80B75d47a907c0e3");
-    console.log("MockLP address is:", await MockLP.address);
-
-    FakeGaugeFactory = await ethers.getContractFactory("FakeGauge");
-    // let FakeGauge = await FakeGaugeFactory.deploy(m3Moon.address);
-    const FakeGauge = await FakeGaugeFactory.attach("0x06b14E4983565Db987a01fD54f4568814d04631f");
-    console.log("FakeGauge address is:", await FakeGauge.address);
-
-    FakeVoteEscrowFactory = await ethers.getContractFactory("FakeVoteEscrow");
-    // let FakeVoteEscrow = await FakeVoteEscrowFactory.deploy(EKL.address, m3Moon.address);
-    const FakeVoteEscrow = await FakeVoteEscrowFactory.attach("0x7c271c85e31F28935C7F90a25d84C822391D9433");
-    console.log("FakeVoteEscrow address is:", await FakeVoteEscrow.address);
-
-    FakeClaimFactory = await ethers.getContractFactory("FakeClaim");
-    // let FakeClaim = await FakeClaimFactory.deploy(EKL.address, mpostEKL.address);
-    const FakeClaim = await FakeClaimFactory.attach("0x380F3993203C9474Be468B0D1BEf4929d0F064A8");
-    console.log("FakeClaim address is:", await FakeClaim.address);
-
-    // FakeGaugeControllerFactory = await ethers.getContractFactory("FakeVote")
-    // // let FakeVote = await FakeGaugeControllerFactory.deploy();
-    // // const FakeVote = await FakeGaugeControllerFactory.attach("0x380F3993203C9474Be468B0D1BEf4929d0F064A8");
-    // console.log("FakeVote address is:", await FakeVote.address);
 
     KSPFactory = await ethers.getContractFactory("MEKL");
     // let EKL = await EKLFactory.deploy();
@@ -58,6 +26,12 @@ const main = async () => {
     console.log("KSP address is:", await KSP.address);
 
     /* =====================================*/
+    
+
+    kpEKLTokenFactory = await ethers.getContractFactory("kpEKLToken");
+    // let kpEKL = await kpEKLTokenFactory.deploy();
+    const kpEKL = await kpEKLTokenFactory.attach("0x08644836b786B69a5082fD4644a3F2D1534B11A8");
+    console.log("kpEKL address is:", await kpEKL.address);
 
     //Booster에 ekl이랑 m3Moon넣어주기.
 
@@ -91,37 +65,10 @@ const main = async () => {
     const mockUSDT = await mockUSDTFactory.attach("0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167");
     console.log("mockUSDT:", mockUSDT.address);
 
-
-    /*==============  Booster, VoterProxy set Function ==============*/
-    
-    // await Booster.setFactories(rFactory.address, tFactory.address);
-
-    // await Booster.addPool(EKL3Moon, EKL33MoonGauge);
-    // await VoterProxy.setOperator(Booster.address)
-
-    // console.log(await Booster.poolInfo(0))
-
-    // /* ===============EKL Depository=============== */
-
     DepositorFactory = await ethers.getContractFactory("EKLDepositor");
     // let EKLDepositor = await DepositorFactory.deploy(VoterProxy.address, kpEKL.address);
     const EKLDepositor = await DepositorFactory.attach("0xABe0F9cFf7d77aEd6b6C9107f0584f897cC0942d");
     console.log("EKLDepositor address is:", await EKLDepositor.address);
-
-    /* =============== EKLDepository test =============== */
-
-    // await VoterProxy.setDepositor(EKLDepositor.address)
-    // await kpEKL.setOperator(EKLDepositor.address)
-
-    // await EKL.approve(EKLDepositor.address, toBn("1e18"))
-
-    // await EKLDepositor.depositEKL(toBn("50"), true)
-    // await EKLDepositor.depositEKL(toBn("50"), false) 
-
-    // await EKLDepositor.lockEklipse()
-
-
-    /* =============== Stake&Lock Deploy =============== */
 
     kpEKLStakeFactory = await ethers.getContractFactory("BaseRewardPool");
     // let kpEKLStake = await kpEKLStakeFactory.deploy(kpEKL.address, EKL.address, Booster.address, rFactory.address);
@@ -138,8 +85,6 @@ const main = async () => {
     const TreasuryFund = await TreasuryFundFactory.attach("0xd4C8292dD4262e0b74fca1fAF523F3B962AB791d");
     console.log("TreasuryFund address is:", await TreasuryFund.address);
 
-    // 1턴 쉬기
-
     kpLockerFactory = await ethers.getContractFactory("KPLockerV2");
     // let kpLocker = await kpLockerFactory.deploy();
     const kpLocker = await kpLockerFactory.attach("0xDc1b8Fe74ED56Fe11AB9ECfD7238aBaA8298f3d9");
@@ -153,75 +98,26 @@ const main = async () => {
 
     /* =============== kpEKLStake Run =============== */
 
-    // await Booster.setTreasury(kpStakingProxy.address)
-    // await Booster.setRewardContracts(kpEKLStake.address, kpStake.address)
-
-    // await Booster.setFeeInfo(EKL3Moon)
-
-    // await KP.updateOperator()
-    // await kpEKL.approve(kpEKLStake.address, toBn("1e18"))
-
-    // await EKL.mint(FakeClaim.address, toBn("1000"))
-    // await mpostEKL.setBalance(FakeClaim.address, toBn("1000"))
-    // await m3Moon.setBalance(FakeVoteEscrow.address, toBn("1000"))
-
-    // await EKLDepositor.depositEKL(toBn("1"), true) 
+    // await EKLDepositor.depositEKL(toBn("1"), true)
     // await Booster.earmarkRewards()
+
     // await Booster.earmarkFees(0)
-
-    // await kpEKLStake.stake(toBn("1"))
-
-    // console.log(await kpEKLStake.earned(owner.address))
-    // console.log(await kpEKLStake.rewardToken())
-
-    // await kpEKLStake.getReward(owner.address, false)
-    // await kpEKLStake.getkpEKLReward()
-    // await kpEKLStake.withdrawAll(true)
-
-    /* =============== kpStake Run =============== */
-
-    // await Booster.mint_KP(owner.address, toBn("5000"))
-    // await KP.approve(kpStake.address, toBn("1000"))
-
-    // await kpStake.stake(toBn("10"))
-
-    // console.log(await kpStake.earned(owner.address))
-
-    // await kpStake.getKPReward(true)
-    // await kpStake.withdrawAll(true)
-
-    /* ================ kpLockRun ================ */
-
-    // await kpLocker.setStakingContract(kpStakingProxy.address)
-    
-    // await kpLocker.setApprovals()
-    // await kpStakingProxy.setApprovals()
-    // await kpLocker.addReward(EKL.address, kpStakingProxy.address, true)
-    // await kpLocker.addReward(kpEKL.address, kpStakingProxy.address, true)
-    // await kpLocker.addReward(EKL3Moon, kpStakingProxy.address, true)
-    // await kpLocker.addReward(postEKL, kpStakingProxy.address, true)
 
     // await Booster.sendExtras(postEKL, kpStakingProxy.address)
     // await kpStakingProxy.distribute()
     // await kpStakingProxy.distributeOther(postEKL)
     // await kpStakingProxy.distributeOther(EKL3Moon)
 
+    // console.log(await kpStake.earned(owner.address))
+    // console.log(await kpEKLStake.earned(owner.address))
+
     // console.log(await kpLocker.getRewardForDuration(EKL3Moon))
     // console.log(await kpLocker.getRewardForDuration(EKL.address))
     // console.log(await kpLocker.getRewardForDuration(postEKL))
 
-    // await KP.approve(kpLocker.address, toBn("100"))
+    // await Booster.setKPdisrate(0)
 
-    // await kpLocker.lock(owner.address, toBn("10"), 0)
-
-    // console.log(await kpLocker.claimableRewards(owner.address))
-    // await kpLocker.getReward(owner.address, true)
-
-    /* ================ Vote ================ */
-
-    await Booster.gaugevote(EKL33MoonGauge, "5403")
-
-
+    // await Booster.gaugevote(EKL33MoonGauge, "5403")
 }
 
 

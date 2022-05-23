@@ -193,8 +193,11 @@ const main = async () => {
 
     /* ================ Vote ================ */
 
-    await Booster.gaugevote(EKL33MoonGauge, "5403")
+    // await Booster.gaugevote(EKL33MoonGauge, "5403")
 
+
+    // console.log(await kpStake.earned(owner.address))
+    // console.log(await kpEKLStake.earned(owner.address))
 
 }
 

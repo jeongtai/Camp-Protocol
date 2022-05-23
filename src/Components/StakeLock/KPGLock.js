@@ -6,6 +6,8 @@ import Caver from "caver-js";
 import styled from "styled-components";
 import InputForm from "../../assets/InputForm"
 import TokenLogo from "../../assets/TokenLogo";
+import BigNumber from "bignumber.js";
+import { MAX_UNIT } from "../../const/Contract";
 
 const Section = styled.div`
     // flex
@@ -194,7 +196,7 @@ function KPGLock() {
     function KPGApprove() {
         state.KPGContract.methods.approve(
             state.kpLockContract._address,
-            caver.utils.toPeb("10000000", "KLAY")
+            BigNumber(MAX_UNIT)
         ).send({
             from: window.klaytn.selectedAddress,
             gas: 3000000

@@ -91,7 +91,7 @@ const Content = styled.div`
     align-content: center;
 `;
 
-const ClaimInfo = styled(StakeInfo)`
+const DetailTabInfo = styled(StakeInfo)`
     margin : 32px 0px;
     padding : 20px;
     background-color: ${(props) => props.theme.btnGray};
@@ -115,6 +115,7 @@ function KPGLock() {
     const [kpgBalance, setKpgBalance] = useState()
     const [kpgPrice, setKpgPrice] = useState()
     const [lockKPGBalance, setLockKPGBalance] = useState()
+    
     const [kpLockearnedEKL, setKPLockEarnedEKL] = useState()
     const [kpLockearnedkpEKL, setKPLockEarnedkpEKL] = useState()
     const [kpLockearned3Moon, setKPLockEarned3Moon] = useState()
@@ -245,7 +246,10 @@ function KPGLock() {
                 </Info>
                 <Info>
                     <p className="infoName">Rewards</p>
-                    <p>{kpLockearnedEKL} EKL</p>
+                    <p>{kpLockearnedEKL} EKL<br/>
+                    {kpLockearnedkpEKL} kpEKL<br/>
+                    {kpLockearned3Moon} 3Moon LP
+                    </p>
                 </Info>
             </StakeInfo>
 
@@ -305,8 +309,8 @@ function KPGLock() {
 
                 {nowTab === "Claim" &&
                     <>
-                        <ClaimInfo>
-                            Rewards (ekl, kpekl 반반 나눠야 하고, 리워드 ekl, 3moon으로 둘다표시필요)
+                        <DetailTabInfo>
+                            Rewards
                             <p className="rewardsInfo">
                                 
                                 <TokenLogo name={"EKL"} />
@@ -316,7 +320,7 @@ function KPGLock() {
                                 <TokenLogo name={"3Moon LP"} />
                                 <p>{kpLockearned3Moon} 3Moon LP</p>
                             </p>
-                        </ClaimInfo>
+                        </DetailTabInfo>
                         <Button text="Claim" onClick={KPGLockRewardClaim} />
                     </>
                 }

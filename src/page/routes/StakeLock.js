@@ -10,6 +10,7 @@ import LinkImg from "../../assets/ExternalLink.svg";
 import ArrowIcon from "../../assets/ArrowIcon.svg";
 import { EKLTokenAddress } from "../../const/Contract.js";
 import LoadingSVG from "../../assets/LoadingSVG";
+import InfoIcon from "./../../assets/InfoIcon.svg";
 
 const caver = new Caver(window.klaytn)
 
@@ -86,6 +87,22 @@ const Item = styled.div`
   }
 `
 
+const AprInfoModal = styled.div`
+    position: absolute;
+    padding: 10px 15px;
+
+
+    background-color:${(props) => props.theme.backDarkGray};
+    color : ${(props) => props.theme.textWhite};
+
+    border-radius: 15px;
+    z-index: 2;
+
+    font-size: 12px;
+    line-height: 18px;    
+`;
+
+
 const Stake = () => {
   let state = useSelector((state) => state)
   const [kpgprice, setKPGPrice] = useState()
@@ -105,13 +122,13 @@ const Stake = () => {
   const [kpstakebal, setKPStakeBal] = useState()
   const [kplockbal, setKPLockBal] = useState()
 
-  const [lockeklreward, setLockEKLweekreward] = useState()
+  const [KpgLockEklWeekreward, setLockEKLweekreward] = useState()
   const [lockkpEKLreward, setLockkpEKLweekreward] = useState()
   const [lock3moonreward, setLock3Moonweekreward] = useState()
 
-  const [stakekpeklreward, setKPStakekpEKLweekreward] = useState()
+  const [kpgStakekpEKLweekreward, setKpgStakekpEKLweekreward] = useState()
 
-  const [kpeklStakeEKLreward, setkpEKLStakeEKLweekreward] = useState()
+  const [kpEKLStakeEKLweekreward, setkpEKLStakeEKLweekreward] = useState()
   const [kpeklStakeFeereward, setkpEKLStakeFeeweekreward] = useState()
 
   const [kpStakeearnedkpEKL, setKPStakeEarnedkpEKL] = useState()
@@ -123,20 +140,25 @@ const Stake = () => {
   const [kpLockearned3Moon, setKPLockEarned3Moon] = useState()
   const [kpLockearnedpostEKL, setKPLockEarnedpostEKL] = useState()
 
+  const [isKpeklStakeAprInfoOpen, setIsKpeklStakeAprInfoOpen] = useState(false);
+  const [isKpgStakeAprInfoOpen, setIsKpgStakeAprInfoOpen] = useState(false);
+  const [isKpgLockAprInfoOpen, setIsKpgLockAprInfoOpen] = useState(false);
 
-  //APR 계산 필요ㅜㅜ
+  // KPG STAKE APR
+  let kpgStakeRewardKpeklApr = kpgStakekpEKLweekreward * 3600 * 24 * 365 * kpeklprice / kpstaketvl * 100
+  let kpgStakeApr = kpgStakeRewardKpeklApr
 
+  // kpEKL STAKE APR
+  let kpeklStakeRewardEklApr = parseFloat(kpEKLStakeEKLweekreward) * 3600 * 24 * 365 * eklprice / kpeklstaketvl * 100
+  let kpeklStakeReward3MoonApr = parseFloat(kpeklStakeFeereward) * 3600 * 24 * 365 * ekl3moonprice / kpeklstaketvl * 100
+  let kpeklStakeApr = kpeklStakeRewardEklApr + kpeklStakeReward3MoonApr;
 
-  let kpstakeApr = stakekpeklreward * 3600 * 24 * 365 * kpeklprice / kpstaketvl * 100
+  // KPG Lock APR
+  let kpgLockRewardEKLApr = parseFloat(KpgLockEklWeekreward) * eklprice / kpgprice * 100 * 365 / 7
+  let kpgLockRewardkpEKLApr = parseFloat(lockkpEKLreward) * kpeklprice / kpgprice * 100 * 365 / 7
+  let kpgLockReward3MoonApr =  parseFloat(lock3moonreward) * ekl3moonprice / kpgprice * 100 * 365 / 7
+  let kpgLockApr = kpgLockRewardEKLApr + kpgLockRewardkpEKLApr + kpgLockReward3MoonApr
 
-  let kpeklStakeApr = (parseFloat(kpeklStakeEKLreward) * 3600 * 24 * 365 * eklprice +
-    parseFloat(kpeklStakeFeereward) * 3600 * 24 * 365 * ekl3moonprice
-  ) / kpeklstaketvl * 100
-
-  let lockApr = (parseFloat(lockeklreward) * eklprice +
-    parseFloat(lockkpEKLreward) * kpeklprice +
-    parseFloat(lock3moonreward) * ekl3moonprice
-  ) / kpgprice * 100 * 365 / 7
 
 
   let kpstakeclaimable = kpStakeearnedkpEKL * kpeklprice
@@ -172,8 +194,8 @@ const Stake = () => {
             })
 
           await state.kpStakingContract.methods
-          .balanceOf(window.klaytn.selectedAddress)
-          .call((e, bal) => setKPStakeBal((bal / 1e18).toPrecision(3)))
+            .balanceOf(window.klaytn.selectedAddress)
+            .call((e, bal) => setKPStakeBal((bal / 1e18).toPrecision(3)))
 
           await state.kpLockContract.methods
             .balanceOf(window.klaytn.selectedAddress)
@@ -235,9 +257,9 @@ const Stake = () => {
       await state.kpStakingContract.methods
         .rewardRate()
         .call((e, v) => {
-          setKPStakekpEKLweekreward((v / 1e18).toPrecision(3))
+          setKpgStakekpEKLweekreward((v / 1e18).toPrecision(3))
         });
-    } catch { setKPStakekpEKLweekreward(undefined) }
+    } catch { setKpgStakekpEKLweekreward(undefined) }
 
     try {
       await state.kpEKLStakingContract.methods
@@ -310,7 +332,7 @@ const Stake = () => {
         <p className="totalInfo-content">
           {isNaN(totalclaimable) ?
             <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
-            : `$ ${totalclaimable.toFixed(3)}`}
+            : `$ ${totalclaimable.toFixed(5)}`}
         </p>
       </Section>
 
@@ -321,7 +343,7 @@ const Stake = () => {
         <p className="totalInfo-content">
           {isNaN(totalclaimable) ?
             <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
-            : `$ ${totaldeposit.toFixed(3)}`}
+            : `$ ${totaldeposit.toFixed(5)}`}
         </p>
       </Section>
 
@@ -346,9 +368,18 @@ const Stake = () => {
             </p>
           </div>
           <div>$ {kpstaketvl}</div>
-          <div> {kpstakeApr.toFixed(2)} %</div>
-          <div> {kpstakebal} KP</div>
-          <div>$ {kpstakeclaimable.toFixed(3)}</div>
+          <div onMouseOver={() => setIsKpgStakeAprInfoOpen(true)}
+            onMouseLeave={() => setIsKpgStakeAprInfoOpen(false)}>
+            {kpgStakeApr.toFixed(2)} %
+
+            {isKpgStakeAprInfoOpen ? <AprInfoModal>
+              KPG Stake APR<br />
+              - kpEKL Reward : {kpgStakeRewardKpeklApr.toFixed(2)} %
+            </AprInfoModal> : null}
+
+          </div>
+          <div> {kpstakebal} KPG</div>
+          <div>$ {kpstakeclaimable.toFixed(5)}</div>
           <div>
             <Link to={"/StakeLock/KPGStake"}><img src={ArrowIcon} /></Link>
           </div>
@@ -365,9 +396,20 @@ const Stake = () => {
             </p>
           </div>
           <div> $ {kpeklstaketvl}</div>
-          <div> {kpeklStakeApr.toFixed(2)} %</div>
+          <div onMouseOver={() => setIsKpeklStakeAprInfoOpen(true)}
+            onMouseLeave={() => setIsKpeklStakeAprInfoOpen(false)}>
+            {kpeklStakeApr.toFixed(2)} %
+
+            {isKpeklStakeAprInfoOpen ? <AprInfoModal>
+              kpEKL Stake APR<br />
+              - EKL Reward : {kpeklStakeRewardEklApr.toFixed(2)} %<br />
+              - 3Moon Reward : {kpeklStakeReward3MoonApr.toFixed(2)} %
+            </AprInfoModal> : null}
+
+          </div>
+
           <div> {kpeklstakebal} kpEKL</div>
-          <div>$ {kpeklstakeclaimable.toFixed(3)}</div>
+          <div>$ {kpeklstakeclaimable.toFixed(5)}</div>
           <div><Link to={"/StakeLock/kpEKLStake"}> <img src={ArrowIcon} /></Link> </div>
         </Item>
       </Section>
@@ -393,9 +435,20 @@ const Stake = () => {
             </p>
           </div>
           <div> $ {kpLocktvl}</div>
-          <div> {lockApr.toFixed(2)} %</div>
-          <div> {kplockbal} KP</div>
-          <div> $ {kpLockclaimable.toFixed(3)}</div>
+          <div onMouseOver={() => setIsKpgLockAprInfoOpen(true)}
+            onMouseLeave={() => setIsKpgLockAprInfoOpen(false)}>
+            {kpgLockApr.toFixed(2)} %
+
+            {isKpgLockAprInfoOpen ? <AprInfoModal>
+              KPG Lock APR<br />
+              - EKL Reward : {kpgLockRewardEKLApr.toFixed(2)} %<br />
+              - kpEKL Reward : {kpgLockRewardkpEKLApr.toFixed(2)} %<br/>
+              - 3Moon Reward : {kpgLockReward3MoonApr.toFixed(2)} %
+            </AprInfoModal> : null}
+
+          </div>
+          <div> {kplockbal} KPG</div>
+          <div> $ {kpLockclaimable.toFixed(5)}</div>
           <div><Link to={"/StakeLock/KPGLock"}> <img src={ArrowIcon} /></Link> </div>
         </Item>
       </Section>

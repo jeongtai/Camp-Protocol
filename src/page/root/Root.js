@@ -3,18 +3,9 @@ import Landing from "./Landing"
 
 function Root(){
 
-    // -------------------real
-    const isApp = () =>{
-        return window.location.host.includes("test")
-    }
-
-    return isApp() ? <App/> : <Landing/>
-
-    // -------------------test
-    // const isLanding = () =>{
-    //     return window.location.host.includes("landing")
-    // }
-
-    // return isLanding() ? <Landing/> : <App/>
+    if (window.location.host.includes("app")) {return <App/>}
+    else if (window.location.host.includes("test")) {return <App/>}
+    else {return <Landing/>}
+    
 }
 export default Root;

@@ -141,28 +141,30 @@ function Navbar() {
                     );
                 })}
             </Items>
-            <Items>
-                <p className="soonTitle">Soon </p>
-                {soonMenus.map((menu, index) => {
-                    return (
-                        <Link
-                            to={menu.path}
-                            key={index}
-                            onClick={() => setActiveMenu(menu.path)}
-                        >
-                            <Item
-                                isActive={
-                                    window.location.pathname === menu.path
-                                }
+            {window.location.host.includes("test")
+            &&  <Items>
+                    <p className="soonTitle">Soon </p>
+                    {soonMenus.map((menu, index) => {
+                        return (
+                            <Link
+                                to={menu.path}
                                 key={index}
+                                onClick={() => setActiveMenu(menu.path)}
                             >
-                                <img src={menu.logo} />
-                                <span>{menu.name}</span>
-                            </Item>
-                        </Link>
-                    );
-                })}
-            </Items>
+                                <Item
+                                    isActive={
+                                        window.location.pathname === menu.path
+                                    }
+                                    key={index}
+                                >
+                                    <img src={menu.logo} />
+                                    <span>{menu.name}</span>
+                                </Item>
+                            </Link>
+                        );
+                    })}
+                </Items>
+            }
         </Nav>
     );
 }

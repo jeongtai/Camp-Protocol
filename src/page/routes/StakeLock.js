@@ -23,6 +23,7 @@ const Main = styled.div`
         grid-column: 1/3;
     }
 `;
+
 const Section = styled.div`
     display: flex;
     justify-content: space-between;
@@ -35,11 +36,20 @@ const Section = styled.div`
     padding: 20px;
     border: 2px solid ${(props) => props.theme.borderColor};
     & .Title {
-    font-weight: 400;
-    font-size: 20px;
-    width: 100%;
-    margin-bottom : 20px;
-}
+      font-weight: 400;
+      font-size: 20px;
+      width: 100%;
+      margin-bottom : 20px;
+    }
+    & .totalInfo-header{
+      color :  ${(props) => props.theme.textDarkGray};
+      padding-bottom: 10px;
+      text-align: center;
+    }
+
+    & .totalInfo-content{
+      text-align: center;
+    }
 `
 
 const Header = styled.div`
@@ -75,13 +85,6 @@ const Item = styled.div`
     padding : 0 10px 0 0;
   }
 `
-
-const StakeContent = styled.div`
-flex-direction: column;
-display: flex;
-justify-content: center;
-align-content: center;
-`;
 
 const Stake = () => {
   let state = useSelector((state) => state)
@@ -300,12 +303,26 @@ const Stake = () => {
 
   return (
     <Main>
-      <Section>Total Claimable<br />
-        {isNaN(totalclaimable) ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" /> : `$ ${totalclaimable.toFixed(3)}`}
+      <Section>
+        <p className="totalInfo-header">
+          Total Claimable<br />
+        </p>
+        <p className="totalInfo-content">
+          {isNaN(totalclaimable) ?
+            <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
+            : `$ ${totalclaimable.toFixed(3)}`}
+        </p>
       </Section>
 
-      <Section>Total Deposit<br />
-        {isNaN(totalclaimable) ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" /> : `$ ${totaldeposit.toFixed(3)}`}
+      <Section>
+        <p className="totalInfo-header">
+          Total Deposit<br />
+        </p>
+        <p className="totalInfo-content">
+          {isNaN(totalclaimable) ?
+            <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
+            : `$ ${totaldeposit.toFixed(3)}`}
+        </p>
       </Section>
 
       <Section className="wide">
@@ -329,7 +346,7 @@ const Stake = () => {
             </p>
           </div>
           <div>$ {kpstaketvl}</div>
-          <div> {kpstakeApr.toFixed(3)} %</div>
+          <div> {kpstakeApr.toFixed(2)} %</div>
           <div> {kpstakebal} KP</div>
           <div>$ {kpstakeclaimable.toFixed(3)}</div>
           <div>
@@ -348,7 +365,7 @@ const Stake = () => {
             </p>
           </div>
           <div> $ {kpeklstaketvl}</div>
-          <div> {kpeklStakeApr.toFixed(3)} %</div>
+          <div> {kpeklStakeApr.toFixed(2)} %</div>
           <div> {kpeklstakebal} kpEKL</div>
           <div>$ {kpeklstakeclaimable.toFixed(3)}</div>
           <div><Link to={"/StakeLock/kpEKLStake"}> <img src={ArrowIcon} /></Link> </div>
@@ -376,7 +393,7 @@ const Stake = () => {
             </p>
           </div>
           <div> $ {kpLocktvl}</div>
-          <div> {lockApr.toFixed(3)} %</div>
+          <div> {lockApr.toFixed(2)} %</div>
           <div> {kplockbal} KP</div>
           <div> $ {kpLockclaimable.toFixed(3)}</div>
           <div><Link to={"/StakeLock/KPGLock"}> <img src={ArrowIcon} /></Link> </div>

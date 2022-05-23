@@ -291,7 +291,7 @@ function Bondingtool(lpInfosProps) {
               value={lpamount}
               setValueFn={setLPAmount}
               haveBal={true}
-              price={lpamount * assetprice}
+              price={assetprice}
               balance={lpbal}
               haveMax={true}
               type="number"

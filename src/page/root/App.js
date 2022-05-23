@@ -53,6 +53,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/Convert" element={<Convert />} />
                         <Route path="/StakeLock" element={<Stake />} />
+                        <Route path="/StakeLock/*" element={<Stake />} />
                         <Route path="/StakeLock/KPGLock" element={<KPGLock />} />
                         <Route path="/StakeLock/KPGStake" element={<KPGStakingtool />} />
                         <Route path="/StakeLock/kpEKLStake" element={<KPEKLStakingtool />} />

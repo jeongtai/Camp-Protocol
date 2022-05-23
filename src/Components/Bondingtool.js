@@ -303,7 +303,7 @@ function Bondingtool(lpInfosProps) {
                 bondInfos.map((bondInfo, index) => (
                   <Info key={bondInfo.name}>
                     <p className="infoName">{bondInfo.name}</p>
-                    <p>{bondInfo.val === undefined ? <LoadingSVG type="dot" color="#000" width="20px" height="10px" /> : bondInfo.expression}</p>
+                    <p>{bondInfo.val === undefined ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" />  : bondInfo.expression}</p>
                   </Info>)))
                 :
                 (

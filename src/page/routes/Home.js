@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import TokenLogo from "../../assets/TokenLogo";
 import LoadingSVG from "../../assets/LoadingSVG.js";
-import ApexCharts from "react-apexcharts";
 import { EKLTokenAddress } from "../../const/Contract";
 
 const Dashboard = styled.div`
@@ -14,9 +13,11 @@ const Dashboard = styled.div`
     // grid
     display: grid;
     grid-template-columns: 50% 50%;
+    
     & .overview{
         grid-column: 1/3;
     }
+
 `;
 
 const Overview = styled.div`
@@ -70,9 +71,12 @@ const TokensList = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
     width : 200%;
-    
+
+    @media (max-width: ${(props) => props.theme.firstResponsiveWidth}) {
+        flex-direction: column;
+    }
+
 `;
 
 const TokenItem = styled.div`
@@ -81,6 +85,10 @@ const TokenItem = styled.div`
     flex-direction: column;
 
     margin : 10px 10px 0 10px;
+    width : 50%;
+    @media (max-width: ${(props) => props.theme.firstResponsiveWidth}) {
+        width : 100%;
+    }
 
     background-color: white;
     border-radius: 15px;
@@ -113,21 +121,27 @@ const TokenItemInfo = styled.div`
 `;
 
 const AddWallet = styled.button`
-    width: 186px;
+    width: 50%;
     height: 34px;
     background-color: ${(props) => props.theme.btnGray};
     border: 0;
     border-radius: 6px;
     margin-right: 16px;
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 const GetToken = styled.button`
-    width: 186px;
+    width: 50%;
     height: 34px;
     background-color: ${(props) => props.theme.btnBlack};
     border: 0;
     border-radius: 6px;
     color: white;
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 function addToken(tokenaddr, url, name) {
@@ -164,25 +178,25 @@ function Home() {
     const [eklkpeklTreasuryVal, setEklkpeklTreasuryVal] = useState()
     const [threemoonTreasuryVal, setThreemoonTreasuryVal] = useState()
     const [depositThreemoonVal, setDepositThreemoonVal] = useState()
-    const [kpstaketvl, setKPStakeTVL] =useState()
+    const [kpstaketvl, setKPStakeTVL] = useState()
     const [kpLocktvl, setKPLockTVL] = useState()
     const [kpeklstaketvl, setkpEKLStakeTVl] = useState()
     const [isLoading, setIsLoading] = useState(false);
 
 
-    let Treasurybal = parseFloat(kpgTreasuryVal) + parseFloat(eklkpeklTreasuryVal) + parseFloat(threemoonTreasuryVal)
-    let tvl = Treasurybal +parseFloat(kpstaketvl) + parseFloat(kpLocktvl) + parseFloat(kpeklstaketvl)
+    let Treasurybal = kpgTreasuryVal + eklkpeklTreasuryVal + threemoonTreasuryVal
+    let tvl = Treasurybal + kpstaketvl + kpLocktvl + kpeklstaketvl
 
     const caver = new Caver(window.klaytn);
     const infos = [
-        { name: "Total Market Cap", amt: `${(kpgprice *kpgSupply + kpEKLSupply * kpEKLprice).toFixed(3)}` },
-        { name: "TVL", amt: `${tvl.toFixed(3)}` },
-        { name: "Treasury Balance", amt: `${Treasurybal.toFixed(3)}` },
-        { name: "Total EKL", amt: `${kpEKLSupply}` },
-        { name: "KPG Price", amt: `${kpgprice}` },
-        { name: "Backer Price per KPG", amt: `${(Treasurybal / kpgSupply).toPrecision(3)}` },
-        { name: "kpEKL Price", amt: `${kpEKLprice}` },
-        { name: "kpEKL/EKL Ratio", amt: `${kpEKLratio}` },
+        { name: "TVL", amt: `${tvl.toFixed(3)}` , prefix : '$'},
+        { name: "Treasury Balance", amt: `${Treasurybal.toFixed(3)}` , prefix : '$'},
+        { name: "Backer Price per KPG", amt: `${(Treasurybal / kpgSupply).toPrecision(3)}` , prefix : '$'},
+        { name: "kpEKL/EKL Ratio", amt: `${kpEKLratio}` , prefix : ''},
+        { name: "KPG Price", amt: `${kpgprice}` , prefix : '$'},       
+        { name: "KPG Supply", amt: `${kpgSupply}`, prefix : ''}, 
+        { name: "kpEKL Price", amt: `${kpEKLprice}` , prefix : '$'},
+        { name: "kpEKL Supply", amt: `${kpEKLSupply}` , prefix : ''},
     ];
 
     const Tokens = [
@@ -198,7 +212,7 @@ function Home() {
             price: kpEKLprice,
             supply: kpEKLSupply,
             Contract: state.kpEKLContract._address,
-            logo: "https://kprotocol-asset.s3.ap-northeast-2.amazonaws.com/KUSD_TOKEN.png",
+            logo: "https://kprotocol-asset.s3.ap-northeast-2.amazonaws.com/kpEKL.png",
         },
     ];
 
@@ -206,28 +220,28 @@ function Home() {
         try {
             await state.KPGContract.methods
                 .totalSupply()
-                .call((e, v) => setKpgSupply(caver.utils.fromPeb(v, "KLAY")));
+                .call((e, v) => setKpgSupply(parseFloat(caver.utils.fromPeb(v, "KLAY")).toFixed(3)))
         } catch { setKpgSupply(undefined) }
 
         try {
             await state.kpEKLContract.methods
                 .totalSupply()
-                .call((e, v) => setkpEKLSupply((v / 1e18).toFixed(3)))
+                .call((e, v) => setkpEKLSupply(parseFloat((v / 1e18)).toFixed(3)))
         } catch { setkpEKLSupply(undefined) }
 
         try {
             await state.KPG_USDTLPContract.methods
                 .estimatePos(state.KPGContract._address, caver.utils.toPeb("1", "KLAY"))
                 .call(async (e, v) => {
-                  setKPGPrice((v / 1e6).toFixed(3))
+                    setKPGPrice((v / 1e6).toFixed(3))
 
-                  await state.kpStakingContract.methods
-                  .totalSupply()
-                  .call((e, bal) => setKPStakeTVL((bal * v /1e24).toFixed(3)))
+                    await state.kpStakingContract.methods
+                        .totalSupply()
+                        .call((e, bal) => setKPStakeTVL(parseFloat((bal * v / 1e24).toFixed(3))))
 
-                  await state.kpLockContract.methods
-                  .totalSupply()
-                  .call((e, bal) => setKPLockTVL((bal * v /1e24).toFixed(3)))
+                    await state.kpLockContract.methods
+                        .totalSupply()
+                        .call((e, bal) => setKPLockTVL(parseFloat((bal * v / 1e24).toFixed(3))))
 
                 });
         } catch { setKPGPrice(undefined) }
@@ -239,7 +253,7 @@ function Home() {
                     await state.KPG_USDTLPContract.methods
                         .balanceOf(state.BondTreasuryContract._address)
                         .call((e, bal) => {
-                            setKPGTreasuryVal((price * bal / 1e24).toPrecision(3))
+                            setKPGTreasuryVal(parseFloat((price * bal / 1e24).toPrecision(3)))
                         })
                 });
         } catch { setKPGTreasuryVal(undefined) }
@@ -251,7 +265,7 @@ function Home() {
                     await state.EKLkpEKLLPContract.methods
                         .balanceOf(state.BondTreasuryContract._address)
                         .call((e, bal) => {
-                            setEklkpeklTreasuryVal((price * bal / 1e24).toPrecision(3))
+                            setEklkpeklTreasuryVal(parseFloat((price * bal / 1e24).toPrecision(3)))
                         })
                 });
         } catch { setEklkpeklTreasuryVal(undefined) }
@@ -264,10 +278,10 @@ function Home() {
                         .balanceOf(state.BondTreasuryContract._address)
                         .call(async (e, undepositval) => {
                             await state.mock3MoonContract.methods
-                            .balanceOf(state.BondTreasuryContract._address)
-                            .call((e, depositval) => {
-                              setThreemoonTreasuryVal((price * (parseFloat(undepositval) + parseFloat(depositval)) / 1e24).toFixed(3))
-                            })
+                                .balanceOf(state.BondTreasuryContract._address)
+                                .call((e, depositval) => {
+                                    setThreemoonTreasuryVal(parseFloat((price * (parseFloat(undepositval) + parseFloat(depositval)) / 1e24).toFixed(3)))
+                                })
                         })
                 });
         } catch { setThreemoonTreasuryVal(undefined) }
@@ -289,24 +303,22 @@ function Home() {
             await state.EKLLPContract.methods
                 .estimatePos(EKLTokenAddress, caver.utils.toPeb("1", "KLAY"))
                 .call(async (e, eklprice) => {
-                  setEKLprice((eklprice / 1e6).toPrecision(3))
-                  await state.EKLkpEKLLPContract.methods
-                  .getCurrentPool()
-                  .call(async(e, v) => {
-                    setkpEklPrice((v[0] / v[1] * eklprice /1e6).toFixed(3))
-                    setkpEKLRatio((v[0] / v[1]).toFixed(3))
-                    await state.kpEKLStakingContract.methods
-                    .totalSupply()
-                    .call((e, bal) => setkpEKLStakeTVl((bal * v[0] / v[1] * eklprice /1e24).toFixed(3)))
-                  })
+                    setEKLprice((eklprice / 1e6).toPrecision(3))
+                    await state.EKLkpEKLLPContract.methods
+                        .getCurrentPool()
+                        .call(async (e, v) => {
+                            setkpEklPrice((v[0] / v[1] * eklprice / 1e6).toFixed(3))
+                            setkpEKLRatio((v[0] / v[1]).toFixed(3))
+                            await state.kpEKLStakingContract.methods
+                                .totalSupply()
+                                .call((e, bal) => setkpEKLStakeTVl(parseFloat((bal * v[0] / v[1] * eklprice / 1e24).toFixed(3))))
+                        })
                 })
         } catch {
             setEKLprice(undefined)
             setkpEklPrice(undefined)
             setkpEKLRatio(undefined)
         }
-
-
 
         // --------- bank 관련-------------
         // try {
@@ -326,7 +338,8 @@ function Home() {
         //         .getAssetPrice(state.CAMPContract._address)
         //         .call((e, v) => setPriceTarget(v / 1e6));
         // } catch { setPriceTarget(undefined) }
-
+        // ----------------------------------
+        
         setIsLoading(false);
     }
     useEffect(() => {
@@ -362,7 +375,7 @@ function Home() {
                                 <p className="value">
                                     {isNaN(info.amt)
                                         ? <LoadingSVG type="dot" color="#000" width="40px" height="20px" />
-                                        : info.amt}
+                                        : `${info.prefix} ${info.amt}`}
                                 </p>
                             </OverviewItem>
                         ))}
@@ -405,7 +418,11 @@ function Home() {
                                     >
                                         Add Wallet
                                     </AddWallet>
-                                    <GetToken>Get {token.name}</GetToken>
+                                    <GetToken onClick={()=>window.open('https://klayswap.com/exchange/swap')}>
+                                        Get {token.name}
+                                    </GetToken>
+                                    
+
                                 </TokenItemInfo>
                             </TokenItem>
                         ))}

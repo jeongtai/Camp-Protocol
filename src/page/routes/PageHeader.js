@@ -50,7 +50,7 @@ function PageHeader() {
     useEffect(() => {
         
         const onLoad = async () => {
-            console.log("1 onLoad current Address : ", currentAddress);
+            console.log("onLoad current Address : ", currentAddress);
             if (currentAddress) {
                 setIsWalletConnected(true);
                 setCurrentAddress(currentAddress);
@@ -67,7 +67,7 @@ function PageHeader() {
             window.klaytn.on("accountsChanged", async function (accounts) {
                 
                 console.log(
-                    "2 account change listned in header : ",
+                    "account change listned in header : ",
                     currentAddress,
                     " -> ",
                     accounts[0]
@@ -84,7 +84,7 @@ function PageHeader() {
 
     async function connectKaikas() {
         const response = await window.klaytn.enable();
-        console.log("connect Btn Click : ", response);
+        console.log("connect Click : ", response);
         setCurrentAddress(response[0]);
         setIsWalletConnected(true);
         return window.klaytn.selectedAddress;

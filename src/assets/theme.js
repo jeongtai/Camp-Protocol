@@ -6,9 +6,11 @@ export const theme = {
    activeColor : "#282828",
    unActiveColor : "#B2B2B2",
    backGray: "#f8f8f8",
+   backDarkGray :  "#7D7D7D",
    backBlue : "#F0F7FF",
    backBlack : "#262A31",
    backYellow : "#FFDE30",
+   
    
    // Btn
    btnGray : "#EDEDED",
@@ -30,8 +32,10 @@ export const theme = {
    hoverTextColor : "#262A31",
    selectedColor : "#FFEF98",
 
-   // page-header
-   headerHeight : "100px",
+   // responsive page width setting
+   firstResponsiveWidth : "900px",
+   secondResponsiveWidth : "600px",
+   // 
 }
 
 export default theme

@@ -1,61 +1,57 @@
 
 import styled, { keyframes } from "styled-components";
 const Section = styled.div`
-
-left : auto;
-right : auto;
-
+    left : auto;
+    right : auto;
 `
 
 const Setting = styled.div`
-position: absolute;
-margin-left : 14%;
-padding: 20px;
+    position: absolute;
+    margin-left : 14%;
+    padding: 20px;
 
-width: 200px;
-height: 150px;
+    width: 200px;
+    height: 150px;
 
-background-color: white;
-border-radius: 15px;
-border: 2px solid ${(props) => props.theme.borderColor};
-z-index: 2;
-box-shadow: 0px 4px 20px 0px #00000033;
+    background-color: white;
+    border-radius: 15px;
+    border: 2px solid ${(props) => props.theme.borderColor};
+    z-index: 2;
+    box-shadow: 0px 4px 20px 0px #00000033;
 
-font-size: 14px;
+    font-size: 14px;
 
-transform-origin: 100% 0;
-animation: ${keyframes`
-              0% { transform:scale(0) }
-              100% { transform:scale(1) }
-              `} 0.2s linear;
+    transform-origin: 100% 0;
+    animation: ${keyframes`
+                0% { transform:scale(0) }
+                100% { transform:scale(1) }
+                `} 0.2s linear;
 
 `;
 
 const InputSlippage = styled.input.attrs({ required: true })`
-margin: 14px 0px;
-border-radius: 8px;
-width: 80%;
-height: 40px;
-border: 1px solid ${(props) => props.theme.btnBlue};
-font-size: 18px;
-font-family: "Lexend", sans-serif;
-opacity: 1;
+    margin: 14px 0px;
+    border-radius: 8px;
+    width: 80%;
+    height: 40px;
+    border: 1px solid ${(props) => props.theme.btnBlue};
+    font-size: 18px;
+    font-family: "Lexend", sans-serif;
+    opacity: 1;
 `;
 
 const SlippageButton = styled.button`
-padding: 4px 10px;
-margin: 4px;
-border-radius: 5px;
-background-color: ${(props) =>
-        props.isMatch ? props.theme.btnBlue : props.theme.btnGray};
-color: ${(props) => (props.isMatch ? "white" : "black")};
+    padding: 4px 10px;
+    margin: 4px;
+    border-radius: 5px;
+    background-color: ${(props) =>
+            props.isMatch ? props.theme.btnBlue : props.theme.btnGray};
+    color: ${(props) => (props.isMatch ? "white" : "black")};
 
 `;
 
 
 function SlippageSetting(props) {
-    console.log(props)
-
     return (
         <Section>
             <Setting>

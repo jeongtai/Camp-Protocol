@@ -147,8 +147,6 @@ const Stake = () => {
   let totaldeposit = kpeklstakeval + kpstakeval + kplockval
   let totalclaimable = kpstakeclaimable + kpeklstakeclaimable + kpLockclaimable
 
-  state.kpLockContract.methods.claimableRewards(window.klaytn.selectedAddress).call((e,v) => console.log(v))
-
   async function getInfo() {
     try {
       await state.KPG_USDTLPContract.methods

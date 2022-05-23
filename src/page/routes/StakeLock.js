@@ -147,6 +147,8 @@ const Stake = () => {
   let totaldeposit = kpeklstakeval + kpstakeval + kplockval
   let totalclaimable = kpstakeclaimable + kpeklstakeclaimable + kpLockclaimable
 
+  state.kpLockContract.methods.claimableRewards(window.klaytn.selectedAddress).call((e,v) => console.log(v))
+
   async function getInfo() {
     try {
       await state.KPG_USDTLPContract.methods
@@ -161,16 +163,16 @@ const Stake = () => {
               setKPStakeTVL((bal * price / 1e24).toPrecision(3))
             })
 
-          await state.kpStakingContract.methods
-            .balanceOf(window.klaytn.selectedAddress)
-            .call((e, bal) => setKPStakeBal((bal / 1e18).toPrecision(3)))
-
           await state.kpLockContract.methods
             .totalSupply()
             .call((e, bal) => {
               setKPLockTVL((bal * price / 1e24).toFixed(3))
               setKPLockSup((bal / 1e18).toPrecision(3))
             })
+
+          await state.kpStakingContract.methods
+          .balanceOf(window.klaytn.selectedAddress)
+          .call((e, bal) => setKPStakeBal((bal / 1e18).toPrecision(3)))
 
           await state.kpLockContract.methods
             .balanceOf(window.klaytn.selectedAddress)

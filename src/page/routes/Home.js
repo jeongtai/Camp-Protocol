@@ -206,6 +206,7 @@ function Home() {
             supply: kpgSupply,
             Contract: state.KPGContract._address,
             logo: "https://kprotocol-asset.s3.ap-northeast-2.amazonaws.com/KP_Token.png",
+            swap : "https://klayswap.com/exchange/swap?input=0x0000000000000000000000000000000000000000&output=0xf05d180a169418959a017865866f0abaf7db7ead"
         },
         {
             name: "kpEKL",
@@ -213,6 +214,7 @@ function Home() {
             supply: kpEKLSupply,
             Contract: state.kpEKLContract._address,
             logo: "https://kprotocol-asset.s3.ap-northeast-2.amazonaws.com/kpEKL.png",
+            swap : "https://klayswap.com/exchange/swap?input=0x0000000000000000000000000000000000000000&output=0x08644836b786b69a5082fd4644a3f2d1534b11a8"
         },
     ];
 
@@ -418,7 +420,7 @@ function Home() {
                                     >
                                         Add Wallet
                                     </AddWallet>
-                                    <GetToken onClick={()=>window.open('https://klayswap.com/exchange/swap')}>
+                                    <GetToken onClick={()=>window.open(token.swap)}>
                                         Get {token.name}
                                     </GetToken>
                                     

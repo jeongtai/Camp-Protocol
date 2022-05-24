@@ -123,6 +123,8 @@ function KPGLock() {
     const [kpLockearned3Moon, setKPLockEarned3Moon] = useState()
     const [kpLockearnedpostEKL, setKPLockEarnedpostEKL] = useState()
 
+    const [kpLockuserlockinfo, setKPLockUserLockInfo] = useState([])
+
     const [isApproved, setIsApproved] = useState(false)
     const [inputformValue, setInputformValue] = useState()
     const [nowTab, setNowTab] = useState("Lock")
@@ -177,6 +179,13 @@ function KPGLock() {
           setKPLockEarned3Moon(undefined)
           setKPLockEarnedpostEKL(undefined)
         }
+
+        try {
+          await state.kpLockContract.methods
+          .lockedBalances(window.klaytn.selectedAddress)
+          .call((e, v) => 
+            setKPLockUserLockInfo(v[3]))
+        } catch(e) {setKPLockUserLockInfo()}
 
     }
 

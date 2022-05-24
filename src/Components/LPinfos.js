@@ -109,7 +109,10 @@ function LPInfos(props) {
     try {
       await bondContract.methods.pendingPayoutFor(accounts)
         .call((e, v) => {
-          if (v.toString() !== "0") setIsClaimable(true)
+          if (v.toString() !== "0") {
+            setIsClaimable(true)
+            setPoolState("Claim")
+          }
         })
     } catch (e) { setPoolState(undefined) }
 
@@ -117,7 +120,11 @@ function LPInfos(props) {
       await state.KPGContract.methods
         .balanceOf(TreasuryContract)
         .call((e, v) => {
-          if (v < caver.utils.toPeb("10", "KLAY")) setIsBondable(false)
+          if (v < caver.utils.toPeb("10", "KLAY")) {
+            setIsBondable(false)
+          } else {
+            setPoolState("Bond")
+          }
         })
     } catch (e) { setIsBondable(true) }
   }
@@ -145,7 +152,6 @@ function LPInfos(props) {
         break;
     }
   }
-
   return (
     <LPInfoItem>
       <div className="tokenName">

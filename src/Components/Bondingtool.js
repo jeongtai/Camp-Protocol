@@ -200,7 +200,7 @@ function Bondingtool(lpInfosProps) {
         .call((e, v) => {
           if (v > 1e18) {
             setIsApproved(true)
-          } else {
+          } else { // allowance가 되어있지 않으면
             if (lpInfosProps.btnState === "Bond") {
               setBtnInfo("Approve")
             }

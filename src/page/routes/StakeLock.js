@@ -53,7 +53,7 @@ const Section = styled.div`
     }
 `
 
-const Header = styled.div`
+const StakeHeader = styled.div`
   display: grid;
   grid-template-columns: 2fr repeat(5, 1fr);
 
@@ -68,7 +68,7 @@ const Header = styled.div`
   }
 `
 
-const Item = styled.div`
+const StakeItem = styled.div`
   display: grid;
   grid-template-columns: 2fr repeat(5, 1fr);
   height : 80px;
@@ -85,6 +85,13 @@ const Item = styled.div`
     gap : 5px;
     padding : 0 10px 0 0;
   }
+`
+
+const LockHeader = styled(StakeHeader)`
+  grid-template-columns: 2fr repeat(6, 1fr);
+`
+const LockItem = styled(StakeItem)`
+  grid-template-columns: 2fr repeat(6, 1fr);
 `
 
 const AprInfoModal = styled.div`
@@ -152,13 +159,13 @@ const Stake = () => {
   // kpEKL STAKE APR
   let kpeklStakeRewardEklApr = parseFloat(kpEKLStakeEKLweekreward) * 3600 * 24 * 365 * eklprice / kpeklstaketvl * 100
   let kpeklStakeReward3MoonApr = parseFloat(kpEKLStakeFeeweekreward) * 3600 * 24 * 365 * ekl3moonprice / kpeklstaketvl * 100
-  
+
   let kpeklStakeApr = kpeklStakeRewardEklApr + kpeklStakeReward3MoonApr;
 
   // KPG Lock APR
   let kpgLockRewardEKLApr = parseFloat(KpgLockEklWeekreward) * eklprice / kpLocktvl * 100 * 365 / 7
   let kpgLockRewardkpEKLApr = parseFloat(lockkpEKLreward) * kpeklprice / kpLocktvl * 100 * 365 / 7
-  let kpgLockReward3MoonApr =  parseFloat(lock3moonreward) * ekl3moonprice / kpLocktvl * 100 * 365 / 7
+  let kpgLockReward3MoonApr = parseFloat(lock3moonreward) * ekl3moonprice / kpLocktvl * 100 * 365 / 7
   let kpgLockApr = kpgLockRewardEKLApr + kpgLockRewardkpEKLApr + kpgLockReward3MoonApr
 
 
@@ -201,12 +208,12 @@ const Stake = () => {
 
           await state.kpLockContract.methods
             .balanceOf(window.klaytn.selectedAddress)
-            .call(async (e, lockbal) => 
+            .call(async (e, lockbal) =>
               setKPLockBal((lockbal / 1e18).toPrecision(3)))
 
           await state.kpLockContract.methods
-          .pendingLockOf(window.klaytn.selectedAddress)
-          .call((e, pendingbal) => setKPLockPendingbal((pendingbal / 1e18).toPrecision(3)))
+            .pendingLockOf(window.klaytn.selectedAddress)
+            .call((e, pendingbal) => setKPLockPendingbal((pendingbal / 1e18).toPrecision(3)))
         });
     } catch { setKPGPrice(undefined) }
 
@@ -365,15 +372,15 @@ const Stake = () => {
 
       <Section className="wide">
         <p className="Title">Stake</p>
-        <Header>
+        <StakeHeader>
           <p>Name</p>
           <p>TVL</p>
           <p>APR</p>
           <p>Staked</p>
           <p>Claimable</p>
           <p></p>
-        </Header>
-        <Item>
+        </StakeHeader>
+        <StakeItem>
           <div className="tokenName">
             <TokenLogo name="KPG" />
             <p>
@@ -399,9 +406,9 @@ const Stake = () => {
           <div>
             <Link to={"/StakeLock/KPGStake"}><img src={ArrowIcon} /></Link>
           </div>
-        </Item>
+        </StakeItem>
 
-        <Item>
+        <StakeItem>
           <div className="tokenName">
             <TokenLogo name="kpEKL" />
             <p>
@@ -427,12 +434,12 @@ const Stake = () => {
           <div> {kpeklstakebal} kpEKL</div>
           <div>$ {kpeklstakeclaimable.toFixed(5)}</div>
           <div><Link to={"/StakeLock/kpEKLStake"}> <img src={ArrowIcon} /></Link> </div>
-        </Item>
+        </StakeItem>
       </Section>
 
       <Section className="wide">
         <p className="Title">Lock</p>
-        <Header>
+        <LockHeader>
           <p>Name</p>
           <p>TVL</p>
           <p>APR</p>
@@ -440,8 +447,8 @@ const Stake = () => {
           <p>Pending</p>
           <p>Claimable</p>
           <p></p>
-        </Header>
-        <Item>
+        </LockHeader>
+        <LockItem>
           <div className="tokenName">
             <TokenLogo name="KPG" />
             <p>
@@ -459,7 +466,7 @@ const Stake = () => {
             {isKpgLockAprInfoOpen ? <AprInfoModal>
               KPG Lock APR<br />
               - EKL Reward : {kpgLockRewardEKLApr.toFixed(2)} %<br />
-              - kpEKL Reward : {kpgLockRewardkpEKLApr.toFixed(2)} %<br/>
+              - kpEKL Reward : {kpgLockRewardkpEKLApr.toFixed(2)} %<br />
               - 3Moon Reward : {kpgLockReward3MoonApr.toFixed(2)} %
             </AprInfoModal> : null}
 
@@ -468,7 +475,7 @@ const Stake = () => {
           <div> {kplockpendingbal} KPG</div>
           <div> $ {kpLockclaimable.toFixed(5)}</div>
           <div><Link to={"/StakeLock/KPGLock"}> <img src={ArrowIcon} /></Link> </div>
-        </Item>
+        </LockItem>
       </Section>
     </Main>
 

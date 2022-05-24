@@ -87,7 +87,6 @@ function PageHeader() {
         console.log("connect Click : ", response);
         setCurrentAddress(response[0]);
         setIsWalletConnected(true);
-        window.location.reload(true);
     }
 
     function disconnectWallet() {

@@ -17,7 +17,7 @@ import Bondingtool from "../../Components/Bondingtool";
 import Bank from "../routes/Bank";
 import Fund from "../routes/Fund";
 import Calculator from "../routes/Calculator";
-
+import NotFound from "./NotFound"
 
 {/* margin: 0px 10px 0px ${(props) => props.theme.navWidth + 100}px; */ }
 
@@ -62,6 +62,7 @@ function App() {
                         <Route path="/Bank" element={<Bank />} />
                         <Route path="/Calculator" element={<Calculator />} />
                         <Route path="/Fund" element={<Fund />} />
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 }
             </Main>

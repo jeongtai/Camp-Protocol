@@ -42,20 +42,18 @@ const ConnectWallet = styled.button`
 function PageHeader() {
     const [isWalletConnected, setIsWalletConnected] = useState(false);
     const [currentAddress, setCurrentAddress] = useState(window.klaytn
-                                                        ? window.klaytn.selectedAddress
-                                                        : undefined);
+        ? window.klaytn.selectedAddress
+        : undefined);
     const { pathname } = useLocation();
-    
+
     // initialize hook----------------------------
     useEffect(() => {
-        
         const onLoad = async () => {
-            console.log("onLoad current Address : ", currentAddress);
-            if (currentAddress) {
-                setIsWalletConnected(true);
-                setCurrentAddress(currentAddress);
-            }
+            if (!isWalletConnected) { setCurrentAddress(undefined) }
+            console.log("onLoad success!")
+            console.log("wallet connected?", isWalletConnected,"address : ",currentAddress);
         };
+
         // load eventlistner 추가해서
         // 문서내 모든 컨텐츠가 load되면
         // current address 바꿔주고 isWalletConnected를 True로 바꿔줌
@@ -65,16 +63,18 @@ function PageHeader() {
         //   -> 지갑주소 undefined 됐을때 대비 갱신
         if (window.klaytn) {
             window.klaytn.on("accountsChanged", async function (accounts) {
-                
+
                 console.log(
-                    "account change listned in header : ",
+                    "account change listening in header : ",
                     currentAddress,
                     " -> ",
                     accounts[0]
                 );
-
-                await setCurrentAddress(accounts[0]);
-                await setIsWalletConnected(true);
+                if (isWalletConnected) {
+                    await setCurrentAddress(accounts[0]);
+                } else {
+                    setCurrentAddress(undefined)
+                }
             });
         }
 
@@ -82,12 +82,22 @@ function PageHeader() {
         return () => window.removeEventListener("load", onLoad);
     }, []);
 
-    async function connectKaikas() {
+    async function connectWallet() {
         const response = await window.klaytn.enable();
         console.log("connect Click : ", response);
         setCurrentAddress(response[0]);
         setIsWalletConnected(true);
-        return window.klaytn.selectedAddress;
+        window.location.reload(true);
+    }
+
+    function disconnectWallet() {
+        setCurrentAddress(undefined);
+        setIsWalletConnected(false);
+        window.location.reload(true);
+    }
+
+    async function checkWalletConnect() {
+        { isWalletConnected ? disconnectWallet() : connectWallet() }
     }
 
     return (
@@ -101,11 +111,11 @@ function PageHeader() {
                 >
                     Get EKL
                 </a>
-                <ConnectWallet onClick={() => connectKaikas()}>
+                <ConnectWallet onClick={() => checkWalletConnect()}>
                     {isWalletConnected
-                        ? currentAddress.slice(0,10) +
-                          "..." +
-                          currentAddress.slice(-3)
+                        ? currentAddress.slice(0, 10) +
+                        "..." +
+                        currentAddress.slice(-3)
                         : "Connect Wallet"}
                 </ConnectWallet>
             </p>

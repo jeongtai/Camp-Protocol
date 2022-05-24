@@ -69,13 +69,10 @@ export const bondLPInfos = [
 ]
 
 const initialstate = {BankContract, SCAMPContract, BondTreasuryContract,
-
   EKLLPContract, EKLContract, EKLkpEKLLPContract, kpEKLContract, EKLDepositorContract, KPG_USDTLPContract, EKL3MoonLPContract,
   KPG_USDTBondContract, EKLkpEKLBondContract, EKL3MoonBondContract, kpEKLStakingContract, kpEKLStakeFeeContract, kpStakingContract,
   KPGContract, kpLockContract, mock3MoonContract, EKLLockContract, EKLVoteContract, EKL3MoonGaugecContract
 }
-
-
 
 
 export function reducer (state = initialstate, action) {

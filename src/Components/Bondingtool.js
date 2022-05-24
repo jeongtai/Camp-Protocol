@@ -74,7 +74,7 @@ const BondInfos = styled.div`
     background-color: ${(props) => props.theme.backBlue};
     border-radius: 15px;
 `;
-const Approve = styled.div`
+const ButtonSection = styled.div`
     text-align: center;
     color: ${(props) => props.theme.textGray};
 
@@ -200,10 +200,8 @@ function Bondingtool(lpInfosProps) {
         .call((e, v) => {
           if (v > 1e18) {
             setIsApproved(true)
-          } else { // allowance가 되어있지 않으면
-            if (lpInfosProps.btnState === "Bond") {
-              setBtnInfo("Approve")
-            }
+          } else { // allowance가 되어있지 않으면 btninfo approve
+            if (lpInfosProps.btnState === "Bond") { setBtnInfo("Approve") }
           }
         })
     } catch (e) { setIsApproved(undefined) }
@@ -300,7 +298,7 @@ function Bondingtool(lpInfosProps) {
               <p className="rewardsInfo">
                 <p>
                   {
-                    lpInfosProps.btnState == "Bond"
+                    lpInfosProps.btnState === "Bond"
                       ? `Bond price : ${bondprice}`
                       : `Claimable KPG ${pendingKPG}`
                   }
@@ -345,21 +343,20 @@ function Bondingtool(lpInfosProps) {
                 )}
             </BondInfos>
 
-            <Approve>
+            <ButtonSection>
               <Button
                 text={btnInfo}
                 isApproved={isApproved}
                 onClick={() => {
-                  if (btnInfo === "Bond") {
+                  if (lpInfosProps.btnState === "Bond") {
                     return onClickBond()
-                  } else if (btnInfo === "Claim") {
+                  } else if (lpInfosProps.btnState === "Claim") {
                     return onClickClaim()
                   } else {
                     return onClickApprove()
                   }
                 }} />
-
-            </Approve>
+            </ButtonSection>
           </BondingContent>
         </BondingtoolSection>
         : <p margin="0 auto">

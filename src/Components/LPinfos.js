@@ -79,7 +79,7 @@ function LPInfos(props) {
   const [vestingterm, setVestingTerm] = useState()
   const [poolState, setPoolState] = useState("Bond")
   const [isClaimable, setIsClaimable] = useState(false)
-  const [isBondable, setIsBondable] = useState(true)
+  const [isBondable, setIsBondable] = useState()
   const [clickedBtn, setClickBtn] = useState({})
   const lpName = props.bondLPInfo.name;
   const bondContract = props.bondLPInfo.bondContract;
@@ -111,7 +111,6 @@ function LPInfos(props) {
         .call((e, v) => {
           if (v.toString() !== "0") {
             setIsClaimable(true)
-            setPoolState("Claim")
           }
         })
     } catch (e) { setPoolState(undefined) }
@@ -120,9 +119,11 @@ function LPInfos(props) {
       await state.KPGContract.methods
         .balanceOf(TreasuryContract)
         .call((e, v) => {
+          // KPG 밸런스가 있는지 체크
           if (v < caver.utils.toPeb("10", "KLAY")) {
             setIsBondable(false)
           } else {
+            setIsBondable(true)
             setPoolState("Bond")
           }
         })
@@ -170,13 +171,13 @@ function LPInfos(props) {
           <BondingtoolBtn
             isOpened={isBondable}
             onClick={isBondable ? ()=>ClickBtn("bond") : null}
-            btnState={poolState}>
+            >
             {isBondable ? "Bond" : "Soldout"}
           </BondingtoolBtn>
           {clickedBtn.lp === lpName && props.isToolOpenCtrl.isToolOpen && clickedBtn.tool === "bond" ?
               <Bondingtool
                 bondLPInfo={props.bondLPInfo}
-                btnState={poolState}
+                btnState="Bond"
                 isToolOpenCtrl={props.isToolOpenCtrl}
               />
               : null}

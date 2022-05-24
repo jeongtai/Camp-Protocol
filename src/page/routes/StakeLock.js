@@ -121,6 +121,7 @@ const Stake = () => {
   const [kpeklstakebal, setkpEKLStakeBal] = useState()
   const [kpstakebal, setKPStakeBal] = useState()
   const [kplockbal, setKPLockBal] = useState()
+  const [kplockpendingbal, setKPLockPendingbal] = useState()
 
   const [KpgLockEklWeekreward, setLockEKLweekreward] = useState()
   const [lockkpEKLreward, setLockkpEKLweekreward] = useState()
@@ -148,7 +149,6 @@ const Stake = () => {
   let kpgStakeRewardKpeklApr = kpgStakekpEKLweekreward * 3600 * 24 * 365 * kpeklprice / kpstaketvl * 100
   let kpgStakeApr = kpgStakeRewardKpeklApr
 
-
   // kpEKL STAKE APR
   let kpeklStakeRewardEklApr = parseFloat(kpEKLStakeEKLweekreward) * 3600 * 24 * 365 * eklprice / kpeklstaketvl * 100
   let kpeklStakeReward3MoonApr = parseFloat(kpEKLStakeFeeweekreward) * 3600 * 24 * 365 * ekl3moonprice / kpeklstaketvl * 100
@@ -156,9 +156,9 @@ const Stake = () => {
   let kpeklStakeApr = kpeklStakeRewardEklApr + kpeklStakeReward3MoonApr;
 
   // KPG Lock APR
-  let kpgLockRewardEKLApr = parseFloat(KpgLockEklWeekreward) * eklprice / kpgprice * 100 * 365 / 7
-  let kpgLockRewardkpEKLApr = parseFloat(lockkpEKLreward) * kpeklprice / kpgprice * 100 * 365 / 7
-  let kpgLockReward3MoonApr =  parseFloat(lock3moonreward) * ekl3moonprice / kpgprice * 100 * 365 / 7
+  let kpgLockRewardEKLApr = parseFloat(KpgLockEklWeekreward) * eklprice / kpLocktvl * 100 * 365 / 7
+  let kpgLockRewardkpEKLApr = parseFloat(lockkpEKLreward) * kpeklprice / kpLocktvl * 100 * 365 / 7
+  let kpgLockReward3MoonApr =  parseFloat(lock3moonreward) * ekl3moonprice / kpLocktvl * 100 * 365 / 7
   let kpgLockApr = kpgLockRewardEKLApr + kpgLockRewardkpEKLApr + kpgLockReward3MoonApr
 
 
@@ -189,7 +189,7 @@ const Stake = () => {
             })
 
           await state.kpLockContract.methods
-            .totalSupply()
+            .lockedSupply()
             .call((e, bal) => {
               setKPLockTVL((bal * price / 1e24).toFixed(3))
               setKPLockSup((bal / 1e18).toPrecision(3))
@@ -201,7 +201,12 @@ const Stake = () => {
 
           await state.kpLockContract.methods
             .balanceOf(window.klaytn.selectedAddress)
-            .call((e, bal) => setKPLockBal((bal / 1e18).toPrecision(3)))
+            .call(async (e, lockbal) => 
+              setKPLockBal((lockbal / 1e18).toPrecision(3)))
+
+          await state.kpLockContract.methods
+          .pendingLockOf(window.klaytn.selectedAddress)
+          .call((e, pendingbal) => setKPLockPendingbal((pendingbal / 1e18).toPrecision(3)))
         });
     } catch { setKPGPrice(undefined) }
 
@@ -432,6 +437,7 @@ const Stake = () => {
           <p>TVL</p>
           <p>APR</p>
           <p>Locked</p>
+          <p>Pending</p>
           <p>Claimable</p>
           <p></p>
         </Header>
@@ -459,6 +465,7 @@ const Stake = () => {
 
           </div>
           <div> {kplockbal} KPG</div>
+          <div> {kplockpendingbal} KPG</div>
           <div> $ {kpLockclaimable.toFixed(5)}</div>
           <div><Link to={"/StakeLock/KPGLock"}> <img src={ArrowIcon} /></Link> </div>
         </Item>

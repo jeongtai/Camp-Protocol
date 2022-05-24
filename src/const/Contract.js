@@ -63,9 +63,9 @@ export const klaySwapContract = new caver.klay.Contract(
 export const MAX_UNIT = (2**256 - 1)/10
 
 export const bondLPInfos = [
-  { name : "KPG-oUSDT", dex : "klayswap", bondContract : KPG_USDTBondContract, lpContract : KPG_USDTLPContract, TreasuryContract : BondTreasuryContract},
-  { name : "EKL-kpEKL", dex : "klayswap", bondContract : EKLkpEKLBondContract, lpContract : EKLkpEKLLPContract, TreasuryContract : BondTreasuryContract},
-  { name : "3Moon LP", dex : "eklipse", bondContract : EKL3MoonBondContract, lpContract : EKL3MoonLPContract, TreasuryContract : BondTreasuryContract}
+  { name : "KPG-oUSDT", dex : "klayswap-kPG-oUSDT", bondContract : KPG_USDTBondContract, lpContract : KPG_USDTLPContract, TreasuryContract : BondTreasuryContract},
+  { name : "EKL-kpEKL", dex : "klayswap-EKL-kpEKL", bondContract : EKLkpEKLBondContract, lpContract : EKLkpEKLLPContract, TreasuryContract : BondTreasuryContract},
+  { name : "3Moon LP", dex : "eklipse-3Moon", bondContract : EKL3MoonBondContract, lpContract : EKL3MoonLPContract, TreasuryContract : BondTreasuryContract}
 ]
 
 const initialstate = {BankContract, SCAMPContract, BondTreasuryContract,

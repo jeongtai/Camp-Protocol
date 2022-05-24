@@ -134,14 +134,14 @@ function LPInfos(props) {
 
   const getDexLink = (dex) => {
     switch (dex) {
-      case 'eklipse':
-        return "https://app.eklipse.finance/pool";
+      case 'klayswap-kPG-oUSDT':
+        return "https://klayswap.com/exchange/pool/detail/0x8a187220fd9dfc4fafe1e206385ea55659147602";
         break;
-      case 'klayswap':
-        return "https://klayswap.com/exchange/pool";
+      case 'klayswap-EKL-kpEKL':
+        return "https://klayswap.com/exchange/pool/detail/0x5e9bb1fad0a26ac60e19c1b9370fdf7037ac7d95";
         break;
-      case 'claimswap':
-        return "https://app.claimswap.org/liquidity/add";
+      case 'eklipse-3Moon':
+        return "https://app.eklipse.finance/pool/kDAI_kUSDT_kUSDC";
         break;
     }
   }

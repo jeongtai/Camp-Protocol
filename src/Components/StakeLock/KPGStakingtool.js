@@ -135,7 +135,7 @@ function KPGStakingtool() {
         try {
             await state.KPGContract.methods
                 .balanceOf(window.klaytn.selectedAddress)
-                .call((e, v) => setKpgBalance((v / 1e18).toFixed(2)));
+                .call((e, v) => setKpgBalance(Math.floor(v / 1e15) / 1e3 ));
         } catch (e) { setKpgBalance(undefined) }
 
         try {
@@ -199,7 +199,7 @@ function KPGStakingtool() {
 
     function KPGStake() {
         state.kpStakingContract.methods.stake(
-            caver.utils.toPeb(inputformValue, "KLAY")
+          BigNumber(inputformValue * 1e18)
         ).send({
             from: window.klaytn.selectedAddress,
             gas: 3000000
@@ -208,7 +208,7 @@ function KPGStakingtool() {
 
     function KPGUnstake() {
         state.kpStakingContract.methods.withdraw(
-            caver.utils.toPeb(inputformValue, "KLAY"),
+            BigNumber(inputformValue * 1e18),
             true
         ).send({
             from: window.klaytn.selectedAddress,
@@ -217,7 +217,7 @@ function KPGStakingtool() {
     }
 
     function KPGStakingRewardClaim() {
-        state.kpStakingContract.methods.getLockReward(
+        state.kpStakingContract.methods.getKPReward(
             window.klaytn.selectedAddress
         )
             .send({

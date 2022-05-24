@@ -135,7 +135,7 @@ function KPEKLStakingtool() {
         try {
             await state.kpEKLStakingContract.methods
                 .balanceOf(window.klaytn.selectedAddress)
-                .call((e, v) => setStakedKPEKLBalance((v / 1e18).toFixed(2)));
+                .call((e, v) => setStakedKPEKLBalance(Math.floor(v / 1e15) / 1e3));
         } catch (e) { setStakedKPEKLBalance(undefined) }
 
         try {
@@ -168,7 +168,7 @@ function KPEKLStakingtool() {
         try {
             await state.kpEKLContract.methods
                 .balanceOf(window.klaytn.selectedAddress)
-                .call((e, v) => setkpEKLBalance((v / 1e18).toFixed(2)));
+                .call((e, v) => setkpEKLBalance(Math.floor(v / 1e15) /1e3));
         } catch (e) { setkpEKLBalance(undefined) }
     }
 
@@ -197,7 +197,7 @@ function KPEKLStakingtool() {
 
     function kpEKLStake() {
         state.kpEKLStakingContract.methods.stake(
-            caver.utils.toPeb(inputformValue, "KLAY")
+            BigNumber(inputformValue * 1e18)
         ).send({
             from: window.klaytn.selectedAddress,
             gas: 3000000
@@ -206,7 +206,7 @@ function KPEKLStakingtool() {
 
     function kpEKLUnstake() {
         state.kpEKLStakingContract.methods.withdraw(
-            caver.utils.toPeb(inputformValue, "KLAY"), true
+            BigNumber(inputformValue * 1e18), true
         ).send({
             from: window.klaytn.selectedAddress,
             gas: 3000000

@@ -136,7 +136,7 @@ function Bondingtool(lpInfosProps) {
   async function getInfo() {
     try {
       await lpContract.methods
-        .balanceOf(window.klaytn.selectedAddress).call((e, v) => setLPbal((v / 1e18).toFixed(2)))
+        .balanceOf(window.klaytn.selectedAddress).call((e, v) => setLPbal( Math.floor(v / 1e15) / 1000))
     } catch (e) { setLPbal(undefined) }
 
     try {
@@ -239,7 +239,7 @@ function Bondingtool(lpInfosProps) {
   // }, [isapproved])
 
   function onClickBond() {
-    bondContract.methods.deposit(caver.utils.toPeb(lpamount, "KLAY"), bondprice * 1e6 * 1.01, window.klaytn.selectedAddress)
+    bondContract.methods.deposit(BigNumber(lpamount * 1e18), bondprice * 1e6 * 1.01, window.klaytn.selectedAddress)
       .send({
         from: window.klaytn.selectedAddress,
         gas: 3000000

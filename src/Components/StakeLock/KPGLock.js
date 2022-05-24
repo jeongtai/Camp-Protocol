@@ -137,14 +137,14 @@ function KPGLock() {
         try {
             await state.KPGContract.methods
                 .balanceOf(window.klaytn.selectedAddress)
-                .call((e, v) => setKpgBalance((v / 1e18).toFixed(2)));
+                .call((e, v) => setKpgBalance(Math.floor(v / 1e15) / 1e3));
         } catch (e) { setKpgBalance(undefined) }
 
         try {
             await state.KPGContract.methods
                 .allowance(window.klaytn.selectedAddress, state.kpLockContract._address)
                 .call((e, v) => {
-                    if (v > 1e18) {
+                    if (v /1e18 > 1e8) {
                         setIsApproved(true)
                     }
                 })
@@ -206,7 +206,7 @@ function KPGLock() {
     function KPGLock() {
         state.kpLockContract.methods.lock(
             window.klaytn.selectedAddress,
-            caver.utils.toPeb(inputformValue, "KLAY"),
+            BigNumber(inputformValue * 1e18),
             0
         ).send({
             from: window.klaytn.selectedAddress,

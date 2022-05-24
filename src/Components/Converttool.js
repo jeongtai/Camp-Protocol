@@ -87,7 +87,7 @@ function Converttool() {
 
       await state.EKLContract.methods
       .balanceOf(window.klaytn.selectedAddress)
-      .call((e, v) => setEKLbal((v /1e18).toFixed(4)));
+      .call((e, v) => setEKLbal(Math.floor(v /1e15) / 1e3));
 
       try {
         await state.EKLLPContract.methods
@@ -126,7 +126,8 @@ function Converttool() {
 
 
     const onChange = (event) => {
-      setInputbal(event.target.value)
+
+      setInputbal(event.target.value < EKLbal ? event.target.value : EKLbal)
     }
 
     const ApproveEKL = () => {
@@ -140,7 +141,7 @@ function Converttool() {
 
     const Convert = () => {
       state.EKLDepositorContract.methods
-      .depositEKL(caver.utils.toPeb(inputbal, "KLAY"), true)
+      .depositEKL(BigNumber(inputbal * 1e18), true)
       .send({
         from : window.klaytn.selectedAddress,
         gas : 3500000
@@ -228,12 +229,6 @@ function Converttool() {
                             </Button>
                         )}
                     </Approve>
-                    <SlippageInfos>
-                        <Info>
-                            <p className="infoName">Slippage Tolerance</p>
-                            <p>{slippage} %</p>
-                        </Info>
-                    </SlippageInfos>
 
                 </div>
             )

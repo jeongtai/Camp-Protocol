@@ -9,6 +9,11 @@ import TokenLogo from "../../assets/TokenLogo";
 import BigNumber from "bignumber.js";
 import { MAX_UNIT } from "../../const/Contract";
 
+const SectionBox = styled.div`
+display:flex;
+flex-direction: row;
+`
+
 const Section = styled.div`
     // flex
     display: flex;
@@ -20,7 +25,7 @@ const Section = styled.div`
     width: 50%;
     min-width: 380px;
     margin: 0 auto;
-    stroke: Solid #ededed 1px;
+    stroke: Solid #${(props) => props.theme.borderColor} 1px;
     background-color: white;
     border-radius: 15px;
     border: 2px solid ${(props) => props.theme.borderColor};
@@ -247,7 +252,7 @@ function KPGLock() {
 
     return (
 
-
+<SectionBox>
         <Section>
             <p className="sectionTitle">KPG Lock</p>
             <StakeInfo>
@@ -341,6 +346,10 @@ function KPGLock() {
                 }
             </Content>
         </Section>
+        <Section>
+
+        </Section>
+        </SectionBox>
     )
 }
 export default KPGLock;

@@ -8,7 +8,7 @@ import { KPGAddress, bondLPInfos } from "../../const/Contract.js"
 
 import Caver from "caver-js";
 
-const Content = styled.div`
+const Section = styled.div`
     visibility: ${props => props.isBondingtoolOpen ? "hidden" : "visible"};
     
 `
@@ -20,7 +20,7 @@ const Overview = styled.div`
   
   padding : 10px;
 
-  stroke: Solid #ededed 1px;
+  stroke: Solid #${(props) => props.theme.borderColor} 1px;
   background-color: white;
   border-radius: 15px;
 
@@ -70,7 +70,7 @@ justify-content: space-between;
 padding: 24px;
 margin : 16px 0 0 0; 
 
-stroke: Solid #ededed 1px;
+stroke: Solid ${(props) => props.theme.borderColor} 1px;
 background-color: white;
 border-radius: 15px;
 
@@ -182,7 +182,7 @@ const Bond = () => {
   ]
 
   return (
-    <Content isBondingtoolOpen={isToolOpen}>
+    <Section isBondingtoolOpen={isToolOpen}>
       <Overview isReload={isReload}>
         <p className="Title">Overview</p>
 
@@ -212,7 +212,7 @@ const Bond = () => {
         ))}
       </LPTokenItems>
 
-    </Content>
+    </Section>
 
   )
 }

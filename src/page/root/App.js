@@ -49,7 +49,7 @@ function App() {
             <Main>
                 <PageHeader />
                 {networkVersion === 1001 ? <p>Please Change Network to Mainnet</p> :
-                    <Routes>
+                    <Routes>                        
                         <Route path="/" element={<Home />} />
                         <Route path="/Convert" element={<Convert />} />
                         <Route path="/StakeLock" element={<Stake />} />
@@ -62,7 +62,7 @@ function App() {
                         <Route path="/Bank" element={<Bank />} />
                         <Route path="/Calculator" element={<Calculator />} />
                         <Route path="/Fund" element={<Fund />} />
-                        <Route path="*" element={<NotFound />} />
+                        <Route element={<NotFound />} />
                     </Routes>
                 }
             </Main>

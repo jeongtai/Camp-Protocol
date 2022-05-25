@@ -1,8 +1,9 @@
 function NotFound() {
-    console.log(window.location.href)
-    console.log(window.location.pathname)
     var l = window.location;
     var pathSegmentsToKeep = 0;
+    
+    console.log(window.location.href)
+    console.log(window.location.pathname)
 
     l.replace(
         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
@@ -11,5 +12,6 @@ function NotFound() {
         (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
         l.hash
     );
+    return <p>hi</p>
 }
 export default NotFound;

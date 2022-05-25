@@ -117,7 +117,7 @@ function KPGLock() {
     const [kpgBalance, setKpgBalance] = useState()
     const [kpgPrice, setKpgPrice] = useState()
     const [lockKPGBalance, setLockKPGBalance] = useState()
-    
+
     const [kpLockearnedEKL, setKPLockEarnedEKL] = useState()
     const [kpLockearnedkpEKL, setKPLockEarnedkpEKL] = useState()
     const [kpLockearned3Moon, setKPLockEarned3Moon] = useState()
@@ -146,7 +146,7 @@ function KPGLock() {
             await state.KPGContract.methods
                 .allowance(window.klaytn.selectedAddress, state.kpLockContract._address)
                 .call((e, v) => {
-                    if (v /1e18 > 1e8) {
+                    if (v / 1e18 > 1e8) {
                         setIsApproved(true)
                     }
                 })
@@ -165,27 +165,30 @@ function KPGLock() {
         } catch (e) { setLockKPGBalance(undefined) }
 
         try {
-          await state.kpLockContract.methods
-            .claimableRewards(window.klaytn.selectedAddress)
-            .call((e, data) => {
-              setKPLockEarnedEKL((data[0][1] / 1e18).toPrecision(3))
-              setKPLockEarnedkpEKL((data[1][1] / 1e18).toPrecision(3))
-              setKPLockEarned3Moon((data[2][1] / 1e18).toPrecision(3))
-              setKPLockEarnedpostEKL((data[3][1] / 1e18).toPrecision(3))
-            })
+            await state.kpLockContract.methods
+                .claimableRewards(window.klaytn.selectedAddress)
+                .call((e, data) => {
+                    setKPLockEarnedEKL((data[0][1] / 1e18).toPrecision(3))
+                    setKPLockEarnedkpEKL((data[1][1] / 1e18).toPrecision(3))
+                    setKPLockEarned3Moon((data[2][1] / 1e18).toPrecision(3))
+                    setKPLockEarnedpostEKL((data[3][1] / 1e18).toPrecision(3))
+                })
         } catch (e) {
-          setKPLockEarnedEKL(undefined)
-          setKPLockEarnedkpEKL(undefined)
-          setKPLockEarned3Moon(undefined)
-          setKPLockEarnedpostEKL(undefined)
+            setKPLockEarnedEKL(undefined)
+            setKPLockEarnedkpEKL(undefined)
+            setKPLockEarned3Moon(undefined)
+            setKPLockEarnedpostEKL(undefined)
         }
 
         try {
-          await state.kpLockContract.methods
-          .lockedBalances(window.klaytn.selectedAddress)
-          .call((e, v) => 
-            setKPLockUserLockInfo(v[3]))
-        } catch(e) {setKPLockUserLockInfo()}
+            await state.kpLockContract.methods
+                .lockedBalances(window.klaytn.selectedAddress)
+                .call((e, v) => {
+                    console.log(v[3]);
+                    setKPLockUserLockInfo(v[3])
+                }
+                )
+        } catch (e) { setKPLockUserLockInfo() }
 
     }
 
@@ -196,6 +199,7 @@ function KPGLock() {
                 getInfo();
             });
         }
+        console.log(kpLockuserlockinfo)
     }, []);
 
     const onChange = (event) => {
@@ -257,9 +261,9 @@ function KPGLock() {
                 </Info>
                 <Info>
                     <p className="infoName">Rewards</p>
-                    <p>{kpLockearnedEKL} EKL<br/>
-                    {kpLockearnedkpEKL} kpEKL<br/>
-                    {kpLockearned3Moon} 3Moon LP
+                    <p>{kpLockearnedEKL} EKL<br />
+                        {kpLockearnedkpEKL} kpEKL<br />
+                        {kpLockearned3Moon} 3Moon LP
                     </p>
                 </Info>
             </StakeInfo>
@@ -323,7 +327,7 @@ function KPGLock() {
                         <DetailTabInfo>
                             Rewards
                             <p className="rewardsInfo">
-                                
+
                                 <TokenLogo name={"EKL"} />
                                 <p>{kpLockearnedEKL} EKL</p>
                                 <TokenLogo name={"kpEKL"} />

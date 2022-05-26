@@ -12,6 +12,7 @@ import { MAX_UNIT } from "../../const/Contract";
 const SectionBox = styled.div`
 display:flex;
 flex-direction: row;
+margin: 0 auto;
 `
 
 const Section = styled.div`
@@ -21,10 +22,11 @@ const Section = styled.div`
     justify-content: space-between;
     flex-direction: column;
     padding: 24px;
-
+    margin : 0 13px;
+    
     width: 50%;
-    min-width: 380px;
-    margin: 0 auto;
+    min-width: 430px;
+
     stroke: Solid #${(props) => props.theme.borderColor} 1px;
     background-color: white;
     border-radius: 15px;
@@ -204,7 +206,7 @@ function KPGLock() {
                 getInfo();
             });
         }
-        console.log(kpLockuserlockinfo)
+        
     }, []);
 
     const onChange = (event) => {
@@ -347,7 +349,13 @@ function KPGLock() {
             </Content>
         </Section>
         <Section>
-
+            <p>{kpLockuserlockinfo.map((lockinfo,index) => (
+                <p>amount : {lockinfo[0] / 1e18}<br/>
+                boosted : {lockinfo[1] / 1e18}<br/>
+                unlocktime : {lockinfo[2]}
+                </p>
+                ))}
+            </p>
         </Section>
         </SectionBox>
     )

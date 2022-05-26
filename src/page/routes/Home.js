@@ -28,7 +28,7 @@ const Overview = styled.div`
     
     padding : 10px;
     margin : 10px;
-    stroke: Solid #ededed 1px;
+    stroke: Solid #${(props) => props.theme.borderColor} 1px;
     background-color: white;
     border-radius: 15px;
 

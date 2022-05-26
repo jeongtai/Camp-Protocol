@@ -24,7 +24,7 @@ const Section = styled.div`
     width: 50%;
     min-width: 380px;
     margin: 8px auto;
-    stroke: Solid #ededed 1px;
+    stroke: Solid #${(props) => props.theme.borderColor} 1px;
     background-color: white;
     border-radius: 15px;
     border: 2px solid ${(props) => props.theme.borderColor};
@@ -45,7 +45,7 @@ const CollectInfo = styled.div`
   
   padding : 10px;
 
-  stroke: Solid #ededed 1px;
+  stroke: Solid #${(props) => props.theme.borderColor} 1px;
   background-color: white;
   border-radius: 15px;
 

@@ -10,6 +10,10 @@ import Bond from "./../../assets/NavbarIcon/Bond.svg";
 import Stake from "./../../assets/NavbarIcon/Stake.svg";
 import Calculator from "./../../assets/NavbarIcon/Calculator.svg";
 import Fund from "./../../assets/NavbarIcon/Fund.svg";
+import GItbook from "./../../assets/NavbarIcon/GItbook.svg";
+import Github from "./../../assets/NavbarIcon/Github.svg";
+import Telegram from "./../../assets/NavbarIcon/Telegram.svg";
+import Twitter from "./../../assets/NavbarIcon/Twitter.svg";
 
 const Nav = styled.div`
     width: ${(props) => props.theme.navWidth}px;
@@ -98,6 +102,27 @@ const Item = styled.div`
     }
 `;
 
+const Footer = styled.div`
+    padding: 18px 10% 10px 20%;
+    display:flex;
+    flex-direction: column;
+    position: absolute;
+    bottom : 40px;
+    & .imgSection{
+        display:flex;
+        flex-direction: row;
+        align-items: center;
+        gap : 10px;
+    }
+    
+    & .copyright{
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: ${(props) => props.theme.textGray};;
+    }
+`
+
 function Navbar() {
     const [activeMenu, setActiveMenu] = useState(window.location.pathname);
 
@@ -142,7 +167,7 @@ function Navbar() {
                 })}
             </Items>
             {window.location.host.includes("test")
-            &&  <Items>
+                && <Items>
                     <p className="soonTitle">Soon </p>
                     {soonMenus.map((menu, index) => {
                         return (
@@ -165,7 +190,28 @@ function Navbar() {
                     })}
                 </Items>
             }
-        </Nav>
+            <Footer>
+                <p className="imgSection">
+                    <p><a
+                        href="https://kprotocol.gitbook.io/k-protocol/"
+                        target="_blank"
+                    ><img src={GItbook} width="28px" /></a></p>
+                    <p><a
+                        href="https://t.me/kprotocol_official_channel"
+                        target="_blank"
+                    >
+                        <img src={Telegram} width="28px" /></a></p>
+                    <p><a
+                        href="https://twitter.com/k_protocol_fi"
+                        target="_blank"
+                    ><img src={Twitter} width="28px" /></a></p>
+                </p>
+                <p className="copyright">
+                        © 2022 K-Protocol<br/>
+                        All rights reserved
+                    </p>
+            </Footer>
+        </Nav >
     );
 }
 

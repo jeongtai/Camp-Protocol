@@ -12,6 +12,9 @@ import { MAX_UNIT } from "../../const/Contract";
 const SectionBox = styled.div`
 display:flex;
 flex-direction: row;
+@media (max-width: ${(props) => props.theme.firstResponsiveWidth}) {
+        flex-direction: column;
+    }
 margin: 0 auto;
 `
 

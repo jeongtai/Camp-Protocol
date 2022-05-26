@@ -67,7 +67,7 @@ const Tab = styled.div`
 
 const caver = new Caver(window.klaytn);
 
-const Bank = () => {
+const Fund = () => {
     // toggle true=mint false=redeem
     const [isNowRecollat, setIsNowRecollat] = useState(true);
 
@@ -88,4 +88,4 @@ const Bank = () => {
     );
 };
 
-export default react.memo(Bank);
+export default react.memo(Fund);

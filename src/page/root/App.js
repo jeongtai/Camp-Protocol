@@ -7,7 +7,7 @@ import PageHeader from "../routes/PageHeader";
 
 import Home from "../routes/Home";
 import Convert from "../routes/Convert";
-import Stake from "../routes/StakeLock";
+import StakeLock from "../routes/StakeLock";
 import KPGLock from "../../Components/StakeLock/KPGLock";
 import KPGStakingtool from "../../Components/StakeLock/KPGStakingtool";
 import KPEKLStakingtool from "../../Components/StakeLock/KPEKLStakingtool";
@@ -52,8 +52,8 @@ function App() {
                     <Routes>                        
                         <Route path="/" element={<Home />} />
                         <Route path="/Convert" element={<Convert />} />
-                        <Route path="/StakeLock" element={<Stake />} />
-                        <Route path="/StakeLock/*" element={<Stake />} />
+                        <Route path="/StakeLock" element={<StakeLock />} />
+                        <Route path="/StakeLock/*" element={<StakeLock />} />
                         <Route path="/StakeLock/KPGLock" element={<KPGLock />} />
                         <Route path="/StakeLock/KPGStake" element={<KPGStakingtool />} />
                         <Route path="/StakeLock/kpEKLStake" element={<KPEKLStakingtool />} />

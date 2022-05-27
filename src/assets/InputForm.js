@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import styles from "./css/Input.module.css";
 import styled from "styled-components";
 import TokenLogo from "./TokenLogo";
@@ -88,7 +88,6 @@ const MaxBtn = styled.button`
 
 
 function InputForm(props) {
-    const inputRef = useRef(null);
 
     return (
         <Section isVisible={props.isVisible}>
@@ -98,17 +97,12 @@ function InputForm(props) {
                     onChange={props.onChange}
                     value={props.value || ''}
                     type={props.type}
-                    ref={inputRef}
                     placeholder="0"
                 ></input>
                 <p>
                     <MaxBtn
                         onClick={props.haveMax
-                            ? async (e) => {
-                                props.setValueFn(props.balance)
-
-                                inputRef.current.dispatchEvent(new Event('change', { bubbles: true }))
-                            }
+                            ? (e, v) => props.setValueFn(props.balance.toString())
                             : null
                         }
                         haveMax={props.haveMax}

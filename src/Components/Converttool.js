@@ -166,12 +166,12 @@ function Converttool() {
                     <span>Input</span>
                     <span>
                         
-                        <img
+                        {/* <img
                             className="slippageImg"
                             align="right"
                             onClick={() => setIsSetOpen((prev) => !prev)}
                             src={SetIcon}
-                        />
+                        /> */}
                         {isSetOpen ? (
                             <SlippageSetting
                                 slippage={slippage}

@@ -55,6 +55,8 @@ export const KPGAddress = "0xF05d180a169418959a017865866F0aBaF7DB7EAd";
 
 export const EKL3MoonMockAddress = "0xbb0297b1641d00c48f44212a2d83447f2d8f3a56"
 
+export const AdminAddress = '0x73297859b8936dbd0b0fbc4b77aafe58e07a40c2';
+
 export const klaySwapContract = new caver.klay.Contract(
   klayswapABI,
   klaySwapAddress

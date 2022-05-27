@@ -4,9 +4,9 @@ import react, { useState, useEffect } from "react";
 import Caver from "caver-js";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import TokenLogo from "../../assets/TokenLogo";
-import LoadingSVG from "../../assets/LoadingSVG.js";
-import { EKLTokenAddress } from "../../const/Contract";
+import TokenLogo from "../../../assets/TokenLogo";
+import LoadingSVG from "../../../assets/LoadingSVG.js";
+import { EKLTokenAddress } from "../../../const/Contract";
 
 const Dashboard = styled.div`
     justify-content: center;
@@ -28,8 +28,8 @@ const Overview = styled.div`
     
     padding : 10px;
     margin : 10px;
-    stroke: Solid #${(props) => props.theme.borderColor} 1px;
-    background-color: white;
+    stroke: Solid ${(props) => props.theme.borderColor} 1px;
+    background-color: ${(props) => props.theme.backBlack};
     border-radius: 15px;
 
     border: 2px solid ${(props) => props.theme.borderColor};
@@ -90,7 +90,8 @@ const TokenItem = styled.div`
         width : 100%;
     }
 
-    background-color: white;
+    background-color: ${(props) => props.theme.backBlack};
+
     border-radius: 15px;
     padding: 20px;
     border: 2px solid ${(props) => props.theme.borderColor};
@@ -165,7 +166,7 @@ function addToken(tokenaddr, url, name) {
     });
 }
 
-function Home() {
+function AdminHome() {
     let state = useSelector((state) => state);
     const [kpEKLSupply, setkpEKLSupply] = useState();
     const [kpgSupply, setKpgSupply] = useState();
@@ -369,7 +370,7 @@ function Home() {
             ) : (
                 <Dashboard>
                     <Overview className="overview">
-                        <div className="title">Overview</div>
+                        <div className="title">Admin Overview</div>
 
                         {infos.map((info, index) => (
                             <OverviewItem key={info.name}>
@@ -434,7 +435,7 @@ function Home() {
         </>
     );
 }
-export default react.memo(Home);
+export default react.memo(AdminHome);
 
 
 

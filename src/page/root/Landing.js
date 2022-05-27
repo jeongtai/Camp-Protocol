@@ -5,6 +5,7 @@ import BG_1 from "./../../assets/BG_1.png";
 import BG_2 from "./../../assets/BG_2.png";
 import LogoText from "./../../assets/KProtocol-TextLogo.svg";
 import InputForm from "./../../assets/InputForm";
+import { AdminAddress } from "../../const/Contract";
 
 import react, { useState, useEffect } from "react";
 import Caver from "caver-js";
@@ -93,40 +94,31 @@ const Page1 = styled.div`
         font-weight: 400;
         line-height: 30px;
     }
-
-    & .enter-app-button{
+    & button{
         margin: 30px 10px;
-
         width: 154px;
         height: 34px;
-        background-color: ${(props) => props.theme.backYellow};
         border: 0;
         border-radius: 6px;
-
         font-size: 14px;
         font-weight: 300;
-        color: ${(props) => props.theme.textBlack};
-
         &:hover {
             cursor: pointer;
         }
     }
 
+    & .enter-app-button{
+        background-color: ${(props) => props.theme.backYellow};
+        color: ${(props) => props.theme.textBlack};
+    }
+
     & .read-docs-button {
-        margin: 30px 10px;
-        width: 154px;
-        height: 34px;
         background-color: ${(props) => props.theme.btnBlack};
-        border: 0;
-        border-radius: 6px;
-
-        font-size: 14px;
-        font-weight: 300;
         color: ${(props) => props.theme.textWhite};
-
-        &:hover {
-            cursor: pointer;
-        }
+    }
+    & .enter-admin-button {
+        background-color: ${(props) => props.theme.btnBlue};
+        color: ${(props) => props.theme.textWhite};
     }
     & .page1-chainInfo {
         margin-top:20px;
@@ -289,6 +281,7 @@ function Landing() {
     const preSaleTime = new Date(2022, 5, 6, 10, 0, 0, 0);
 
     const [klayAmt, setKlayAmt] = useState(0);
+    
 
     // initialize hook----------------------------
     useEffect(() => {
@@ -335,7 +328,6 @@ function Landing() {
                 milsec: remianMilsec,
             });
         }, 10);
-
         // clean-up 으로 event-listner 삭제
         return () => {
             window.removeEventListener("load", onLoad);
@@ -349,21 +341,21 @@ function Landing() {
         setIsWalletConnected(true);
         return window.klaytn.selectedAddress;
     }
-
+    
     return (
         <Content>
             <Header>
                 <div>
                     <img className="LogoText" src={LogoText} />
                 </div>
-                
-                {/* <ConnectWallet onClick={() => connectKaikas()}>
+
+                <ConnectWallet onClick={() => connectKaikas()}>
                     {isWalletConnected
                         ? currentAddress.slice(0, 10) +
                         "..." +
                         currentAddress.slice(-3)
                         : "Connect Wallet"}
-                </ConnectWallet> */}
+                </ConnectWallet>
             </Header>
             <Main>
                 <Page1>
@@ -381,8 +373,7 @@ function Landing() {
                         href={`${window.location.href.replace(
                             window.location.host,
                             `app.${window.location.host}`
-                        )}`}
-                    >
+                        )}`}>
                         <button className="enter-app-button">Launch App</button>
                     </a>
 
@@ -392,6 +383,16 @@ function Landing() {
                     >
                         <button className="read-docs-button">Read Docs</button>
                     </a>
+                    {currentAddress == AdminAddress
+                        && <a
+                        href={`${window.location.href.replace(
+                            window.location.host,
+                            `team42x.${window.location.host}`
+                        )}`}>
+                            <button className="enter-admin-button">Admin Page</button>
+                        </a>
+                    }
+
 
                     <p className="page1-chainInfo">Based on Klaytn</p>
                 </Page1>

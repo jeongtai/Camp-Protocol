@@ -9,6 +9,15 @@ import TokenLogo from "../../assets/TokenLogo";
 import BigNumber from "bignumber.js";
 import { MAX_UNIT } from "../../const/Contract";
 
+const SectionBox = styled.div`
+display:flex;
+flex-direction: row;
+@media (max-width: ${(props) => props.theme.firstResponsiveWidth}) {
+        flex-direction: column;
+    }
+margin: 0 auto;
+`
+
 const Section = styled.div`
     // flex
     display: flex;
@@ -16,11 +25,12 @@ const Section = styled.div`
     justify-content: space-between;
     flex-direction: column;
     padding: 24px;
-
+    margin : 0 13px;
+    
     width: 50%;
-    min-width: 380px;
-    margin: 0 auto;
-    stroke: Solid #ededed 1px;
+    min-width: 430px;
+
+    stroke: Solid #${(props) => props.theme.borderColor} 1px;
     background-color: white;
     border-radius: 15px;
     border: 2px solid ${(props) => props.theme.borderColor};
@@ -117,7 +127,7 @@ function KPGLock() {
     const [kpgBalance, setKpgBalance] = useState()
     const [kpgPrice, setKpgPrice] = useState()
     const [lockKPGBalance, setLockKPGBalance] = useState()
-    
+
     const [kpLockearnedEKL, setKPLockEarnedEKL] = useState()
     const [kpLockearnedkpEKL, setKPLockEarnedkpEKL] = useState()
     const [kpLockearned3Moon, setKPLockEarned3Moon] = useState()
@@ -146,7 +156,7 @@ function KPGLock() {
             await state.KPGContract.methods
                 .allowance(window.klaytn.selectedAddress, state.kpLockContract._address)
                 .call((e, v) => {
-                    if (v /1e18 > 1e8) {
+                    if (v / 1e18 > 1e8) {
                         setIsApproved(true)
                     }
                 })
@@ -165,27 +175,30 @@ function KPGLock() {
         } catch (e) { setLockKPGBalance(undefined) }
 
         try {
-          await state.kpLockContract.methods
-            .claimableRewards(window.klaytn.selectedAddress)
-            .call((e, data) => {
-              setKPLockEarnedEKL((data[0][1] / 1e18).toPrecision(3))
-              setKPLockEarnedkpEKL((data[1][1] / 1e18).toPrecision(3))
-              setKPLockEarned3Moon((data[2][1] / 1e18).toPrecision(3))
-              setKPLockEarnedpostEKL((data[3][1] / 1e18).toPrecision(3))
-            })
+            await state.kpLockContract.methods
+                .claimableRewards(window.klaytn.selectedAddress)
+                .call((e, data) => {
+                    setKPLockEarnedEKL((data[0][1] / 1e18).toPrecision(3))
+                    setKPLockEarnedkpEKL((data[1][1] / 1e18).toPrecision(3))
+                    setKPLockEarned3Moon((data[2][1] / 1e18).toPrecision(3))
+                    setKPLockEarnedpostEKL((data[3][1] / 1e18).toPrecision(3))
+                })
         } catch (e) {
-          setKPLockEarnedEKL(undefined)
-          setKPLockEarnedkpEKL(undefined)
-          setKPLockEarned3Moon(undefined)
-          setKPLockEarnedpostEKL(undefined)
+            setKPLockEarnedEKL(undefined)
+            setKPLockEarnedkpEKL(undefined)
+            setKPLockEarned3Moon(undefined)
+            setKPLockEarnedpostEKL(undefined)
         }
 
         try {
-          await state.kpLockContract.methods
-          .lockedBalances(window.klaytn.selectedAddress)
-          .call((e, v) => 
-            setKPLockUserLockInfo(v[3]))
-        } catch(e) {setKPLockUserLockInfo()}
+            await state.kpLockContract.methods
+                .lockedBalances(window.klaytn.selectedAddress)
+                .call((e, v) => {
+                    console.log(v[3]);
+                    setKPLockUserLockInfo(v[3])
+                }
+                )
+        } catch (e) { setKPLockUserLockInfo() }
 
     }
 
@@ -196,6 +209,7 @@ function KPGLock() {
                 getInfo();
             });
         }
+
     }, []);
 
     const onChange = (event) => {
@@ -243,100 +257,113 @@ function KPGLock() {
 
     return (
 
+        <SectionBox>
+            <Section>
+                <p className="sectionTitle">KPG Lock</p>
+                <StakeInfo>
+                    <Info>
+                        <p className="infoName">KPG Price</p>
+                        <p>{kpgPrice}</p>
+                    </Info>
+                    <Info>
+                        <p className="infoName">Locked KPG</p>
+                        <p>{lockKPGBalance}</p>
+                    </Info>
+                    <Info>
+                        <p className="infoName">Rewards</p>
+                        <p>{kpLockearnedEKL} EKL<br />
+                            {kpLockearnedkpEKL} kpEKL<br />
+                            {kpLockearned3Moon} 3Moon LP
+                        </p>
+                    </Info>
+                </StakeInfo>
 
-        <Section>
-            <p className="sectionTitle">KPG Lock</p>
-            <StakeInfo>
-                <Info>
-                    <p className="infoName">KPG Price</p>
-                    <p>{kpgPrice}</p>
-                </Info>
-                <Info>
-                    <p className="infoName">Locked KPG</p>
-                    <p>{lockKPGBalance}</p>
-                </Info>
-                <Info>
-                    <p className="infoName">Rewards</p>
-                    <p>{kpLockearnedEKL} EKL<br/>
-                    {kpLockearnedkpEKL} kpEKL<br/>
-                    {kpLockearned3Moon} 3Moon LP
+                <Tabs>
+                    <Tab onClick={() => setNowTab("Lock")} isActive={nowTab === "Lock"}>
+                        Lock
+                    </Tab>
+                    <Tab onClick={() => setNowTab("Unlock")} isActive={nowTab === "Unlock"}>
+                        Unlock
+                    </Tab>
+                    <Tab onClick={() => setNowTab("Claim")} isActive={nowTab === "Claim"}>
+                        Claim
+                    </Tab>
+                </Tabs>
+                <Content>
+
+                    {nowTab === "Lock" &&
+                        <>
+                            <InputForm
+                                token="KPG"
+                                type="number"
+                                onChange={onChange}
+                                balance={kpgBalance}
+                                value={inputformValue}
+                                isVisible={true}
+                                haveMax={true}
+                                haveBal={true}
+                                setValueFn={setInputformValue}
+                                price={kpgPrice}
+                            />
+
+                            {isApproved ?
+                                <Button text="Lock" onClick={KPGLock} />
+                                : <Button text="Approve" onClick={KPGApprove} />
+                            }
+                        </>
+                    }
+
+                    {nowTab === "Unlock" &&
+                        <>
+                            <InputForm
+                                token="KPG"
+                                type="number"
+                                onChange={onChange}
+                                balance={lockKPGBalance}
+                                value={inputformValue}
+                                isVisible={true}
+                                haveMax={true}
+                                haveBal={true}
+                                setValueFn={setInputformValue}
+                                price={kpgPrice}
+                            />
+
+                            <Button text="Unlock" onClick={KPGUnlock} />
+                        </>
+                    }
+
+                    {nowTab === "Claim" &&
+                        <>
+                            <DetailTabInfo>
+                                Rewards
+                                <p className="rewardsInfo">
+
+                                    <TokenLogo name={"EKL"} />
+                                    <p>{kpLockearnedEKL} EKL</p>
+                                    <TokenLogo name={"kpEKL"} />
+                                    <p>{kpLockearnedkpEKL} kpEKL</p>
+                                    <TokenLogo name={"3Moon LP"} />
+                                    <p>{kpLockearned3Moon} 3Moon LP</p>
+                                </p>
+                            </DetailTabInfo>
+                            <Button text="Claim" onClick={KPGLockRewardClaim} />
+                        </>
+                    }
+                </Content>
+            </Section>
+            {window.location.host.includes("test")
+                &&
+                <Section>
+                    <p>{kpLockuserlockinfo.map((lockinfo, index) => (
+                        <p>amount : {lockinfo[0] / 1e18}<br />
+                            boosted : {lockinfo[1] / 1e18}<br />
+                            unlocktime : {lockinfo[2]}
+                        </p>
+                    ))}
                     </p>
-                </Info>
-            </StakeInfo>
-
-            <Tabs>
-                <Tab onClick={() => setNowTab("Lock")} isActive={nowTab === "Lock"}>
-                    Lock
-                </Tab>
-                <Tab onClick={() => setNowTab("Unlock")} isActive={nowTab === "Unlock"}>
-                    Unlock
-                </Tab>
-                <Tab onClick={() => setNowTab("Claim")} isActive={nowTab === "Claim"}>
-                    Claim
-                </Tab>
-            </Tabs>
-            <Content>
-
-                {nowTab === "Lock" &&
-                    <>
-                        <InputForm
-                            token="KPG"
-                            type="number"
-                            onChange={onChange}
-                            balance={kpgBalance}
-                            value={inputformValue}
-                            isVisible={true}
-                            haveMax={true}
-                            haveBal={true}
-                            setValueFn={setInputformValue}
-                            price={kpgPrice}
-                        />
-
-                        {isApproved ?
-                            <Button text="Lock" onClick={KPGLock} />
-                            : <Button text="Approve" onClick={KPGApprove} />
-                        }
-                    </>
-                }
-
-                {nowTab === "Unlock" &&
-                    <>
-                        <InputForm
-                            token="KPG"
-                            type="number"
-                            onChange={onChange}
-                            balance={lockKPGBalance}
-                            value={inputformValue}
-                            isVisible={true}
-                            haveMax={true}
-                            haveBal={true}
-                            setValueFn={setInputformValue}
-                            price={kpgPrice}
-                        />
-
-                        <Button text="Unlock" onClick={KPGUnlock} />
-                    </>
-                }
-
-                {nowTab === "Claim" &&
-                    <>
-                        <DetailTabInfo>
-                            Rewards
-                            <p className="rewardsInfo">
-                                
-                                <TokenLogo name={"EKL"} />
-                                <p>{kpLockearnedEKL} EKL</p>
-                                <TokenLogo name={"kpEKL"} />
-                                <p>{kpLockearnedkpEKL} kpEKL</p>
-                                <TokenLogo name={"3Moon LP"} />
-                                <p>{kpLockearned3Moon} 3Moon LP</p>
-                            </p>
-                        </DetailTabInfo>
-                        <Button text="Claim" onClick={KPGLockRewardClaim} />
-                    </>
-                }
-            </Content>
-        </Section>
+                </Section>
+            }
+        </SectionBox>
     )
 }
 export default KPGLock;

@@ -7,7 +7,7 @@ import PageHeader from "../routes/PageHeader";
 
 import Home from "../routes/Home";
 import Convert from "../routes/Convert";
-import Stake from "../routes/StakeLock";
+import StakeLock from "../routes/StakeLock";
 import KPGLock from "../../Components/StakeLock/KPGLock";
 import KPGStakingtool from "../../Components/StakeLock/KPGStakingtool";
 import KPEKLStakingtool from "../../Components/StakeLock/KPEKLStakingtool";
@@ -49,11 +49,11 @@ function App() {
             <Main>
                 <PageHeader />
                 {networkVersion === 1001 ? <p>Please Change Network to Mainnet</p> :
-                    <Routes>
+                    <Routes>                        
                         <Route path="/" element={<Home />} />
                         <Route path="/Convert" element={<Convert />} />
-                        <Route path="/StakeLock" element={<Stake />} />
-                        <Route path="/StakeLock/*" element={<Stake />} />
+                        <Route path="/StakeLock" element={<StakeLock />} />
+                        <Route path="/StakeLock/*" element={<StakeLock />} />
                         <Route path="/StakeLock/KPGLock" element={<KPGLock />} />
                         <Route path="/StakeLock/KPGStake" element={<KPGStakingtool />} />
                         <Route path="/StakeLock/kpEKLStake" element={<KPEKLStakingtool />} />
@@ -62,7 +62,7 @@ function App() {
                         <Route path="/Bank" element={<Bank />} />
                         <Route path="/Calculator" element={<Calculator />} />
                         <Route path="/Fund" element={<Fund />} />
-                        <Route path="*" element={<NotFound />} />
+                        <Route element={<NotFound />} />
                     </Routes>
                 }
             </Main>

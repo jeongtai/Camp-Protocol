@@ -28,6 +28,7 @@ const LPInfoItem = styled.div`
     padding : 0 10px 0 0;
   }
 `
+
 const BtnSection = styled.div`
     display:flex;
     flex-direction: row;
@@ -123,7 +124,7 @@ function LPInfos(props) {
           if (v < caver.utils.toPeb("10", "KLAY")) {
             setIsBondable(false)
           } else {
-            setIsBondable(true)
+            // setIsBondable(true)
             setPoolState("Bond")
           }
         })

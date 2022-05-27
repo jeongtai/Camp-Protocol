@@ -10,7 +10,7 @@ const Content = styled.div`
     justify-content: space-between;
     font-size: 24px;
     font-weight: 600;
-
+    
     margin-top: 70px;
     margin-bottom: 38px;
     

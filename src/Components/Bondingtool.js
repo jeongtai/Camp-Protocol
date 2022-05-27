@@ -33,7 +33,7 @@ const BondingContent = styled.div`
     width : 450px;
     min-width: 380px;
 
-    stroke: Solid #ededed 1px;
+    stroke: Solid #${(props) => props.theme.borderColor} 1px;
     background-color: white;
     border-radius: 15px;
     border: 2px solid ${(props) => props.theme.borderColor};

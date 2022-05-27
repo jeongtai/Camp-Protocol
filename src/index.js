@@ -107,7 +107,8 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body{      
-      background-color: ${(props) => props.theme.bgColor} ;
+      background-color: ${(props) => window.location.host.includes("team42x")? props.theme.backBlack :props.theme.bgColor} ;
+      color : ${(props) => window.location.host.includes("team42x")? props.theme.textWhite :props.theme.textBlack} ;
     }
 
     a {

@@ -129,7 +129,13 @@ function KPEKLStakingtool() {
         try {
             await state.EKLLPContract.methods
                 .estimatePos(EKLTokenAddress, caver.utils.toPeb("1", "KLAY"))
-                .call((e, v) => setkpEKLprice((v / 1e6).toFixed(2)));
+                .call(async (e, eklprice) => {
+                    await state.EKLkpEKLLPContract.methods
+                    .getCurrentPool()
+                    .call(async (e,v)=> {
+                        setkpEKLprice((v[0] / v[1] * eklprice / 1e6).toFixed(3))
+                    })
+                });
         } catch (e) { setkpEKLprice(undefined) }
 
         try {

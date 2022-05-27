@@ -360,7 +360,7 @@ function KPGLock() {
                     </>
                 }
 
-                {(nowTab === "Unlock" && window.location.host.includes("test"))
+                {nowTab === "Unlock"
                     &&
                     <>
                         <LockInfo>

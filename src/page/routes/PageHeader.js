@@ -10,7 +10,7 @@ const Content = styled.div`
     justify-content: space-between;
     font-size: 24px;
     font-weight: 600;
-
+    
     margin-top: 70px;
     margin-bottom: 38px;
     
@@ -94,9 +94,8 @@ function PageHeader() {
         <Content>
             {pathname === "/" ? <p>Dashboard</p> : <p>{pathname.split("/")[1]}</p>}
             <p>
-                {/* 나중에 tokenB 부분 tokenAddress로 바꾸기 */}
                 <a
-                    href="https://klayswap.com/exchange/swap"
+                    href="https://klayswap.com/exchange/swap?input=0x0000000000000000000000000000000000000000&output=0x807c4e063eb0ac21e8eef7623a6ed50a8ede58ca"
                     target="_blank"
                 >
                     Get EKL

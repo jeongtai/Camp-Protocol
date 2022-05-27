@@ -43,6 +43,9 @@ const Section = styled.div`
         margin-bottom: 24px;
     }
 `;
+const InfoSection = styled(Section)`
+    height : 100%;
+`
 
 const StakeInfo = styled.div`
     padding: 10px;
@@ -103,7 +106,7 @@ const Content = styled.div`
     align-content: center;
 `;
 
-const DetailTabInfo = styled(StakeInfo)`
+const ClaimTabInfo = styled(StakeInfo)`
     margin : 32px 0px;
     padding : 20px;
     background-color: ${(props) => props.theme.btnGray};
@@ -117,6 +120,35 @@ const DetailTabInfo = styled(StakeInfo)`
     align-content: flex-start;
     }
 `
+
+const LockInfo = styled.div`
+    & .lockinfoTitle{
+        font-size: 16px;
+        margin-bottom: 18px;
+    }
+
+  & .lockinfoHeader{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding : 0 0 20px 0;
+    border-bottom: 2px solid ${(props) => props.theme.borderColor};
+    font-size : 12px;
+    color : ${props => props.theme.textDarkGray};
+  }
+
+  & p{
+    padding : 0 10px 0 0;
+  }
+  & .lockinfoContent{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding : 0 0 3px 0;
+    font-size : 12px;
+    color : ${props => props.theme.textBlack};
+    align-items: center;
+  }
+`
+
 
 const caver = new Caver(window.klaytn)
 
@@ -209,7 +241,7 @@ function KPGLock() {
                 getInfo();
             });
         }
-        
+
     }, []);
 
     const onChange = (event) => {
@@ -257,110 +289,124 @@ function KPGLock() {
 
     return (
 
-<SectionBox>
-        <Section>
-            <p className="sectionTitle">KPG Lock</p>
-            <StakeInfo>
-                <Info>
-                    <p className="infoName">KPG Price</p>
-                    <p>{kpgPrice}</p>
-                </Info>
-                <Info>
-                    <p className="infoName">Locked KPG</p>
-                    <p>{lockKPGBalance}</p>
-                </Info>
-                <Info>
-                    <p className="infoName">Rewards</p>
-                    <p>{kpLockearnedEKL} EKL<br />
-                        {kpLockearnedkpEKL} kpEKL<br />
-                        {kpLockearned3Moon} 3Moon LP
-                    </p>
-                </Info>
-            </StakeInfo>
+        <SectionBox>
+            <Section>
+                <p className="sectionTitle">KPG Lock</p>
+                <StakeInfo>
+                    <Info>
+                        <p className="infoName">KPG Price</p>
+                        <p>{kpgPrice}</p>
+                    </Info>
+                    <Info>
+                        <p className="infoName">Locked KPG</p>
+                        <p>{lockKPGBalance}</p>
+                    </Info>
+                    <Info>
+                        <p className="infoName">Rewards</p>
+                        <p>{kpLockearnedEKL} EKL<br />
+                            {kpLockearnedkpEKL} kpEKL<br />
+                            {kpLockearned3Moon} 3Moon LP
+                        </p>
+                    </Info>
+                </StakeInfo>
 
-            <Tabs>
-                <Tab onClick={() => setNowTab("Lock")} isActive={nowTab === "Lock"}>
-                    Lock
-                </Tab>
-                <Tab onClick={() => setNowTab("Unlock")} isActive={nowTab === "Unlock"}>
-                    Unlock
-                </Tab>
-                <Tab onClick={() => setNowTab("Claim")} isActive={nowTab === "Claim"}>
-                    Claim
-                </Tab>
-            </Tabs>
-            <Content>
+                <Tabs>
+                    <Tab onClick={() => setNowTab("Lock")} isActive={nowTab === "Lock"}>
+                        Lock
+                    </Tab>
+                    <Tab onClick={() => setNowTab("Unlock")} isActive={nowTab === "Unlock"}>
+                        Unlock
+                    </Tab>
+                    <Tab onClick={() => setNowTab("Claim")} isActive={nowTab === "Claim"}>
+                        Claim
+                    </Tab>
+                </Tabs>
+                <Content>
 
-                {nowTab === "Lock" &&
-                    <>
-                        <InputForm
-                            token="KPG"
-                            type="number"
-                            onChange={onChange}
-                            balance={kpgBalance}
-                            value={inputformValue}
-                            isVisible={true}
-                            haveMax={true}
-                            haveBal={true}
-                            setValueFn={setInputformValue}
-                            price={kpgPrice}
-                        />
+                    {nowTab === "Lock" &&
+                        <>
+                            <InputForm
+                                token="KPG"
+                                type="number"
+                                onChange={onChange}
+                                balance={kpgBalance}
+                                value={inputformValue}
+                                isVisible={true}
+                                haveMax={true}
+                                haveBal={true}
+                                setValueFn={setInputformValue}
+                                price={kpgPrice}
+                            />
 
-                        {isApproved ?
-                            <Button text="Lock" onClick={KPGLock} />
-                            : <Button text="Approve" onClick={KPGApprove} />
-                        }
-                    </>
-                }
+                            {isApproved ?
+                                <Button text="Lock" onClick={KPGLock} />
+                                : <Button text="Approve" onClick={KPGApprove} />
+                            }
+                        </>
+                    }
 
-                {nowTab === "Unlock" &&
-                    <>
-                        <InputForm
-                            token="KPG"
-                            type="number"
-                            onChange={onChange}
-                            balance={lockKPGBalance}
-                            value={inputformValue}
-                            isVisible={true}
-                            haveMax={true}
-                            haveBal={true}
-                            setValueFn={setInputformValue}
-                            price={kpgPrice}
-                        />
+                    {nowTab === "Unlock" &&
+                        <>
+                            <InputForm
+                                token="KPG"
+                                type="number"
+                                onChange={onChange}
+                                balance={lockKPGBalance}
+                                value={inputformValue}
+                                isVisible={true}
+                                haveMax={true}
+                                haveBal={true}
+                                setValueFn={setInputformValue}
+                                price={kpgPrice}
+                            />
 
-                        <Button text="Unlock" onClick={KPGUnlock} />
-                    </>
-                }
+                            <Button text="Unlock" onClick={KPGUnlock} />
+                        </>
+                    }
 
-                {nowTab === "Claim" &&
-                    <>
-                        <DetailTabInfo>
-                            Rewards
-                            <p className="rewardsInfo">
+                    {nowTab === "Claim" &&
+                        <>
+                            <ClaimTabInfo>
+                                Rewards
+                                <p className="rewardsInfo">
 
-                                <TokenLogo name={"EKL"} />
-                                <p>{kpLockearnedEKL} EKL</p>
-                                <TokenLogo name={"kpEKL"} />
-                                <p>{kpLockearnedkpEKL} kpEKL</p>
-                                <TokenLogo name={"3Moon LP"} />
-                                <p>{kpLockearned3Moon} 3Moon LP</p>
+                                    <TokenLogo name={"EKL"} />
+                                    <p>{kpLockearnedEKL} EKL</p>
+                                    <TokenLogo name={"kpEKL"} />
+                                    <p>{kpLockearnedkpEKL} kpEKL</p>
+                                    <TokenLogo name={"3Moon LP"} />
+                                    <p>{kpLockearned3Moon} 3Moon LP</p>
+                                </p>
+                            </ClaimTabInfo>
+                            <Button text="Claim" onClick={KPGLockRewardClaim} />
+                        </>
+                    }
+                </Content>
+            </Section>
+
+            {window.location.host.includes("test")
+                &&
+                <InfoSection>
+                    <LockInfo>
+                        <p className="lockinfoTitle">Current KPG Locks</p>
+                        <p className="lockinfoHeader">
+                            <p>Amount</p>
+                            <p>Boosted Price</p>
+                            <p>unlocktime</p>
+                            <p>unlock</p>
+                        </p>
+                        {kpLockuserlockinfo.map((lockinfo, index) => (
+                            <p className="lockinfoContent">
+                                <p>{lockinfo[0] / 1e18}</p>
+                                <p>{lockinfo[1] / 1e18}</p>
+                                <p>{lockinfo[2]}</p>
+                                <p><button>unlock</button></p>
                             </p>
-                        </DetailTabInfo>
-                        <Button text="Claim" onClick={KPGLockRewardClaim} />
-                    </>
-                }
-            </Content>
-        </Section>
-        <Section>
-            <p>{kpLockuserlockinfo.map((lockinfo,index) => (
-                <p>amount : {lockinfo[0] / 1e18}<br/>
-                boosted : {lockinfo[1] / 1e18}<br/>
-                unlocktime : {lockinfo[2]}
-                </p>
-                ))}
-            </p>
-        </Section>
-        </SectionBox>
+                        ))}
+                    </LockInfo>
+                </InfoSection>
+            }
+        </SectionBox >
     )
 }
 export default KPGLock;

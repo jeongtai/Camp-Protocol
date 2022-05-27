@@ -2,19 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
-import LogoText from "./../../assets/KProtocol-TextLogo.svg";
-import Dashboard from "./../../assets/NavbarIcon/Dashboard.svg";
-import Bank from "./../../assets/NavbarIcon/Bank.svg";
-import Convert from "./../../assets/NavbarIcon/Convert.svg";
-import Bond from "./../../assets/NavbarIcon/Bond.svg";
-import Stake from "./../../assets/NavbarIcon/Stake.svg";
-import Calculator from "./../../assets/NavbarIcon/Calculator.svg";
-import Fund from "./../../assets/NavbarIcon/Fund.svg";
-import GItbook from "./../../assets/NavbarIcon/GItbook.svg";
-import Github from "./../../assets/NavbarIcon/Github.svg";
-import Telegram from "./../../assets/NavbarIcon/Telegram.svg";
-import Twitter from "./../../assets/NavbarIcon/Twitter.svg";
-import Medium from "./../../assets/NavbarIcon/medium.svg";
+import LogoText from "./../../../assets/KProtocol-TextLogo.svg";
+import Dashboard from "./../../../assets/NavbarIcon/Dashboard.svg";
+import Bank from "./../../../assets/NavbarIcon/Bank.svg";
+import Convert from "./../../../assets/NavbarIcon/Convert.svg";
+import Bond from "./../../../assets/NavbarIcon/Bond.svg";
+import Stake from "./../../../assets/NavbarIcon/Stake.svg";
+import Calculator from "./../../../assets/NavbarIcon/Calculator.svg";
+import Fund from "./../../../assets/NavbarIcon/Fund.svg";
+import GItbook from "./../../../assets/NavbarIcon/GItbook.svg";
+import Github from "./../../../assets/NavbarIcon/Github.svg";
+import Telegram from "./../../../assets/NavbarIcon/Telegram.svg";
+import Twitter from "./../../../assets/NavbarIcon/Twitter.svg";
 
 const Nav = styled.div`
     width: ${(props) => props.theme.navWidth}px;
@@ -42,14 +41,13 @@ const Logo = styled.div`
     margin-top: 20%;
     width:100%;
     text-align: center;
-    .LogoText {
-        width : 170px;
-        margin : 0px 10px;
+    & .Text {
+        color : ${(props)=> props.theme.textBlack};
     }
 `;
 
 const Items = styled.div`
-    font-size: 20px;
+    font-size: 13px;
     margin-top: 20%;
     display: flex;
     flex-direction: column;
@@ -124,14 +122,14 @@ const Footer = styled.div`
     }
 `
 
-function Navbar() {
+function AdminNavbar() {
     const [activeMenu, setActiveMenu] = useState(window.location.pathname);
 
-    const menus = [
+    const adminMenus = [
         { name: "Dashboard", path: "/", logo: Dashboard },
-        { name: "Convert", path: "/Convert", logo: Convert },
-        { name: "Bond", path: "/Bond", logo: Bond },
-        { name: "Stake & Lock", path: "/StakeLock", logo: Stake },
+        { name: "Convert Manager", path: "/ConvertManager", logo: Convert },
+        { name: "Bond Manager", path: "/BondManager", logo: Bond },
+        { name: "Stake&Lock Manager", path: "/StakeLockManager", logo: Stake },
     ];
 
     const soonMenus = [
@@ -144,24 +142,27 @@ function Navbar() {
         <Nav>
             <Logo>
                 <img className="LogoText" src={LogoText} />
+                <p className="Text">Manager Mode</p>
             </Logo>
 
+            
+
             <Items>
-                {menus.map((menu, index) => {
+                {adminMenus.map((adminMenu, index) => {
                     return (
                         <Link
-                            to={menu.path}
+                            to={adminMenu.path}
                             key={index}
-                            onClick={() => setActiveMenu(menu.path)}
+                            onClick={() => setActiveMenu(adminMenu.path)}
                         >
                             <Item
                                 isActive={
-                                    window.location.pathname === menu.path
+                                    window.location.pathname === adminMenu.path
                                 }
                                 key={index}
                             >
-                                <img src={menu.logo} />
-                                <span>{menu.name}</span>
+                                <img src={adminMenu.logo} />
+                                <span>{adminMenu.name}</span>
                             </Item>
                         </Link>
                     );
@@ -183,7 +184,7 @@ function Navbar() {
                                     }
                                     key={index}
                                 >
-                                    <img src={menu.logo} />
+                                    <img src={menu.logo}/>
                                     <span>{menu.name}</span>
                                 </Item>
                             </Link>
@@ -206,10 +207,6 @@ function Navbar() {
                         href="https://twitter.com/k_protocol_fi"
                         target="_blank"
                     ><img src={Twitter} width="28px" /></a></p>
-                    <p><a
-                        href="https://medium.com/@kprotocol"
-                        target="_blank"
-                    ><img src={Medium} width="28px" /></a></p>
                 </p>
                 <p className="copyright">
                         © 2022 K-Protocol<br/>
@@ -220,4 +217,4 @@ function Navbar() {
     );
 }
 
-export default Navbar;
+export default AdminNavbar;

@@ -41,9 +41,8 @@ const Logo = styled.div`
     margin-top: 20%;
     width:100%;
     text-align: center;
-    .LogoText {
-        width : 170px;
-        margin : 0px 10px;
+    & .Text {
+        color : ${(props)=> props.theme.textBlack};
     }
 `;
 
@@ -143,7 +142,7 @@ function AdminNavbar() {
         <Nav>
             <Logo>
                 <img className="LogoText" src={LogoText} />
-                <p>Manager Mode</p>
+                <p className="Text">Manager Mode</p>
             </Logo>
 
             

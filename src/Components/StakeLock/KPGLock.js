@@ -43,6 +43,9 @@ const Section = styled.div`
         margin-bottom: 24px;
     }
 `;
+const InfoSection = styled(Section)`
+    height : 100%;
+`
 
 const StakeInfo = styled.div`
     padding: 10px;
@@ -103,7 +106,7 @@ const Content = styled.div`
     align-content: center;
 `;
 
-const DetailTabInfo = styled(StakeInfo)`
+const ClaimTabInfo = styled(StakeInfo)`
     margin : 32px 0px;
     padding : 20px;
     background-color: ${(props) => props.theme.btnGray};
@@ -117,6 +120,35 @@ const DetailTabInfo = styled(StakeInfo)`
     align-content: flex-start;
     }
 `
+
+const LockInfo = styled.div`
+    & .lockinfoTitle{
+        font-size: 16px;
+        margin-bottom: 18px;
+    }
+
+  & .lockinfoHeader{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding : 0 0 20px 0;
+    border-bottom: 2px solid ${(props) => props.theme.borderColor};
+    font-size : 12px;
+    color : ${props => props.theme.textDarkGray};
+  }
+
+  & p{
+    padding : 0 10px 0 0;
+  }
+  & .lockinfoContent{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding : 0 0 3px 0;
+    font-size : 12px;
+    color : ${props => props.theme.textBlack};
+    align-items: center;
+  }
+`
+
 
 const caver = new Caver(window.klaytn)
 
@@ -334,7 +366,7 @@ function KPGLock() {
 
                     {nowTab === "Claim" &&
                         <>
-                            <DetailTabInfo>
+                            <ClaimTabInfo>
                                 Rewards
                                 <p className="rewardsInfo">
 
@@ -345,25 +377,36 @@ function KPGLock() {
                                     <TokenLogo name={"3Moon LP"} />
                                     <p>{kpLockearned3Moon} 3Moon LP</p>
                                 </p>
-                            </DetailTabInfo>
+                            </ClaimTabInfo>
                             <Button text="Claim" onClick={KPGLockRewardClaim} />
                         </>
                     }
                 </Content>
             </Section>
+
             {window.location.host.includes("test")
                 &&
-                <Section>
-                    <p>{kpLockuserlockinfo.map((lockinfo, index) => (
-                        <p>amount : {lockinfo[0] / 1e18}<br />
-                            boosted : {lockinfo[1] / 1e18}<br />
-                            unlocktime : {lockinfo[2]}
+                <InfoSection>
+                    <LockInfo>
+                        <p className="lockinfoTitle">Current KPG Locks</p>
+                        <p className="lockinfoHeader">
+                            <p>Amount</p>
+                            <p>Boosted Price</p>
+                            <p>unlocktime</p>
+                            <p>unlock</p>
                         </p>
-                    ))}
-                    </p>
-                </Section>
+                        {kpLockuserlockinfo.map((lockinfo, index) => (
+                            <p className="lockinfoContent">
+                                <p>{lockinfo[0] / 1e18}</p>
+                                <p>{lockinfo[1] / 1e18}</p>
+                                <p>{lockinfo[2]}</p>
+                                <p><button>unlock</button></p>
+                            </p>
+                        ))}
+                    </LockInfo>
+                </InfoSection>
             }
-        </SectionBox>
+        </SectionBox >
     )
 }
 export default KPGLock;

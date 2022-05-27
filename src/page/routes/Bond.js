@@ -1,4 +1,4 @@
-import Bondingtool from "../../Components/Bondingtool";
+//import Bondingtool from "../../Components/Bondingtool";
 import styled from "styled-components";
 import LPinfos from "./../../Components/LPinfos";
 import LoadingSVG from "./../../assets/LoadingSVG";

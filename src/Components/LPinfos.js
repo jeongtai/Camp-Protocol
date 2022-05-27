@@ -127,7 +127,7 @@ function LPInfos(props) {
             setPoolState("Bond")
           }
         })
-    } catch (e) { setIsBondable(true) }
+    } catch (e) { setIsBondable(false) }
   }
 
   // initialize hook----------------------------

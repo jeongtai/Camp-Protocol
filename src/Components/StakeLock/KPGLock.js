@@ -7,8 +7,8 @@ import styled from "styled-components";
 import InputForm from "../../assets/InputForm"
 import TokenLogo from "../../assets/TokenLogo";
 import BigNumber from "bignumber.js";
+import { timeConversion } from "../../const/service.js"
 import { MAX_UNIT } from "../../const/Contract";
-
 
 const Section = styled.div`
     // flex
@@ -109,9 +109,6 @@ const ClaimTabInfo = styled(StakeInfo)`
     align-content: flex-start;
     }
 `
-const LockInfoSection = styled(Section)`
-    height : 100%;
-`
 
 const LockInfo = styled.div`
     font-size : 12px;
@@ -128,14 +125,14 @@ const LockInfo = styled.div`
     & .lockinfoHeader{
         display: grid;
         padding-bottom: 10px;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         border-bottom: 2px solid ${(props) => props.theme.borderColor};
         color : ${props => props.theme.textDarkGray};
     }
 
     & .lockinfoContent{
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
 
         margin-top:10px;
         align-items: center;  
@@ -143,21 +140,21 @@ const LockInfo = styled.div`
         color : ${props => props.theme.textBlack};
     }
 `
-const UnlockBtn = styled.button`
-    width : 70%;
-    min-width : 20px;  
+// const UnlockBtn = styled.button`
+//     width : 70%;
+//     min-width : 20px;  
 
-    height: 20px;
+//     height: 20px;
 
-    background-color: ${(props) => props.isUnlockable ? props.theme.btnWhite : props.theme.btnGray};
+//     background-color: ${(props) => props.isUnlockable ? props.theme.btnWhite : props.theme.btnGray};
 
-    border : 2px solid;
-    border-color : ${(props) => props.isUnlockable ? props.theme.btnBlue : props.theme.btnGray};
-    border-radius: 6px;
+//     border : 2px solid;
+//     border-color : ${(props) => props.isUnlockable ? props.theme.btnBlue : props.theme.btnGray};
+//     border-radius: 6px;
 
-    font-size: 12px;
-    color: ${(props) => props.isUnlockable ? props.theme.textBlue : props.theme.textDarkGray};
-`
+//     font-size: 12px;
+//     color: ${(props) => props.isUnlockable ? props.theme.textBlue : props.theme.textDarkGray};
+// `
 
 const caver = new Caver(window.klaytn)
 
@@ -181,8 +178,7 @@ function KPGLock() {
     const [nowTab, setNowTab] = useState("Lock")
 
     const [isUnlockable, setIsUnlockable] = useState(false);
-    const [nowBlockNumber, setNowBlockNumber] = useState();
-    const [nowDate, setNowDate] = useState();
+    const [nowTimestamp, setNowTimestamp] = useState();
 
     async function getInfo() {
         try {
@@ -245,14 +241,13 @@ function KPGLock() {
         } catch (e) { setKPLockUserLockInfo(undefined) }
 
         try {
-            await caver.klay.getBlockNumber((e,v)=> {
-                setNowBlockNumber(v)
-                
-                setNowDate(caver.klay.getBlock(v))
+            await caver.klay.getBlockNumber((e, v) => {
+                caver.klay.getBlock(v)
+                .then((res) => setNowTimestamp(caver.utils.hexToNumber(res.timestamp)*1000))
             })
-            await console.log(nowDate)
-        }catch(e){setNowBlockNumber(undefined)}
-
+        } catch (e) {
+            setNowTimestamp(undefined)
+        }
     }
 
     useEffect(() => {
@@ -370,37 +365,37 @@ function KPGLock() {
                     <>
                         <LockInfo>
                             <p className="lockinfoTitle">Current KPG Locks</p>
-                            <p className="lockinfoTitle">Current Block number : {nowBlockNumber}</p>
-                            <p className="lockinfoTitle">Current DATE : {nowDate}</p>
-                            
+
                             <p className="lockinfoHeader">
                                 <p>Amount</p>
-                                <p>Boosted Price</p>
-                                <p>Unlocktime</p>
-                                <p>Unlock</p>
+                                <p>Unlock time</p>
+                                <p>Remain</p>
                             </p>
-                            {kpLockuserlockinfo.map((lockinfo, index) => (
-                                <p className="lockinfoContent" key={index}>
-                                    <p>{lockinfo[0] / 1e18}</p>
-                                    <p>{lockinfo[1] / 1e18}</p>
-                                    <p>{lockinfo[2]}</p>
-                                    <p><UnlockBtn isUnlockable={isUnlockable}>Unlock</UnlockBtn></p>
-                                </p>
-                            ))}
-                        </LockInfo>
+                            {kpLockuserlockinfo.map((lockinfo, index) => {
+                                let lockAmount = lockinfo[0] / 1e18
+                                let boostedLockAmount = lockinfo[1] / 1e18
+                                let unlockDate = new Date(lockinfo[2] * 1000)
+                                let remainTimestamp = Math.max(0, lockinfo[2]*1000 -  nowTimestamp) // Test timestamp : 1661386000000
 
-                        {/* <InputForm
-                                token="KPG"
-                                type="number"
-                                onChange={onChange}
-                                balance={lockKPGBalance}
-                                value={inputformValue}
-                                isVisible={true}
-                                haveMax={true}
-                                haveBal={true}
-                                setValueFn={setInputformValue}
-                                price={kpgPrice}
-                            /> */}
+                                return (
+                                    <p className="lockinfoContent" key={index}>
+                                        <p>{lockAmount}</p>
+                                        <p>
+                                            {unlockDate.getFullYear().toString().substr(-2)}
+                                            .{unlockDate.getMonth() + 1}
+                                            .{unlockDate.getDate()}
+                                            &nbsp;{unlockDate.getHours()}:00
+                                        </p>
+                                        <p>
+                                            {remainTimestamp === 0
+                                            ?'Unlockable'
+                                            :timeConversion(remainTimestamp)
+                                            }
+                                        </p>
+                                    </p>
+                                )
+                            })}
+                        </LockInfo>
 
                         <Button text="Unlock" onClick={KPGUnlock} />
                     </>

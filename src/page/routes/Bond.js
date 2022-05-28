@@ -1,4 +1,4 @@
-import Bondingtool from "../../Components/Bondingtool";
+//import Bondingtool from "../../Components/Bondingtool";
 import styled from "styled-components";
 import LPinfos from "./../../Components/LPinfos";
 import LoadingSVG from "./../../assets/LoadingSVG";
@@ -100,18 +100,16 @@ const caver = new Caver(window.klaytn)
 const Bond = () => {
   let state = useSelector((state) => state)
   const [kpgprice, setKPGprice] = useState()
-  const [ekl3moonbal, set3Moonbal] = useState()
-  const [ekl3moonprice, set3Moonprice] = useState()
+  const [ekl3moonBalance, setEkl3MoonBalance] = useState()
+  const [ekl3moonprice, setEkl3Moonprice] = useState()
   const [deposit3moon, setDeposit3Moon] = useState()
   const [kpgusdtval, setKPGUSDTVal] = useState()
   const [eklkpeklval, setEKLkpEKLval] = useState()
   const [isToolOpen, setIsToolOpen] = useState(false)
 
-  let undepositval = ekl3moonbal * ekl3moonprice
+  let undepositval = ekl3moonBalance * ekl3moonprice
   let depositval = deposit3moon * ekl3moonprice
   let tvl = undepositval + depositval + parseFloat(kpgusdtval) + parseFloat(eklkpeklval)
-  let isReload = 0;
-
 
   async function getInfo() {
     try {
@@ -123,14 +121,14 @@ const Bond = () => {
     try {
       await state.EKL3MoonLPContract.methods
         .balanceOf(state.BondTreasuryContract._address)
-        .call((e, v) => set3Moonbal(v / 1e18));
-    } catch { set3Moonbal(undefined) }
+        .call((e, v) => setEkl3MoonBalance(v / 1e18));
+    } catch { setEkl3MoonBalance(undefined) }
 
     try {
       await state.EKL3MoonBondContract.methods
         .assetPrice()
-        .call((e, v) => set3Moonprice(v / 1e6));
-    } catch { set3Moonprice(undefined) }
+        .call((e, v) => setEkl3Moonprice(v / 1e6));
+    } catch { setEkl3Moonprice(undefined) }
 
     try {
       await state.mock3MoonContract.methods
@@ -183,7 +181,7 @@ const Bond = () => {
 
   return (
     <Section isBondingtoolOpen={isToolOpen}>
-      <Overview isReload={isReload}>
+      <Overview>
         <p className="Title">Overview</p>
 
         {OverviewInfos.map((info, index) => (

@@ -75,6 +75,7 @@ const BondInfos = styled.div`
     border-radius: 15px;
 `;
 const ButtonSection = styled.div`
+    margin-top : 10px;
     text-align: center;
     color: ${(props) => props.theme.textGray};
 
@@ -82,6 +83,10 @@ const ButtonSection = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: 18px;
+
+    & button{
+      background-color: ${(props) => props.isBondBtnActive ? null :  props.theme.btnGray };
+    }
 `;
 
 const DetailInfo = styled.div`
@@ -128,7 +133,9 @@ function Bondingtool(lpInfosProps) {
   const [remaincamp, setRemainCamp] = useState()
   const [isApproved, setIsApproved] = useState(false)
 
-  const onLPChange = (event) => setLPAmount(event.target.value)
+  const onLPChange = (event) => {
+    setLPAmount(event.target.value)
+  }
 
   const bondContract = lpInfosProps.bondLPInfo.bondContract;
   const lpContract = lpInfosProps.bondLPInfo.lpContract;
@@ -217,17 +224,14 @@ function Bondingtool(lpInfosProps) {
     }
   }, []);
 
-
-  async function CalculateKPG() {
-    try {
-      await bondContract.methods
-        .payoutFor(caver.utils.toPeb(lpamount, "KLAY"))
-        .call((e, v) => setkpgAmt((v / 1e18 * assetPrice).toFixed(3)))
-    } catch (e) { setkpgAmt(0) }
-  }
-
   useEffect(() => {
-    CalculateKPG()
+    try {
+      bondContract.methods
+        .payoutFor(caver.utils.toPeb(lpamount, "KLAY"))
+        .call((e, v) => {
+          setkpgAmt((v / 1e18 * assetPrice).toFixed(3))
+        })
+    } catch (e) { setkpgAmt(0) }
   }, [lpamount])
 
   // useEffect(() => {
@@ -264,13 +268,13 @@ function Bondingtool(lpInfosProps) {
   }
 
   const bondInfosArray = [
-    { name: "your LP balance", val: lpbal, expression: lpbal },
+    { name: "your LP balance", val: lpbal, expression: `${lpbal} LP` },
     { name: "You'll get", val: kpgAmt, expression: `${kpgAmt} KPG` },
-    { name: "Max can buy", val: maxDebt, expression: `${maxDebt} KPG` },
+    { name: "Max Bond", val: maxDebt, expression: `${maxDebt} KPG` },
     { name: "ROI", val: priceDiscountRate, expression: `${priceDiscountRate} %` },
     { name: "Vesting term end", val: vestingTerm, expression: timeConversion(vestingTerm * 1000) },
     { name: "Minimum Purchase", val: "0.01 KPG", expression: "0.01 KPG" },
-    { name: "asset Price", val: assetPrice, expression: assetPrice },
+    { name: "LP Price", val: assetPrice, expression: `$ ${assetPrice}` },
   ];
 
   const claimInfos = [
@@ -299,7 +303,7 @@ function Bondingtool(lpInfosProps) {
                 <p>
                   {
                     lpInfosProps.btnState === "Bond"
-                      ? `Bond price : ${bondprice}`
+                      ? `KPG Bond price : ${bondprice}`
                       : `Claimable KPG ${pendingKPG}`
                   }
                 </p>
@@ -343,16 +347,17 @@ function Bondingtool(lpInfosProps) {
                 )}
             </BondInfos>
 
-            <ButtonSection>
+            <ButtonSection isBondBtnActive={parseFloat(kpgAmt) <= parseFloat(maxDebt)}>
+              { parseFloat(kpgAmt) > parseFloat(maxDebt) && <p>You can't bond over Max bond</p>}
               <Button
                 text={btnInfo}
                 isApproved={isApproved}
                 onClick={() => {
-                  if (lpInfosProps.btnState === "Bond") {
+                  if (lpInfosProps.btnState === "Bond" && parseFloat(kpgAmt) <= parseFloat(maxDebt)) {
                     return onClickBond()
                   } else if (lpInfosProps.btnState === "Claim") {
                     return onClickClaim()
-                  } else {
+                  } else if (btnInfo==="Approve"){
                     return onClickApprove()
                   }
                 }} />

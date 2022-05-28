@@ -7,16 +7,8 @@ import styled from "styled-components";
 import InputForm from "../../assets/InputForm"
 import TokenLogo from "../../assets/TokenLogo";
 import BigNumber from "bignumber.js";
+import { timeConversion } from "../../const/service.js"
 import { MAX_UNIT } from "../../const/Contract";
-
-const SectionBox = styled.div`
-display:flex;
-flex-direction: row;
-@media (max-width: ${(props) => props.theme.firstResponsiveWidth}) {
-        flex-direction: column;
-    }
-margin: 0 auto;
-`
 
 const Section = styled.div`
     // flex
@@ -25,7 +17,7 @@ const Section = styled.div`
     justify-content: space-between;
     flex-direction: column;
     padding: 24px;
-    margin : 0 13px;
+    margin : 0 auto;
     
     width: 50%;
     min-width: 430px;
@@ -103,7 +95,7 @@ const Content = styled.div`
     align-content: center;
 `;
 
-const DetailTabInfo = styled(StakeInfo)`
+const ClaimTabInfo = styled(StakeInfo)`
     margin : 32px 0px;
     padding : 20px;
     background-color: ${(props) => props.theme.btnGray};
@@ -117,6 +109,52 @@ const DetailTabInfo = styled(StakeInfo)`
     align-content: flex-start;
     }
 `
+
+const LockInfo = styled.div`
+    font-size : 12px;
+    
+    text-align: center;
+
+    & .lockinfoTitle{
+        text-align: left;
+        padding : 0 10px;
+        font-size: 16px;
+        margin-bottom: 18px;
+    }
+
+    & .lockinfoHeader{
+        display: grid;
+        padding-bottom: 10px;
+        grid-template-columns: repeat(3, 1fr);
+        border-bottom: 2px solid ${(props) => props.theme.borderColor};
+        color : ${props => props.theme.textDarkGray};
+    }
+
+    & .lockinfoContent{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+
+        margin-top:10px;
+        align-items: center;  
+
+        color : ${props => props.theme.textBlack};
+    }
+`
+// const UnlockBtn = styled.button`
+//     width : 70%;
+//     min-width : 20px;  
+
+//     height: 20px;
+
+//     background-color: ${(props) => props.isUnlockable ? props.theme.btnWhite : props.theme.btnGray};
+
+//     border : 2px solid;
+//     border-color : ${(props) => props.isUnlockable ? props.theme.btnBlue : props.theme.btnGray};
+//     border-radius: 6px;
+
+//     font-size: 12px;
+//     color: ${(props) => props.isUnlockable ? props.theme.textBlue : props.theme.textDarkGray};
+// `
 
 const caver = new Caver(window.klaytn)
 
@@ -138,6 +176,9 @@ function KPGLock() {
     const [isApproved, setIsApproved] = useState(false)
     const [inputformValue, setInputformValue] = useState()
     const [nowTab, setNowTab] = useState("Lock")
+
+    const [isUnlockable, setIsUnlockable] = useState(false);
+    const [nowTimestamp, setNowTimestamp] = useState();
 
     async function getInfo() {
         try {
@@ -194,12 +235,19 @@ function KPGLock() {
             await state.kpLockContract.methods
                 .lockedBalances(window.klaytn.selectedAddress)
                 .call((e, v) => {
-                    console.log(v[3]);
                     setKPLockUserLockInfo(v[3])
                 }
                 )
-        } catch (e) { setKPLockUserLockInfo() }
+        } catch (e) { setKPLockUserLockInfo(undefined) }
 
+        try {
+            await caver.klay.getBlockNumber((e, v) => {
+                caver.klay.getBlock(v)
+                .then((res) => setNowTimestamp(caver.utils.hexToNumber(res.timestamp)*1000))
+            })
+        } catch (e) {
+            setNowTimestamp(undefined)
+        }
     }
 
     useEffect(() => {
@@ -257,113 +305,123 @@ function KPGLock() {
 
     return (
 
-        <SectionBox>
-            <Section>
-                <p className="sectionTitle">KPG Lock</p>
-                <StakeInfo>
-                    <Info>
-                        <p className="infoName">KPG Price</p>
-                        <p>{kpgPrice}</p>
-                    </Info>
-                    <Info>
-                        <p className="infoName">Locked KPG</p>
-                        <p>{lockKPGBalance}</p>
-                    </Info>
-                    <Info>
-                        <p className="infoName">Rewards</p>
-                        <p>{kpLockearnedEKL} EKL<br />
-                            {kpLockearnedkpEKL} kpEKL<br />
-                            {kpLockearned3Moon} 3Moon LP
-                        </p>
-                    </Info>
-                </StakeInfo>
-
-                <Tabs>
-                    <Tab onClick={() => setNowTab("Lock")} isActive={nowTab === "Lock"}>
-                        Lock
-                    </Tab>
-                    <Tab onClick={() => setNowTab("Unlock")} isActive={nowTab === "Unlock"}>
-                        Unlock
-                    </Tab>
-                    <Tab onClick={() => setNowTab("Claim")} isActive={nowTab === "Claim"}>
-                        Claim
-                    </Tab>
-                </Tabs>
-                <Content>
-
-                    {nowTab === "Lock" &&
-                        <>
-                            <InputForm
-                                token="KPG"
-                                type="number"
-                                onChange={onChange}
-                                balance={kpgBalance}
-                                value={inputformValue}
-                                isVisible={true}
-                                haveMax={true}
-                                haveBal={true}
-                                setValueFn={setInputformValue}
-                                price={kpgPrice}
-                            />
-
-                            {isApproved ?
-                                <Button text="Lock" onClick={KPGLock} />
-                                : <Button text="Approve" onClick={KPGApprove} />
-                            }
-                        </>
-                    }
-
-                    {nowTab === "Unlock" &&
-                        <>
-                            <InputForm
-                                token="KPG"
-                                type="number"
-                                onChange={onChange}
-                                balance={lockKPGBalance}
-                                value={inputformValue}
-                                isVisible={true}
-                                haveMax={true}
-                                haveBal={true}
-                                setValueFn={setInputformValue}
-                                price={kpgPrice}
-                            />
-
-                            <Button text="Unlock" onClick={KPGUnlock} />
-                        </>
-                    }
-
-                    {nowTab === "Claim" &&
-                        <>
-                            <DetailTabInfo>
-                                Rewards
-                                <p className="rewardsInfo">
-
-                                    <TokenLogo name={"EKL"} />
-                                    <p>{kpLockearnedEKL} EKL</p>
-                                    <TokenLogo name={"kpEKL"} />
-                                    <p>{kpLockearnedkpEKL} kpEKL</p>
-                                    <TokenLogo name={"3Moon LP"} />
-                                    <p>{kpLockearned3Moon} 3Moon LP</p>
-                                </p>
-                            </DetailTabInfo>
-                            <Button text="Claim" onClick={KPGLockRewardClaim} />
-                        </>
-                    }
-                </Content>
-            </Section>
-            {window.location.host.includes("test")
-                &&
-                <Section>
-                    <p>{kpLockuserlockinfo.map((lockinfo, index) => (
-                        <p>amount : {lockinfo[0] / 1e18}<br />
-                            boosted : {lockinfo[1] / 1e18}<br />
-                            unlocktime : {lockinfo[2]}
-                        </p>
-                    ))}
+        <Section>
+            <p className="sectionTitle">KPG Lock</p>
+            <StakeInfo>
+                <Info>
+                    <p className="infoName">KPG Price</p>
+                    <p>{kpgPrice}</p>
+                </Info>
+                <Info>
+                    <p className="infoName">Locked KPG</p>
+                    <p>{lockKPGBalance}</p>
+                </Info>
+                <Info>
+                    <p className="infoName">Rewards</p>
+                    <p>{kpLockearnedEKL} EKL<br />
+                        {kpLockearnedkpEKL} kpEKL<br />
+                        {kpLockearned3Moon} 3Moon LP
                     </p>
-                </Section>
-            }
-        </SectionBox>
+                </Info>
+            </StakeInfo>
+
+            <Tabs>
+                <Tab onClick={() => setNowTab("Lock")} isActive={nowTab === "Lock"}>
+                    Lock
+                </Tab>
+                <Tab onClick={() => setNowTab("Unlock")} isActive={nowTab === "Unlock"}>
+                    Unlock
+                </Tab>
+                <Tab onClick={() => setNowTab("Claim")} isActive={nowTab === "Claim"}>
+                    Claim
+                </Tab>
+            </Tabs>
+            <Content>
+
+                {nowTab === "Lock" &&
+                    <>
+                        <InputForm
+                            token="KPG"
+                            type="number"
+                            onChange={onChange}
+                            balance={kpgBalance}
+                            value={inputformValue}
+                            isVisible={true}
+                            haveMax={true}
+                            haveBal={true}
+                            setValueFn={setInputformValue}
+                            price={kpgPrice}
+                        />
+
+                        {isApproved ?
+                            <Button text="Lock" onClick={KPGLock} />
+                            : <Button text="Approve" onClick={KPGApprove} />
+                        }
+                    </>
+                }
+
+                {nowTab === "Unlock"
+                    &&
+                    <>
+                        <LockInfo>
+                            <p className="lockinfoTitle">Current KPG Locks</p>
+
+                            <p className="lockinfoHeader">
+                                <p>Amount</p>
+                                <p>Unlock time</p>
+                                <p>Remain</p>
+                            </p>
+                            {kpLockuserlockinfo.map((lockinfo, index) => {
+                                let lockAmount = lockinfo[0] / 1e18
+                                let boostedLockAmount = lockinfo[1] / 1e18
+                                let unlockDate = new Date(lockinfo[2] * 1000)
+                                let remainTimestamp = Math.max(0, lockinfo[2]*1000 -  nowTimestamp) // Test timestamp : 1661386000000
+
+                                return (
+                                    <p className="lockinfoContent" key={index}>
+                                        <p>{lockAmount}</p>
+                                        <p>
+                                            {unlockDate.getFullYear().toString().substr(-2)}
+                                            .{unlockDate.getMonth() + 1}
+                                            .{unlockDate.getDate()}
+                                            &nbsp;{unlockDate.getHours()}:00
+                                        </p>
+                                        <p>
+                                            {remainTimestamp === 0
+                                            ?'Unlockable'
+                                            :timeConversion(remainTimestamp)
+                                            }
+                                        </p>
+                                    </p>
+                                )
+                            })}
+                        </LockInfo>
+
+                        <Button text="Unlock" onClick={KPGUnlock} />
+                    </>
+                }
+
+                {nowTab === "Claim" &&
+                    <>
+                        <ClaimTabInfo>
+                            Rewards
+                            <p className="rewardsInfo">
+
+                                <TokenLogo name={"EKL"} />
+                                <p>{kpLockearnedEKL} EKL</p>
+                                <TokenLogo name={"kpEKL"} />
+                                <p>{kpLockearnedkpEKL} kpEKL</p>
+                                <TokenLogo name={"3Moon LP"} />
+                                <p>{kpLockearned3Moon} 3Moon LP</p>
+                            </p>
+                        </ClaimTabInfo>
+                        <Button text="Claim" onClick={KPGLockRewardClaim} />
+                    </>
+                }
+            </Content>
+        </Section>
+
+
     )
 }
 export default KPGLock;

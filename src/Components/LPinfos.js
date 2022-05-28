@@ -70,6 +70,23 @@ const BondClaimtoolBtn = styled(BondingtoolBtn)`
   background-color: ${(props) => props.isOpened ? props.theme.btnBlue : props.theme.btnGray};
   color: ${(props) => props.isOpened ? props.theme.btnWhite : props.theme.textDarkGray};
 `
+
+const SoldoutInfoModal = styled.div`
+    position: absolute;
+    padding: 10px 15px;
+
+
+    background-color:${(props) => props.theme.backDarkGray};
+    color : ${(props) => props.theme.textWhite};
+
+    border-radius: 15px;
+    z-index: 2;
+
+    font-size: 12px;
+    line-height: 18px;    
+`;
+
+
 const caver = new Caver(window.klaytn)
 
 function LPInfos(props) {
@@ -79,9 +96,12 @@ function LPInfos(props) {
   const [priceRate, setPriceRate] = useState()
   const [vestingterm, setVestingTerm] = useState()
   const [poolState, setPoolState] = useState("Bond")
+  const [bondTreasuryKpgBalance, setBondTreasuryKpgBalance] = useState()
   const [isClaimable, setIsClaimable] = useState(false)
   const [isBondable, setIsBondable] = useState()
   const [clickedBtn, setClickBtn] = useState({})
+  const [isBondBtnInfoOpen, setIsBondBtnInfoOpen] = useState(false)
+
   const lpName = props.bondLPInfo.name;
   const bondContract = props.bondLPInfo.bondContract;
   const TreasuryContract = props.bondLPInfo.TreasuryContract;
@@ -118,17 +138,20 @@ function LPInfos(props) {
 
     try {
       await state.KPGContract.methods
-        .balanceOf(TreasuryContract)
+        .balanceOf(TreasuryContract._address)
         .call((e, v) => {
-          // KPG 밸런스가 있는지 체크
-          if (v < caver.utils.toPeb("10", "KLAY")) {
+          // bond treasury에 KPG 밸런스가 1개 이하면 soldout
+          setBondTreasuryKpgBalance(v / 1e18);
+          if (parseFloat(v) < parseFloat(caver.utils.toPeb("1", "KLAY"))) {
             setIsBondable(false)
           } else {
-            // setIsBondable(true)
+            setIsBondable(true)
             setPoolState("Bond")
           }
         })
-    } catch (e) { setIsBondable(false) }
+    } catch (e) {
+      setIsBondable(true)
+    }
   }
 
   // initialize hook----------------------------
@@ -171,32 +194,37 @@ function LPInfos(props) {
         <div>
           <BondingtoolBtn
             isOpened={isBondable}
-            onClick={isBondable ? ()=>ClickBtn("bond") : null}
-            >
+            onClick={isBondable ? () => ClickBtn("bond") : null}
+            onMouseOver={() => setIsBondBtnInfoOpen(true)}
+            onMouseLeave={() => setIsBondBtnInfoOpen(false)}
+          >
             {isBondable ? "Bond" : "Soldout"}
+            {(isBondBtnInfoOpen && !isBondable)
+              ? <SoldoutInfoModal>Bond Treasury<br/>Remain KPG : {bondTreasuryKpgBalance.toFixed(3)}</SoldoutInfoModal>
+              : null}
           </BondingtoolBtn>
           {clickedBtn.lp === lpName && props.isToolOpenCtrl.isToolOpen && clickedBtn.tool === "bond" ?
-              <Bondingtool
-                bondLPInfo={props.bondLPInfo}
-                btnState="Bond"
-                isToolOpenCtrl={props.isToolOpenCtrl}
-              />
-              : null}
+            <Bondingtool
+              bondLPInfo={props.bondLPInfo}
+              btnState="Bond"
+              isToolOpenCtrl={props.isToolOpenCtrl}
+            />
+            : null}
         </div>
 
         <div>
           <BondClaimtoolBtn
             isOpened={isClaimable}
-            onClick={isClaimable ? ()=>ClickBtn("bondClaim") : null}>
+            onClick={isClaimable ? () => ClickBtn("bondClaim") : null}>
             Claim
           </BondClaimtoolBtn>
           {clickedBtn.lp === lpName && props.isToolOpenCtrl.isToolOpen && clickedBtn.tool === "bondClaim" ?
-              <Bondingtool
-                bondLPInfo={props.bondLPInfo}
-                btnState="Claim"
-                isToolOpenCtrl={props.isToolOpenCtrl}
-              />
-              : null}
+            <Bondingtool
+              bondLPInfo={props.bondLPInfo}
+              btnState="Claim"
+              isToolOpenCtrl={props.isToolOpenCtrl}
+            />
+            : null}
         </div>
 
       </BtnSection>

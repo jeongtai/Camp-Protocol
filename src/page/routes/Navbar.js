@@ -14,6 +14,7 @@ import GItbook from "./../../assets/NavbarIcon/GItbook.svg";
 import Github from "./../../assets/NavbarIcon/Github.svg";
 import Telegram from "./../../assets/NavbarIcon/Telegram.svg";
 import Twitter from "./../../assets/NavbarIcon/Twitter.svg";
+import Medium from "./../../assets/NavbarIcon/medium.svg";
 
 const Nav = styled.div`
     width: ${(props) => props.theme.navWidth}px;
@@ -205,6 +206,10 @@ function Navbar() {
                         href="https://twitter.com/k_protocol_fi"
                         target="_blank"
                     ><img src={Twitter} width="28px" /></a></p>
+                    <p><a
+                        href="https://medium.com/@kprotocol"
+                        target="_blank"
+                    ><img src={Medium} width="28px" /></a></p>
                 </p>
                 <p className="copyright">
                         © 2022 K-Protocol<br/>

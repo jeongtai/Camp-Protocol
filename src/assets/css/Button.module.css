@@ -17,3 +17,12 @@
   width: 100%;
   cursor: pointer;
 }
+
+.unactiveBtn {
+  margin-top: 20px;
+  background-color: #EDEDED;
+  color: #7D7D7D;
+  padding: 8px;
+  border-radius: 6px;
+  width: 100%;
+}

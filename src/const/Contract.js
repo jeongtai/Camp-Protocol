@@ -15,6 +15,8 @@ import kpLockjs from "../abis/KPLock.json"
 import {eklipseLockABI} from "../abis/eklipse_lock.js"
 import eklvotejs from "../abis/eklvote.json"
 import eklgaguejs from "../abis/EKLgauge.json"
+import kpstakingproxyjs from "../abis/kpStakingProxy.json"
+import Boosterjs from "../abis/Booster.json"
 
 const caver = new Caver(window.klaytn)
 
@@ -32,6 +34,7 @@ const KPGContract = new caver.klay.Contract(kpTokenjs.abi, "0xF05d180a169418959a
 
 const mock3MoonContract = new caver.klay.Contract(klayswapABI, "0xbb0297b1641d00c48f44212a2d83447f2d8f3a56")
 
+const BoosterContract = new caver.klay.Contract(Boosterjs.abi, "0xC1A05Bea7Ed1f6d21921EE1aEa28Dcf0bD67c071")
 const EKLDepositorContract = new caver.klay.Contract(EKLDepositorjs.abi, "0xABe0F9cFf7d77aEd6b6C9107f0584f897cC0942d")
 const KPG_USDTBondContract = new caver.klay.Contract(KPGUSDTBondjs.abi, "0x86929978fFF53F72Fc4cf0e2FC64f4f16EE652A3")
 const EKLkpEKLBondContract = new caver.klay.Contract(EKLkpEKLBondjs.abi, "0xa914415d5AAEB893154d65204eC5e242BA480B31")
@@ -41,6 +44,7 @@ const BondTreasuryContract = new caver.klay.Contract(Treasuryjs.abi, "0xc71d938d
 const kpEKLStakingContract = new caver.klay.Contract(kpEKLStakejs.abi, "0x58337263cf52A4906913866242cfdeE16dEe82Bb")
 const kpEKLStakeFeeContract = new caver.klay.Contract(kpEklStakeFeejs.abi, "0x54D9692Eb4539970acE6dB1Bf8220e4ABb259df0")
 const kpStakingContract = new caver.klay.Contract(kpStakejs.abi, "0x5042D8158d3c3C7f95374512b726fB2fA82EBa6B")
+const kpStakingProxyContract = new caver.klay.Contract(kpstakingproxyjs.abi, "0xc71d938d5Faf4057B7A9cd19b633A1d921Eee26c")
 const kpLockContract = new caver.klay.Contract(kpLockjs.abi, "0xDc1b8Fe74ED56Fe11AB9ECfD7238aBaA8298f3d9")
 
 const EKLLockContract = new caver.klay.Contract(eklipseLockABI, "0xD067C3b871ee9E07BA4205A8F96c182baBBA6c58")
@@ -73,7 +77,8 @@ export const bondLPInfos = [
 const initialstate = {BankContract, SCAMPContract, BondTreasuryContract,
   EKLLPContract, EKLContract, EKLkpEKLLPContract, kpEKLContract, EKLDepositorContract, KPG_USDTLPContract, EKL3MoonLPContract,
   KPG_USDTBondContract, EKLkpEKLBondContract, EKL3MoonBondContract, kpEKLStakingContract, kpEKLStakeFeeContract, kpStakingContract,
-  KPGContract, kpLockContract, mock3MoonContract, EKLLockContract, EKLVoteContract, EKL3MoonGaugecContract
+  KPGContract, kpLockContract, mock3MoonContract, EKLLockContract, EKLVoteContract, EKL3MoonGaugecContract, kpStakingProxyContract,
+  BoosterContract
 }
 
 

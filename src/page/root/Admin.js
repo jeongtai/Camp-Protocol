@@ -12,11 +12,6 @@ import ConvertManager from "../routes/Admin/ConvertManager";
 import BondManager from "../routes/Admin/BondManager";
 import StakeLockManager from "../routes/Admin/StakeLockManager";
 
-
-import Bondingtool from "../../Components/Bondingtool";
-import Bank from "../routes/Bank";
-import Fund from "../routes/Fund";
-import Calculator from "../routes/Calculator";
 import NotFound from "./NotFound"
 
 {/* margin: 0px 10px 0px ${(props) => props.theme.navWidth + 100}px; */ }
@@ -33,13 +28,20 @@ const Main = styled.div`
     flex-direction: column;
 `;
 
-function App() {
+function Admin() {
     const [networkVersion, setNetworkVersion] = useState();
+    const [currentAddress, setCurrentAddress] = useState();
+
     useEffect(() => {
         if (window.klaytn) {
             { window.klaytn.networkVersion === 1001 && setNetworkVersion(1001) }
             { window.klaytn.networkVersion === 8217 && setNetworkVersion(8217) }
+            setCurrentAddress(window.klaytn.selectedAddress)
             window.klaytn.on("networkChanged", async function (network) { setNetworkVersion(network) })
+            window.klaytn.on("accountsChanged", async function (accounts) {
+                setCurrentAddress(accounts[0])
+                console.log("hi", currentAddress)
+            });
         }
     }, []);
 
@@ -49,17 +51,19 @@ function App() {
             <Main>
                 <PageHeader />
                 {networkVersion === 1001 ? <p>Please Change Network to Mainnet</p> :
-                    <Routes>                        
-                        <Route path="/" element={<AdminHome />} />
-                        <Route path="/ConvertManager" element={<ConvertManager />} />
-                        <Route path="/BondManager" element={<BondManager />} />
-                        <Route path="/StakeLockManager" element={<StakeLockManager />} />
-                        <Route element={<NotFound />} />
-                    </Routes>
+                    (currentAddress != '0x73297859b8936dbd0b0fbc4b77aafe58e07a40c2' ? <p>Please Connect Deployer Address</p>
+                        : <Routes>
+                            <Route path="/" element={<AdminHome />} />
+                            <Route path="/ConvertManager" element={<ConvertManager />} />
+                            <Route path="/BondManager" element={<BondManager />} />
+                            <Route path="/StakeLockManager" element={<StakeLockManager />} />
+                            <Route element={<NotFound />} />
+                        </Routes>
+                    )
                 }
             </Main>
         </Router>
     )
 }
 
-export default App;
+export default Admin;

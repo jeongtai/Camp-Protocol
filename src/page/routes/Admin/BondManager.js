@@ -25,7 +25,7 @@ function BondManager() {
   
   }
 
-  function onClick() {
+  function depositAll() {
     state.BondTreasuryContract.methods.depositAll(0)
     .send({
         from: window.klaytn.selectedAddress,
@@ -47,7 +47,7 @@ function BondManager() {
     return (
     <div>
       <p>{undepositval}</p>
-      <btn onClick={onClick}>Deposit</btn>
+      <btn onClick={depositAll}>Deposit</btn>
     </div>
     )
 }

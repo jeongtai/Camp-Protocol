@@ -146,14 +146,14 @@ const LockInfo = styled.div`
 
 //     height: 20px;
 
-//     background-color: ${(props) => props.isUnlockable ? props.theme.btnWhite : props.theme.btnGray};
+//     background-color: ${(props) => props.haveUnlockable ? props.theme.btnWhite : props.theme.btnGray};
 
 //     border : 2px solid;
-//     border-color : ${(props) => props.isUnlockable ? props.theme.btnBlue : props.theme.btnGray};
+//     border-color : ${(props) => props.haveUnlockable ? props.theme.btnBlue : props.theme.btnGray};
 //     border-radius: 6px;
 
 //     font-size: 12px;
-//     color: ${(props) => props.isUnlockable ? props.theme.textBlue : props.theme.textDarkGray};
+//     color: ${(props) => props.haveUnlockable ? props.theme.textBlue : props.theme.textDarkGray};
 // `
 
 const caver = new Caver(window.klaytn)
@@ -177,7 +177,7 @@ function KPGLock() {
     const [inputformValue, setInputformValue] = useState()
     const [nowTab, setNowTab] = useState("Lock")
 
-    const [isUnlockable, setIsUnlockable] = useState(false);
+    const [haveUnlockable, sethaveUnlockable] = useState(false);
     const [nowTimestamp, setNowTimestamp] = useState();
 
     async function getInfo() {
@@ -238,7 +238,7 @@ function KPGLock() {
                     setKPLockUserLockInfo(v[3])
                 }
                 )
-        } catch (e) { setKPLockUserLockInfo(undefined) }
+        } catch (e) { setKPLockUserLockInfo([]) }
 
         try {
             await caver.klay.getBlockNumber((e, v) => {
@@ -354,8 +354,8 @@ function KPGLock() {
                         />
 
                         {isApproved ?
-                            <Button text="Lock" onClick={KPGLock} />
-                            : <Button text="Approve" onClick={KPGApprove} />
+                            <Button text="Lock" isApproved={isApproved} onClick={KPGLock} />
+                            : <Button text="Approve" isApproved={isApproved} onClick={KPGApprove} />
                         }
                     </>
                 }
@@ -376,7 +376,8 @@ function KPGLock() {
                                 let boostedLockAmount = lockinfo[1] / 1e18
                                 let unlockDate = new Date(lockinfo[2] * 1000)
                                 let remainTimestamp = Math.max(0, lockinfo[2]*1000 -  nowTimestamp) // Test timestamp : 1661386000000
-
+                                if (remainTimestamp===0){sethaveUnlockable(true)}
+                                console.log(haveUnlockable)
                                 return (
                                     <p className="lockinfoContent" key={index}>
                                         <p>{lockAmount}</p>
@@ -396,8 +397,11 @@ function KPGLock() {
                                 )
                             })}
                         </LockInfo>
-
-                        <Button text="Unlock" onClick={KPGUnlock} />
+                        {haveUnlockable
+                        ? <Button text="Unlock" onClick={KPGUnlock} />
+                        : <Button text="Not unlockable yet" isUnactive={true}/>
+                        }
+                        
                     </>
                 }
 
@@ -415,7 +419,7 @@ function KPGLock() {
                                 <p>{kpLockearned3Moon} 3Moon LP</p>
                             </p>
                         </ClaimTabInfo>
-                        <Button text="Claim" onClick={KPGLockRewardClaim} />
+                        <Button text="Claim" isApproved={isApproved} onClick={KPGLockRewardClaim} />
                     </>
                 }
             </Content>

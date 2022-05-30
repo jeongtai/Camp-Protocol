@@ -160,7 +160,7 @@ const Bond = () => {
         });
     } catch { setEKLkpEKLval(undefined) }
   }
-
+  caver.klay.getBlock("latest").then(console.log);
   // initialize hook----------------------------
   useEffect(() => {
     getInfo();

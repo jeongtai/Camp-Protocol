@@ -150,7 +150,6 @@ function LPInfos(props) {
           }
         })
     } catch (e) {
-      console.log(e)
       setIsBondable(true)
     }
   }

@@ -44,7 +44,7 @@ const BondTreasuryContract = new caver.klay.Contract(Treasuryjs.abi, "0xc71d938d
 const kpEKLStakingContract = new caver.klay.Contract(kpEKLStakejs.abi, "0x58337263cf52A4906913866242cfdeE16dEe82Bb")
 const kpEKLStakeFeeContract = new caver.klay.Contract(kpEklStakeFeejs.abi, "0x54D9692Eb4539970acE6dB1Bf8220e4ABb259df0")
 const kpStakingContract = new caver.klay.Contract(kpStakejs.abi, "0x5042D8158d3c3C7f95374512b726fB2fA82EBa6B")
-const kpStakingProxyContract = new caver.klay.Contract(kpstakingproxyjs.abi, "0xc71d938d5Faf4057B7A9cd19b633A1d921Eee26c")
+const kpStakingProxyContract = new caver.klay.Contract(kpstakingproxyjs.abi, "0x02712572C2A5d2eA9F6Ec2eB5Ea0adf498657252")
 const kpLockContract = new caver.klay.Contract(kpLockjs.abi, "0xDc1b8Fe74ED56Fe11AB9ECfD7238aBaA8298f3d9")
 
 const EKLLockContract = new caver.klay.Contract(eklipseLockABI, "0xD067C3b871ee9E07BA4205A8F96c182baBBA6c58")

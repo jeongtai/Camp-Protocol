@@ -115,7 +115,7 @@ const Stake = () => {
   const [kpgprice, setKPGPrice] = useState()
   const [kpeklprice, setkpEKLPrice] = useState()
   const [eklprice, setEKLPrice] = useState()
-  const [ekl3moonprice, set3Moonprice] = useState()
+  const [ekl3moonprice, setEkl3Moonprice] = useState()
 
   const [kpeklstakesup, setkpEKLStakeSup] = useState()
   const [kpstakesup, setKPStakeSup] = useState()
@@ -131,8 +131,8 @@ const Stake = () => {
   const [kplockpendingbal, setKPLockPendingbal] = useState()
 
   const [KpgLockEklWeekreward, setLockEKLweekreward] = useState()
-  const [lockkpEKLreward, setLockkpEKLweekreward] = useState()
-  const [lock3moonreward, setLock3Moonweekreward] = useState()
+  const [lockkpEKLweekreward, setLockkpEKLweekreward] = useState()
+  const [lock3Moonweekreward, setLock3Moonweekreward] = useState()
 
   const [kpgStakekpEKLweekreward, setKpgStakekpEKLweekreward] = useState()
 
@@ -164,8 +164,8 @@ const Stake = () => {
 
   // KPG Lock APR
   let kpgLockRewardEKLApr = parseFloat(KpgLockEklWeekreward) * eklprice / kpLocktvl * 100 * 365 / 7
-  let kpgLockRewardkpEKLApr = parseFloat(lockkpEKLreward) * kpeklprice / kpLocktvl * 100 * 365 / 7
-  let kpgLockReward3MoonApr = parseFloat(lock3moonreward) * ekl3moonprice / kpLocktvl * 100 * 365 / 7
+  let kpgLockRewardkpEKLApr = parseFloat(lockkpEKLweekreward) * kpeklprice / kpLocktvl * 100 * 365 / 7
+  let kpgLockReward3MoonApr = parseFloat(lock3Moonweekreward) * ekl3moonprice / kpLocktvl * 100 * 365 / 7
   let kpgLockApr = kpgLockRewardEKLApr + kpgLockRewardkpEKLApr + kpgLockReward3MoonApr
 
 
@@ -264,8 +264,8 @@ const Stake = () => {
     try {
       await state.EKL3MoonBondContract.methods
         .assetPrice()
-        .call((e, v) => set3Moonprice((v / 1e6).toPrecision(3)));
-    } catch { set3Moonprice(undefined) }
+        .call((e, v) => setEkl3Moonprice((v / 1e6).toPrecision(3)));
+    } catch { setEkl3Moonprice(undefined) }
 
     try {
       await state.kpStakingContract.methods

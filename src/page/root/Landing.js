@@ -369,13 +369,13 @@ function Landing() {
                         <br />
                         & Decentralized Reserve Currency
                     </div>
-                    <a
+                    {/* <a
                         href={`${window.location.href.replace(
                             window.location.host,
                             `app.${window.location.host}`
                         )}`}>
                         <button className="enter-app-button">Launch App</button>
-                    </a>
+                    </a> */}
 
                     <a
                         href="https://kprotocol.gitbook.io/k-protocol/"

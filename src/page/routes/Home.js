@@ -192,9 +192,9 @@ function Home() {
         { name: "K-Protocol TVL", amt: `${tvl.toFixed(3)}` , prefix : '$'},
         { name: "Bond Treasury TVL", amt: `${Treasurybal.toFixed(3)}` , prefix : '$'},
         { name: "Staked/Locked TVL", amt: `${(kpstaketvl + kpLocktvl + kpeklstaketvl).toPrecision(3)}` , prefix : '$'},
-        { name: "kpEKL/EKL Ratio", amt: `${kpEKLratio}` , prefix : ''},
         { name: "KPG Price", amt: `${kpgprice}` , prefix : '$'},       
-        { name: "KPG Supply", amt: `${kpgSupply}`, prefix : ''}, 
+        { name: "kpEKL/EKL Ratio", amt: `${kpEKLratio}` , prefix : ''},
+        { name: "EKL Price", amt: `${eklprice}`, prefix : '$'},
         { name: "kpEKL Price", amt: `${kpEKLprice}` , prefix : '$'},
         { name: "kpEKL Supply", amt: `${kpEKLSupply}` , prefix : ''},
     ];
@@ -390,8 +390,8 @@ function Home() {
                                     <TokenLogo name={token.name} />{" "}
                                     {token.name}
                                 </p>
-                                <p className="tokenPrice">$ {token.price}</p>
-                                <TokenItemInfo>
+                                <p className="tokenPrice">Price $ {token.price}</p>
+                                {/* <TokenItemInfo>
                                     <p>Supply</p>
                                     <p>
                                         {parseInt(
@@ -407,7 +407,7 @@ function Home() {
                                             token.price * token.supply
                                         ).toLocaleString()}
                                     </p>
-                                </TokenItemInfo>
+                                </TokenItemInfo> */}
                                 <TokenItemInfo>
                                     <AddWallet
                                         onClick={() =>

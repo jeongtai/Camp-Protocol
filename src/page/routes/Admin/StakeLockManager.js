@@ -97,7 +97,8 @@ function StakeLockManager() {
         <br />
         <btn onClick={setkpDistributionrate}>Click to Set kp mintrate</btn>
         <br />
-        <p>setFeeinfo - 1st : kpstakefee (1000~3000) , 2nd : kpEKLstakefee (1000~3000), 3rd : caller (10~100), 4th : kplockerfee : (~6000), 5th : ekl3moondisrate</p>
+        <p>setFeeinfo - 1st : kpstakefee (1000~3000) , 2nd : kpEKLstakefee (1000~3000), 3rd : caller (10~100), 4th : kplockerfee : (~6000), 5th : ekl3moondisrate </p>
+        <p>default : 1990 / 2000 / 10 / 6000 / 2000</p>
         <p>10000 : 100% || 100 : 1%</p>
         <input onChange={kpstakeinput} value={kpstakefee} placeholder="0"></input>
         <input onChange={kpEKLstakeinput} value={kpeklstakerfee} placeholder="0"></input>

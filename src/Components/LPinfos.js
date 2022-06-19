@@ -192,13 +192,25 @@ function LPInfos(props) {
 
       <BtnSection>
         <div>
+          {/* pool open */}
           <BondingtoolBtn
             isOpened={isBondable}
             onClick={isBondable ? () => ClickBtn("bond") : null}
             onMouseOver={() => setIsBondBtnInfoOpen(true)}
             onMouseLeave={() => setIsBondBtnInfoOpen(false)}
           >
-            {isBondable ? "Bond" : "Soldout"}
+          {isBondable ? "Bond" : "Soldout"}
+
+          {/* pool closed */}
+          {/* <BondingtoolBtn
+            isOpened={false}
+            onClick={false ? () => ClickBtn("bond") : null}
+            onMouseOver={() => setIsBondBtnInfoOpen(true)}
+            onMouseLeave={() => setIsBondBtnInfoOpen(false)}
+          >
+            {"Pool Closed"} */}
+
+
             {(isBondBtnInfoOpen && !isBondable)
               ? <SoldoutInfoModal>Bond Treasury<br/>Remain KPG : {bondTreasuryKpgBalance.toFixed(3)}</SoldoutInfoModal>
               : null}

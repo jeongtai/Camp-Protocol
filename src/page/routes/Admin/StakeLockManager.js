@@ -154,7 +154,7 @@ function StakeLockManager() {
         <Button onClick={Feecollect3}>Now click last Button!</Button>
       </Item>
 
-      <p className="title">Click to Set kp mintrate</p>
+      <p className="title">KPG Emission 비율 설정</p>
       <Item>
         <p>setkpDisrate - 10000 : 100%</p>
         <input onChange={inputval} value={kpdisrate} placeholder="0"></input>

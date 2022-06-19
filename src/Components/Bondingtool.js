@@ -182,8 +182,9 @@ function Bondingtool(lpInfosProps) {
           await state.KPGContract.methods
             .totalSupply()
             .call((e, sup) => {
-              setMaxDebt((v[3] * sup / 1e24).toPrecision(3))
+              setMaxDebt((v[3] * sup / 1e26).toPrecision(3))
             })
+          
         })
     } catch (e) {
       setVestingTerm(undefined)
@@ -270,7 +271,7 @@ function Bondingtool(lpInfosProps) {
   const bondInfosArray = [
     { name: "your LP balance", val: lpbal, expression: `${lpbal} LP` },
     { name: "You'll get", val: kpgAmt, expression: `${kpgAmt} KPG` },
-    { name: "Max Bond", val: maxDebt, expression: `${maxDebt} KPG` },
+    { name: "Max Bond", val: maxDebt, expression: `${parseFloat(maxDebt)} KPG` },
     { name: "ROI", val: priceDiscountRate, expression: `${priceDiscountRate} %` },
     { name: "Vesting term end", val: vestingTerm, expression: timeConversion(vestingTerm * 1000) },
     { name: "Minimum Purchase", val: "0.01 KPG", expression: "0.01 KPG" },

@@ -17,7 +17,6 @@ const Dashboard = styled.div`
     & .overview{
         grid-column: 1/3;
     }
-
 `;
 
 const Overview = styled.div`

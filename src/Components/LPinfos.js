@@ -193,22 +193,22 @@ function LPInfos(props) {
       <BtnSection>
         <div>
           {/* pool open */}
-          <BondingtoolBtn
+          {/* <BondingtoolBtn
             isOpened={isBondable}
             onClick={isBondable ? () => ClickBtn("bond") : null}
             onMouseOver={() => setIsBondBtnInfoOpen(true)}
             onMouseLeave={() => setIsBondBtnInfoOpen(false)}
           >
-          {isBondable ? "Bond" : "Soldout"}
+          {isBondable ? "Bond" : "Soldout"} */}
 
           {/* pool closed */}
-          {/* <BondingtoolBtn
+          <BondingtoolBtn
             isOpened={false}
             onClick={false ? () => ClickBtn("bond") : null}
             onMouseOver={() => setIsBondBtnInfoOpen(true)}
             onMouseLeave={() => setIsBondBtnInfoOpen(false)}
           >
-            {"Pool Closed"} */}
+            {"Pool Closed"}
 
 
             {(isBondBtnInfoOpen && !isBondable)

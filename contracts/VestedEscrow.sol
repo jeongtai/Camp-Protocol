@@ -147,7 +147,7 @@ contract VestedEscrow is ReentrancyGuard{
         emit Claim(msg.sender, claimable);
     }
 
-    function claim() external{
+    function claimKPG() external{
         claim(msg.sender);
     }
 
@@ -167,7 +167,7 @@ contract VestedEscrow is ReentrancyGuard{
         emit Claim(_recipient, claimable);
     }
 
-    function claimAndStake() external{
+    function claimAndStakeKPG() external{
         claimAndStake(msg.sender);
     }
 }

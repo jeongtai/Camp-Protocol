@@ -103,19 +103,15 @@ const main = async () => {
 
     /* =============== kpEKLStake Run =============== */
 
-    // await EKLDepositor.depositEKL(toBn("1"), true)
-    // await Booster.earmarkRewards()
+    // await Booster.mint_KP(TreasuryFund.address, toBn("1e7"))
+    // await Booster.mint_KP(BondTreasury.address, toBn("3e7"))
+    // await Booster.mint_KP(owner.address, toBn("1e7"))
 
-    // await Booster.earmarkFees(0)
+    // await Booster.mint_KP(owner.address, toBn("4000"))
+    // await Booster.mint_KP(BondTreasury.address, toBn("86000"))
 
-    // await Booster.sendExtras(postEKL, kpStakingProxy.address)
-    await kpStakingProxy.distribute()
-    // await kpStakingProxy.distributeOther(postEKL)
-    await kpStakingProxy.distributeOther(EKL3Moon)
-    
-    // await BondTreasury.depositAll(0)
 
-    // await Booster.gaugevote(EKL33MoonGauge, "5403")
+
 }
 
 

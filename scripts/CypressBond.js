@@ -141,9 +141,9 @@ const main = async () => {
     // console.log("register", (await BondTreasury.isReserveToken(m3Moon.address)).toString());
 
 
-    // console.log((await EKL3MoonDepository.bondPrice()).toString());
-    // console.log((await EKL3MoonDepository.assetPrice()).toString());
-    // // console.log((await EKL3MoonDepository.debtRatio()).toString());
+    console.log((await EKL3MoonDepository.bondPrice()).toString());
+    console.log((await EKL3MoonDepository.priceRate()).toString());
+    console.log((await EKL3MoonDepository.debtRatio()).toString());
     // // console.log((await EKL3MoonDepository.payoutFor(toBn("10"))).toString());
 
     // await m3Moon.approve(EKL3MoonDepository.address, toBn("1e18"))
